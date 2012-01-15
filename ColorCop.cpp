@@ -24,10 +24,10 @@ static char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CHtmlcopApp
+// CColorCopApp
 
-BEGIN_MESSAGE_MAP(CHtmlcopApp, CWinApp)
-	//{{AFX_MSG_MAP(CHtmlcopApp)
+BEGIN_MESSAGE_MAP(CColorCopApp, CWinApp)
+	//{{AFX_MSG_MAP(CColorCopApp)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG
@@ -35,30 +35,30 @@ BEGIN_MESSAGE_MAP(CHtmlcopApp, CWinApp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CHtmlcopApp construction
+// CColorCopApp construction
 
 
-CHtmlcopApp::CHtmlcopApp()
+CColorCopApp::CColorCopApp()
 {
 ///	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Constructor\n");
 
 	m_hMutex=NULL;
 }
 
-CHtmlcopApp::~CHtmlcopApp()
+CColorCopApp::~CColorCopApp()
 {
 	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Destructor\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// The one and only CHtmlcopApp object
+// The one and only CColorCopApp object
 
-CHtmlcopApp theApp;
+CColorCopApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
-// CHtmlcopApp initialization
+// CColorCopApp initialization
 
-BOOL CHtmlcopApp::InitInstance()
+BOOL CColorCopApp::InitInstance()
 {
 
 	//ATLTRACE2(atlTraceGeneral, 0, "Begin InitInstance\n");
@@ -141,7 +141,7 @@ BOOL CHtmlcopApp::InitInstance()
 
 //http://www.koders.com/cpp/fidDA7CC61A9668A4356119E1B5E6F54836B44200D8.aspx?s=InstanceRunning
 // uses a Mutex to figure out if there is an instance of color cop running
-bool CHtmlcopApp::InstanceRunning()
+bool CColorCopApp::InstanceRunning()
 {
 	m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
 	
@@ -163,7 +163,7 @@ bool CHtmlcopApp::InstanceRunning()
 	return false;
 }
 
-BOOL CHtmlcopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
+BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
 {
     // pShellFolder can be one of the following
     // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
@@ -190,7 +190,7 @@ BOOL CHtmlcopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
         return FALSE;
 }
 
-CString CHtmlcopApp::GetTempFolder()
+CString CColorCopApp::GetTempFolder()
 {
 	CString strTmpPath;
 //	DWORD dwL;
@@ -232,7 +232,7 @@ CString CHtmlcopApp::GetTempFolder()
 	return strTmpPath;
 }
 
-void CHtmlcopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
+void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 {
     RECT rc;
     GetWindowRect(hwnd, &rc);
@@ -244,7 +244,7 @@ void CHtmlcopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 }
 
 
-BOOL CHtmlcopApp::InitApplication() 
+BOOL CColorCopApp::InitApplication() 
 {
 	////////////////////////////////////////////////////////////
 	// This function reads the settings from a file.  It should 
@@ -300,7 +300,7 @@ BOOL CHtmlcopApp::InitApplication()
 //  This shows how you use the multi-monitor functions
 //  to do the same thing.
 //
-void CHtmlcopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
+void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
     HMONITOR hMonitor;
     MONITORINFO mi;
     RECT        rc;
@@ -350,7 +350,7 @@ void CHtmlcopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
 
 
 
-void CHtmlcopApp::LoadDefaultSettings() {
+void CColorCopApp::LoadDefaultSettings() {
 
 		// This function is called when we can't find a .DAT file
 		// with the persistent variables, or it was an old dat file
@@ -398,7 +398,7 @@ void CHtmlcopApp::LoadDefaultSettings() {
 	return;
 }
 
-void CHtmlcopApp::CloseApplication() {
+void CColorCopApp::CloseApplication() {
 
 	////////////////////////////////////////////////////////////
 	// This function writes the settings to a file.  It is the 
@@ -432,7 +432,7 @@ void CHtmlcopApp::CloseApplication() {
 	return;
 }
 
-void CHtmlcopApp::Serialize(CArchive& ar) 
+void CColorCopApp::Serialize(CArchive& ar) 
 {
 	//ATLTRACE2(atlTraceGeneral, 0, "Serialize\n");
 

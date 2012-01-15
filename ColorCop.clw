@@ -2,16 +2,16 @@
 
 [General Info]
 Version=1
-LastClass=CHtmlcopDlg
+LastClass=CColorCopDlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "ColorCop.h"
 LastPage=0
 
 ClassCount=6
-Class1=CHtmlcopApp
+Class1=CColorCopApp
 Class2=CAboutDlg
-Class3=CHtmlcopDlg
+Class3=CColorCopDlg
 Class4=CLabel
 Class5=CSystemTray
 Class6=CWavTipCtrl
@@ -23,12 +23,12 @@ Resource3=IDR_COPMENU
 Resource4=IDR_SYSTRAY_MENU
 Resource5=IDR_COLORCOP_ACCEL
 
-[CLS:CHtmlcopApp]
+[CLS:CColorCopApp]
 Type=0
 BaseClass=CWinApp
 HeaderFile=ColorCop.h
 ImplementationFile=ColorCop.cpp
-LastObject=CHtmlcopApp
+LastObject=CColorCopApp
 Filter=N
 VirtualFilter=AC
 
@@ -40,7 +40,7 @@ ImplementationFile=ColorCopDlg.cpp
 LastObject=CAboutDlg
 Filter=D
 
-[CLS:CHtmlcopDlg]
+[CLS:CColorCopDlg]
 Type=0
 BaseClass=CDialog
 HeaderFile=ColorCopDlg.h
@@ -89,7 +89,7 @@ Control9=IDC_MAILLINK,static,1342308352
 
 [DLG:IDD_HTMLCOP_DIALOG]
 Type=1
-Class=CHtmlcopDlg
+Class=CColorCopDlg
 ControlCount=28
 Control1=IDC_RED,edit,1350639745
 Control2=IDC_GREEN,edit,1350639745
@@ -122,7 +122,7 @@ Control28=IDC_YELLOW,edit,1350631553
 
 [MNU:IDR_COPMENU]
 Type=1
-Class=CHtmlcopDlg
+Class=CColorCopDlg
 Command1=ID_COLOR_SNAPTOWEBSAFE
 Command2=ID_POPUP_COLOR_DETECTWEBSAFE
 Command3=ID_COLOR_REVERSE
@@ -170,7 +170,7 @@ CommandCount=2
 
 [ACL:IDR_COLORCOP_ACCEL]
 Type=1
-Class=CHtmlcopDlg
+Class=CColorCopDlg
 Command1=ID_POPUP_SAMPLING_1PIXEL
 Command2=ID_POPUP_SAMPLING_3BY3AVERAGE
 Command3=ID_POPUP_SAMPLING_5BY5AVERAGE

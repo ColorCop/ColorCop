@@ -345,8 +345,6 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     {
 
 
-//		CHtmlcopDlg::OnPopupRestore() ;
-
 
         // double click received, the default action is to execute default menu item
         pTarget->SetForegroundWindow();  

@@ -21,30 +21,30 @@
 // See ColorCop.cpp for the implementation of this class
 //
 
-class CHtmlcopApp : public CWinApp
+class CColorCopApp : public CWinApp
 {
 public:
-	CHtmlcopDlg dlg;
-	CHtmlcopApp();
-	~CHtmlcopApp();
+	CColorCopDlg dlg;
+	CColorCopApp();
+	~CColorCopApp();
 
 
 protected:
-	void CHtmlcopApp::CloseApplication();
-	void CHtmlcopApp::LoadDefaultSettings();
-	CString CHtmlcopApp::GetTempFolder();
-	BOOL CHtmlcopApp::GetShellFolderPath(char * pShellFolder, char * pShellPath);
-	void CHtmlcopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
+	void CColorCopApp::CloseApplication();
+	void CColorCopApp::LoadDefaultSettings();
+	CString CColorCopApp::GetTempFolder();
+	BOOL CColorCopApp::GetShellFolderPath(char * pShellFolder, char * pShellPath);
+	void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
 
 	// multi mon
-	void CHtmlcopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
+	void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
 
 	bool InstanceRunning();
     HANDLE m_hMutex;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CHtmlcopApp)
+	//{{AFX_VIRTUAL(CColorCopApp)
 	public:
 	virtual BOOL InitInstance();
 	virtual BOOL InitApplication();
@@ -53,7 +53,7 @@ protected:
 
 // Implementation
 
-	//{{AFX_MSG(CHtmlcopApp)
+	//{{AFX_MSG(CColorCopApp)
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG

@@ -44,17 +44,17 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x409 /fo"Release/ColorCop.res" /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo /o"Release/ColorCop.bsc"
+# ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF /ALIGN:4096
+# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /machine:I386 /OPT:REF /ALIGN:4096
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
@@ -71,14 +71,14 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Debug/ColorCop.pch" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x409 /fo"Debug/ColorCop.res" /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo /o"Debug/ColorCop.bsc"
+# ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
@@ -98,7 +98,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /fo"Release/ColorCop.res" /d "NDEBUG" /d "_AFXDLL"
@@ -122,10 +122,6 @@ LINK32=link.exe
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
-# Begin Source File
-
-SOURCE=.\colorspace.cpp
-# End Source File
 # Begin Source File
 
 SOURCE=.\ColorCop.cpp
@@ -154,6 +150,10 @@ SOURCE=.\ColorCopDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\colorspace.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Label.cpp
 # End Source File
 # Begin Source File
@@ -175,15 +175,15 @@ SOURCE=.\AggressiveOptimize.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\colorspace.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\ColorCop.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\ColorCopDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\colorspace.h
 # End Source File
 # Begin Source File
 
@@ -205,6 +205,10 @@ SOURCE=.\SystemTray.h
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\res\ColorCop.rc2
+# End Source File
 # Begin Source File
 
 SOURCE=.\Res\cross.cur
@@ -236,10 +240,6 @@ SOURCE=.\Res\eyeyedropper.ico
 # Begin Source File
 
 SOURCE=.\Res\hand.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\ColorCop.rc2
 # End Source File
 # Begin Source File
 

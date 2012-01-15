@@ -12,7 +12,7 @@
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CHtmlcopDlg dialog
+// CColorCopDlg dialog
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
@@ -22,11 +22,11 @@
 
 class CSystemTray;
 
-class CHtmlcopDlg : public CDialog
+class CColorCopDlg : public CDialog
 {
 // Construction
 public:
-	CHtmlcopDlg(CWnd* pParent = NULL);	// standard constructor
+	CColorCopDlg(CWnd* pParent = NULL);	// standard constructor
 	//CWavTipCtrl m_tooltip;
 	COLORREF ColorHistory[7];
 	COLORREF CustColorBank[16];
@@ -42,7 +42,7 @@ public:
 	HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 
 // Dialog Data
-	//{{AFX_DATA(CHtmlcopDlg)
+	//{{AFX_DATA(CColorCopDlg)
 	enum { IDD = IDD_HTMLCOP_DIALOG };
 	CStatic	m_Lbl4;
 	CStatic	m_Lbl3;
@@ -77,7 +77,7 @@ public:
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CHtmlcopDlg)
+	//{{AFX_VIRTUAL(CColorCopDlg)
 	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
@@ -156,64 +156,64 @@ protected:
 	CSystemTray* pTrayIcon_;
 	int nTrayNotificationMsg_;
 	// end
-	void CHtmlcopDlg::FloatPrecisionUp();
-	void CHtmlcopDlg::FloatPrecisionDown();
-	//void CHtmlcopDlg::BlockMeasure(POINT ptBeg, POINT ptEnd);
-	void CHtmlcopDlg::GetScreenBitmap(CPoint point);
+	void CColorCopDlg::FloatPrecisionUp();
+	void CColorCopDlg::FloatPrecisionDown();
+	//void CColorCopDlg::BlockMeasure(POINT ptBeg, POINT ptEnd);
+	void CColorCopDlg::GetScreenBitmap(CPoint point);
 
-	void CHtmlcopDlg::StopCapture(void);
-	void CHtmlcopDlg::DisplayColor();
-	void CHtmlcopDlg::ParseHTML(CString inst);
-	void CHtmlcopDlg::ParseDelphi(CString inst);
-	void CHtmlcopDlg::ParseClarion(CString inst);
-    void CHtmlcopDlg::FigurePound();
-	void CHtmlcopDlg::TestForExpand();
-	int CHtmlcopDlg::DecimaltoWebsafe(int originalDec);
-	void CHtmlcopDlg::TestForUpperHex();
-	void CHtmlcopDlg::OnconvertHEX();
-	void CHtmlcopDlg::OnconvertRGB();
-	void CHtmlcopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
-	void CHtmlcopDlg::UpdateMenu(CMenu* pMenu);
-	void CHtmlcopDlg::ToggleOnTop(bool bSetStatusbartext);
-	void CHtmlcopDlg::TestForWebsafe();
-	void CHtmlcopDlg::SetupTaskBarButton();
-	void CHtmlcopDlg::SetupTrayIcon();
-	void CHtmlcopDlg::SetupSystemMenu();
-	void CHtmlcopDlg::SetupWindowRects();
-	bool CHtmlcopDlg::LoadPersistentVariables();
-	bool CHtmlcopDlg::AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
-	void CHtmlcopDlg::SetupStatusBar();
-	void CHtmlcopDlg::SetStatusBarText(LPCTSTR statusText);
-	int CHtmlcopDlg::RangeCheck(int icolorval);
-	void CHtmlcopDlg::AdvanceColorHistory();
-	void CHtmlcopDlg::GetHistoryColor(int Cindex);
-	HBITMAP CHtmlcopDlg::CopyBitmap (HBITMAP hBitmapSrc);
-	bool CHtmlcopDlg::isWebsafeColor(int R, int G, int B);
-	CString CHtmlcopDlg::GetTempFolder();
-	BOOL CHtmlcopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
+	void CColorCopDlg::StopCapture(void);
+	void CColorCopDlg::DisplayColor();
+	void CColorCopDlg::ParseHTML(CString inst);
+	void CColorCopDlg::ParseDelphi(CString inst);
+	void CColorCopDlg::ParseClarion(CString inst);
+    void CColorCopDlg::FigurePound();
+	void CColorCopDlg::TestForExpand();
+	int CColorCopDlg::DecimaltoWebsafe(int originalDec);
+	void CColorCopDlg::TestForUpperHex();
+	void CColorCopDlg::OnconvertHEX();
+	void CColorCopDlg::OnconvertRGB();
+	void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
+	void CColorCopDlg::UpdateMenu(CMenu* pMenu);
+	void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext);
+	void CColorCopDlg::TestForWebsafe();
+	void CColorCopDlg::SetupTaskBarButton();
+	void CColorCopDlg::SetupTrayIcon();
+	void CColorCopDlg::SetupSystemMenu();
+	void CColorCopDlg::SetupWindowRects();
+	bool CColorCopDlg::LoadPersistentVariables();
+	bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
+	void CColorCopDlg::SetupStatusBar();
+	void CColorCopDlg::SetStatusBarText(LPCTSTR statusText);
+	int CColorCopDlg::RangeCheck(int icolorval);
+	void CColorCopDlg::AdvanceColorHistory();
+	void CColorCopDlg::GetHistoryColor(int Cindex);
+	HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc);
+	bool CColorCopDlg::isWebsafeColor(int R, int G, int B);
+	CString CColorCopDlg::GetTempFolder();
+	BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
 	
-	void CHtmlcopDlg::SetStatusBarText(UINT strResource, int toggleVal);
+	void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal);
 
-	void CHtmlcopDlg::CalcColorPal();
-	double CHtmlcopDlg::shiftHue(double hue);
-	void CHtmlcopDlg::setSeedColor();
-	void CHtmlcopDlg::RGBtoHSL(double R, double G, double B);
-	void CHtmlcopDlg::HSLtoRGB(double H, double S, double L);
-	void CHtmlcopDlg::setupSwatches();
-	void CHtmlcopDlg::handleShifts();
-	void CHtmlcopDlg::printSwatch();
-	double CHtmlcopDlg::plusValue(double num);
-	double CHtmlcopDlg::minusValue(double num);
-	void CHtmlcopDlg::RecalcZoom();
-	void CHtmlcopDlg::FireOptionMenu();
-	PBITMAPINFO CHtmlcopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
-	void CHtmlcopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
-	void CHtmlcopDlg::UpdateCMYKFromRGB(int red, int green, int blue);
+	void CColorCopDlg::CalcColorPal();
+	double CColorCopDlg::shiftHue(double hue);
+	void CColorCopDlg::setSeedColor();
+	void CColorCopDlg::RGBtoHSL(double R, double G, double B);
+	void CColorCopDlg::HSLtoRGB(double H, double S, double L);
+	void CColorCopDlg::setupSwatches();
+	void CColorCopDlg::handleShifts();
+	void CColorCopDlg::printSwatch();
+	double CColorCopDlg::plusValue(double num);
+	double CColorCopDlg::minusValue(double num);
+	void CColorCopDlg::RecalcZoom();
+	void CColorCopDlg::FireOptionMenu();
+	PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
+	void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+	void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue);
 
-void CHtmlcopDlg::ChangeColorSpace(bool bRGB) ;
+void CColorCopDlg::ChangeColorSpace(bool bRGB) ;
 
 	// Generated message map functions
-	//{{AFX_MSG(CHtmlcopDlg)
+	//{{AFX_MSG(CColorCopDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
