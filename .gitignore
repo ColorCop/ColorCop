@@ -6,6 +6,7 @@ Debug/*
 [Rr]elease*/
 *.vspscc
 *.vssscc
+*.aps
 *.ncb
 *.opt
 *.plg
