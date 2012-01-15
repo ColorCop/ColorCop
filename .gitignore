@@ -8,4 +8,5 @@ Debug/*
 *.vssscc
 *.ncb
 *.opt
+*.plg
 *.lib
