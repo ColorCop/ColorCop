@@ -1,6 +1,6 @@
 Release/*
 Debug/*
-htmlcop___Win32_Release_without_ALIGN*/
+ColorCop___Win32_Release_without_ALIGN*/
 # Visual Studio files
 [Bb]in*/
 [Dd]debug*/
