@@ -17,7 +17,7 @@
 #include "ColorCopDlg.h"	// Added by ClassView
 
 /////////////////////////////////////////////////////////////////////////////
-// CHtmlcopApp:
+// CColorCopApp:
 // See ColorCop.cpp for the implementation of this class
 //
 
