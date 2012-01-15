@@ -27,7 +27,7 @@ file
 prall
 has-props
 
-htmlcop.cpp
+ColorCop.cpp
 file
 
 
@@ -39,7 +39,7 @@ file
 2
 prall
 
-htmlcop.rc
+ColorCop.rc
 file
 
 
@@ -51,7 +51,7 @@ fc3126f51949250cf0fd75ab4e64d374
 2
 prall
 
-htmlcopDlg.cpp
+ColorCopDlg.cpp
 file
 
 
