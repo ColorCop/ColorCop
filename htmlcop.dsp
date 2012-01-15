@@ -165,10 +165,6 @@ SOURCE=.\StdAfx.cpp
 
 SOURCE=.\SystemTray.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\WavTipCtrl.cpp
-# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -204,10 +200,6 @@ SOURCE=.\StdAfx.h
 # Begin Source File
 
 SOURCE=.\SystemTray.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\WavTipCtrl.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

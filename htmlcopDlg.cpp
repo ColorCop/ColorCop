@@ -17,7 +17,7 @@
 #include "htmlcopDlg.h"
 #include "Label.h"			// used for the Links in the AboutDlg
 #include "SystemTray.h"		// used to minimize to the systray
-#include "WavTipCtrl.h"		// used to add tooltips to the dialog :)
+//#include "WavTipCtrl.h"		// used to add tooltips to the dialog :)
 #include <commctrl.h>
 #include <math.h>
 #include <windows.h>
@@ -275,19 +275,16 @@ BOOL CHtmlcopDlg::OnInitDialog()
 
 	TestForExpand();	// do not call this before SetupWindowRects();
 	
-	//EnableToolTips(true);	// Enable tool tips, even though they aren't working yet
-	m_tooltip.Create(this);		
-	m_tooltip.Activate(TRUE);
-	
-
-
-
-	m_tooltip.SetPopupSound(NULL);	// tool tip sounds off
-//	m_tooltip.AddTool(GetDlgItem(IDC_MagWindow), IDS_MAG_WINDOW);
-	m_tooltip.AddTool(GetDlgItem(IDC_HEXCOLOR), IDS_HEXCOLOR_TOOLTIP);
+	// TODO: figure out tool tips
+	//EnableToolTips(true);	
+	//m_tooltip.Create(this);		
+	//m_tooltip.Activate(TRUE);
+	//m_tooltip.SetPopupSound(NULL);	// tool tip sounds off
+	//m_tooltip.AddTool(GetDlgItem(IDC_MagWindow), IDS_MAG_WINDOW);
+	//m_tooltip.AddTool(GetDlgItem(IDC_HEXCOLOR), IDS_HEXCOLOR_TOOLTIP);
 	//m_tooltip.AddTool(GetDlgItem(IDC_EYELOC),  IDS_EYEDROPPER_TOOLTIP);
-    m_tooltip.AddTool(GetDlgItem(IDC_EXPAND_DIALOG), IDS_EXPAND_DIALOG);
-	m_tooltip.AddTool(GetDlgItem(IDC_ColorPick), IDS_COLOR_PICK);
+    //m_tooltip.AddTool(GetDlgItem(IDC_EXPAND_DIALOG), IDS_EXPAND_DIALOG);
+	//m_tooltip.AddTool(GetDlgItem(IDC_ColorPick), IDS_COLOR_PICK);
 
 	nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
 	

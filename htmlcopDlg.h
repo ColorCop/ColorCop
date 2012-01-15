@@ -17,7 +17,7 @@
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
-#include "WavTipCtrl.h"		// used to add tooltips to the dialog :)
+//#include "WavTipCtrl.h"		// used to add tooltips to the dialog :)
 
 
 class CSystemTray;
@@ -27,7 +27,7 @@ class CHtmlcopDlg : public CDialog
 // Construction
 public:
 	CHtmlcopDlg(CWnd* pParent = NULL);	// standard constructor
-	CWavTipCtrl m_tooltip;
+	//CWavTipCtrl m_tooltip;
 	COLORREF ColorHistory[7];
 	COLORREF CustColorBank[16];
 	int m_Appflags;
