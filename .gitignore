@@ -7,4 +7,5 @@ Debug/*
 *.vspscc
 *.vssscc
 *.ncb
+*.opt
 *.lib
