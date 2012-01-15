@@ -1,2 +1,6 @@
 Release/*
 Debug/*
+
+
+# VisualStudio NCB (no compile browse)
+*.ncb
