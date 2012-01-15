@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "htmlcop", "htmlcop.vcproj", "{168CEAD2-D916-4021-B940-0BA7E7D2C900}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 1
+		SccProjectUniqueName0 = htmlcop.vcproj
+		SccProjectName0 = \u0022$/programming\u0022,\u0020BAAAAAAA
+		SccLocalPath0 = .
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release without ALIGN|Win32 = Release without ALIGN|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Debug|Win32.ActiveCfg = Debug|Win32
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Debug|Win32.Build.0 = Debug|Win32
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Release without ALIGN|Win32.ActiveCfg = Release without ALIGN|Win32
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Release without ALIGN|Win32.Build.0 = Release without ALIGN|Win32
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Release|Win32.ActiveCfg = Release|Win32
+		{168CEAD2-D916-4021-B940-0BA7E7D2C900}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

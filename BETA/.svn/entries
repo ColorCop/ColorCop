@@ -1,0 +1,41 @@
+8
+
+dir
+28
+svn+ssh://prall@MyConnection/home/prall/colorcop/ColorCop/BETA
+svn+ssh://prall@MyConnection/home/prall/colorcop
+
+
+
+2007-10-16T01:46:05.680181Z
+2
+prall
+
+
+svn:special svn:externals svn:needs-lock
+
+vssver2.scc
+file
+
+
+
+
+2006-08-10T19:12:04.246000Z
+dd3f4d75b0c1586140ac1f00d6a0393b
+2007-10-16T01:46:05.680181Z
+2
+prall
+has-props
+
+Beta_info.txt
+file
+
+
+
+
+2006-08-10T19:12:04.230375Z
+3000e6544b498556365cd6cd03386ae1
+2007-10-16T01:46:05.680181Z
+2
+prall
+

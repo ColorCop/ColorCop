@@ -1,0 +1,28 @@
+8
+
+dir
+28
+svn+ssh://prall@MyConnection/home/prall/colorcop/ColorCop/inno
+svn+ssh://prall@MyConnection/home/prall/colorcop
+
+
+
+2007-10-16T01:46:05.680181Z
+2
+prall
+
+
+svn:special svn:externals svn:needs-lock
+
+colorcop.iss
+file
+
+
+
+
+2006-09-20T13:23:56.479625Z
+e610b661fe59fe5c796f62090542d7a4
+2007-10-16T01:46:05.680181Z
+2
+prall
+
