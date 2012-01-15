@@ -17,10 +17,10 @@ Class5=CSystemTray
 Class6=CWavTipCtrl
 
 ResourceCount=5
-Resource1=IDD_HTMLCOP_DIALOG
-Resource2=IDD_ABOUTBOX
-Resource3=IDR_COPMENU
-Resource4=IDR_SYSTRAY_MENU
+Resource1=IDR_COPMENU
+Resource2=IDD_HTMLCOP_DIALOG
+Resource3=IDR_SYSTRAY_MENU
+Resource4=IDD_ABOUTBOX
 Resource5=IDR_COLORCOP_ACCEL
 
 [CLS:CColorCopApp]
@@ -45,7 +45,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=ColorCopDlg.h
 ImplementationFile=ColorCopDlg.cpp
-LastObject=IDC_HEXCOLOR
+LastObject=CColorCopDlg
 Filter=W
 VirtualFilter=dWC
 
