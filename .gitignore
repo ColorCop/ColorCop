@@ -1,6 +1,10 @@
 Release/*
 Debug/*
-
-
-# VisualStudio NCB (no compile browse)
+# Visual Studio files
+[Bb]in*/
+[Dd]debug*/
+[Rr]elease*/
+*.vspscc
+*.vssscc
 *.ncb
+*.lib
