@@ -1514,7 +1514,7 @@ void CColorCopDlg::OnColorPick()
 		UpdateData(false);
 		CalcColorPal();
 		OnconvertRGB();
-		OnCopytoclip();	
+		OnCopytoclip();
 
 	}
 	// else if they didn't hit OK, do nothing
@@ -1553,7 +1553,7 @@ void CColorCopDlg::OnCopytoclip()
 			::CloseClipboard();
 		}
 	}
-	return;		
+	return;
 }
 
 void CColorCopDlg::StopCapture()
@@ -1564,7 +1564,7 @@ void CColorCopDlg::StopCapture()
 	
 	ReleaseCapture();				// let go of the mouse
 
-	CWinApp* pApp = AfxGetApp();		
+	CWinApp* pApp = AfxGetApp();
 
 	// put the icons back in their holders
 	if (m_Appflags & USECROSSHAIR) {
@@ -1673,12 +1673,13 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 		m_isMagPlusDown = TRUE;
 		SetTimer(2,145,NULL);		// install the timer
-        return;
+		return;
 
 	} else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {	
 
-		if (m_MagLevel != 1)
+		if (m_MagLevel != 1) {
 			m_MagLevel--;
+		}
 
 		strStatus.LoadString(IDS_MAG_DECREASED);
 		strStatus.Format(strStatus, m_MagLevel);
