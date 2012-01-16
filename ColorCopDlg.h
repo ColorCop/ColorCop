@@ -44,6 +44,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CColorCopDlg)
 	enum { IDD = IDD_HTMLCOP_DIALOG };
+	CButton	m_ColorPick;
 	CStatic	m_Lbl4;
 	CStatic	m_Lbl3;
 	CStatic	m_Lbl2;

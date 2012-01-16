@@ -173,6 +173,7 @@
 #define IDS_Y                           32852
 #define IDS_K                           32853
 #define IDS_MODE_CLARION                32854
+#define IDS_CUSTOM_COLOR                32855
 
 // Next default values for new objects
 // 

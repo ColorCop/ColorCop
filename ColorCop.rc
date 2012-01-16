@@ -483,6 +483,7 @@ BEGIN
     IDS_Y                   "Y:"
     IDS_K                   "K:"
     IDS_MODE_CLARION        "Clarion Hex Mode"
+    IDS_CUSTOM_COLOR        "Custom color picker"
 END
 
 #endif    // English (U.S.) resources

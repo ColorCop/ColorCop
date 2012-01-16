@@ -111,6 +111,7 @@ void CColorCopDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CColorCopDlg)
+	DDX_Control(pDX, IDC_ColorPick, m_ColorPick);
 	DDX_Control(pDX, IDC_LBL4, m_Lbl4);
 	DDX_Control(pDX, IDC_LBL3, m_Lbl3);
 	DDX_Control(pDX, IDC_LBL2, m_Lbl2);
@@ -283,6 +284,7 @@ BOOL CColorCopDlg::OnInitDialog()
 		// or using the string table resource
 	//	m_ToolTip.AddTool( &m_myButton, _T("This is a tool tip!"));
 		m_ToolTip.AddTool( &m_ExpandDialog, IDS_EXPANDEDDIALOG);
+		m_ToolTip.AddTool( &m_ColorPick, IDS_CUSTOM_COLOR);
 		m_ToolTip.Activate(TRUE);
 	}
 
@@ -3015,7 +3017,7 @@ void CColorCopDlg::TestForExpand()
 		// use smWidth and smHeight
 
 		//CWnd* GetDlgItem( int nID ) const;
-	    //CWnd* tmp = GetDlgItem(IDC_MAGE);
+		//CWnd* tmp = GetDlgItem(IDC_MAGE);
 
 		//HWND buttonhand;
 		//Wnd::GetDlgItem(IDC_CPreview,&buttonhand);
