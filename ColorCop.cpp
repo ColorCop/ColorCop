@@ -165,16 +165,16 @@ bool CColorCopApp::InstanceRunning()
 
 BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
 {
-    // pShellFolder can be one of the following
-    // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
-    // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
-    // Templates, ShellNew
-    DWORD rc;
-    DWORD length = MAX_PATH;
-    DWORD type = REG_SZ;
-    HKEY hkey;
+	// pShellFolder can be one of the following
+	// AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
+	// Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
+	// Templates, ShellNew
+	DWORD rc;
+	DWORD length = MAX_PATH;
+	DWORD type = REG_SZ;
+	HKEY hkey;
 
-    rc = RegOpenKeyEx(HKEY_CURRENT_USER,
+	rc = RegOpenKeyEx(HKEY_CURRENT_USER,
         "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
         0, KEY_READ, &hkey);
 
