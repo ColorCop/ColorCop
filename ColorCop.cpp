@@ -61,7 +61,7 @@ CColorCopApp theApp;
 BOOL CColorCopApp::InitInstance()
 {
 
-	//ATLTRACE2(atlTraceGeneral, 0, "Begin InitInstance\n");
+	ATLTRACE2(atlTraceGeneral, 0, "Begin InitInstance\n");
 
 	// enable tracing if 
 	#ifdef _DEBUG
@@ -113,7 +113,7 @@ BOOL CColorCopApp::InitInstance()
 
 
 
-	// if already running and only one instance allowed, errror
+	// if already running and only one instance allowed, error
 
 //	if ((bAlreadyRunning) && (!(dlg.m_Appflags & MultipleInstances))) {
 
@@ -234,11 +234,10 @@ CString CColorCopApp::GetTempFolder()
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 {
-    RECT rc;
-    GetWindowRect(hwnd, &rc);
-//    ClipOrCenterRectToMonitor(&rc, flags);
-    SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-
+	RECT rc;
+	GetWindowRect(hwnd, &rc);
+	//ClipOrCenterRectToMonitor(&rc, flags);
+	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 	dlg.WinLocX= rc.left;
 	dlg.WinLocY= rc.top;
 }
