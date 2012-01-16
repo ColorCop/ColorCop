@@ -61,10 +61,8 @@ CColorCopApp theApp;
 BOOL CColorCopApp::InitInstance()
 {
 
-	ATLTRACE2(atlTraceGeneral, 0, "Begin InitInstance\n");
-
-	// enable tracing if 
 	#ifdef _DEBUG
+		// enables ATLTRACE debugging
 		::afxTraceEnabled = true;
 	#endif
 
@@ -184,10 +182,11 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
     RegCloseKey(hkey);
     }
 
-    if (rc == ERROR_SUCCESS)
-        return TRUE;
-    else
-        return FALSE;
+	if (rc == ERROR_SUCCESS) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }
 
 CString CColorCopApp::GetTempFolder()
