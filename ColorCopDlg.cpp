@@ -4003,13 +4003,17 @@ void CColorCopDlg::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
 //	}
 
 	CDialog::OnWindowPosChanging(lpwndpos);
-	
-	// TODO: Add your message handler code here
-	
 }
 
 void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() 
 {
+	// force to sampling multi.  TODO: refactor this into a method:
+	m_Appflags &= ~Sampling1;
+	m_Appflags &= ~Sampling3x3;
+	m_Appflags &= ~Sampling5x5;
+	m_Appflags |= SamplingMULTI;
+
+
 	CString strStatus="";
 	strStatus.LoadString(IDS_MULTIPIX_SET);
 
@@ -4026,6 +4030,12 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 
 void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage() 
 {
+	// force to sampling multi.  TODO: refactor this into a method:
+	m_Appflags &= ~Sampling1;
+	m_Appflags &= ~Sampling3x3;
+	m_Appflags &= ~Sampling5x5;
+	m_Appflags |= SamplingMULTI;
+
 	CString strStatus="";
 	strStatus.LoadString(IDS_MULTIPIX_SET);
 
