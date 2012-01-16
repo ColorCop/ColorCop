@@ -3418,10 +3418,10 @@ void CColorCopDlg::OnPopupModeClarionhex()
 		m_Appflags &= ~ModeDelphi;		
 		m_Appflags &= ~ModePowerBuilder;
 		m_Appflags &= ~ModeVisualBasic;
-		m_Appflags &= ~ModeVisualC;			// Clarions ON
+		m_Appflags &= ~ModeVisualC;			
 		m_Appflags &= ~RGBFLOAT;
 		m_Appflags &= ~RGBINT;
-		m_Appflags |= ModeClarion;
+		m_Appflags |= ModeClarion;			// Clarion ON
 	}
 	OnconvertRGB();
 	OnCopytoclip();	
