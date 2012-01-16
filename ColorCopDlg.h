@@ -108,6 +108,7 @@ protected:
 	BOOL m_MagDrop;
 
 	CStatusBarCtrl m_StatBar;
+	CToolTipCtrl m_ToolTip;
 
 	int smHeight, smWidth, lgHeight, lgWidth;
 	unsigned int m_nwide, m_ntall;

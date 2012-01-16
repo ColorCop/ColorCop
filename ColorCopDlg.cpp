@@ -266,17 +266,26 @@ BOOL CColorCopDlg::OnInitDialog()
 	strAppName.LoadString(IDS_APPLICATION_NAME);
 	SetWindowText(strAppName);
 
- 
-	 
 	ToggleOnTop(false); //make always on top, unless save file said not to
 
-   	SetupWindowRects();
+	SetupWindowRects();
 	SetupStatusBar();
 
+	
 	TestForExpand();	// do not call this before SetupWindowRects();
 	
 	// TODO: figure out tool tips
 	//EnableToolTips(true);	
+	if (!m_ToolTip.Create(this)) {
+		TRACE0("Unable to create a tool tip obj");
+	} else {
+		// Add tool tips to the controls, either by hard coded string 
+		// or using the string table resource
+	//	m_ToolTip.AddTool( &m_myButton, _T("This is a tool tip!"));
+		m_ToolTip.AddTool( &m_ExpandDialog, IDS_EXPANDEDDIALOG);
+		m_ToolTip.Activate(TRUE);
+	}
+
 	//m_tooltip.Create(this);		
 	//m_tooltip.Activate(TRUE);
 	//m_tooltip.SetPopupSound(NULL);	// tool tip sounds off
@@ -2271,8 +2280,10 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 	//RECT rc;                   // client area coordinates 
 	static int repeat = 1;     // repeat key counter 
 
+	// pass a mouse message to the tool tip control for processing
+	m_ToolTip.RelayEvent(pMsg);
 
-	if(m_hAcceleratorTable) {		// use the Accelerator resource 
+	if (m_hAcceleratorTable) {		// use the Accelerator resource 
 
 		if(::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
 			return TRUE;	// escape
@@ -2287,13 +2298,12 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 
-
 	/************************************************
-	 * ESC key Check
-     * - hitting the escape key, should only stop the 
-	 *   eyedropper or magnifing glass and should not 
-	 *   exit the app
-     ************************************************/
+	* ESC key Check
+	* - hitting the escape key, should only stop the 
+	*   eyedropper or magnifing glass and should not 
+	*   exit the app
+	************************************************/
 
 	if (pMsg->message == WM_KEYDOWN)
 		if (pMsg->wParam == VK_ESCAPE) {
@@ -2335,18 +2345,18 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 				}
 				break;
 
-            case VK_RIGHT:				// right arrow 
+			case VK_RIGHT:				// right arrow 
 				if (GetCursorPos(&pt))
 				{
 					SetCursorPos(pt.x+repeat, pt.y); 
 				}
-                break;
-            case VK_LEFT:              // left arrow 
+				break;
+			case VK_LEFT:              // left arrow 
 				if (GetCursorPos(&pt))
 				{
 					SetCursorPos(pt.x-repeat, pt.y); 
 				}
-                break;
+				break;
             case VK_UP:					// up arrow 
 				if (GetCursorPos(&pt))
 				{
@@ -2358,7 +2368,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 				{
 					SetCursorPos(pt.x, pt.y+repeat); 
 				}
-                break;
+				break;
 				
 			}
 			//if (!bRelativePosition)
