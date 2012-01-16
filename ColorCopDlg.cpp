@@ -4011,13 +4011,6 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 	CString strStatus="";
 	strStatus.LoadString(IDS_MULTIPIX_SET);
 
-
-					//strStatus.LoadString(IDS_RELATIVE_POS);
-					//strStatus.Format(strStatus, (point.x - RelativePoint.x), 
-												//(point.y - RelativePoint.y));
-
-
-
 	if (m_iSamplingOffset>MULTIPIX_MIN) {
 		m_iSamplingOffset--;
 		strStatus.Format(strStatus, m_iSamplingOffset*2+1,m_iSamplingOffset*2+1);
