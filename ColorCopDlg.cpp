@@ -845,8 +845,7 @@ void CColorCopDlg::RecalcZoom()
 
 void CColorCopDlg::OnconvertRGB() {
 
-//	Beep(50,50);
-    TestForWebsafe();	// before conversion
+	TestForWebsafe();	// before conversion
 
 	if (m_Appflags & ModeHTML) {
 
@@ -1052,8 +1051,6 @@ double CColorCopDlg::shiftHue(double hue)
 
 //	if (rethue > 1) {					// don't do this...
 		//rethue = (hue - 1.0);
-	//	Beep(343,44);
-
 //	}
 	return rethue;
 }
@@ -1244,8 +1241,6 @@ void CColorCopDlg::DisplayColor()
 	
 	CDC *pDC = GetDC();
 
-	//	Beep(100,100);
-//	Sleep(100);
 	int soff = 0;
 	CBrush blackbrush;	//create a black brush
 	blackbrush.CreateSolidBrush(0x00000000);
@@ -3786,14 +3781,10 @@ HCURSOR CColorCopDlg::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
-void CColorCopDlg::OnCaptureChanged(CWnd *pWnd) 
-{
+void CColorCopDlg::OnCaptureChanged(CWnd *pWnd) {
 	// This is called when the app has lost capture
 
-	if ((m_isEyedropping) || (m_isMagnifying))
-	{	
-	//	Beep(456,34);
-	//	Beep(456,34);
+	if ((m_isEyedropping) || (m_isMagnifying)) {
 
 		StopCapture();
 	}
