@@ -17,10 +17,10 @@ Class5=CSystemTray
 Class6=CWavTipCtrl
 
 ResourceCount=5
-Resource1=IDR_SYSTRAY_MENU
-Resource2=IDD_ABOUTBOX
-Resource3=IDR_COPMENU
-Resource4=IDD_HTMLCOP_DIALOG
+Resource1=IDD_ABOUTBOX
+Resource2=IDD_HTMLCOP_DIALOG
+Resource3=IDR_SYSTRAY_MENU
+Resource4=IDR_COPMENU
 Resource5=IDR_COLORCOP_ACCEL
 
 [CLS:CColorCopApp]

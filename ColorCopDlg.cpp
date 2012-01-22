@@ -1381,8 +1381,18 @@ void CColorCopDlg::DisplayColor()
 				insiderect.bottom++;
 			}*/
 
-			pDC->FrameRect(&insiderect, &blackbrush);
+			
+			
 
+			if ((m_Appflags & Sampling3x3) || 
+				(m_Appflags & Sampling5x5) || 
+				((m_Appflags & SamplingMULTI )&&(m_iSamplingOffset <= 10))
+			    ) {
+
+				insiderect.InflateRect(4 *m_iSamplingOffset, 4*m_iSamplingOffset);
+			}
+
+			pDC->FrameRect(&insiderect, &blackbrush);
 			// show the point that the eyedropper is on
 
 /*
