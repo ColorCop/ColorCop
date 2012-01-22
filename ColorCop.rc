@@ -86,7 +86,7 @@ BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
     LTEXT           "Color Cop version 5.4.6",IDC_STATIC,40,8,100,8,
                     SS_NOPREFIX
-    LTEXT           "Copyright (C) 1999-2007",IDC_STATIC,40,22,98,8
+    LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
     LTEXT           "This program is freeware and can be used and distributed freely.",
                     IDC_STATIC,13,66,210,8
     LTEXT           "Color Cop was developed by Jay Prall",IDC_STATIC,13,80,
