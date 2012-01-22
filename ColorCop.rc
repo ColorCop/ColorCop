@@ -422,7 +422,7 @@ BEGIN
     IDS_OFF                 "OFF"
     IDS_EASYMOVE            "EasyMove"
     IDS_RESTART_COLORCOP    " Please restart Color Cop."
-    IDS_RIGHTCLICK_MENU     " Right Click in this window for a menu"
+    IDS_RIGHTCLICK_MENU     " Right click in this window for a menu"
     IDS_ALWAYSOTOP          "Always on Top"
     IDS_SNAPTOWEBSAFE       "Snap to Websafe"
     IDS_EXPANDEDDIALOG      "Expanded Dialog"
