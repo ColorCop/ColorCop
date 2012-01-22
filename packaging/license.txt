@@ -1,7 +1,7 @@
 Color Cop License
 =================
 
-Copyright (C) 1999-2001 Jay Prall.  All rights reserved.
+Copyright (C) 1999-2012 Jay Prall.  All rights reserved.
 
 
 Redistribution 
@@ -10,14 +10,23 @@ Redistribution
   sites, CD-ROMS, or your website.
 
 
-Fees
+License
 
-  Color Cop is free, but if you wish to express your appreciation for the time and 
-  resources I've expended developing and supporting it, I do accept and 
+  Color cop is free for use in any environment, including but not
+  necessarily limited to: personal, academic, commercial, government,
+  business, non-profit, and for-profit. "Free" in the preceding sentence
+  means that there is no cost or charge associated with the installation
+  and use of Color Cop.  
+
+
+Donations
+
+  Color Cop is free, but if you wish to express your appreciation for the time
+  and reasources I've expended developing and supporting it, I do accept and 
   appreciate donations.
 
   If you wish to make one please go here:
-  http://www.datastic.com/tools/colorcop/donate.php
+  http://colorcop.net/donate
 
 Warranty
 
@@ -32,9 +41,4 @@ Warranty
   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
   OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
   SUCH DAMAGE.
-
-
-Jay Prall
-colorcop [at] datastic.com
-http://www.datastic.com/
 
