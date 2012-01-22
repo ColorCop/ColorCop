@@ -1,23 +1,59 @@
----------------------------[ Color Cop v5.4 ]--------------------------
+---------------------------[ Color Cop v5.4.5 ]--------------------------
 
 Color Cop is a multi-purpose color picker for web designers and 
 programmers. It features an eyedropper, magnifier, variable magnification
 levels, 3 by 3 and 5 by 5 average sampling, snap to websafe, color history, 
-and a 42 color complementary palette.   
+and a complementary color palette.   
 
 Color Cop will convert RGB decimal values to Hexadecimal color codes.
 It has color code support for HTML Hex, Delphi Hex, PowerBuilder, 
-Visual Basic Hex, and Visual C++ Hex. Windows 95/98/2000/Me/NT.
+Visual Basic Hex, Visual C++ Hex, RGB int, and RGB float.
 
 -----------------------------------------------------------------------
 
-Color Cop Website: http://www.colorcop.net
-Color Cop Download: http://www.prall.net/tools/colorcop/colorcop-setup.exe
+Color Cop Website: http://colorcop.net
 
 Color Cop is free, but if you wish to express your appreciation for 
 the time and resources I've expended developing and supporting it, 
 I do accept and appreciate donations. If you wish to make one please go to:
-http://www.prall.net/tools/colorcop/donate.php
+http://colorcop.net/donate
+
+
+
+-------------- What's new in v5.4 --------------
+
+* Magnify while eyedropping 
+
+  This option is on by default and allows the user to see a magnified area
+  while eyedropping. The pixel that is being selected will appear in the
+  magnifier window with a black square around it.
+
+* Use Cross Hair cursor 
+
+  the standard windows cross hair cursor can be used in lieu of the
+  eyedropper to select colors.
+
+* Relative position measurements
+
+  If you press the Control key while eyedropping the coordinates will be set 
+  to zero (0,0). When you drag the mouse to a new location the coordinates
+  values will be relative to the point where you pressed control. This is
+  very useful if you want to measure how pixels a certain object is. Note
+  that if you get a reading of 8,8 the area you just measured
+  is really 9,9 because the zero row and column are included.
+
+* Detect WebSafe color
+
+  With this option enabled, color cop will indicate if the color selected 
+  by the eyedropper is WebSafe or not. 
+
+* Allow Multiple Instances 
+
+  This is an option which allows the user to restrict only one instance 
+  of color cop from running at once, or allow multiple copies to run.
+
+
+
 
 
 *** Color Cop Features ***
@@ -33,6 +69,7 @@ http://www.prall.net/tools/colorcop/donate.php
 - Magnifier with 1x-16x zoom
 - 3 by 3 and 5 by 5 average sampling
 - Snap to WebSafe
+- Detect WebSafe color
 - Minimize to systray
 - HTML, Delphi, Visual Basic, Visual C++ and Powerbuilder Hex color support
 - Mouse wheel support
@@ -41,6 +78,7 @@ http://www.prall.net/tools/colorcop/donate.php
 - Collapseable dialog
 - Color History
 - Complementary Color Palette
+- Relative position measurements
 
 
 * Convert RGB Decimal values to HTML Hexadecimal
@@ -49,7 +87,8 @@ http://www.prall.net/tools/colorcop/donate.php
   the hex color code.  These values can be typed in manually or selected
   with the eyedropper.  If the user spins the mouse wheel while the focus
   is on one of the controls it will increment or decrement depending on
-  the direction.  Holding CONTROL will +/- by 5. Holding SHIFT will +/- by 2.
+  the direction.
+  Holding CONTROL will +/- by 5. Holding SHIFT will +/- by 2.
 
 * Custom Color Picker
   
@@ -113,18 +152,21 @@ http://www.prall.net/tools/colorcop/donate.php
 
 * Minimize to systray
 
-  When this option is checked, Color cop will be minimized to the system tray
-  rather than the taskbar.
+  When this option is checked, Color cop will be minimized to the
+  system tray rather than the taskbar.
   
-* HTML, Delphi, Visual Basic, Visual C++ and Powerbuilder Hex color support
+* HTML, Delphi, Visual Basic, Visual C++, Clarion and Powerbuilder Hex color support
 
   There are now many Hex modes to choose from.  Programmers can now use 
-  Color Cop.  If you would like another mode added, email support@prall.net
+  Color Cop.  If you would like another mode added, email
+  support@prall.net
 
 * Mouse wheel support
 
   The mouse wheel can be used to increment or decrement the Red, Green, or
   Blue values.  It will also allow the user to zoom while magnifying.
+
+* Arrow key support while magnifying or eyedropping
 
 * EasyMove
 
@@ -168,35 +210,48 @@ http://www.prall.net/tools/colorcop/donate.php
     </tr></table>
     </body></html>
 
-  - Color Cop is stuck in the minimize state, what do I do?
-    
-    This is an older bug and should be fixed, but if it happens, delete
-    ColorCop.dat and restart.  It used to happen when Color Cop was closed
-    in the minimized state.  If this happens please email support@prall.net
 
-  - Where is the menu to change options in the new version?
-    
-    It will pop up when you right click in the window.
+  - How do I change options??  I don't see a menu?
+
+    Right Click in the color cop window to get a pop up menu.
+
+
     
   For other problems please use Color Cop Help. (press F1 while in Color Cop)
+
+
+** Requirements ***
+- 24 Bit color
+- A PC running Windows 98/2000/XP/Vista
 
    
  
 *** Color Cop Revision History ***
-v5.4  - 09/01/06 - new Icon created by Raul Matei.
-                 - .dat file and .bmp file now stored in the windows temp folder rather 
-                   than the current directory
+v5.4.6 - 01/17/12 - added keyboard shortcut for increasing multi-pixel averaging
+		  - increased pixel finder in magnified view when using multi-
+                    pixel averaging. Try plus / minus on the numeric keypad.
+
+v5.4.5 - 10/24/07 - added Clarion Hex mode
+	              - added arrow key support while eyedropping or magnifying
+	              - added multi-pixel average sampling 3x3 - 31x31
+	              - started CMYK
+
+v5.4.2 - 09/19/06 - added Put cursor over Eyedropper on startup feature
+                  - fixed minimize on startup so that it doesn't flash when starting
+                  - added digital signature
+
+v5.4.1 - 09/15/06 - settings files are now stored in the Application Data directory
+
+v5.4  - 09/03/06 - new Icon created by Raul Matei.
+                 - changed location of .dat file and .bmp file
                  - updated the domain used in the urls
- 
-v5.3  - Toggle Allow Multiple Instances
-      - Detect WebSafe Colors (suggested by Eric Morin)
-	  - serparated minimize to system try on startup.  Minimize on start and
-	    minimize to systray.are now different settings
 
-v5.2  - 11/26/02 - Convert to Grayscale option
-	             - Clicking on the magnified area will eyedrop
-				 - reduced executable by 10k by tweaking build settings
+v5.3  - 02/23/03 : Added Use Cross Hair Cursor, Detect WebSafe color,
+                    Relative position measurements, magnify while eyedropping,
+                    Allow multiple instances, RGB int mode, and RGB float mode
 
+v5.2   - 11/23/02 : Added Convert to Grayscale and the ability to
+                    click on the magnified area and get that color.
 
 v5.1.3 - 02/16/02 : Added Persistent magnifier bitmap
                     Shift F10 brings up the options menu
@@ -205,8 +260,7 @@ v5.1.3 - 02/16/02 : Added Persistent magnifier bitmap
 v5.0.1 - 07/28/01 : Added - Window Help File (Press F1)
                           - Fixed Plus and Minus button sensitivity
                           - Fixed About Box static text problem
-                          - Misc. Minor fixes
-                          
+                                             
 
 v5.0 - 07/22/01 : Added - Magnifier with 1x-16x zoom
                         - 3 by 3 and 5 by 5 average sampling
