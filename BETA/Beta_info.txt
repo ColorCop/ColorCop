@@ -1,0 +1,48 @@
+
+Color Cop Beta (#3) 2/17/03 12pm ...
+Color Cop Beta (#4) 2/20/03 9pm - Fixed a few bugs and improved handling. started help update
+
+EMail me at Jay @ datastic.com if you have suggestions.
+
+
+
+What's new:
+
+1) Detect Websafe - Displays whether the selected color is websafe or not.  Maybe there is a better way that I can display whether the color is websafe or not?  It currently uses the status bar. it has been reported that this doesn't work in 3x3 or 5x5 pixel sampling modes.  This is because it wouldn't fit in the status bar.  Maybe I'll find a way to shorten the text up.
+
+2) Allow Multiple Instances - It's now possible to set that only one instance of color cop can run at once.  This was an option that a user suggested a while back and I got bored one day so I put it in.
+
+3) RGB Float mode - outputs the selected color in R/255,G/255,B/255 (0.47,0.47,1.00) someone is using this with a 3D program called Renderman.  Alt+[ will decrease float precision and Alt+] will increate float precision.
+
+4) RGB Int mode - outputs the selected color in in R,G,B (128,255,64)  I figured if I was going to put in a floating point mode why not put the int mode in.
+
+5) Use Cross Hair Cursor - This allows the user to switch between the eyedropper and the standard cross hair cursor.  Some users like to select colors with the cross hair because it has precision.  It needs to be centered a little better.
+
+6) Magnify while eyedropping - With this option selected, you can magnify while you are eyedropping.  A small black square will appear to show you the location of the cursor. The black square will disappear when you release the mouse.  This doesn't look so great when you are eyedropping over black or dark colors. Ideas? I am working on getting it centered so that it looks better.  Right now it's hard coded at the 4x magnification level, but I think I can get it to use the magnification level that the magnifier was using.
+
+7) Relative position measurements - Press the control key while eyedropping and the coordinates will be set to zero (0,0).  Drag the mouse to a new location and it will display the distance relative to the point you were over when you pressed control.  If you press control again it will zero (0,0)  Note that the measurement is zero-based.  so if it says 8,8 it's really a 9by9 area because the zero pixel counts.  (The inverted rectangle has been removed)
+
+
+
+Ideas:
+1) more color slots in the color history
+2) I'm thinking of removing the Expand/Collapse dialog button.  I'll leave it as an option in the menu, but I don't think anyone uses it.
+3) HSL color model needs to be added
+4) [your idea here will go here]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thanks to everyone for all their help.

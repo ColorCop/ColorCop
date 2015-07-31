@@ -1,0 +1,44 @@
+Color Cop License
+=================
+
+Copyright (C) 1999-2012 Jay Prall.  All rights reserved.
+
+
+Redistribution 
+
+  You may distribute Color Cop in any way, including shareware and freeware 
+  sites, CD-ROMS, or your website.
+
+
+License
+
+  Color cop is free for use in any environment, including but not
+  necessarily limited to: personal, academic, commercial, government,
+  business, non-profit, and for-profit. "Free" in the preceding sentence
+  means that there is no cost or charge associated with the installation
+  and use of Color Cop.  
+
+
+Donations
+
+  Color Cop is free, but if you wish to express your appreciation for the time
+  and reasources I've expended developing and supporting it, I do accept and 
+  appreciate donations.
+
+  If you wish to make one please go here:
+  http://colorcop.net/donate
+
+Warranty
+
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
+

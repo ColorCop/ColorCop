@@ -1,0 +1,514 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ColorCop.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\idr_main.ico"
+IDI_BLANK               ICON    DISCARDABLE     "res\\icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 242, 103
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Color Cop"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
+    LTEXT           "Color Cop version 5.4.6",IDC_STATIC,40,8,100,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
+    LTEXT           "This program is freeware and can be used and distributed freely.",
+                    IDC_STATIC,13,66,210,8
+    LTEXT           "Color Cop was developed by Jay Prall",IDC_STATIC,13,80,
+                    217,9
+    LTEXT           "Feature requests:",IDC_STATIC,13,51,85,8
+    LTEXT           "http://colorcop.net/?homepage",IDC_LINK,48,36,147,8
+    LTEXT           "Website:",IDC_STATIC,13,36,29,8
+    LTEXT           "http://prall.net/contact",IDC_MAILLINK,102,51,96,8
+END
+
+IDD_HTMLCOP_DIALOG DIALOGEX 0, 0, 132, 166
+STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_RED,18,5,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_GREEN,18,16,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_BLUE,18,27,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_HEXCOLOR,51,54,52,12,ES_CENTER | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Custom",IDC_ColorPick,51,70,33,12,BS_CENTER | 
+                    BS_VCENTER
+    PUSHBUTTON      "&>>",IDC_EXPAND_DIALOG,88,70,15,12
+    LTEXT           "1 :",IDC_LBL1,5,8,9,8
+    LTEXT           "2 :",IDC_LBL2,5,18,9,8
+    LTEXT           "3 :",IDC_LBL3,6,29,9,8
+    ICON            IDI_BLANK,IDC_EYELOC,13,56,20,20
+    ICON            IDI_BLANK,IDC_MAGE,13,86,20,20,0,0,HIDC_MAGE
+    CONTROL         "",IDC_CPreview,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    51,5,52,46
+    CONTROL         "",IDC_MagWindow,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    52,87,76,64
+    CONTROL         "",IDC_Q3,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,27,
+                    19,9
+    CONTROL         "",IDC_Q4,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,38,
+                    19,9
+    CONTROL         "",IDC_Q5,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,49,
+                    19,9
+    CONTROL         "",IDC_Q6,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,60,
+                    19,9
+    CONTROL         "",IDC_Q7,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,72,
+                    19,9
+    CONTROL         "",IDC_Q1,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,5,
+                    19,9
+    CONTROL         "",IDC_Q2,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,16,
+                    19,9
+    CONTROL         "",IDC_COLORPAL,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    4,111,46,40
+    CONTROL         "",IDC_MAG_PLUS,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    40,87,10,9
+    CONTROL         "",IDC_MAG_MINUS,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    40,97,10,9
+    EDITTEXT        IDC_BLACK,18,40,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "4 :",IDC_LBL4,6,39,9,8
+    EDITTEXT        IDC_CYAN,73,8,29,12,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAGENTA,73,20,29,12,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_YELLOW,73,33,29,12,ES_CENTER | ES_AUTOHSCROLL
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 5,4,6,0
+ PRODUCTVERSION 5,4,6,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080004b0"
+        BEGIN
+            VALUE "Comments", "please email your suggestions\0"
+            VALUE "CompanyName", "colorcop.net\0"
+            VALUE "FileDescription", "multi-purpose color picker\0"
+            VALUE "FileVersion", "v5.4.6\0"
+            VALUE "InternalName", "Color Cop\0"
+            VALUE "LegalCopyright", "Copyright © 2012 Jay Prall\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Color Cop\0"
+            VALUE "ProductVersion", "v5.4.6\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x800, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_HTMLCOP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 127
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_EYEDROPPER          CURSOR  DISCARDABLE     "res\\cursor1.cur"
+IDC_HANDPOINTER         CURSOR  DISCARDABLE     "Res\\hand.cur"
+IDC_MEDIUM_MAGNIFY      CURSOR  DISCARDABLE     "Res\\cursor_m.cur"
+IDC_CURMOVE             CURSOR  DISCARDABLE     "res\\MOVE4WAY.CUR"
+IDC_EYEDROPPER_3X3      CURSOR  DISCARDABLE     "res\\cur00002.cur"
+IDC_EYEDROPPER_5X5      CURSOR  DISCARDABLE     "res\\cur00003.cur"
+IDC_MYCROSS             CURSOR  DISCARDABLE     "Res\\cross.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_COPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "POPUP"
+    BEGIN
+        POPUP "Color"
+        BEGIN
+            MENUITEM "&Snap to WebSafe\tCtrl+W",    ID_COLOR_SNAPTOWEBSAFE
+            MENUITEM "Detect Websafe",              ID_POPUP_COLOR_DETECTWEBSAFE
+
+            MENUITEM SEPARATOR
+            MENUITEM "&Reverse\tCtrl+R",            ID_COLOR_REVERSE
+            MENUITEM "Ra&ndom\tCtrl+Z",             ID_COLOR_RANDOM
+            MENUITEM "Convert to Grayscale\tCtrl+G", 
+                                                    ID_POPUP_COLOR_CONVERTTOGRAYSCALE
+
+        END
+        POPUP "Mode"
+        BEGIN
+            MENUITEM "&HTML Hex\tCtrl+H",           ID_VIEW_HTMLHEXMODE
+            , CHECKED
+            MENUITEM "&Delphi Hex\tCtrl+D",         ID_OPTIONS_DELPHIMODE
+            MENUITEM "PowerBuilder\tCtrl+P",        ID_POPUP_HEXMODE_POWERBUILDER
+
+            MENUITEM "Visual Basic Hex\tCtrl+B",    ID_POPUP_MODE_VISUALBASICHEX
+
+            MENUITEM "Visual C++ Hex\tCtrl+Y",      ID_POPUP_MODE_VISUALCHEX
+            MENUITEM "RGB float",                   ID_POPUP_MODE_RGBFLOAT
+            MENUITEM "RGB int",                     ID_POPUP_MODE_RGBINT
+            MENUITEM "Clarion Hex",                 ID_POPUP_MODE_CLARIONHEX
+        END
+        POPUP "Space"
+        BEGIN
+            MENUITEM "RGB",                         ID_POPUP_SPACE_RGB
+            MENUITEM "CMYK",                        ID_POPUP_SPACE_CMYK
+        END
+        POPUP "Sampling"
+        BEGIN
+            MENUITEM "&1 Pixel\tCtrl+1",            ID_POPUP_SAMPLING_1PIXEL
+            , CHECKED
+            MENUITEM "&3 by 3 Average\tCtrl+3",     ID_POPUP_SAMPLING_3BY3AVERAGE
+
+            MENUITEM "&5 by 5 Average\tCtrl+5",     ID_POPUP_SAMPLING_5BY5AVERAGE
+
+            MENUITEM "Multi-Pixel Average",         ID_POPUP_SAMPLING_MULTIPIXEL
+
+            MENUITEM SEPARATOR
+            MENUITEM "Increase Multi-Pixel Average\t(Plus) +", 
+                                                    ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE
+
+            MENUITEM "Decrease Multi-Pixel Average\t(Minus) -", 
+                                                    ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE
+
+        END
+        POPUP "Options"
+        BEGIN
+            MENUITEM "&Auto Copy Hex to Clipboard\tCtrl+K", 
+                                                    ID_OPTIONS_AUTOCOPYTOCLIPBOARD
+            , CHECKED
+            MENUITEM "&Omit Hex Symbol\tCtrl+O",    ID_OPTIONS_OMITSYMBOL
+            MENUITEM "&Uppercase Hex\tCtrl+U",      ID_OPTIONS_UPPERCASEHEX
+            , CHECKED
+            MENUITEM "Magnify while Eyedropping",   ID_POPUP_OPTIONS_MAGNIFYWHILEEYEDROPPING
+            , CHECKED
+            MENUITEM "Use Cross Hair Cursor",       ID_POPUP_OPTIONS_USECROSSHAIRCURSOR
+
+            MENUITEM "Put cursor over Eyedropper on Startup", 
+                                                    ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER
+
+        END
+        POPUP "Application"
+        BEGIN
+            MENUITEM "&Always on &Top\tCtrl+T",     ID_OPTIONS_ALWAYSONTOP
+            , CHECKED
+            MENUITEM "EasyMo&ve\tCtrl+N",           ID_POPUP_APPLICATION_EASYMOVE
+
+            MENUITEM "&Expanded Dialog\tCtrl+E",    ID_POPUP_APPLICATION_EXPANDEDDIALOG
+
+            MENUITEM "&Minimize to System tray\tCtrl+M", 
+                                                    ID_OPTIONS_MINIMIZETOSYSTRAY
+
+            MENUITEM "Minimize on Startup",         ID_POPUP_APPLICATION_MINIMIZETOSYSTEMTRAYONSTART
+
+            MENUITEM "Allow Multiple Instances",    ID_POPUP_APPLICATION_ALLOWMULTIPLEINSTANCES
+            , CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "About &Color Cop",            ID_FILE_ABOUT
+            MENUITEM "&Help\tF1",                   ID_POPUP_APPLICATION_HELP
+
+        END
+        MENUITEM "Exit",                        ID_POPUP_EXIT
+    END
+END
+
+IDR_SYSTRAY_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "POPUP"
+    BEGIN
+        MENUITEM "Restore",                     ID_POPUP_RESTORE
+        MENUITEM "Exit",                        ID_POPUP_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_COLORCOP_ACCEL ACCELERATORS DISCARDABLE 
+BEGIN
+    "1",            ID_POPUP_SAMPLING_1PIXEL, VIRTKEY, CONTROL, NOINVERT
+    "3",            ID_POPUP_SAMPLING_3BY3AVERAGE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "5",            ID_POPUP_SAMPLING_5BY5AVERAGE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "B",            ID_POPUP_MODE_VISUALBASICHEX, VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_OPTIONS_DELPHIMODE,  VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_POPUP_APPLICATION_EXPANDEDDIALOG, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "G",            ID_POPUP_COLOR_CONVERTTOGRAYSCALE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "H",            ID_VIEW_HTMLHEXMODE,    VIRTKEY, CONTROL, NOINVERT
+    "K",            ID_OPTIONS_AUTOCOPYTOCLIPBOARD, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "M",            ID_OPTIONS_MINIMIZETOSYSTRAY, VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_POPUP_APPLICATION_EASYMOVE, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "O",            ID_OPTIONS_OMITSYMBOL,  VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_POPUP_HEXMODE_POWERBUILDER, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+    "R",            ID_COLOR_REVERSE,       VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_OPTIONS_ALWAYSONTOP, VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_OPTIONS_UPPERCASEHEX, VIRTKEY, CONTROL, NOINVERT
+    VK_ADD,         ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE, VIRTKEY, 
+                                                    NOINVERT
+    VK_F10,         ID_OPTIONMENU,          VIRTKEY, SHIFT, NOINVERT
+    VK_SUBTRACT,    ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE, VIRTKEY, 
+                                                    NOINVERT
+    "W",            ID_COLOR_SNAPTOWEBSAFE, VIRTKEY, CONTROL, NOINVERT
+    "Y",            ID_POPUP_MODE_VISUALCHEX, VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_COLOR_RANDOM,        VIRTKEY, CONTROL, NOINVERT
+    "[",            ID_FLOATDOWN,           ASCII,  ALT, NOINVERT
+    "]",            ID_FLOATUP,             ASCII,  ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "About Color Cop"
+    IDS_HEXCOLOR_TOOLTIP    "Hexadecimal value"
+    IDS_EYEDROPPER_TOOLTIP  "Drag the eyedropper to select a color."
+    IDS_EXPAND_DIALOG       "Expand / Collapse Dialog"
+    IDS_COLOR_PICK          "Custom Color Picker"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_COLOR_REVERSE        "Reverses the current color"
+    ID_OPTIONS_UPPERCASEHEX "this will be upper case"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ALWAYSONTOP         "Always on &Top"
+    ID_POPUP_RESTORE        "Restore"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MAG_WINDOW          "This is the mag window"
+    IDS_OPTIONMENU          "Option Menu"
+    IDS_ON                  "ON"
+    IDS_OFF                 "OFF"
+    IDS_EASYMOVE            "EasyMove"
+    IDS_RESTART_COLORCOP    " Please restart Color Cop."
+    IDS_RIGHTCLICK_MENU     " Right click in this window for a menu"
+    IDS_ALWAYSOTOP          "Always on Top"
+    IDS_SNAPTOWEBSAFE       "Snap to Websafe"
+    IDS_EXPANDEDDIALOG      "Expanded Dialog"
+    IDS_MINIMIZETOTRAY      "Minimize to System Tray"
+    IDS_UPPERHEX            "Uppercase Hex"
+    IDS_MINIMIZEONSTART     "Minimize on Startup"
+    IDS_DETECTWEBSAFE       "Detect WebSafe"
+    IDS_RANDOMCOLOR         "Random Color Generated"
+    IDS_REVERSECOLOR        " Color Reversed"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_1PIXEL              " 1 Pixel Sampling ON"
+    IDS_3PIXEL              " 3x3 Pixel Sampling ON"
+    IDS_5PIXEL              " 5x5 Pixel Sampling ON"
+    IDS_FLOATUP             "cursor will begin on top of the Eyedropper on start"
+    IDS_FLOATDOWN           "Floating Point Precision decreased"
+    IDS_MAG_INCREASED       " Magnifier increased to %dx"
+    IDS_MAG_DECREASED       " Magnifier decreased to %dx"
+    IDS_COPY_BITMAP         "Copy magnified area to the clipboard as a bitmap?"
+    IDS_COLOR_GRAY          " Color is already grayscale"
+    IDS_COLOR_CONVERT_GRAY  " Color Converted to grayscale"
+    IDS_MAGNIFYING          " Magnifying: %d, %d at %dx"
+    IDS_APPLICATION_NAME    "Color Cop"
+    IDS_RELATIVE_POS        " W: %d, H: %d, L: %.1f, A°: %1.f"
+    IDS_EYEDROPPING         " Eyedropping: %d, %d"
+    IDS_WEBSAFE             " (WebSafe)"
+    IDS_NOT_WEBSAFE         " (not WebSafe)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MULTIPIX_SET        " Multi-Pixel Average set to %dx%d"
+    IDS_MULTIPIX_LIMIT      " Multi-Pixel MIN: %d MAX: %d"
+    IDS_MULTIPIX            " Multi-Pixel Sampling ON"
+    IDS_OMITSYMBOL          "Omit Hex Symbol"
+    IDS_MODE_POWERBUILDER   "PowerBuilder Mode"
+    IDS_MODE_HTML           "HTML Hex Mode"
+    IDS_MODE_DELPHI         "Delphi Hex Mode"
+    IDS_MODE_VISUALC        "Visual C++ Hex Mode"
+    IDS_MODE_VISUALB        "Visual Basic Hex Mode"
+    IDS_MODE_RGBFLOAT       "RGB Float Mode"
+    IDS_MODE_RGBINT         "RGB Int Mode"
+    IDS_APP_RUNNING         "Color Cop is already running."
+    IDS_SPACE_RGB           "Color Space RGB"
+    IDS_SPACE_CMYK          "Color Space CMYK"
+    IDS_SPACE_HSL           "Color Space HSL"
+    IDS_R                   "R:"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_G                   "G:"
+    IDS_B                   "B:"
+    IDS_C                   "C:"
+    IDS_M                   "M:"
+    IDS_Y                   "Y:"
+    IDS_K                   "K:"
+    IDS_MODE_CLARION        "Clarion Hex Mode"
+    IDS_CUSTOM_COLOR        "Custom color picker"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ColorCop.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

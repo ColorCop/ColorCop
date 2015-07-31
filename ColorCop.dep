@@ -1,0 +1,17 @@
+# Microsoft Developer Studio Generated Dependency File, included by ColorCop.mak
+
+.\ColorCop.cpp : \
+	".\ColorCop.h"\
+	".\ColorCopDlg.h"\
+	".\StdAfx.h"\
+	
+
+.\ColorCopDlg.cpp : \
+	".\ColorCop.h"\
+	".\ColorCopDlg.h"\
+	".\StdAfx.h"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	
