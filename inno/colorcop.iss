@@ -5,9 +5,9 @@
 AppName=Color Cop
 AppVerName=Color Cop 5.4.3
 AppPublisher=Jay Prall
-AppPublisherURL=http://www.prall.net/re/?ColorCop_publish
-AppSupportURL=http://www.prall.net/re/?ColorCop_support
-AppUpdatesURL=http://www.prall.net/re/?ColorCop_updates
+AppPublisherURL=http://colorcop.net
+AppSupportURL=http://colorcop.net
+AppUpdatesURL=http://colorcop.net
 DefaultDirName={pf}\Color_Cop
 DefaultGroupName=Color Cop
 AllowNoIcons=yes

@@ -1,7 +1,7 @@
 Color Cop License
 =================
 
-Copyright (C) 1999-2007 Jay Prall.  All rights reserved.
+Copyright (C) 1999-2015 Jay Prall.  All rights reserved.
 
 
 Redistribution 
@@ -35,5 +35,5 @@ Warranty
 
 
 Jay Prall
-http://prall.net/contact
+http://colorcop.net
 

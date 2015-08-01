@@ -1,11 +1,7 @@
 /************************************************************************************
  *                                                                                  *
- * ColorCopDlg.cpp :: Color Cop - by Jay Prall - Jay@prall.net                       *
- *                                                                                  *
- * note: all of the files are called Htmlcop, because that's what I originally      *
- *       called it when I first started writing color cop in August of 1999         *
- *                                                                                  *
- * Please do not distribute this file.                                              *
+ * ColorCopDlg.cpp :: Color Cop 
+ *
  ************************************************************************************/
 
 
@@ -17,7 +13,6 @@
 #include "ColorCopDlg.h"
 #include "Label.h"			// used for the Links in the AboutDlg
 #include "SystemTray.h"		// used to minimize to the systray
-//#include "WavTipCtrl.h"		// used to add tooltips to the dialog :)
 #include <commctrl.h>
 #include <math.h>
 #include <windows.h>
