@@ -79,11 +79,6 @@ BOOL CColorCopApp::InitInstance()
 	// see srand
 	srand( (unsigned)time(NULL) );
 
-	//ATLTRACE2(atlTraceGeneral, 0, "Color Cop CreateMutex\n");
-	
-	//CreateMutex(NULL,TRUE,_T("ColorCopMutex-Jay-Prall")); // mutex will be automatically deleted when process ends. 
-
-//	BOOL bAlreadyRunning = (GetLastError() == ERROR_ALREADY_EXISTS); 
 	
 
 	// multiple instances are not allowed?
@@ -109,17 +104,6 @@ BOOL CColorCopApp::InitInstance()
 
 
 
-
-
-	// if already running and only one instance allowed, error
-
-//	if ((bAlreadyRunning) && (!(dlg.m_Appflags & MultipleInstances))) {
-
-//		//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Already Running\n");
-//		return FALSE; // abandon ship
-	
-//	} else {	
-
 		//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Starting\n");
 		m_pMainWnd = &dlg;		// set the main window
 		
@@ -131,7 +115,6 @@ BOOL CColorCopApp::InitInstance()
 			CloseApplication();		// write the data to a file
 		}
 
-//	}
 		//ATLTRACE2(atlTraceGeneral, 0, "End InitInstance\n");
 
 	return FALSE;
