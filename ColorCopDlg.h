@@ -88,7 +88,6 @@ public:
 // Implementation
 protected:
 	bool m_bvisible;
-	//CBitmap m_MagView;
 
 	HICON m_hIcon, m_hBlank, m_hEye;
 
