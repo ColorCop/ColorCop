@@ -40,14 +40,11 @@ END_MESSAGE_MAP()
 
 CColorCopApp::CColorCopApp()
 {
-///	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Constructor\n");
-
 	m_hMutex=NULL;
 }
 
 CColorCopApp::~CColorCopApp()
 {
-	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Destructor\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,20 +99,15 @@ BOOL CColorCopApp::InitInstance()
 
 	}
 
-
-
-		//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Starting\n");
-		m_pMainWnd = &dlg;		// set the main window
+    // set the main window
+		m_pMainWnd = &dlg;
 		
 		int nResponse = dlg.DoModal();		// Launch the color cop dialog
 	
 		if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
 		
-			//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Closing\n");
 			CloseApplication();		// write the data to a file
 		}
-
-		//ATLTRACE2(atlTraceGeneral, 0, "End InitInstance\n");
 
 	return FALSE;
 }
@@ -227,11 +219,6 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 
 BOOL CColorCopApp::InitApplication() 
 {
-	////////////////////////////////////////////////////////////
-	// This function reads the settings from a file.  It should 
-	// do this every time no matter what.
-	//
-	//ATLTRACE2(atlTraceGeneral, 0, "Begin InitApplication\n");
 
 	CString strInitFile = GetTempFolder();
 
@@ -260,8 +247,6 @@ BOOL CColorCopApp::InitApplication()
 
 		// set the window to be in the middle
 	}
-
-	//ATLTRACE2(atlTraceGeneral, 0, "End InitApplication\n");
 
 	return CWinApp::InitApplication();
 }
@@ -386,8 +371,6 @@ void CColorCopApp::CloseApplication() {
 	// last thing the application will do. It will only write to
 	// a file when the dialog has been closed IDOK or IDCANCEL
 
-	//ATLTRACE2(atlTraceGeneral, 0, "Begin CloseApplication\n");
-
 
 	CString strInitFile = GetTempFolder();
 
@@ -402,12 +385,8 @@ void CColorCopApp::CloseApplication() {
 		Serialize(ar);
 	}
 
-	// might as well release this now
-	//ATLTRACE2(atlTraceGeneral, 0, "- Release Mutex\n");
+	// release mutex.  what if this fails
 	ReleaseMutex(m_hMutex);
-
-
-	//ATLTRACE2(atlTraceGeneral, 0, "End CloseApplication\n");
 
 
 	return;
@@ -415,10 +394,6 @@ void CColorCopApp::CloseApplication() {
 
 void CColorCopApp::Serialize(CArchive& ar) 
 {
-	//ATLTRACE2(atlTraceGeneral, 0, "Serialize\n");
-
-	// anything that is serialized here should also
-
 
 	if (ar.IsStoring())	{	
 		// storing code
