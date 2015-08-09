@@ -87,15 +87,13 @@ BOOL CColorCopApp::InitInstance()
 				// release the obj that we tried to create
 				ReleaseMutex(m_hMutex);
 
-				// TODO: focus on the current instance
+				// TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
 				AfxMessageBox(IDS_APP_RUNNING);
 
 				// error instead
 
 				return false;
 			}
-
-		// lets attempt to get the current instance of color cop and use that.
 
 	}
 
@@ -210,7 +208,6 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 {
 	RECT rc;
 	GetWindowRect(hwnd, &rc);
-	//ClipOrCenterRectToMonitor(&rc, flags);
 	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 	dlg.WinLocX= rc.left;
 	dlg.WinLocY= rc.top;
@@ -328,9 +325,6 @@ void CColorCopApp::LoadDefaultSettings() {
 		dlg.m_Bluedec  = 188;
 		dlg.m_Appflags = 0;		// reset
 		dlg.m_Appflags |= AlwaysOnTop;
-		
-		// uppercase hex is now not a default options
-		//dlg.m_Appflags |= UpperCaseHex;
 		dlg.m_Appflags |= AutoCopytoClip;
 		dlg.m_Appflags |= ModeHTML;
 		dlg.m_Appflags |= EasyMove;
