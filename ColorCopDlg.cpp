@@ -251,11 +251,6 @@ BOOL CColorCopDlg::OnInitDialog()
 	SetupSystemMenu();			// add about and always on top to the system menu
 
 	bool FoundDatFile = LoadPersistentVariables();
-////	if (!FoundDatFile)
-//		LoadDefaultSettings();			// because there was no settings file
-
-
-
 	
 	// Set the Window Title to Color Cop
 	CString strAppName;
@@ -283,14 +278,7 @@ BOOL CColorCopDlg::OnInitDialog()
 		m_ToolTip.Activate(TRUE);
 	}
 
-	//m_tooltip.Create(this);		
-	//m_tooltip.Activate(TRUE);
-	//m_tooltip.SetPopupSound(NULL);	// tool tip sounds off
-	//m_tooltip.AddTool(GetDlgItem(IDC_MagWindow), IDS_MAG_WINDOW);
-	//m_tooltip.AddTool(GetDlgItem(IDC_HEXCOLOR), IDS_HEXCOLOR_TOOLTIP);
-	//m_tooltip.AddTool(GetDlgItem(IDC_EYELOC),  IDS_EYEDROPPER_TOOLTIP);
-    //m_tooltip.AddTool(GetDlgItem(IDC_EXPAND_DIALOG), IDS_EXPAND_DIALOG);
-	//m_tooltip.AddTool(GetDlgItem(IDC_ColorPick), IDS_COLOR_PICK);
+
 
 	nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
 	
@@ -515,11 +503,6 @@ bool CColorCopDlg::LoadPersistentVariables()
 			if (WinLocX < 0 || WinLocY < 0  /*negative*/ 
 				|| WinLocX  == 3000 || WinLocY == 3000)
 			{
-			
-				// DEBUG - remove this
-			//	char a[90];
-			//	wsprintf(a,"ColorCop has been moved back onto the screen from %d, %d", WinLocX, WinLocY);
-			//	AfxMessageBox(a);
 
 			
 				WinLocX = 200;	// default position..  quickfix
@@ -1064,11 +1047,7 @@ void CColorCopDlg::setSeedColor()
 	OrigSwatch.A = Hue;
 	OrigSwatch.B = Sat;
 	OrigSwatch.C = Light;
-//	char iii[80];
-//	sprintf(iii,"H: %.2f, S: %.2f, L: %.2f", Hue, Sat, Light);
-//	sprintf(iii,"H: %.2f, S: %.2f, L: %.2f", Hue, Sat, Light);
-//	AfxMessageBox(iii);
-	//SetStatusBarText(iii);
+
 }
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
@@ -1095,37 +1074,31 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 		
 		switch (caseH) {
 	    	case 0:
-          //  AfxMessageBox("0");
 			r = (int) (L * 255.0);
 			g = (int) (t * 255.0);
 			b = (int) (p * 255.0);
 			break;
 	    	case 1:
-        //   AfxMessageBox("10");
 			r = (int) (q * 255.0);
 			g = (int) (L * 255.0);
 			b = (int) (p * 255.0);
 			break;
 	    	case 2:
-          // AfxMessageBox("20");
 			r = (int) (p * 255.0);
 			g = (int) (L * 255.0);
 			b = (int) (t * 255.0);
 			break;
 	    	case 3:
-         //  AfxMessageBox("30");
 			r = (int) (p * 255.0);
 			g = (int) (q * 255.0);
 			b = (int) (L * 255.0);
 			break;
 	    	case 4:
-         //  AfxMessageBox("40");
 			r = (int) (t * 255.0);
 			g = (int) (p * 255.0);
 			b = (int) (L * 255.0);
 			break;
 			case 5:
-      //     AfxMessageBox("50");
 			r = (int) (L * 255.0);
 			g = (int) (p * 255.0);
 			b = (int) (q * 255.0);
@@ -1133,22 +1106,7 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 	  	}
 	}
 }
-	/*
-	function RGBtoCMYK(r,g,b) { // doesn't distort! not really usable...
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  var cmyk = new Array(4);
-  cmyk.c = Math.pow(1-r,.45);
-  cmyk.m = Math.pow(1-g,.45);
-  cmyk.y = Math.pow(1-b,.45);
-  cmyk.k = MIN(cmyk.c,cmyk.y,cmyk.m);
-  cmyk.c -= cmyk.k;
-  cmyk.m -= cmyk.k;
-  cmyk.y -= cmyk.k;
-  return cmyk;
-}
-	*/
+
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
 
 	double r,g,b;
@@ -1189,9 +1147,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
 	Light = MaxNum / 255.0;			// find the Light
 
 
-	//char hhh[80];
-	//sprintf(hhh, "Lightness: %f",Light);
-	//SetWindowText(hhh);
 
 
 	// find the Saturation
@@ -1201,14 +1156,8 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
 		
 	if (MaxNum != 0) {
 		Sat = ((double) Diff) / ((double) MaxNum);
-	} /*else { 
-		AfxMessageBox("maxnum is 0");
-	}*/
-	
-	//if (MaxNum != 0)
+	} 
 
-//	wsprintf(t1, "max:%d  diff%d %.1f", MaxNum, Diff, (double) Diff / (double) MaxNum);
-//	SetWindowText(t1);
 
 	// find the Hue
 	R_Dist = (double) (MaxNum - R) / (double) (Diff);
@@ -2409,7 +2358,6 @@ void CColorCopDlg::OnChangeHexcolor()
 
 		while (hexsize>hexrange)
 		{
-			//AfxMessageBox ("you went too far");
 			m_Hexcolor.Delete(6+offset);
 			hexsize--;
 		}
@@ -2443,7 +2391,6 @@ void CColorCopDlg::OnChangeHexcolor()
 		
 		while (hexsize>hexrange)
 		{
-			//AfxMessageBox ("you went too far");
 			m_Hexcolor.Delete(8+offset);
 			hexsize--;
 		}
@@ -3821,7 +3768,7 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
 
     // Retrieve the bitmap color format, width, and height. 
     if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp)) 
-		;//AfxMessageBox("got no bmp");
+		;
 
     // Convert the color format to a count of bits. 
     cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel); 
@@ -3882,8 +3829,6 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
 void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC) 
  { 
 
-	//	AfxMessageBox(IDS_ABOUTBOX);
-
     HANDLE hf;                 // file handle 
     BITMAPFILEHEADER hdr;       // bitmap file-header 
     PBITMAPINFOHEADER pbih;     // bitmap info-header 
@@ -3897,14 +3842,14 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
 
     if (!lpBits) 
-		;//	AfxMessageBox("malloc bmp");; 
+		;
 
     // Retrieve the color table (RGBQUAD array) and the bits 
     // (array of palette indices) from the DIB. 
     if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi, 
         DIB_RGB_COLORS)) 
     {
-		;//AfxMessageBox("get bmp pal");
+		;
     }
 
     // Create the .BMP file. 
@@ -3917,7 +3862,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
                    (HANDLE) NULL); 
     if (hf == INVALID_HANDLE_VALUE) 
 	{
-		;//	AfxMessageBox(_T("Error: ColorCop5.bmp is read only."));
+		;
 		return;
 	}
 
@@ -3947,17 +3892,19 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) 
                   + pbih->biClrUsed * sizeof (RGBQUAD), 
                   (LPDWORD) &dwTmp, ( NULL)) )
-		AfxMessageBox("cp bmp");
+                  {
+                    ;
+                  }
 	
     // Copy the array of color indices into the .BMP file. 
     dwTotal = cb = pbih->biSizeImage; 
     hp = lpBits; 
     if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL)) 
-		;//	AfxMessageBox("cat bmp");
+		;
 
     // Close the .BMP file. 
 	if (!CloseHandle(hf)) {
-			;// AfxMessageBox("cls bmp");
+			;
 	}
     // Free memory. 
     GlobalFree((HGLOBAL)lpBits);

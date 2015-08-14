@@ -71,7 +71,6 @@ UINT CSystemTray::m_nIDEvent = 4567;
 
 CSystemTray::CSystemTray()
 {
-	//	AfxMessageBox("ShowIcon()");
     Initialise();
 }
 
