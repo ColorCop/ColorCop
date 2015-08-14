@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /machine:I386 /OPT:REF /ALIGN:4096
+# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /OPT:REF /ALIGN:4096
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
@@ -107,9 +107,9 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo /o"Release/ColorCop.bsc"
 # ADD BSC32 /nologo /o"Release/ColorCop.bsc"
 LINK32=link.exe
-# ADD BASE LINK32 MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
+# ADD BASE LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
+# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

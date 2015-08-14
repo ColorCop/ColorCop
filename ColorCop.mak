@@ -112,7 +112,7 @@ BSC32_SBRS= \
 <<
 
 LINK32=link.exe
-LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\ColorCop.pdb" /machine:I386 /out:"$(OUTDIR)\ColorCop.exe" /OPT:REF /ALIGN:4096 
+LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\ColorCop.pdb" /machine:I386 /out:"$(OUTDIR)\ColorCop.exe" /OPT:REF /ALIGN:4096 
 LINK32_OBJS= \
 	"$(INTDIR)\ColorCop.obj" \
 	"$(INTDIR)\ColorCopDlg.obj" \
@@ -280,7 +280,7 @@ BSC32_FLAGS=/nologo /o"Release/ColorCop.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib LIBCTINY.LIB /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\ColorCop.pdb" /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF 
+LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\ColorCop.pdb" /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF 
 LINK32_OBJS= \
 	"$(INTDIR)\ColorCop.obj" \
 	"$(INTDIR)\ColorCopDlg.obj" \
