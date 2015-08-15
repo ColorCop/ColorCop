@@ -13,10 +13,9 @@
 #include "ColorCopDlg.h"
 #include "Label.h"			// used for the Links in the AboutDlg
 #include "SystemTray.h"		// used to minimize to the systray
-#include <commctrl.h>
+//#include <commctrl.h>
 #include <math.h>
-#include <windows.h>
-#include <winuser.h>
+
 
 
 #ifdef _DEBUG
@@ -1064,11 +1063,6 @@ void CColorCopDlg::setSeedColor()
 	OrigSwatch.A = Hue;
 	OrigSwatch.B = Sat;
 	OrigSwatch.C = Light;
-//	char iii[80];
-//	sprintf(iii,"H: %.2f, S: %.2f, L: %.2f", Hue, Sat, Light);
-//	sprintf(iii,"H: %.2f, S: %.2f, L: %.2f", Hue, Sat, Light);
-//	AfxMessageBox(iii);
-	//SetStatusBarText(iii);
 }
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
@@ -1086,28 +1080,19 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 		double q = L * (1.0 - S * f);
 		double t = L * (1.0 - (S * (1.0 - f)));
 
-		/*
-			char tt[80];
-		wsprintf(tt,"H:%f  S:%f  L:%f ", H, S, L);
-	   SetStatusBarText(tt);
-*/
-
 		
 		switch (caseH) {
 	    	case 0:
-          //  AfxMessageBox("0");
 			r = (int) (L * 255.0);
 			g = (int) (t * 255.0);
 			b = (int) (p * 255.0);
 			break;
 	    	case 1:
-        //   AfxMessageBox("10");
 			r = (int) (q * 255.0);
 			g = (int) (L * 255.0);
 			b = (int) (p * 255.0);
 			break;
 	    	case 2:
-          // AfxMessageBox("20");
 			r = (int) (p * 255.0);
 			g = (int) (L * 255.0);
 			b = (int) (t * 255.0);

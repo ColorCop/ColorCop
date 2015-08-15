@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
-#include <windows.h>
+
 #include "AggressiveOptimize.h"
 
 #define INI_FILE "\\Color_Cop_5.4.dat"
@@ -88,7 +88,40 @@ BOOL CColorCopApp::InitInstance()
 				ReleaseMutex(m_hMutex);
 
 				// TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
-				AfxMessageBox(IDS_APP_RUNNING);
+				
+
+		       CWnd *pFound = NULL;
+			   
+			   pFound = CWnd::FindWindow("ColorCopDialogClassName", NULL) ;
+			   if (pFound != NULL) 
+			   {
+					//AfxMessageBox("Sending");
+
+					// close the other app
+					pFound->SendMessage(WM_CLOSE, 0, 0);
+
+			   }
+
+			 
+				//AfxMessageBox(IDS_APP_RUNNING);
+
+				//SwitchToThisWindow(AfxGetApp()->GetMainWnd()->m_hWnd, false);
+
+				// dlg is ColorCopDlg
+
+			//	dlg.SetWindowPos(
+               	//HWND curwindowhwnd = dlg.GetSafeHwnd();
+//				SwitchToThisWindow(curwindowhwnd, true);
+					//::GetForegroundWindow();
+
+				//SetWindowPos(curwindowhwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+
+
+				//SetActiveWindow(curwindowhwnd);
+
+				//SetForegroundWindow(dlg.GetSafeHwnd()); //GetSafeHwnd());
+				//dlg.
+				//::SetWindowPos(&dlg.wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | WS_EX_TOPMOST);
 
 				// error instead
 
@@ -96,6 +129,25 @@ BOOL CColorCopApp::InitInstance()
 			}
 
 	}
+
+	WNDCLASSEX wcx;
+    ZeroMemory(&wcx, sizeof(wcx));
+    wcx.cbSize = sizeof(wcx);
+
+    if (!GetClassInfoEx(NULL, MAKEINTATOM(0x8002), &wcx))
+    {
+        TRACE("FAILED to register class step1\n");
+        return FALSE;
+    }
+
+    // Assign the name of your class...but pick a better class name
+    wcx.lpszClassName = _T("ColorCopDialogClassName");
+
+    if (!RegisterClassEx(&wcx))
+    {
+        TRACE("FAILED to register class step2\n");
+        return FALSE;
+    } 
 
     // set the main window
 		m_pMainWnd = &dlg;
