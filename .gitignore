@@ -22,6 +22,8 @@
 # Visual Studio options file (OPT) used for breakpoints, etc 
 *.opt
 
+# Visual Studio log file (PLG) used for build output
+*.plg
 # Compiled Static libraries
 *.lai
 *.la
