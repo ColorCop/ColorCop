@@ -19,6 +19,9 @@
 # non-compiles browse files (NCB) used by IntelliSense 
 *.ncb
 
+# Visual Studio options file (OPT) used for breakpoints, etc 
+*.opt
+
 # Compiled Static libraries
 *.lai
 *.la
