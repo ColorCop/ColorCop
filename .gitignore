@@ -16,6 +16,9 @@
 # Fortran module files
 *.mod
 
+# non-compiles browse files (NCB) used by IntelliSense 
+*.ncb
+
 # Compiled Static libraries
 *.lai
 *.la
