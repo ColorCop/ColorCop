@@ -24,6 +24,10 @@
 
 # Visual Studio log file (PLG) used for build output
 *.plg
+
+# Visual Studio solution user options (SUO)
+*.suo
+
 # Compiled Static libraries
 *.lai
 *.la
