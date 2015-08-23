@@ -38,12 +38,14 @@ ALL : "$(OUTDIR)\ColorCop.exe" "$(OUTDIR)\ColorCop.bsc"
 
 
 CLEAN :
+	-@erase "$(INTDIR)\ColorCop.obj"
 	-@erase "$(INTDIR)\ColorCop.pch"
 	-@erase "$(INTDIR)\ColorCop.res"
-	-@erase "$(INTDIR)\ColorCop.obj"
 	-@erase "$(INTDIR)\ColorCop.sbr"
 	-@erase "$(INTDIR)\ColorCopDlg.obj"
 	-@erase "$(INTDIR)\ColorCopDlg.sbr"
+	-@erase "$(INTDIR)\colorspace.obj"
+	-@erase "$(INTDIR)\colorspace.sbr"
 	-@erase "$(INTDIR)\Label.obj"
 	-@erase "$(INTDIR)\Label.sbr"
 	-@erase "$(INTDIR)\StdAfx.obj"
@@ -51,8 +53,6 @@ CLEAN :
 	-@erase "$(INTDIR)\SystemTray.obj"
 	-@erase "$(INTDIR)\SystemTray.sbr"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\WavTipCtrl.obj"
-	-@erase "$(INTDIR)\WavTipCtrl.sbr"
 	-@erase "$(OUTDIR)\ColorCop.bsc"
 	-@erase "$(OUTDIR)\ColorCop.exe"
 
@@ -101,10 +101,10 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\ColorCop.bsc"
 BSC32_SBRS= \
 	"$(INTDIR)\ColorCop.sbr" \
 	"$(INTDIR)\ColorCopDlg.sbr" \
+	"$(INTDIR)\colorspace.sbr" \
 	"$(INTDIR)\Label.sbr" \
 	"$(INTDIR)\StdAfx.sbr" \
-	"$(INTDIR)\SystemTray.sbr" \
-	"$(INTDIR)\WavTipCtrl.sbr"
+	"$(INTDIR)\SystemTray.sbr"
 
 "$(OUTDIR)\ColorCop.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
     $(BSC32) @<<
@@ -116,19 +116,16 @@ LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /incr
 LINK32_OBJS= \
 	"$(INTDIR)\ColorCop.obj" \
 	"$(INTDIR)\ColorCopDlg.obj" \
+	"$(INTDIR)\colorspace.obj" \
 	"$(INTDIR)\Label.obj" \
 	"$(INTDIR)\StdAfx.obj" \
 	"$(INTDIR)\SystemTray.obj" \
-	"$(INTDIR)\WavTipCtrl.obj" \
 	"$(INTDIR)\ColorCop.res"
 
 "$(OUTDIR)\ColorCop.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
-   taskkill /F /IM colorcop.exe /T
-	 $(LINK32) @<<
+    $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
-
-SOURCE="$(InputPath)"
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
 
@@ -142,15 +139,15 @@ ALL : "$(OUTDIR)\ColorCop.exe"
 
 
 CLEAN :
+	-@erase "$(INTDIR)\ColorCop.obj"
 	-@erase "$(INTDIR)\ColorCop.pch"
 	-@erase "$(INTDIR)\ColorCop.res"
-	-@erase "$(INTDIR)\ColorCop.obj"
 	-@erase "$(INTDIR)\ColorCopDlg.obj"
+	-@erase "$(INTDIR)\colorspace.obj"
 	-@erase "$(INTDIR)\Label.obj"
 	-@erase "$(INTDIR)\StdAfx.obj"
 	-@erase "$(INTDIR)\SystemTray.obj"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\WavTipCtrl.obj"
 	-@erase "$(OUTDIR)\ColorCop.exe"
 	-@erase "$(OUTDIR)\ColorCop.ilk"
 	-@erase "$(OUTDIR)\ColorCop.pdb"
@@ -204,10 +201,10 @@ LINK32_FLAGS=/nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\ColorCo
 LINK32_OBJS= \
 	"$(INTDIR)\ColorCop.obj" \
 	"$(INTDIR)\ColorCopDlg.obj" \
+	"$(INTDIR)\colorspace.obj" \
 	"$(INTDIR)\Label.obj" \
 	"$(INTDIR)\StdAfx.obj" \
 	"$(INTDIR)\SystemTray.obj" \
-	"$(INTDIR)\WavTipCtrl.obj" \
 	"$(INTDIR)\ColorCop.res"
 
 "$(OUTDIR)\ColorCop.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
@@ -220,17 +217,24 @@ LINK32_OBJS= \
 OUTDIR=.\ColorCop___Win32_Release_without_ALIGN
 INTDIR=.\ColorCop___Win32_Release_without_ALIGN
 
-ALL : ".\Release\ColorCop.exe"
+ALL : ".\Release\ColorCop.exe" ".\Release\ColorCop.bsc"
 
 
 CLEAN :
 	-@erase "$(INTDIR)\ColorCop.obj"
+	-@erase "$(INTDIR)\ColorCop.sbr"
 	-@erase "$(INTDIR)\ColorCopDlg.obj"
+	-@erase "$(INTDIR)\ColorCopDlg.sbr"
+	-@erase "$(INTDIR)\colorspace.obj"
+	-@erase "$(INTDIR)\colorspace.sbr"
 	-@erase "$(INTDIR)\Label.obj"
+	-@erase "$(INTDIR)\Label.sbr"
 	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\StdAfx.sbr"
 	-@erase "$(INTDIR)\SystemTray.obj"
+	-@erase "$(INTDIR)\SystemTray.sbr"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\WavTipCtrl.obj"
+	-@erase ".\Release\ColorCop.bsc"
 	-@erase ".\Release\ColorCop.exe"
 	-@erase ".\Release\ColorCop.pch"
 	-@erase ".\Release\ColorCop.res"
@@ -239,7 +243,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR"$(INTDIR)\\" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -278,16 +282,27 @@ RSC_PROJ=/l 0x409 /fo"Release/ColorCop.res" /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"Release/ColorCop.bsc" 
 BSC32_SBRS= \
-	
+	"$(INTDIR)\ColorCop.sbr" \
+	"$(INTDIR)\ColorCopDlg.sbr" \
+	"$(INTDIR)\colorspace.sbr" \
+	"$(INTDIR)\Label.sbr" \
+	"$(INTDIR)\StdAfx.sbr" \
+	"$(INTDIR)\SystemTray.sbr"
+
+".\Release\ColorCop.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
+    $(BSC32) @<<
+  $(BSC32_FLAGS) $(BSC32_SBRS)
+<<
+
 LINK32=link.exe
 LINK32_FLAGS=MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\ColorCop.pdb" /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF 
 LINK32_OBJS= \
 	"$(INTDIR)\ColorCop.obj" \
 	"$(INTDIR)\ColorCopDlg.obj" \
+	"$(INTDIR)\colorspace.obj" \
 	"$(INTDIR)\Label.obj" \
 	"$(INTDIR)\StdAfx.obj" \
 	"$(INTDIR)\SystemTray.obj" \
-	"$(INTDIR)\WavTipCtrl.obj" \
 	".\Release\ColorCop.res"
 
 ".\Release\ColorCop.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
@@ -332,9 +347,9 @@ CPP_SWITCHES=/nologo /MDd /W3 /GX /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
 
-CPP_SWITCHES=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_SWITCHES=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR"$(INTDIR)\\" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
-"$(INTDIR)\ColorCop.obj" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
+"$(INTDIR)\ColorCop.obj"	"$(INTDIR)\ColorCop.sbr" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
 	$(CPP) @<<
   $(CPP_SWITCHES) $(SOURCE)
 <<
@@ -384,7 +399,29 @@ SOURCE=.\ColorCopDlg.cpp
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
 
 
-"$(INTDIR)\ColorCopDlg.obj" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
+"$(INTDIR)\ColorCopDlg.obj"	"$(INTDIR)\ColorCopDlg.sbr" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
+
+
+!ENDIF 
+
+SOURCE=.\colorspace.cpp
+
+!IF  "$(CFG)" == "ColorCop - Win32 Release"
+
+
+"$(INTDIR)\colorspace.obj"	"$(INTDIR)\colorspace.sbr" : $(SOURCE) "$(INTDIR)" "$(INTDIR)\ColorCop.pch"
+
+
+!ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
+
+
+"$(INTDIR)\colorspace.obj" : $(SOURCE) "$(INTDIR)" "$(INTDIR)\ColorCop.pch"
+
+
+!ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
+
+
+"$(INTDIR)\colorspace.obj"	"$(INTDIR)\colorspace.sbr" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
 
 
 !ENDIF 
@@ -406,7 +443,7 @@ SOURCE=.\Label.cpp
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
 
 
-"$(INTDIR)\Label.obj" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
+"$(INTDIR)\Label.obj"	"$(INTDIR)\Label.sbr" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
 
 
 !ENDIF 
@@ -435,9 +472,9 @@ CPP_SWITCHES=/nologo /MDd /W3 /GX /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
 
-CPP_SWITCHES=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yc"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_SWITCHES=/nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR"$(INTDIR)\\" /Fp"Release/ColorCop.pch" /Yc"stdafx.h" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
-"$(INTDIR)\StdAfx.obj"	".\Release\ColorCop.pch" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\StdAfx.obj"	"$(INTDIR)\StdAfx.sbr"	".\Release\ColorCop.pch" : $(SOURCE) "$(INTDIR)"
 	$(CPP) @<<
   $(CPP_SWITCHES) $(SOURCE)
 <<
@@ -462,29 +499,7 @@ SOURCE=.\SystemTray.cpp
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
 
 
-"$(INTDIR)\SystemTray.obj" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
-
-
-!ENDIF 
-
-SOURCE=.\WavTipCtrl.cpp
-
-!IF  "$(CFG)" == "ColorCop - Win32 Release"
-
-
-"$(INTDIR)\WavTipCtrl.obj"	"$(INTDIR)\WavTipCtrl.sbr" : $(SOURCE) "$(INTDIR)" "$(INTDIR)\ColorCop.pch"
-
-
-!ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
-
-
-"$(INTDIR)\WavTipCtrl.obj" : $(SOURCE) "$(INTDIR)" "$(INTDIR)\ColorCop.pch"
-
-
-!ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
-
-
-"$(INTDIR)\WavTipCtrl.obj" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
+"$(INTDIR)\SystemTray.obj"	"$(INTDIR)\SystemTray.sbr" : $(SOURCE) "$(INTDIR)" ".\Release\ColorCop.pch"
 
 
 !ENDIF 

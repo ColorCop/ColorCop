@@ -1,17 +1,45 @@
 # Microsoft Developer Studio Generated Dependency File, included by ColorCop.mak
 
 .\ColorCop.cpp : \
+	".\AggressiveOptimize.h"\
 	".\ColorCop.h"\
 	".\ColorCopDlg.h"\
-	".\StdAfx.h"\
+	
+
+.\ColorCop.rc : \
+	".\res\ColorCop.rc2"\
+	".\Res\cross.cur"\
+	".\Res\cur00002.cur"\
+	".\Res\cur00003.cur"\
+	".\Res\cursor1.cur"\
+	".\Res\cursor_m.cur"\
+	".\Res\hand.cur"\
+	".\Res\icon1.ico"\
+	".\Res\idr_main.ico"\
+	".\Res\MOVE4WAY.CUR"\
+	".\resource.hm"\
 	
 
 .\ColorCopDlg.cpp : \
 	".\ColorCop.h"\
 	".\ColorCopDlg.h"\
-	".\StdAfx.h"\
+	".\Label.h"\
+	".\SystemTray.h"\
+	
+
+.\colorspace.cpp : \
+	".\colorspace.h"\
+	
+
+.\Label.cpp : \
+	".\Label.h"\
 	
 
 .\StdAfx.cpp : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
 	".\StdAfx.h"\
+	
+
+.\SystemTray.cpp : \
+	".\SystemTray.h"\
 	
