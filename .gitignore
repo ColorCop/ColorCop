@@ -28,6 +28,9 @@
 # Visual Studio solution user options (SUO)
 *.suo
 
+#Visual studio (APS) - last resource editor state
+*.aps
+
 # Compiled Static libraries
 *.lai
 *.la

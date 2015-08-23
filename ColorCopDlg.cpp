@@ -1749,12 +1749,12 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc)
 {
-     BITMAP  bitmap ;
-     HBITMAP hBitmapDst ;
-     HDC     hdcSrc, hdcDst ;
+     BITMAP  bitmap;
+     HBITMAP hBitmapDst;
+     HDC     hdcSrc, hdcDst;
 
-     ::GetObject (hBitmapSrc, sizeof (BITMAP), &bitmap) ;
-     hBitmapDst = ::CreateBitmapIndirect (&bitmap) ;
+     ::GetObject (hBitmapSrc, sizeof (BITMAP), &bitmap);
+     hBitmapDst = ::CreateBitmapIndirect (&bitmap);
 
      hdcSrc = ::CreateCompatibleDC(NULL);
      hdcDst = ::CreateCompatibleDC(NULL);
@@ -1762,17 +1762,9 @@ HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc)
      ::SelectObject (hdcSrc, hBitmapSrc);
      ::SelectObject (hdcDst, hBitmapDst);
 
-    ::BitBlt (hdcDst, 0, 0, bitmap.bmWidth*2, bitmap.bmHeight*2,
+	 ::BitBlt (hdcDst, 0, 0, bitmap.bmWidth*2, bitmap.bmHeight*2,
              hdcSrc, 0, 0, SRCCOPY);
-/*
-	 			   ::StretchBlt (hdcDst, 
-				             0, 0 , // upper left dest
-				             magrect.Width()-4, magrect.Height()-4,  // width of dest rect
-                             hdcSrc,  // source dc
-							 0, 0,	  // upper left source
-							 18, 15,  // W x H of source
-							 SRCCOPY);// mode
-*/
+
      ::DeleteDC(hdcSrc);
      ::DeleteDC(hdcDst);
 
