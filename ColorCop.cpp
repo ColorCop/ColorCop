@@ -76,7 +76,6 @@ BOOL CColorCopApp::InitInstance()
 	// see srand
 	srand( (unsigned)time(NULL) );
 
-	
 
 	// multiple instances are not allowed?
 	if (!(dlg.m_Appflags & MultipleInstances))
@@ -88,6 +87,7 @@ BOOL CColorCopApp::InitInstance()
 				ReleaseMutex(m_hMutex);
 
 				// TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
+
 				AfxMessageBox(IDS_APP_RUNNING);
 
 				// error instead
@@ -381,7 +381,6 @@ void CColorCopApp::CloseApplication() {
 
 	// release mutex.  what if this fails
 	ReleaseMutex(m_hMutex);
-
 
 	return;
 }

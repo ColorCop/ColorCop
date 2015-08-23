@@ -1,7 +1,11 @@
 Color Cop License
 =================
 
+<<<<<<< HEAD
+Copyright (C) 1999-2007 Jay Prall.  All rights reserved.
+=======
 Copyright (C) 1999-2015 Jay Prall.  All rights reserved.
+>>>>>>> 663b4209ce59df87ca64601d2ce07c241a2a0b6e
 
 
 Redistribution 
@@ -35,5 +39,9 @@ Warranty
 
 
 Jay Prall
+<<<<<<< HEAD
+http://prall.net/contact
+=======
 http://colorcop.net
+>>>>>>> 663b4209ce59df87ca64601d2ce07c241a2a0b6e
 

@@ -1,0 +1,11 @@
+===========
+Gdiplus.dll
+===========
+
+For Windows XP use the system-supplied gdiplus.dll.  Do not install a new gdiplus.dll over the system-supplied version (it will fail due to Windows File Protection).  
+
+For Windows 2000, Windows Millennium Edition, Windows NT 4.0 and Windows 98, install gdiplus.dll into the private directory of the application not into the system directory. 
+
+In addition to the rights granted in Section 1 of the Agreement ("Agreement"), with respect to gdiplus.dll for Windows 2000, Windows Millennium Edition, Windows NT 4.0 and Windows 98, you have the following non-exclusive, royalty free rights subject to the Distribution Requirements detailed in Section 1 of the Agreement:
+
+(1) You may distribute gdiplus.dll solely for use with Windows 2000, Windows Millennium Edition, Windows NT 4.0 and Windows 98. 

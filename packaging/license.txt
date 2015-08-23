@@ -22,7 +22,11 @@ License
 Donations
 
   Color Cop is free, but if you wish to express your appreciation for the time
+<<<<<<< HEAD
+  and reasources I've expended developing and supporting it, I do accept and 
+=======
   and resources I've expended developing and supporting it, I do accept and 
+>>>>>>> 663b4209ce59df87ca64601d2ce07c241a2a0b6e
   appreciate donations.
 
   If you wish to make one please go here:

@@ -1047,7 +1047,6 @@ void CColorCopDlg::setSeedColor()
 	OrigSwatch.A = Hue;
 	OrigSwatch.B = Sat;
 	OrigSwatch.C = Light;
-
 }
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
