@@ -141,7 +141,11 @@ http://colorcop.net/donate
 
   This feature allows the eyedropper to select an average of a 3 by 3 or 
   a 5 by 5 pixel matrix.
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 663b4209ce59df87ca64601d2ce07c241a2a0b6e
 * Snap to WebSafe
 
   Some designers are forced to use the 216 color websafe palette. When this
@@ -154,12 +158,20 @@ http://colorcop.net/donate
 
   When this option is checked, Color cop will be minimized to the
   system tray rather than the taskbar.
+<<<<<<< HEAD
   
 * HTML, Delphi, Visual Basic, Visual C++, Clarion and Powerbuilder Hex color support
 
   There are now many Hex modes to choose from.  Programmers can now use 
   Color Cop.  If you would like another mode added, email
   support@prall.net
+=======
+
+* HTML, Delphi, Visual Basic, Visual C++, Clarion and Powerbuilder Hex color support
+
+  There are now many Hex modes to choose from.  Programmers can now use 
+  Color Cop.
+>>>>>>> 663b4209ce59df87ca64601d2ce07c241a2a0b6e
 
 * Mouse wheel support
 

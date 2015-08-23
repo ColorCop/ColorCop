@@ -1,14 +1,40 @@
-Release/*
-Debug/*
-ColorCop___Win32_Release_without_ALIGN*/
-# Visual Studio files
-[Bb]in*/
-[Dd]debug*/
-[Rr]elease*/
-*.vspscc
-*.vssscc
-*.aps
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# non-compiles browse files (NCB) used by IntelliSense 
 *.ncb
+
+# Visual Studio options file (OPT) used for breakpoints, etc 
 *.opt
+
+# Visual Studio log file (PLG) used for build output
 *.plg
+
+# Visual Studio solution user options (SUO)
+*.suo
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
 *.lib
+
+# Executables
+*.exe
+*.out
+*.app

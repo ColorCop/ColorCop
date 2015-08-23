@@ -40,14 +40,11 @@ END_MESSAGE_MAP()
 
 CColorCopApp::CColorCopApp()
 {
-///	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Constructor\n");
-
 	m_hMutex=NULL;
 }
 
 CColorCopApp::~CColorCopApp()
 {
-	//ATLTRACE2(atlTraceGeneral, 0, "*** Color Cop Destructor\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,12 +76,6 @@ BOOL CColorCopApp::InitInstance()
 	// see srand
 	srand( (unsigned)time(NULL) );
 
-	//ATLTRACE2(atlTraceGeneral, 0, "Color Cop CreateMutex\n");
-	
-	//CreateMutex(NULL,TRUE,_T("ColorCopMutex-Jay-Prall")); // mutex will be automatically deleted when process ends. 
-
-//	BOOL bAlreadyRunning = (GetLastError() == ERROR_ALREADY_EXISTS); 
-	
 
 	// multiple instances are not allowed?
 	if (!(dlg.m_Appflags & MultipleInstances))
@@ -95,7 +86,8 @@ BOOL CColorCopApp::InitInstance()
 				// release the obj that we tried to create
 				ReleaseMutex(m_hMutex);
 
-				// TODO: focus on the current instance
+				// TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
+
 				AfxMessageBox(IDS_APP_RUNNING);
 
 				// error instead
@@ -103,36 +95,17 @@ BOOL CColorCopApp::InitInstance()
 				return false;
 			}
 
-		// lets attempt to get the current instance of color cop and use that.
-
 	}
 
-
-
-
-
-	// if already running and only one instance allowed, error
-
-//	if ((bAlreadyRunning) && (!(dlg.m_Appflags & MultipleInstances))) {
-
-//		//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Already Running\n");
-//		return FALSE; // abandon ship
-	
-//	} else {	
-
-		//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Starting\n");
-		m_pMainWnd = &dlg;		// set the main window
+    // set the main window
+		m_pMainWnd = &dlg;
 		
 		int nResponse = dlg.DoModal();		// Launch the color cop dialog
 	
 		if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
 		
-			//ATLTRACE2(atlTraceGeneral, 0, "Color Cop Closing\n");
 			CloseApplication();		// write the data to a file
 		}
-
-//	}
-		//ATLTRACE2(atlTraceGeneral, 0, "End InitInstance\n");
 
 	return FALSE;
 }
@@ -235,7 +208,6 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 {
 	RECT rc;
 	GetWindowRect(hwnd, &rc);
-	//ClipOrCenterRectToMonitor(&rc, flags);
 	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 	dlg.WinLocX= rc.left;
 	dlg.WinLocY= rc.top;
@@ -244,11 +216,6 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 
 BOOL CColorCopApp::InitApplication() 
 {
-	////////////////////////////////////////////////////////////
-	// This function reads the settings from a file.  It should 
-	// do this every time no matter what.
-	//
-	//ATLTRACE2(atlTraceGeneral, 0, "Begin InitApplication\n");
 
 	CString strInitFile = GetTempFolder();
 
@@ -277,8 +244,6 @@ BOOL CColorCopApp::InitApplication()
 
 		// set the window to be in the middle
 	}
-
-	//ATLTRACE2(atlTraceGeneral, 0, "End InitApplication\n");
 
 	return CWinApp::InitApplication();
 }
@@ -360,9 +325,6 @@ void CColorCopApp::LoadDefaultSettings() {
 		dlg.m_Bluedec  = 188;
 		dlg.m_Appflags = 0;		// reset
 		dlg.m_Appflags |= AlwaysOnTop;
-		
-		// uppercase hex is now not a default options
-		//dlg.m_Appflags |= UpperCaseHex;
 		dlg.m_Appflags |= AutoCopytoClip;
 		dlg.m_Appflags |= ModeHTML;
 		dlg.m_Appflags |= EasyMove;
@@ -403,8 +365,6 @@ void CColorCopApp::CloseApplication() {
 	// last thing the application will do. It will only write to
 	// a file when the dialog has been closed IDOK or IDCANCEL
 
-	//ATLTRACE2(atlTraceGeneral, 0, "Begin CloseApplication\n");
-
 
 	CString strInitFile = GetTempFolder();
 
@@ -419,23 +379,14 @@ void CColorCopApp::CloseApplication() {
 		Serialize(ar);
 	}
 
-	// might as well release this now
-	//ATLTRACE2(atlTraceGeneral, 0, "- Release Mutex\n");
+	// release mutex.  what if this fails
 	ReleaseMutex(m_hMutex);
-
-
-	//ATLTRACE2(atlTraceGeneral, 0, "End CloseApplication\n");
-
 
 	return;
 }
 
 void CColorCopApp::Serialize(CArchive& ar) 
 {
-	//ATLTRACE2(atlTraceGeneral, 0, "Serialize\n");
-
-	// anything that is serialized here should also
-
 
 	if (ar.IsStoring())	{	
 		// storing code
