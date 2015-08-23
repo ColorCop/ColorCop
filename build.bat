@@ -1,6 +1,9 @@
 @echo on
 
-vcvars32.bat
+rem vcvars32.bat
 
-"C:\Program Files\Microsoft Visual Studio\Common\IDE\IDE98\devenv.exe" ./ColorCop.dsw /REBUILD Debug /out foo.txt
-pause
+rmdir /S /Q Release
+nmake /NOLOGO /f "ColorCop.mak" CFG="ColorCop - Win32 Release"
+
+rmdir /S /Q Debug
+nmake /NOLOGO /f "ColorCop.mak" CFG="ColorCop - Win32 Debug"
