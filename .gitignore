@@ -31,6 +31,11 @@
 #Visual studio (APS) - last resource editor state
 *.aps
 
+# Visual Studio build output
+Release/
+Debug/
+ColorCop___Win32_Release_without_ALIGN/
+
 # Compiled Static libraries
 *.lai
 *.la
