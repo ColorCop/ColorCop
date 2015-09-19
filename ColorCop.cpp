@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
-#include <windows.h>
-#include "AggressiveOptimize.h"
+
 
 #define INI_FILE "\\Color_Cop_5.4.dat"
 #define INI_FILE_DIR "\\ColorCop"
