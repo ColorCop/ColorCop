@@ -19,7 +19,6 @@ CFG=ColorCop - Win32 Debug
 !MESSAGE 
 !MESSAGE "ColorCop - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE "ColorCop - Win32 Debug" (based on "Win32 (x86) Application")
-!MESSAGE "ColorCop - Win32 Release without ALIGN" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -54,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /OPT:REF /ALIGN:4096
+# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /OPT:REF
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
@@ -83,42 +82,12 @@ LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 
-!ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
-
-# PROP BASE Use_MFC 6
-# PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "ColorCop___Win32_Release_without_ALIGN"
-# PROP BASE Intermediate_Dir "ColorCop___Win32_Release_without_ALIGN"
-# PROP BASE Ignore_Export_Lib 0
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 6
-# PROP Use_Debug_Libraries 0
-# PROP Output_Dir "ColorCop___Win32_Release_without_ALIGN"
-# PROP Intermediate_Dir "ColorCop___Win32_Release_without_ALIGN"
-# PROP Ignore_Export_Lib 0
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W2 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /FR /Fp"Release/ColorCop.pch" /Yu"stdafx.h" /FD /c
-# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
-# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
-# ADD BASE RSC /l 0x409 /fo"Release/ColorCop.res" /d "NDEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x409 /fo"Release/ColorCop.res" /d "NDEBUG" /d "_AFXDLL"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo /o"Release/ColorCop.bsc"
-# ADD BSC32 /nologo /o"Release/ColorCop.bsc"
-LINK32=link.exe
-# ADD BASE LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
-# SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 MSVCRT.LIB kernel32.lib user32.lib /nologo /subsystem:windows /machine:I386 /out:"Release/ColorCop.exe" /OPT:REF
-# SUBTRACT LINK32 /pdb:none
-
 !ENDIF 
 
 # Begin Target
 
 # Name "ColorCop - Win32 Release"
 # Name "ColorCop - Win32 Debug"
-# Name "ColorCop - Win32 Release without ALIGN"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -131,11 +100,6 @@ SOURCE=.\ColorCop.cpp
 # ADD CPP /O2
 
 !ELSEIF  "$(CFG)" == "ColorCop - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "ColorCop - Win32 Release without ALIGN"
-
-# ADD BASE CPP /O2
-# ADD CPP /O2
 
 !ENDIF 
 
