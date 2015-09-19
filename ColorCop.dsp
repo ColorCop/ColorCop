@@ -171,10 +171,6 @@ SOURCE=.\SystemTray.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\AggressiveOptimize.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\ColorCop.h
 # End Source File
 # Begin Source File

@@ -1,7 +1,6 @@
 # Microsoft Developer Studio Generated Dependency File, included by ColorCop.mak
 
 .\ColorCop.cpp : \
-	".\AggressiveOptimize.h"\
 	".\ColorCop.h"\
 	".\ColorCopDlg.h"\
 	
