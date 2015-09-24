@@ -28,6 +28,9 @@
 # Visual Studio solution user options (SUO)
 *.suo
 
+# VisualStudio2008 user settings
+*.user
+
 #Visual studio (APS) - last resource editor state
 *.aps
 
