@@ -1975,7 +1975,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 						}
 					} 
 					strStatus +=strWebSafe;
-					strStatus.Format(strStatus, point.x, point.y);
+
+					strStatus.Format(CString(strStatus), point.x, point.y);
 
 				}
 
