@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{51cd4e41-f00b-4a5f-b0eb-5d4208c14627}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4cefea01-8773-46c2-9b90-f582039e81b2}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f2c7bf11-1329-4261-a061-5c01d1913013}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ColorCop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorCopDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="colorspace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemTray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ColorCop.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ColorCop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorCopDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="colorspace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemTray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\ColorCop.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cross.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cur00001.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cur00002.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cur00003.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cursor1.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\cursor_m.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\hand.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Res\MOVE4WAY.CUR">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Res\eyeyedropper.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\ico00001.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\ico00002.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\ico00003.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\idr_main.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
