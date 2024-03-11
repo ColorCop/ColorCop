@@ -1,0 +1,7 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    # maintain workflows in the default location (/.github/workflows/)
+    directory: /
+    schedule:
+      interval: weekly
