@@ -1927,7 +1927,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 				if (bRelativePosition)  {
 
-					// L (Length line = hypotenuse) = SQRT(W² + H²) (show it to 1 decimal)
+					// L (Length line = hypotenuse) = SQRT(WÂ² + HÂ²) (show it to 1 decimal)
 					int iWidth = (point.x - RelativePoint.x);
 					int iHeight = (point.y - RelativePoint.y);
 
