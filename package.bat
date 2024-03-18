@@ -2,8 +2,9 @@ rmdir /S /Q Release-standalone
 mkdir Release-standalone
 
 copy Release\*.exe Release-standalone
-copy README.txt Release-standalone
-copy packagine\*.txt Release-standalone
+copy README.md Release-standalone
+copy LICENSE.txt Release-standalone
+copy packaging\*.txt Release-standalone
 copy packaging\*.diz Release-standalone
 copy packaging\*.HLP Release-standalone
 
