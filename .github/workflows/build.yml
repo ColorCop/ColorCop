@@ -8,33 +8,47 @@ on:
   workflow_dispatch:
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2.0.0
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Run MSBuild 
-      run:  MSBuild.exe ColorCop.sln /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Install MFC libraries via Chocolatey
+        run: |
+          Write-Host "Installing MFC components via Chocolatey..."
+          choco install visualstudio2022-workload-vctools --package-parameters "--add Microsoft.VisualStudio.Component.VC.ATLMFC" --yes
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      env:
-        Configuration: ${{ matrix.configuration }}
-      if: "env.Configuration == 'Release'"
-      with:
-        name: windows_artifacts
-        path: ${{github.workspace}}/Release/*.exe
+          # Wait for installation to complete
+          Start-Sleep -Seconds 30
+
+          # Verify installation
+          $mfcPath = Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\*\atlmfc" -ErrorAction SilentlyContinue
+          if ($mfcPath) {
+            Write-Host "✅ MFC libraries found at: $($mfcPath.FullName)"
+          } else {
+            Write-Host "❌ MFC installation failed"
+            Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\" -ErrorAction SilentlyContinue
+            exit 1
+          }
+        shell: powershell
+
+      - name: Run MSBuild
+        run: MSBuild.exe ColorCop.sln /p:Configuration=${{ matrix.configuration }} /p:Platform=Win32
+
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v4
+        if: matrix.configuration == 'Release'
+        with:
+          name: windows_artifacts_release
+          path: |
+            ${{ github.workspace }}/Release/*.exe
+          retention-days: 30

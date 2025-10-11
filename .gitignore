@@ -31,8 +31,12 @@
 # VisualStudio2008 user settings
 *.user
 
-#Visual studio (APS) - last resource editor state
+# Visual studio (APS) - last resource editor state
 *.aps
+
+# legacy Visual Studio 97/5.0 temporary files
+*.001
+*.002
 
 # Visual Studio build output
 Release/
