@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Jay Prall
+// SPDX-License-Identifier: MIT
+
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.h : header file
 //
@@ -81,9 +84,9 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSystemTray)
-	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
+    protected:
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
@@ -105,8 +108,8 @@ protected:
 
 // Generated message map functions
 protected:
-	//{{AFX_MSG(CSystemTray)
-	//}}AFX_MSG
+    //{{AFX_MSG(CSystemTray)
+    //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
 };

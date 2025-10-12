@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Jay Prall
+// SPDX-License-Identifier: MIT
+
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.cpp : implementation file
 //
@@ -150,7 +153,7 @@ void CSystemTray::MoveToRight()
 void CSystemTray::RemoveIcon()
 {
     if (!m_bEnabled) 
-		return;
+        return;
 
     m_tnd.uFlags = 0;
     Shell_NotifyIcon(NIM_DELETE, &m_tnd);
@@ -301,9 +304,9 @@ void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos)
 // CSystemTray message handlers
 
 BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
-	//{{AFX_MSG_MAP(CSystemTray)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CSystemTray)
+    ON_WM_TIMER()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 
@@ -313,7 +316,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     if (wParam != m_tnd.uID)
         return 0L;
 
-  	
+      
 
     CMenu menu, *pSubMenu;
     CWnd* pTarget = AfxGetMainWnd();
@@ -362,7 +365,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 
         menu.DestroyMenu();
   
-	}
+    }
 
     return 1;
 }
@@ -371,6 +374,6 @@ LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (message == m_tnd.uCallbackMessage)
         return OnTrayNotification(wParam, lParam);
-	
-	return CWnd::WindowProc(message, wParam, lParam);
+    
+    return CWnd::WindowProc(message, wParam, lParam);
 }
