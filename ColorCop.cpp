@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Jay Prall
+// SPDX-License-Identifier: MIT
+
 // ColorCop.cpp : Defines the class behaviors for the application.
 //
 
@@ -26,11 +29,11 @@ static char THIS_FILE[] = __FILE__;
 // CColorCopApp
 
 BEGIN_MESSAGE_MAP(CColorCopApp, CWinApp)
-	//{{AFX_MSG_MAP(CColorCopApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+    //{{AFX_MSG_MAP(CColorCopApp)
+        // NOTE - the ClassWizard will add and remove mapping macros here.
+        //    DO NOT EDIT what you see in these blocks of generated code!
+    //}}AFX_MSG
+    ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -39,7 +42,7 @@ END_MESSAGE_MAP()
 
 CColorCopApp::CColorCopApp()
 {
-	m_hMutex=NULL;
+    m_hMutex=NULL;
 }
 
 CColorCopApp::~CColorCopApp()
@@ -57,94 +60,94 @@ CColorCopApp theApp;
 BOOL CColorCopApp::InitInstance()
 {
 
-	#ifdef _DEBUG
-		// enables ATLTRACE debugging
-		::afxTraceEnabled = true;
-	#endif
+    #ifdef _DEBUG
+        // enables ATLTRACE debugging
+        ::afxTraceEnabled = true;
+    #endif
 
 
-	// Depreciated Functions in MFC 5.0
-	#if _MSC_VER < 1300
-		#ifdef _AFXDLL
-			Enable3dControls();			// shared 
-		#else
-			Enable3dControlsStatic();	// static
-		#endif
-	#endif
+    // Depreciated Functions in MFC 5.0
+    #if _MSC_VER < 1300
+        #ifdef _AFXDLL
+            Enable3dControls();            // shared 
+        #else
+            Enable3dControlsStatic();    // static
+        #endif
+    #endif
 
-	// see srand
-	srand( (unsigned)time(NULL) );
+    // see srand
+    srand( (unsigned)time(NULL) );
 
 
-	// multiple instances are not allowed?
-	if (!(dlg.m_Appflags & MultipleInstances))
-	{
-		// multiple instances are not allowed. check if we have one running
-			if(InstanceRunning())
-			{
-				// release the obj that we tried to create
-				ReleaseMutex(m_hMutex);
+    // multiple instances are not allowed?
+    if (!(dlg.m_Appflags & MultipleInstances))
+    {
+        // multiple instances are not allowed. check if we have one running
+            if(InstanceRunning())
+            {
+                // release the obj that we tried to create
+                ReleaseMutex(m_hMutex);
 
-				// TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
+                // TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
 
-				AfxMessageBox(IDS_APP_RUNNING);
+                AfxMessageBox(IDS_APP_RUNNING);
 
-				// error instead
+                // error instead
 
-				return false;
-			}
+                return false;
+            }
 
-	}
+    }
 
     // set the main window
-		m_pMainWnd = &dlg;
-		
-		int nResponse = dlg.DoModal();		// Launch the color cop dialog
-	
-		if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
-		
-			CloseApplication();		// write the data to a file
-		}
+        m_pMainWnd = &dlg;
+        
+        int nResponse = dlg.DoModal();        // Launch the color cop dialog
+    
+        if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
+        
+            CloseApplication();        // write the data to a file
+        }
 
-	return FALSE;
+    return FALSE;
 }
 
 //http://www.koders.com/cpp/fidDA7CC61A9668A4356119E1B5E6F54836B44200D8.aspx?s=InstanceRunning
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning()
 {
-	m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
-	
-	if(m_hMutex)
-	{
-		DWORD dwWait = WaitForSingleObject(m_hMutex, 10);
+    m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
+    
+    if(m_hMutex)
+    {
+        DWORD dwWait = WaitForSingleObject(m_hMutex, 10);
 
-		switch(dwWait)
-		{
-		case WAIT_OBJECT_0:
-			break;
-		case WAIT_TIMEOUT:
-			return true;
-		case WAIT_FAILED:
-			break;
-		}
-	}
+        switch(dwWait)
+        {
+        case WAIT_OBJECT_0:
+            break;
+        case WAIT_TIMEOUT:
+            return true;
+        case WAIT_FAILED:
+            break;
+        }
+    }
 
-	return false;
+    return false;
 }
 
 BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
 {
-	// pShellFolder can be one of the following
-	// AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
-	// Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
-	// Templates, ShellNew
-	DWORD rc;
-	DWORD length = MAX_PATH;
-	DWORD type = REG_SZ;
-	HKEY hkey;
+    // pShellFolder can be one of the following
+    // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
+    // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
+    // Templates, ShellNew
+    DWORD rc;
+    DWORD length = MAX_PATH;
+    DWORD type = REG_SZ;
+    HKEY hkey;
 
-	rc = RegOpenKeyEx(HKEY_CURRENT_USER,
+    rc = RegOpenKeyEx(HKEY_CURRENT_USER,
         "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
         0, KEY_READ, &hkey);
 
@@ -154,33 +157,33 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
     RegCloseKey(hkey);
     }
 
-	if (rc == ERROR_SUCCESS) {
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+    if (rc == ERROR_SUCCESS) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 CString CColorCopApp::GetTempFolder()
 {
-	CString strTmpPath;
-//	DWORD dwL;
+    CString strTmpPath;
+//    DWORD dwL;
 
-	//dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
-	
-	GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
+    //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
+    
+    GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
 
 
 
 /*
-	DWORD dwL;
+    DWORD dwL;
 
-	// temp path isn't what we want
-	//dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
+    // temp path isn't what we want
+    //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
 
-	//char ShellPath[MAX_PATH];
+    //char ShellPath[MAX_PATH];
 
-	GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
+    GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
 
 
   char appDataPath [MAX_PATH + 1];
@@ -197,54 +200,54 @@ CString CColorCopApp::GetTempFolder()
     }
   }*/
 
-	strTmpPath.ReleaseBuffer();
+    strTmpPath.ReleaseBuffer();
 
-	
-	return strTmpPath;
+    
+    return strTmpPath;
 }
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 {
-	RECT rc;
-	GetWindowRect(hwnd, &rc);
-	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-	dlg.WinLocX= rc.left;
-	dlg.WinLocY= rc.top;
+    RECT rc;
+    GetWindowRect(hwnd, &rc);
+    SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+    dlg.WinLocX= rc.left;
+    dlg.WinLocY= rc.top;
 }
 
 
 BOOL CColorCopApp::InitApplication() 
 {
 
-	CString strInitFile = GetTempFolder();
+    CString strInitFile = GetTempFolder();
 
-	strInitFile += INI_FILE_DIR;
+    strInitFile += INI_FILE_DIR;
 
-	strInitFile += INI_FILE;
+    strInitFile += INI_FILE;
 
-	
-	CFile file;
-	if(file.Open(strInitFile, CFile::modeRead)) {
-		CArchive ar(&file, CArchive::load);
-		Serialize(ar);
-	} else {
+    
+    CFile file;
+    if(file.Open(strInitFile, CFile::modeRead)) {
+        CArchive ar(&file, CArchive::load);
+        Serialize(ar);
+    } else {
 
-		// First time we are running color Cop
-		CString strAppDirectory = GetTempFolder();
-		strAppDirectory += INI_FILE_DIR;
-		CreateDirectory(strAppDirectory.GetBuffer(MAX_PATH), NULL);
-		strAppDirectory.ReleaseBuffer();
+        // First time we are running color Cop
+        CString strAppDirectory = GetTempFolder();
+        strAppDirectory += INI_FILE_DIR;
+        CreateDirectory(strAppDirectory.GetBuffer(MAX_PATH), NULL);
+        strAppDirectory.ReleaseBuffer();
 
-		LoadDefaultSettings();
+        LoadDefaultSettings();
 
-		
+        
 
-		ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);;
+        ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);;
 
-		// set the window to be in the middle
-	}
+        // set the window to be in the middle
+    }
 
-	return CWinApp::InitApplication();
+    return CWinApp::InitApplication();
 }
 
 
@@ -284,26 +287,26 @@ void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
     GetMonitorInfo(hMonitor, &mi);
 
     if (flags & MONITOR_WORKAREA)
-	   rc = mi.rcWork;
+       rc = mi.rcWork;
     else
-	   rc = mi.rcMonitor;
+       rc = mi.rcMonitor;
 
     //
     // center or clip the passed rect to the monitor rect
     //
     if (flags & MONITOR_CENTER)
     {
-	   prc->left   = rc.left + (rc.right  - rc.left - w) / 2;
-	   prc->top    = rc.top  + (rc.bottom - rc.top  - h) / 2;
-	   prc->right  = prc->left + w;
-	   prc->bottom = prc->top  + h;
+       prc->left   = rc.left + (rc.right  - rc.left - w) / 2;
+       prc->top    = rc.top  + (rc.bottom - rc.top  - h) / 2;
+       prc->right  = prc->left + w;
+       prc->bottom = prc->top  + h;
     }
     else
     {
-	   prc->left   = max(rc.left, min(rc.right-w,  prc->left));
-	   prc->top    = max(rc.top,  min(rc.bottom-h, prc->top));
-	   prc->right  = prc->left + w;
-	   prc->bottom = prc->top  + h;
+       prc->left   = max(rc.left, min(rc.right-w,  prc->left));
+       prc->top    = max(rc.top,  min(rc.bottom-h, prc->top));
+       prc->right  = prc->left + w;
+       prc->bottom = prc->top  + h;
     }
 
 
@@ -314,117 +317,117 @@ void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
 
 void CColorCopApp::LoadDefaultSettings() {
 
-		// This function is called when we can't find a .DAT file
-		// with the persistent variables, or it was an old dat file
+        // This function is called when we can't find a .DAT file
+        // with the persistent variables, or it was an old dat file
 
-		// OK - better set the default settings and custom colors
+        // OK - better set the default settings and custom colors
 
-		dlg.m_Reddec   = 171;	// load navy blue websafe, a cool color to start with
-		dlg.m_Greendec = 208;
-		dlg.m_Bluedec  = 188;
-		dlg.m_Appflags = 0;		// reset
-		dlg.m_Appflags |= AlwaysOnTop;
-		dlg.m_Appflags |= AutoCopytoClip;
-		dlg.m_Appflags |= ModeHTML;
-		dlg.m_Appflags |= EasyMove;
-		dlg.m_Appflags |= Sampling1;
-		dlg.m_Appflags |= ExpandedDialog;
-		dlg.m_Appflags |= MultipleInstances;
-		dlg.m_Appflags |= MAGWHILEEYEDROP;
-		dlg.m_Appflags |= SpaceRGB;
-		
-		dlg.WinLocX=200;
-		dlg.WinLocY=200;
+        dlg.m_Reddec   = 171;    // load navy blue websafe, a cool color to start with
+        dlg.m_Greendec = 208;
+        dlg.m_Bluedec  = 188;
+        dlg.m_Appflags = 0;        // reset
+        dlg.m_Appflags |= AlwaysOnTop;
+        dlg.m_Appflags |= AutoCopytoClip;
+        dlg.m_Appflags |= ModeHTML;
+        dlg.m_Appflags |= EasyMove;
+        dlg.m_Appflags |= Sampling1;
+        dlg.m_Appflags |= ExpandedDialog;
+        dlg.m_Appflags |= MultipleInstances;
+        dlg.m_Appflags |= MAGWHILEEYEDROP;
+        dlg.m_Appflags |= SpaceRGB;
+        
+        dlg.WinLocX=200;
+        dlg.WinLocY=200;
 
-		dlg.m_iSamplingOffset=3;
+        dlg.m_iSamplingOffset=3;
 
 
-		// set all custom color blocks to white
-		for(int initcolor = 0; initcolor < 16; initcolor++)
-		{
-			dlg.CustColorBank[initcolor] = (COLORREF) 0x00FFFFFF;  
-		}
-		            //C++ explicit hex 0x00bbggrr 
+        // set all custom color blocks to white
+        for(int initcolor = 0; initcolor < 16; initcolor++)
+        {
+            dlg.CustColorBank[initcolor] = (COLORREF) 0x00FFFFFF;  
+        }
+                    //C++ explicit hex 0x00bbggrr 
 
-		dlg.ColorHistory[0] = (COLORREF) 0x00223300;	// setup default colors for the
-		dlg.ColorHistory[1] = (COLORREF) 0x000000FF;	// color history bar
-		dlg.ColorHistory[2] = (COLORREF) 0x0000FF99;
-		dlg.ColorHistory[3] = (COLORREF) 0x009999FF;	
-		dlg.ColorHistory[4] = (COLORREF) 0x00FF9900;
-		dlg.ColorHistory[5] = (COLORREF) 0x00FFFF99;
-		dlg.ColorHistory[6] = (COLORREF) 0x00999900;
+        dlg.ColorHistory[0] = (COLORREF) 0x00223300;    // setup default colors for the
+        dlg.ColorHistory[1] = (COLORREF) 0x000000FF;    // color history bar
+        dlg.ColorHistory[2] = (COLORREF) 0x0000FF99;
+        dlg.ColorHistory[3] = (COLORREF) 0x009999FF;    
+        dlg.ColorHistory[4] = (COLORREF) 0x00FF9900;
+        dlg.ColorHistory[5] = (COLORREF) 0x00FFFF99;
+        dlg.ColorHistory[6] = (COLORREF) 0x00999900;
 
-	return;
+    return;
 }
 
 void CColorCopApp::CloseApplication() {
 
-	////////////////////////////////////////////////////////////
-	// This function writes the settings to a file.  It is the 
-	// last thing the application will do. It will only write to
-	// a file when the dialog has been closed IDOK or IDCANCEL
+    ////////////////////////////////////////////////////////////
+    // This function writes the settings to a file.  It is the 
+    // last thing the application will do. It will only write to
+    // a file when the dialog has been closed IDOK or IDCANCEL
 
 
-	CString strInitFile = GetTempFolder();
+    CString strInitFile = GetTempFolder();
 
-	strInitFile += INI_FILE_DIR;
+    strInitFile += INI_FILE_DIR;
 
-	strInitFile += INI_FILE;
+    strInitFile += INI_FILE;
 
-	CFile file;
-	if(file.Open(strInitFile,CFile::modeWrite|CFile::modeCreate))
-	{
-		CArchive ar(&file, CArchive::store);
-		Serialize(ar);
-	}
+    CFile file;
+    if(file.Open(strInitFile,CFile::modeWrite|CFile::modeCreate))
+    {
+        CArchive ar(&file, CArchive::store);
+        Serialize(ar);
+    }
 
-	// release mutex.  what if this fails
-	ReleaseMutex(m_hMutex);
+    // release mutex.  what if this fails
+    ReleaseMutex(m_hMutex);
 
-	return;
+    return;
 }
 
 void CColorCopApp::Serialize(CArchive& ar) 
 {
 
-	if (ar.IsStoring())	{	
-		// storing code
-		try {
-			ar << dlg.m_Reddec;
-			ar << dlg.m_Greendec;
-			ar << dlg.m_Bluedec;
-			ar << dlg.m_Appflags;
-			ar << dlg.WinLocX;
-			ar << dlg.WinLocY;
-			for (int j = 0; j<16; j++)		//load custom color values to array
-				ar << dlg.CustColorBank[j];
-			for(int w = 0; w<7; w++)		// save color history values
-				ar << dlg.ColorHistory[w];
+    if (ar.IsStoring())    {    
+        // storing code
+        try {
+            ar << dlg.m_Reddec;
+            ar << dlg.m_Greendec;
+            ar << dlg.m_Bluedec;
+            ar << dlg.m_Appflags;
+            ar << dlg.WinLocX;
+            ar << dlg.WinLocY;
+            for (int j = 0; j<16; j++)        //load custom color values to array
+                ar << dlg.CustColorBank[j];
+            for(int w = 0; w<7; w++)        // save color history values
+                ar << dlg.ColorHistory[w];
 
-			ar <<  dlg.m_iSamplingOffset;
+            ar <<  dlg.m_iSamplingOffset;
 
-		} catch (CArchiveException*) {
-			AfxMessageBox(_T("Error writing data.."));
-		}
-	} else {
-		// loading code
-		try {
-			ar >> dlg.m_Reddec;
-			ar >> dlg.m_Greendec;
-			ar >> dlg.m_Bluedec;
-			ar >> dlg.m_Appflags;
-			ar >> dlg.WinLocX;
-			ar >> dlg.WinLocY;
-			for (int j = 0; j<16; j++)		//load custom color values to array
-				ar >> dlg.CustColorBank[j];
-			for(int w = 0; w<7; w++)		// save color history values
-				ar >> dlg.ColorHistory[w];
-	
-			ar >>  dlg.m_iSamplingOffset;
+        } catch (CArchiveException*) {
+            AfxMessageBox(_T("Error writing data.."));
+        }
+    } else {
+        // loading code
+        try {
+            ar >> dlg.m_Reddec;
+            ar >> dlg.m_Greendec;
+            ar >> dlg.m_Bluedec;
+            ar >> dlg.m_Appflags;
+            ar >> dlg.WinLocX;
+            ar >> dlg.WinLocY;
+            for (int j = 0; j<16; j++)        //load custom color values to array
+                ar >> dlg.CustColorBank[j];
+            for(int w = 0; w<7; w++)        // save color history values
+                ar >> dlg.ColorHistory[w];
+    
+            ar >>  dlg.m_iSamplingOffset;
 
-		} catch (CArchiveException*) {
+        } catch (CArchiveException*) {
 
-			AfxMessageBox(_T("Please delete ColorCop.dat"));
-		}
-	}
+            AfxMessageBox(_T("Please delete ColorCop.dat"));
+        }
+    }
 }

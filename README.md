@@ -55,6 +55,20 @@ start ColorCop.sln
 - `colorspace.cpp/h` - Color conversion utilities
 - `Res/` - Application resources and icons
 
+## Code Linting
+
+This project uses `[cpplint](https://github.com/cpplint/cpplint)` to enforce C++ style guidelines.
+
+**Install:**
+```bash
+pip install cpplint
+```
+
+**Run linting:**
+```bash
+cpplint --recursive .
+```
+
 ### Contributing
 
 1. Fork the repository

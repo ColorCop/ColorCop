@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Jay Prall
+// SPDX-License-Identifier: MIT
+
 
 #include "stdafx.h"
 #include "colorspace.h"
@@ -10,52 +13,52 @@ protected:
 
 public:
 
-	// Red
-	BYTE GetRed() { return byRed; }
-	void SetRed(BYTE r) { byRed = r; }
+    // Red
+    BYTE GetRed() { return byRed; }
+    void SetRed(BYTE r) { byRed = r; }
 
-	// Green
-	BYTE GetGreen() { return byGreen; }
-	void SetGreen(BYTE g) { byGreen = g;}
-	
-	// Blue
-	BYTE GetBlue() { return byBlue; }
-	void SetBlue(BYTE b) { byBlue = b; }
+    // Green
+    BYTE GetGreen() { return byGreen; }
+    void SetGreen(BYTE g) { byGreen = g;}
+    
+    // Blue
+    BYTE GetBlue() { return byBlue; }
+    void SetBlue(BYTE b) { byBlue = b; }
 
-	// Cyan
-	BYTE GetCyan() { return byCyan; }
-	void SetCyan(BYTE c) { byCyan = c; }
+    // Cyan
+    BYTE GetCyan() { return byCyan; }
+    void SetCyan(BYTE c) { byCyan = c; }
 
-	// Magenta
-	BYTE GetMagenta() { return byCyan; }
-	void SetMagenta(BYTE c) { byCyan = c; }
+    // Magenta
+    BYTE GetMagenta() { return byCyan; }
+    void SetMagenta(BYTE c) { byCyan = c; }
 
-	// Yellow
-	BYTE GetYellow() { return byCyan; }
-	void SetYellow(BYTE c) { byCyan = c; }
+    // Yellow
+    BYTE GetYellow() { return byCyan; }
+    void SetYellow(BYTE c) { byCyan = c; }
 
-	// blacK
-	BYTE GetBlack() { return byCyan; }
-	void SetBlack(BYTE c) { byCyan = c; }
+    // blacK
+    BYTE GetBlack() { return byCyan; }
+    void SetBlack(BYTE c) { byCyan = c; }
 
-	// Hue
-	BYTE GetHue() { return byCyan; }
-	void SetHue(BYTE c) { byCyan = c; }
+    // Hue
+    BYTE GetHue() { return byCyan; }
+    void SetHue(BYTE c) { byCyan = c; }
 
-	// Saturation
-	BYTE GetSaturation() { return byCyan; }
-	void SetSaturation(BYTE c) { byCyan = c; }
+    // Saturation
+    BYTE GetSaturation() { return byCyan; }
+    void SetSaturation(BYTE c) { byCyan = c; }
 
-	// Brightness
-	BYTE GetBrightness() { return byCyan; }
-	void SetBrightness(BYTE c) { byCyan = c; }
+    // Brightness
+    BYTE GetBrightness() { return byCyan; }
+    void SetBrightness(BYTE c) { byCyan = c; }
 
-	// ctor
-	colorspace() 
-	{
+    // ctor
+    colorspace() 
+    {
 
 
-	}
+    }
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,73 +79,73 @@ public:
 // RGB2CMYK
 void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k)
 {
-	double R, G, B;
-	R = (double) r;
-	G = (double) g;
-	B = (double) b;
+    double R, G, B;
+    R = (double) r;
+    G = (double) g;
+    B = (double) b;
 
-	R = 1.0 - (R / 255.0);
-	G = 1.0 - (G / 255.0);
-	B = 1.0 - (B / 255.0);
+    R = 1.0 - (R / 255.0);
+    G = 1.0 - (G / 255.0);
+    B = 1.0 - (B / 255.0);
 
-	double C, M, Y, K;
-	if (R < G)
-		K = R;
-	else
-		K = G;
-	if (B < K)
-		K = B;
+    double C, M, Y, K;
+    if (R < G)
+        K = R;
+    else
+        K = G;
+    if (B < K)
+        K = B;
 
-	C = (R - K)/(1.0 - K);
-	M = (G - K)/(1.0 - K);
-	Y = (B - K)/(1.0 - K);
+    C = (R - K)/(1.0 - K);
+    M = (G - K)/(1.0 - K);
+    Y = (B - K)/(1.0 - K);
 
-	C = (C * 100) + 0.5;
-	M = (M * 100) + 0.5;
-	Y = (Y * 100) + 0.5;
-	K = (K * 100) + 0.5;
+    C = (C * 100) + 0.5;
+    M = (M * 100) + 0.5;
+    Y = (Y * 100) + 0.5;
+    K = (K * 100) + 0.5;
 
-	c = (BYTE) C;
-	m = (BYTE) M;
-	y = (BYTE) Y;
-	k = (BYTE) K;
+    c = (BYTE) C;
+    m = (BYTE) M;
+    y = (BYTE) Y;
+    k = (BYTE) K;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // CMYK2RGB
 COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k)
 {
-	BYTE r, g, b;
-	COLORREF rgb;
+    BYTE r, g, b;
+    COLORREF rgb;
 
-	double R, G, B;
-	double C, M, Y, K;
+    double R, G, B;
+    double C, M, Y, K;
 
-	C = (double) c;
-	M = (double) m;
-	Y = (double) y;
-	K = (double) k;
+    C = (double) c;
+    M = (double) m;
+    Y = (double) y;
+    K = (double) k;
 
-	C = C / 255.0;
-	M = M / 255.0;
-	Y = Y / 255.0;
-	K = K / 255.0;
+    C = C / 255.0;
+    M = M / 255.0;
+    Y = Y / 255.0;
+    K = K / 255.0;
 
-	R = C * (1.0 - K) + K;
-	G = M * (1.0 - K) + K;
-	B = Y * (1.0 - K) + K;
+    R = C * (1.0 - K) + K;
+    G = M * (1.0 - K) + K;
+    B = Y * (1.0 - K) + K;
 
-	R = (1.0 - R) * 255.0 + 0.5;
-	G = (1.0 - G) * 255.0 + 0.5;
-	B = (1.0 - B) * 255.0 + 0.5;
+    R = (1.0 - R) * 255.0 + 0.5;
+    G = (1.0 - G) * 255.0 + 0.5;
+    B = (1.0 - B) * 255.0 + 0.5;
 
-	r = (BYTE) R;
-	g = (BYTE) G;
-	b = (BYTE) B;
+    r = (BYTE) R;
+    g = (BYTE) G;
+    b = (BYTE) B;
 
-	rgb = RGB(r,g,b);
+    rgb = RGB(r,g,b);
 
-	return rgb;
+    return rgb;
 }
 
 

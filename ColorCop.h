@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Jay Prall
+// SPDX-License-Identifier: MIT
+
 // ColorCop.h : main header file for the Color Cop application
 //
 
@@ -9,12 +12,12 @@
 #endif // _MSC_VER >= 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+    #error include 'stdafx.h' before including this file for PCH
 #endif
 
 
-#include "resource.h"		// main symbols
-#include "ColorCopDlg.h"	// Added by ClassView
+#include "resource.h"        // main symbols
+#include "ColorCopDlg.h"    // Added by ClassView
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopApp:
@@ -24,40 +27,40 @@
 class CColorCopApp : public CWinApp
 {
 public:
-	CColorCopDlg dlg;
-	CColorCopApp();
-	~CColorCopApp();
+    CColorCopDlg dlg;
+    CColorCopApp();
+    ~CColorCopApp();
 
 
 protected:
-	void CColorCopApp::CloseApplication();
-	void CColorCopApp::LoadDefaultSettings();
-	CString CColorCopApp::GetTempFolder();
-	BOOL CColorCopApp::GetShellFolderPath(char * pShellFolder, char * pShellPath);
-	void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
+    void CColorCopApp::CloseApplication();
+    void CColorCopApp::LoadDefaultSettings();
+    CString CColorCopApp::GetTempFolder();
+    BOOL CColorCopApp::GetShellFolderPath(char * pShellFolder, char * pShellPath);
+    void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
 
-	// multi mon
-	void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
+    // multi mon
+    void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
 
-	bool InstanceRunning();
+    bool InstanceRunning();
     HANDLE m_hMutex;
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CColorCopApp)
-	public:
-	virtual BOOL InitInstance();
-	virtual BOOL InitApplication();
-	virtual void Serialize(CArchive& ar);
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CColorCopApp)
+    public:
+    virtual BOOL InitInstance();
+    virtual BOOL InitApplication();
+    virtual void Serialize(CArchive& ar);
+    //}}AFX_VIRTUAL
 
 // Implementation
 
-	//{{AFX_MSG(CColorCopApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CColorCopApp)
+        // NOTE - the ClassWizard will add and remove member functions here.
+        //    DO NOT EDIT what you see in these blocks of generated code !
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 
