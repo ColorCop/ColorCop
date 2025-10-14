@@ -14,11 +14,9 @@
 #endif // _MSC_VER >= 1000
 
 
+#define WINVER          0x0501    // Windows XP
+#define _WIN32_WINNT   0x0501    // Windows XP
 
-
-
-#define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
-                            // same as lean and mean
 #define AlwaysOnTop            4
 #define UpperCaseHex        8
 #define OmitPound            16
