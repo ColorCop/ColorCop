@@ -95,9 +95,6 @@ void CSystemTray::Initialise()
     m_DefaultMenuItemByPos = TRUE;
 }
 
-//photo rescue 2.1.680
-
-
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
                          HICON icon, UINT uID)
 {
