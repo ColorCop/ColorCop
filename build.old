@@ -1,3 +1,0 @@
-set PLATFORM=win32
-nmake /f ColorCop.mak ALL
-

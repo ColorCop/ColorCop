@@ -21,6 +21,7 @@
 #include <windows.h>
 #include <winuser.h>
 
+constexpr int WEBSAFE_STEP = 51;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2830,7 +2831,7 @@ int CColorCopDlg::DecimaltoWebsafe(int originalDec)
     // this function takes an int and converts 
     // it to the closest web safe int
     //
-    int offset = originalDec % 51;
+    int offset = originalDec % WEBSAFE_STEP;
     
     if (offset == 0) {
         // already a web safe int
@@ -2840,7 +2841,7 @@ int CColorCopDlg::DecimaltoWebsafe(int originalDec)
         return (originalDec - offset);
     } else {
         // jump up one
-        return (originalDec + (51 - offset));
+        return (originalDec + (WEBSAFE_STEP - offset));
     }
 }
 
@@ -3520,7 +3521,7 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     // because it will just snap lower.
 
     if (m_Appflags & SnaptoWebsafe)        // therefore, increment or decrement by 51
-        offset = 51; 
+        offset = WEBSAFE_STEP;
 
     if (curfocus == GetDlgItem(IDC_RED)) {            // red has focus
         m_Reddec+=zDelta/WHEEL_DELTA * offset;
@@ -3906,19 +3907,11 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
 }
 
 bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
-
-    // WebSafe colors are have decimal triplets that are multiples of 51
-    if ((R+B+G) % 51 == 0) {
-        // all were multiples of 51
-        return true;
-    } else {
-        return false;
-    }
+    // WebSafe colors have each channel as a multiple of WEBSAFE_STEP (51)
+    return (R % WEBSAFE_STEP == 0) &&
+           (G % WEBSAFE_STEP == 0) &&
+           (B % WEBSAFE_STEP == 0);
 }
-
-
-
-
 
 void CColorCopDlg::OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI) 
 {
@@ -4005,7 +3998,6 @@ void CColorCopDlg::OnPopupSamplingMultipixel()
 void CColorCopDlg::OnUpdatePopupSamplingMultipixel(CCmdUI* pCmdUI) 
 {
     pCmdUI->SetRadio(m_Appflags & SamplingMULTI);     
-
 }
 
 void CColorCopDlg::OnPopupSpaceRgb() 
@@ -4110,4 +4102,3 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB)
     txt.FreeExtra();
     UpdateWindow();
 }
-
