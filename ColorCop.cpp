@@ -66,15 +66,6 @@ BOOL CColorCopApp::InitInstance()
     #endif
 
 
-    // Depreciated Functions in MFC 5.0
-    #if _MSC_VER < 1300
-        #ifdef _AFXDLL
-            Enable3dControls();            // shared 
-        #else
-            Enable3dControlsStatic();    // static
-        #endif
-    #endif
-
     // see srand
     srand( (unsigned)time(NULL) );
 

@@ -1342,19 +1342,9 @@ void CColorCopDlg::DisplayColor()
             pDC->FrameRect(&insiderect, &blackbrush);
             // show the point that the eyedropper is on
 
-/*
-            if (m_Appflags & ExpandedDialog) 
 
-                         magrect.TopLeft().x+2, magrect.TopLeft().y+2 , // upper left dest
-                         magrect.Width()-4, magrect.Height()-4,  // width of dest rect
-        }
-*/
         }
     }
-
-//    char jj[80];
-//    wsprintf(jj," colorpal blocks are .. %d x %d", m_nwide, m_ntall);
-//    SetStatusBarText(jj);
     
     ReleaseDC(pDC);        // free memory
     return;
@@ -1426,7 +1416,7 @@ void CColorCopDlg::OnChangeCyan()
 void CColorCopDlg::OnChangeMagenta() 
 {
     UpdateData(TRUE);
-    if (m_Magenta>100) {    
+    if (m_Magenta > 100) {    
         m_Magenta = 100;
     }
     CalcColorPal();
@@ -1437,7 +1427,7 @@ void CColorCopDlg::OnChangeMagenta()
 void CColorCopDlg::OnChangeYellow() 
 {
     UpdateData(TRUE);
-    if (m_Yellow>100) {    
+    if (m_Yellow > 100) {    
         m_Yellow = 100;
     }
     CalcColorPal();
@@ -1498,7 +1488,6 @@ void CColorCopDlg::OnCopytoclip()
 
             clipbuffer=::GlobalAlloc(GMEM_DDESHARE, m_Hexcolor.GetLength()+1);
             buffer = (char *) GlobalLock(clipbuffer);
-            //_tcscpy_s(m_tnd.szTip, 128, szToolTip);
 
             strcpy(buffer, LPCSTR(m_Hexcolor));
 
@@ -1536,7 +1525,6 @@ void CColorCopDlg::StopCapture()
 
         }
     }
-    //m_EyeLoc.SetIcon(m_hEyeCursor);
     m_Magnifier.SetIcon(m_hMagCursor);
 
     bRelativePosition=false;
