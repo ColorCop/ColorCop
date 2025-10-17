@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 // ColorCop.h : main header file for the Color Cop application
-//
+//`
 
 #if !defined(AFX_HTMLCOP_H__EC2A34E4_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
 #define AFX_HTMLCOP_H__EC2A34E4_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_

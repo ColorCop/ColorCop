@@ -20,8 +20,6 @@
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
-//#include "WavTipCtrl.h"        // used to add tooltips to the dialog :)
-
 
 class CSystemTray;
 
@@ -152,7 +150,6 @@ protected:
     HCURSOR m_hStandardCursor;
     HCURSOR m_hMoveCursor;
     HCURSOR m_hHandCursor;
-    //HCURSOR m_hEyeCursor_3x3, m_hEyeCursor_5x5;
 
     ////  systray Internal data
     HICON hIcon_;
