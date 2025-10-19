@@ -28,10 +28,10 @@ jobs:
                  /p:PackageCertificatePassword=${PFX_PASSWORD} \
                  /p:AppxBundle=Always \
                  /p:UapAppxPackageBuildMode=StoreUpload \
-                 ${GITHUB_WORKSPACE}/${PROJECT_FILE}
+                 ${GITHUB_WORKSPACE}/ColorCop.sln
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: AppPackages
           path: AppPackages
