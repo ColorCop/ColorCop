@@ -69,7 +69,7 @@ BOOL CColorCopApp::InitInstance()
     // Depreciated Functions in MFC 5.0
     #if _MSC_VER < 1300
         #ifdef _AFXDLL
-            Enable3dControls();            // shared 
+            Enable3dControls();            // shared
         #else
             Enable3dControlsStatic();    // static
         #endif
@@ -101,23 +101,22 @@ BOOL CColorCopApp::InitInstance()
 
     // set the main window
         m_pMainWnd = &dlg;
-        
+
         int nResponse = dlg.DoModal();        // Launch the color cop dialog
-    
+
         if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
-        
+
             CloseApplication();        // write the data to a file
         }
 
     return FALSE;
 }
 
-//http://www.koders.com/cpp/fidDA7CC61A9668A4356119E1B5E6F54836B44200D8.aspx?s=InstanceRunning
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning()
 {
     m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
-    
+
     if(m_hMutex)
     {
         DWORD dwWait = WaitForSingleObject(m_hMutex, 10);
@@ -170,7 +169,7 @@ CString CColorCopApp::GetTempFolder()
 //    DWORD dwL;
 
     //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
-    
+
     GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
 
 
@@ -188,7 +187,7 @@ CString CColorCopApp::GetTempFolder()
 
   char appDataPath [MAX_PATH + 1];
   csString path;
-  
+
   // Try to retrieve "Application Data" directory
   if (!GetShellFolderPath (CSIDL_APPDATA, appDataPath))
   {
@@ -202,7 +201,7 @@ CString CColorCopApp::GetTempFolder()
 
     strTmpPath.ReleaseBuffer();
 
-    
+
     return strTmpPath;
 }
 
@@ -216,7 +215,7 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 }
 
 
-BOOL CColorCopApp::InitApplication() 
+BOOL CColorCopApp::InitApplication()
 {
 
     CString strInitFile = GetTempFolder();
@@ -225,7 +224,7 @@ BOOL CColorCopApp::InitApplication()
 
     strInitFile += INI_FILE;
 
-    
+
     CFile file;
     if(file.Open(strInitFile, CFile::modeRead)) {
         CArchive ar(&file, CArchive::load);
@@ -240,7 +239,7 @@ BOOL CColorCopApp::InitApplication()
 
         LoadDefaultSettings();
 
-        
+
 
         ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);;
 
@@ -335,7 +334,7 @@ void CColorCopApp::LoadDefaultSettings() {
         dlg.m_Appflags |= MultipleInstances;
         dlg.m_Appflags |= MAGWHILEEYEDROP;
         dlg.m_Appflags |= SpaceRGB;
-        
+
         dlg.WinLocX=200;
         dlg.WinLocY=200;
 
@@ -345,14 +344,14 @@ void CColorCopApp::LoadDefaultSettings() {
         // set all custom color blocks to white
         for(int initcolor = 0; initcolor < 16; initcolor++)
         {
-            dlg.CustColorBank[initcolor] = (COLORREF) 0x00FFFFFF;  
+            dlg.CustColorBank[initcolor] = (COLORREF) 0x00FFFFFF;
         }
-                    //C++ explicit hex 0x00bbggrr 
+                    //C++ explicit hex 0x00bbggrr
 
         dlg.ColorHistory[0] = (COLORREF) 0x00223300;    // setup default colors for the
         dlg.ColorHistory[1] = (COLORREF) 0x000000FF;    // color history bar
         dlg.ColorHistory[2] = (COLORREF) 0x0000FF99;
-        dlg.ColorHistory[3] = (COLORREF) 0x009999FF;    
+        dlg.ColorHistory[3] = (COLORREF) 0x009999FF;
         dlg.ColorHistory[4] = (COLORREF) 0x00FF9900;
         dlg.ColorHistory[5] = (COLORREF) 0x00FFFF99;
         dlg.ColorHistory[6] = (COLORREF) 0x00999900;
@@ -363,7 +362,7 @@ void CColorCopApp::LoadDefaultSettings() {
 void CColorCopApp::CloseApplication() {
 
     ////////////////////////////////////////////////////////////
-    // This function writes the settings to a file.  It is the 
+    // This function writes the settings to a file.  It is the
     // last thing the application will do. It will only write to
     // a file when the dialog has been closed IDOK or IDCANCEL
 
@@ -387,10 +386,10 @@ void CColorCopApp::CloseApplication() {
     return;
 }
 
-void CColorCopApp::Serialize(CArchive& ar) 
+void CColorCopApp::Serialize(CArchive& ar)
 {
 
-    if (ar.IsStoring())    {    
+    if (ar.IsStoring())    {
         // storing code
         try {
             ar << dlg.m_Reddec;
@@ -422,7 +421,7 @@ void CColorCopApp::Serialize(CArchive& ar)
                 ar >> dlg.CustColorBank[j];
             for(int w = 0; w<7; w++)        // save color history values
                 ar >> dlg.ColorHistory[w];
-    
+
             ar >>  dlg.m_iSamplingOffset;
 
         } catch (CArchiveException*) {

@@ -53,11 +53,17 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
+      - name: Build x64 Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        if: matrix.configuration == 'Release'
+        with:
+          path: inno\colorcop.iss
+          options: /O+
+
       - name: Publish Release Artifacts
         uses: actions/upload-artifact@v4
         if: matrix.configuration == 'Release'
         with:
-          name: windows_artifacts_release
-          path: |
-            ${{ github.workspace }}/Release/*.exe
+          name: installers
+          path: .\output
           retention-days: 30

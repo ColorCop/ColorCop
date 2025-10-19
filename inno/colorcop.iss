@@ -11,11 +11,11 @@ AppUpdatesURL=http://colorcop.net
 DefaultDirName={pf}\Color_Cop
 DefaultGroupName=Color Cop
 AllowNoIcons=yes
-LicenseFile=C:\programming\ColorCopPro\packaging\colorcop\license.txt
-InfoBeforeFile=C:\programming\ColorCopPro\packaging\colorcop\readme.txt
-OutputDir=C:\programming\ColorCopPro\packaging\colorcop
+LicenseFile=..\LICENSE.TXT
+InfoBeforeFile=..\ReadMe.txt
+OutputDir=..\Output
 OutputBaseFilename=colorcop-setup
-SetupIconFile=C:\programming\ColorCopPro\Res\idr_main.ico
+SetupIconFile=..\Res\idr_main.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -27,15 +27,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\programming\ColorCopPro\packaging\colorcop\readme.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\ColorCopPro\packaging\colorcop\ColorCop.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\ColorCopPro\packaging\colorcop\ColorCop.HLP"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\ColorCopPro\packaging\colorcop\file_id.diz"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\ColorCopPro\packaging\colorcop\license.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\readme.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Release\ColorCop.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\packaging\colorcop\ColorCop.HLP"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\LICENSE.TXT"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
-Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://www.prall.net/re/?ColorCop_shortcut"
+Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://colorcop.net/"
 
 [Icons]
 Name: "{group}\Color Cop"; Filename: "{app}\ColorCop.exe"
