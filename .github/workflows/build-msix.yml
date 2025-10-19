@@ -1,0 +1,37 @@
+name: Build MSIX Package
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Restore NuGet packages
+      - name: Restore NuGet Packages
+        run: dotnet restore
+
+      # Build and package
+      - name: Build and Package
+        env:
+          PFX_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+        run: |
+          msbuild /m /p:Configuration=Release /p:Platform=x64 \
+                 /p:GenerateAppxPackageOnBuild=true \
+                 /p:AppxPackageSigningEnabled=true \
+                 /p:PackageCertificateThumbprint=${CERT_THUMBPRINT} \
+                 /p:PackageCertificatePassword=${PFX_PASSWORD} \
+                 /p:AppxBundle=Always \
+                 /p:UapAppxPackageBuildMode=StoreUpload \
+                 ${GITHUB_WORKSPACE}/${PROJECT_FILE}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: AppPackages
+          path: AppPackages
