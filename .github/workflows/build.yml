@@ -53,6 +53,20 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
+      # Clean and prepare distribution directory
+      - name: Prepare Distribution Directory
+        run: |
+          rmdir /S /Q Release-standalone
+          mkdir Release-standalone
+
+      # Copy files to distribution directory
+      - name: Copy Files
+        run: |
+          copy Release\*.exe Release-standalone
+          copy ReadMe.txt Release-standalone
+          copy LICENSE.TXT Release-standalone
+          copy packaging\*.HLP Release-standalone
+
       - name: Publish Release Artifacts
         uses: actions/upload-artifact@v4
         if: matrix.configuration == 'Release'
