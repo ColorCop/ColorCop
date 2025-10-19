@@ -53,25 +53,19 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
-      # Clean and prepare distribution directory
-      - name: Prepare Distribution Directory
-        run: |
-          rmdir /S /Q Release-standalone
-          mkdir Release-standalone
-
-      # Copy files to distribution directory
-      - name: Copy Files
-        run: |
-          copy Release\*.exe Release-standalone
-          copy ReadMe.txt Release-standalone
-          copy LICENSE.TXT Release-standalone
-          copy packaging\*.HLP Release-standalone
-
-      - name: Publish Release Artifacts
-        uses: actions/upload-artifact@v4
+      # Build x64 installer
+      - name: Build x64 Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         if: matrix.configuration == 'Release'
         with:
-          name: windows_artifacts_release
-          path: |
-            ${{ github.workspace }}/Release/*.exe
+          path: inno\colorcop.iss
+          options: /O+
+
+      - name: Publish Release Artifacts
+        uses: actions/upload-artifact@v3
+        if: matrix.configuration == 'Release'
+        with:
+          name: installers
+          path: .\output
           retention-days: 30
+
