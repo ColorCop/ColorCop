@@ -53,7 +53,6 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
-      # Build x64 installer
       - name: Build x64 Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         if: matrix.configuration == 'Release'
@@ -62,10 +61,9 @@ jobs:
           options: /O+
 
       - name: Publish Release Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: matrix.configuration == 'Release'
         with:
           name: installers
           path: .\output
           retention-days: 30
-
