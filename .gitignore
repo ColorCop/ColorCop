@@ -4,6 +4,9 @@
 *.o
 *.obj
 
+# ignore visual studio temporary files
+.vs/
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -16,10 +19,10 @@
 # Fortran module files
 *.mod
 
-# non-compiles browse files (NCB) used by IntelliSense 
+# non-compiles browse files (NCB) used by IntelliSense
 *.ncb
 
-# Visual Studio options file (OPT) used for breakpoints, etc 
+# Visual Studio options file (OPT) used for breakpoints, etc
 *.opt
 
 # Visual Studio log file (PLG) used for build output
