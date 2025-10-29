@@ -65,16 +65,6 @@ BOOL CColorCopApp::InitInstance()
         ::afxTraceEnabled = true;
     #endif
 
-
-    // Depreciated Functions in MFC 5.0
-    #if _MSC_VER < 1300
-        #ifdef _AFXDLL
-            Enable3dControls();            // shared
-        #else
-            Enable3dControlsStatic();    // static
-        #endif
-    #endif
-
     // see srand
     srand( (unsigned)time(NULL) );
 
@@ -166,9 +156,6 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
 CString CColorCopApp::GetTempFolder()
 {
     CString strTmpPath;
-//    DWORD dwL;
-
-    //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
 
     GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
 
