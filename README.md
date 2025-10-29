@@ -57,7 +57,7 @@ start ColorCop.sln
 
 ## Code Linting
 
-This project uses `[cpplint](https://github.com/cpplint/cpplint)` to enforce C++ style guidelines.
+This project uses [cpplint](https://github.com/cpplint/cpplint) to enforce C++ style guidelines.
 
 **Install:**
 ```bash
