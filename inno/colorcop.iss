@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Color Cop
-AppVerName=Color Cop 5.4.3
+AppVerName=Color Cop 5.4.6
 AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
