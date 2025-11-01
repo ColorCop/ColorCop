@@ -54,7 +54,7 @@ jobs:
           MSBuild.exe $msbuildArgs
 
       - name: Build x64 Installer
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
         if: matrix.configuration == 'Release'
         with:
           path: inno\colorcop.iss
