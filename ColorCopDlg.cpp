@@ -266,11 +266,8 @@ BOOL CColorCopDlg::OnInitDialog()
     SetupWindowRects();
     SetupStatusBar();
 
-    
     TestForExpand();    // do not call this before SetupWindowRects();
-    
-    // TODO: figure out tool tips
-    //EnableToolTips(true);    
+
     if (!m_ToolTip.Create(this)) {
         TRACE0("Unable to create a tool tip obj");
     } else {
@@ -3690,8 +3687,6 @@ void CColorCopDlg::OnUpdatePopupApplicationAllowmultipleinstances(CCmdUI* pCmdUI
 void CColorCopDlg::OnPopupOptionsMagnifywhileeyedropping() 
 {
         m_Appflags ^= MAGWHILEEYEDROP;
-
-    // TODO: Add your command handler code here
 }
 
 void CColorCopDlg::OnUpdatePopupOptionsMagnifywhileeyedropping(CCmdUI* pCmdUI) 

@@ -78,8 +78,7 @@ BOOL CColorCopApp::InitInstance()
                 // release the obj that we tried to create
                 ReleaseMutex(m_hMutex);
 
-                // TODO: find the current instance and bring forward instead of a msg.  fixes issue #4
-
+                // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
                 AfxMessageBox(IDS_APP_RUNNING);
 
                 // error instead
