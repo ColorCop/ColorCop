@@ -122,9 +122,8 @@ END_MESSAGE_MAP()
 
 HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor) 
 {
-    // TODO: Change any attributes of the DC here
-    
-    // TODO: Return a non-NULL brush if the parent's handler should not be called
+    // TODO(j4y): Change any attributes of the DC here
+    // TODO(j4y): Return a non-NULL brush if the parent's handler should not be called
 
     if (CTLCOLOR_STATIC == nCtlColor)
     {
