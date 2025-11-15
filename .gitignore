@@ -41,6 +41,9 @@
 *.001
 *.002
 
+# exlude Class Wizard files from version control
+*.clw
+
 # Visual Studio build output
 Release/
 Debug/
