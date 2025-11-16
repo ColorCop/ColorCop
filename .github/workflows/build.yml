@@ -15,6 +15,10 @@ jobs:
 
     runs-on: windows-2022
 
+    # Grant minimal read-only access to repository contents
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
