@@ -11,6 +11,10 @@
 *.gch
 *.pch
 
+# Generated files
+*.dep
+*.mak
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
