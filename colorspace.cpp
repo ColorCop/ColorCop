@@ -20,7 +20,7 @@ public:
     // Green
     BYTE GetGreen() { return byGreen; }
     void SetGreen(BYTE g) { byGreen = g;}
-    
+
     // Blue
     BYTE GetBlue() { return byBlue; }
     void SetBlue(BYTE b) { byBlue = b; }
@@ -54,7 +54,7 @@ public:
     void SetBrightness(BYTE c) { byCyan = c; }
 
     // ctor
-    colorspace() 
+    colorspace()
     {
 
 

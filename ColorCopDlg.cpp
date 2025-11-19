@@ -3,7 +3,7 @@
 
 /************************************************************************************
  *                                                                                  *
- * ColorCopDlg.cpp :: Color Cop 
+ * ColorCopDlg.cpp :: Color Cop
  *
  ************************************************************************************/
 
@@ -49,7 +49,7 @@ public:
     //}}AFX_VIRTUAL
 
 // Implementation
-  
+
 protected:
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
@@ -255,7 +255,7 @@ BOOL CColorCopDlg::OnInitDialog()
     SetupSystemMenu();            // add about and always on top to the system menu
 
     bool FoundDatFile = LoadPersistentVariables();
-    
+
     // Set the Window Title to Color Cop
     CString strAppName;
     strAppName.LoadString(IDS_APPLICATION_NAME);
@@ -271,7 +271,7 @@ BOOL CColorCopDlg::OnInitDialog()
     if (!m_ToolTip.Create(this)) {
         TRACE0("Unable to create a tool tip obj");
     } else {
-        // Add tool tips to the controls, either by hard coded string 
+        // Add tool tips to the controls, either by hard coded string
         // or using the string table resource
     //    m_ToolTip.AddTool( &m_myButton, _T("This is a tool tip!"));
         m_ToolTip.AddTool( &m_ExpandDialog, IDS_EXPANDEDDIALOG);
@@ -282,16 +282,16 @@ BOOL CColorCopDlg::OnInitDialog()
 
 
     nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
-    
+
     //application variables
     m_isMagPlusDown = m_isMagMinusDown = bOldClrExist = FALSE;
     m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
     m_OldRed = m_OldBlue = m_OldGreen = 0;
     bMinimized_= false;
     pTrayIcon_ = 0;
-    
+
     //    hIcon_ = AfxGetApp()->LoadIcon(IDR_MAINFRAME);    // old way
-    
+
     // new non aliased way to do the icon :)
     //SetIcon:: Specifies a 32 pixel by 32 pixel icon if TRUE; specifies a 16 pixel by 16 pixel icon if FALSE.
 
@@ -299,7 +299,7 @@ BOOL CColorCopDlg::OnInitDialog()
     hIcon_ = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
         GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), NULL);
     // large one
-    m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, 
+    m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
         GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), NULL);
 
 
@@ -312,7 +312,7 @@ BOOL CColorCopDlg::OnInitDialog()
 
     // PreLoad Cursors
     CWinApp* pApp = AfxGetApp();    // get a pointer to the one and only CWinApp
-    
+
     if (pApp)
     {
     //    VERIFY(m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER));
@@ -323,7 +323,7 @@ BOOL CColorCopDlg::OnInitDialog()
         m_Magnifier.SetIcon(m_hMagCursor);
         m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
     //    m_hHandCursor = pApp->LoadCursor(IDC_HAND);
-        
+
 
         //  m_hHandCursor = ::LoadCursor(AfxGetResourceHandle(), MAKEINTRESOURCE(IDC_HAND));
 
@@ -331,21 +331,21 @@ BOOL CColorCopDlg::OnInitDialog()
         m_hBlank = pApp->LoadIcon(IDI_BLANK);
         m_hStandardCursor = pApp->LoadStandardCursor(IDC_ARROW);
     }
-    
+
 
 
 
     // upgrade case -- make sure there is a color space set
     if ((!(m_Appflags & SpaceCMYK)) && (!(m_Appflags & SpaceRGB))) {
         m_Appflags |= SpaceRGB;
-    } else if (m_Appflags & SpaceCMYK) { 
+    } else if (m_Appflags & SpaceCMYK) {
         ChangeColorSpace(false);
     } else {//rgb
         ChangeColorSpace(true);
     }
-    
+
     if (m_Appflags & USECROSSHAIR) {
-        
+
             CWinApp* pApp = AfxGetApp();
             m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
 
@@ -353,7 +353,7 @@ BOOL CColorCopDlg::OnInitDialog()
 
         m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
         m_EyeLoc.SetIcon(m_hEyeCursor);                        // location cursor
-    
+
     } else {
 
         m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);    // eyedropper cursor
@@ -363,24 +363,24 @@ BOOL CColorCopDlg::OnInitDialog()
         } else if (m_Appflags & Sampling3x3) {
             m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
         } else { // 1x1 or multi
-            m_EyeLoc.SetIcon(m_hEyeCursor);                    // location cursor 
+            m_EyeLoc.SetIcon(m_hEyeCursor);                    // location cursor
         }
     }
 
-    
+
 
 
     m_MagLevel = 5;
     m_FloatPrecision = 2;
     OnconvertRGB();
     CalcColorPal();
-    OnCopytoclip();    
+    OnCopytoclip();
 
-    
+
     // set focus on the eyedropper so there is no cursor
     m_EyeLoc.SetFocus();
 
-    
+
     // user wants to minimize on app start
     if (m_Appflags & MinimizeonStart)
     {
@@ -394,7 +394,7 @@ BOOL CColorCopDlg::OnInitDialog()
 
 
 
-    } else     if (m_Appflags & SETCURSORONEYEDROP) 
+    } else     if (m_Appflags & SETCURSORONEYEDROP)
     {
         m_bvisible=true;
         // don't move the cursor if the app is minimized
@@ -402,10 +402,10 @@ BOOL CColorCopDlg::OnInitDialog()
         m_EyeLoc.GetWindowRect(&eyerect);
         SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
 
-        
+
     }
 
-        
+
     return FALSE;  // return TRUE  unless you set the focus to a control
 
 }
@@ -458,7 +458,7 @@ bool CColorCopDlg::LoadPersistentVariables()
 
 //    strBMPFile.Append(BMP_FILE);
 
-    // 
+    //
     strBMPFile +=BMP_FILE_DIR;
     strBMPFile +=BMP_FILE;
 
@@ -469,7 +469,7 @@ bool CColorCopDlg::LoadPersistentVariables()
         //LPTSTR BMPName = _tcsrchr(szPath, '\\');
         //if(!BMPName)
             //BMPName = szPath;
-        
+
         //strcpy_s(BMPName, MAX_PATH-13, "\\ColorCop5.bmp");
         //_tcscpy(BMPName, "\\ColorCop5.bmp");
 
@@ -481,7 +481,7 @@ bool CColorCopDlg::LoadPersistentVariables()
 
         if (hBitmap) {
                 hZoomBitmap = hBitmap;
-        } 
+        }
         //else { //there was no bitmap to load        }
 //    }
 
@@ -490,8 +490,8 @@ bool CColorCopDlg::LoadPersistentVariables()
             /*
 
             This is to check to see if the location of colorcop was stored
-            as minimized.  programs aren't actually minimized, they seem to 
-            just be moved off the screen.  The problem is different 
+            as minimized.  programs aren't actually minimized, they seem to
+            just be moved off the screen.  The problem is different
             operating systems handle this differently:
 
             Win NT/2000/Me - moves the window to -32000, -32000
@@ -501,18 +501,18 @@ bool CColorCopDlg::LoadPersistentVariables()
             the program is repositioned.
             */
 
-            if (WinLocX < 0 || WinLocY < 0  /*negative*/ 
+            if (WinLocX < 0 || WinLocY < 0  /*negative*/
                 || WinLocX  == 3000 || WinLocY == 3000)
             {
 
-            
+
                 WinLocX = 200;    // default position..  quickfix
                 WinLocY = 200;
             }
 
             SetWindowPos(&wndTopMost,WinLocX,WinLocY, 0, 0, SWP_NOSIZE | WS_EX_TOPMOST);
             retval = true;    // if we get this far, everything is cool
-        
+
 
     return retval;
 }
@@ -567,7 +567,7 @@ void CColorCopDlg::SetupWindowRects()
     CWnd::GetDlgItem(IDC_COLORPAL, &temphandle);
     ::GetWindowRect(temphandle, &colorpalrect);
     CWnd::ScreenToClient(&colorpalrect);
-    
+
     HWND maghand;
     CWnd::GetDlgItem(IDC_MagWindow,&maghand);
     ::GetWindowRect(maghand, &magrect);
@@ -644,10 +644,10 @@ void CColorCopDlg::SetupWindowRects()
 
 void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    // this is function is called when the user selects an item 
+    // this is function is called when the user selects an item
     // from the system menu. (right clicking on the minimized program,
     // or right clicking on the system icon
-    
+
     if ((nID & 0xFFF0) == IDM_ABOUTBOX)
     {
         CAboutDlg dlgAbout;
@@ -658,11 +658,11 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
     } else if ((nID & 0xFFF0) == IDM_ALWAYSONTOP) {
         m_Appflags ^= AlwaysOnTop; //AutobOnTop=bOnTop?FALSE:TRUE;
         ToggleOnTop(true);
-    
+
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         if (pSysMenu != NULL)
         {
-            if (m_Appflags & AlwaysOnTop) 
+            if (m_Appflags & AlwaysOnTop)
             {
                 // check the menu item
                 pSysMenu->CheckMenuItem(IDM_ALWAYSONTOP, MF_CHECKED);
@@ -697,7 +697,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
 void CColorCopDlg::SetupTaskBarButton()
 {
 
-    if ((bMinimized) && (m_Appflags & MimimizetoTray )) 
+    if ((bMinimized) && (m_Appflags & MimimizetoTray ))
     {
         // hide the tray icon if it belongs in the system tray
         ShowWindow(SW_HIDE);
@@ -714,7 +714,7 @@ void CColorCopDlg::SetupTaskBarButton()
 void CColorCopDlg::SetupTrayIcon()
 {
     if (bMinimized && (pTrayIcon_ == 0) && (m_Appflags & MimimizetoTray)) {
-        
+
         CString strAppName;
         strAppName.LoadString(IDS_APPLICATION_NAME);
 
@@ -728,11 +728,11 @@ void CColorCopDlg::SetupTrayIcon()
     }
 }
 
-void CColorCopDlg::OnPaint() 
+void CColorCopDlg::OnPaint()
 {
     if (IsIconic())
     {
-        CPaintDC dc(this); 
+        CPaintDC dc(this);
         SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
         int cxIcon = GetSystemMetrics(SM_CXICON);
         int cyIcon = GetSystemMetrics(SM_CYICON);
@@ -747,19 +747,19 @@ void CColorCopDlg::OnPaint()
         CDialog::OnPaint();
         // only paint here..
 
-        HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd; 
+        HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd;
 
         //::SetForegroundWindow(CCopHWND);        // warning:        the task bar will flash if you call this
                                                 //                when the window is losing focus
 
-        hdc = ::GetDC(CCopHWNDtemp);   
+        hdc = ::GetDC(CCopHWNDtemp);
         if (hBitmap) {
 
             hdcMem = ::CreateCompatibleDC(hdc);
-            
+
             ::SelectObject (hdcMem, hBitmap);
 
-            if (m_Appflags & ExpandedDialog) 
+            if (m_Appflags & ExpandedDialog)
 
             ::BitBlt(hdc, // destination DC
                      magrect.TopLeft().x+2, magrect.TopLeft().y+2 , // upper left dest
@@ -787,11 +787,11 @@ void CColorCopDlg::OnPaint()
 
 void CColorCopDlg::RecalcZoom()
 {
-    // zoom level has changed while not magnifying..  
+    // zoom level has changed while not magnifying..
 
     int    magwidth = magrect.Width() / m_MagLevel;
     int magheight = magrect.Height() / m_MagLevel;
-    HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd; 
+    HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd;
 
     if (hZoomBitmap)
     {
@@ -801,7 +801,7 @@ void CColorCopDlg::RecalcZoom()
         hdcZoomMem = ::CreateCompatibleDC(hdc);
 
        ::SelectObject(hdcMem, hBitmap);
-       ::SelectObject(hdcZoomMem, hZoomBitmap); 
+       ::SelectObject(hdcZoomMem, hZoomBitmap);
 
            ::StretchBlt(hdcMem, // destination DC
                  0, 0, // upper left dest
@@ -830,16 +830,16 @@ void CColorCopDlg::OnconvertRGB() {
 
         m_Hexcolor.Format("#%.2x%.2x%.2x", m_Reddec, m_Greendec, m_Bluedec);
         if (m_Appflags & OmitPound) {
-            if (m_Hexcolor.Left(1) == '#') { 
-                m_Hexcolor.Delete(0); 
+            if (m_Hexcolor.Left(1) == '#') {
+                m_Hexcolor.Delete(0);
             }
         }
     } else if (m_Appflags & ModeDelphi) {
 
         m_Hexcolor.Format("$00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
         if (m_Appflags & OmitPound) {
-            if (m_Hexcolor.Left(1) == '$') { 
-                m_Hexcolor.Delete(0); 
+            if (m_Hexcolor.Left(1) == '$') {
+                m_Hexcolor.Delete(0);
             }
         }
 
@@ -854,7 +854,7 @@ void CColorCopDlg::OnconvertRGB() {
     } else if (m_Appflags & ModeClarion) {
 
         // same as VB, but in addition
-        //1) remove the &H at start.  
+        //1) remove the &H at start.
         //2) prefix with 0
         //3) add H after the color
         m_Hexcolor.Format("0%.2x%.2x%.2xH", m_Bluedec, m_Greendec, m_Reddec);
@@ -869,18 +869,18 @@ void CColorCopDlg::OnconvertRGB() {
         TCHAR placeh[64];        // dynamic float precision
         wsprintf(placeh, "%%0.%df,%%0.%df,%%0.%df", m_FloatPrecision, m_FloatPrecision, m_FloatPrecision);
         m_Hexcolor.Format(placeh, ((float) m_Reddec) /255.0,(float) (m_Greendec) /255.0, ((float) m_Bluedec) /255.0);
-        
+
     } else if (m_Appflags & ModeVisualC) {
 
         m_Hexcolor.Format("0x00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
-    } 
+    }
 
 
    if (m_Appflags ^ ModeVisualC)    // don't allow upper case vc++ codes
         TestForUpperHex();    // after conversion
-        
+
     UpdateData(false); //send m_Hexcolor back to edit control
-    
+
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();        // Re-Calculate color palette
@@ -888,21 +888,21 @@ void CColorCopDlg::OnconvertRGB() {
     Invalidate(FALSE);    // Call WM_PAINT, but don't erase background
 }
 
-void CColorCopDlg::OnconvertHEX() 
+void CColorCopDlg::OnconvertHEX()
 {
     TestForWebsafe();        // before
 
     if (m_Appflags & ModeHTML)
-    {    
-        if ((m_Greendec==0) && (m_Bluedec==0) && (m_Reddec!=0)) 
+    {
+        if ((m_Greendec==0) && (m_Bluedec==0) && (m_Reddec!=0))
         {
             m_Hexcolor.Format("#%.2x0000",m_Reddec);
         }
-        else if ((m_Greendec!=0) && (m_Bluedec==0) && (m_Reddec!=0)) 
+        else if ((m_Greendec!=0) && (m_Bluedec==0) && (m_Reddec!=0))
         {
             m_Hexcolor.Format("#%.2x%.2x00", m_Reddec, m_Greendec);
         }
-        else 
+        else
         {
             m_Hexcolor.Format("#%.2x%.2x%.2x", m_Reddec, m_Greendec, m_Bluedec);
         }
@@ -911,19 +911,19 @@ void CColorCopDlg::OnconvertHEX()
         m_Hexcolor.Format("$00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
 
     if ((m_Appflags & OmitPound) && (m_Appflags & ModeHTML)) {
-        if (m_Hexcolor.Left(1) == '#') 
+        if (m_Hexcolor.Left(1) == '#')
             m_Hexcolor.Delete(0);
     }
     else if ((m_Appflags & OmitPound) && (m_Appflags & ModeDelphi)) {
-        if (m_Hexcolor.Left(1) == '$') 
+        if (m_Hexcolor.Left(1) == '$')
             m_Hexcolor.Delete(0);
     }
-    
+
     //DisplayColor();
     OnCopytoclip();
     Invalidate(FALSE);    // Call WM_PAINT, but don't erase background
 }
-        
+
 void CColorCopDlg::CalcColorPal()
 {
     // generate a new color palette from the current color
@@ -938,9 +938,9 @@ void CColorCopDlg::CalcColorPal()
 double CColorCopDlg::plusValue(double num)
 {
     num = num + 0.15;
-    if (num > 1.0) 
+    if (num > 1.0)
         num = 1.0;
-    
+
     return num;
 }
 
@@ -1000,12 +1000,12 @@ void CColorCopDlg::handleShifts()
 void CColorCopDlg::printSwatch()
 {
     for(int i = 0; i < 6; i++) {
-        
+
         HSLtoRGB(Swatch[i].A,Swatch[i].B,Swatch[i].C);
         Swatch[i].A = r;
         Swatch[i].B = g;
         Swatch[i].C = b;
-        
+
         ColorPal[i][palcol] = RGB(Swatch[i].A, Swatch[i].B, Swatch[i].C);
     }
     palcol++;
@@ -1059,7 +1059,7 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
         double h = (H - int(H)) * 6.0;
         int caseH = (int) int(h);
-        
+
         double f = h - int(h);
         double p = L * (1.0 - S);
         double q = L * (1.0 - S * f);
@@ -1071,7 +1071,7 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
        SetStatusBarText(tt);
 */
 
-        
+
         switch (caseH) {
             case 0:
             r = (int) (L * 255.0);
@@ -1118,7 +1118,7 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     m_Yellow = (int) pow(1.0-b, 45);
 
     m_Black = __min(__min(m_Cyan,m_Magenta), m_Yellow);
-    
+
     m_Cyan = m_Cyan - m_Black;
     m_Magenta = m_Magenta - m_Black;
     m_Yellow = m_Yellow - m_Black;
@@ -1133,13 +1133,13 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
     double R_Dist, G_Dist, B_Dist;
 
     /////////////////////////////////////
-    // get min, max, and diff    
+    // get min, max, and diff
     //
     MinNum = __min(R, __min(G,B));        // min
     MaxNum = __max(R, __max(G,B));        // max
 
     Diff = (MaxNum - MinNum);            // diff
-      
+
     if (Diff == 0) {    // this is a greyscale color
         Diff = 5.0;    // since greyscale colors don't have compliments,
     }                    // lets give it something
@@ -1152,11 +1152,11 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
     // find the Saturation
     if((MaxNum == 255) || (MinNum == 0)) {
         Sat = 1.0;
-    }  
-        
+    }
+
     if (MaxNum != 0) {
         Sat = ((double) Diff) / ((double) MaxNum);
-    } 
+    }
 
 
     // find the Hue
@@ -1181,8 +1181,8 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
 }
 
 void CColorCopDlg::DisplayColor()
-{    
-    
+{
+
     CDC *pDC = GetDC();
 
     int soff = 0;
@@ -1237,13 +1237,13 @@ void CColorCopDlg::DisplayColor()
 
         pDC->FillSolidRect(&Q4rect, ColorHistory[3]);
         pDC->FrameRect(&Q4rect, &blackbrush);
-    
+
         pDC->FillSolidRect(&Q5rect, ColorHistory[4]);
         pDC->FrameRect(&Q5rect, &blackbrush);
-    
+
         pDC->FillSolidRect(&Q6rect, ColorHistory[5]);
         pDC->FrameRect(&Q6rect, &blackbrush);
-    
+
         pDC->FillSolidRect(&Q7rect, ColorHistory[6]);
         pDC->FrameRect(&Q7rect, &blackbrush);
 
@@ -1256,7 +1256,7 @@ void CColorCopDlg::DisplayColor()
         CRect insiderect = colorpalrect;
         insiderect.right = insiderect.left + m_nwide;
         insiderect.bottom = insiderect.top + m_ntall;
-    
+
         for    (int col = 0; col < 7; col++) {
             if (col) {
                 // not the top row
@@ -1266,7 +1266,7 @@ void CColorCopDlg::DisplayColor()
             }
             for (int row = 0; row< 6; row++) {
                 pDC->FillSolidRect(insiderect, ColorPal[row][col]);
-    
+
                 //    pDC->FrameRect(insiderect, &blackbrush);    // frame each color
                 insiderect.right+=m_nwide;
                 insiderect.left+=m_nwide;
@@ -1274,7 +1274,7 @@ void CColorCopDlg::DisplayColor()
 
             insiderect.right-=m_nwide * 6;
             insiderect.left-=m_nwide * 6;
-        }    
+        }
 
         // calculate the rect for FrameRect
         colorpalrect.right = colorpalrect.left + m_nwide * 6;
@@ -1284,9 +1284,9 @@ void CColorCopDlg::DisplayColor()
         pDC->FrameRect(colorpalrect, &blackbrush);
 
         colorpalrect.DeflateRect(1, 1, 1, 1);
-    
+
         //magmod.SetRect(colorpalrect.right-9,magrect.top, colorpalrect.right, magrect.top+9);
-        
+
         pDC->FrameRect(magplus, &greybrush);
         pDC->MoveTo(magplus.left + 2, magplus.top + (magplus.bottom - magplus.top)/2);
         pDC->LineTo(magplus.right - 2,magplus.top +  (magplus.bottom - magplus.top)/2);
@@ -1295,13 +1295,13 @@ void CColorCopDlg::DisplayColor()
         pDC->LineTo(magplus.left + (magplus.right - magplus.left)/2, magplus.bottom - 2);
 
         //pDC->LineTo(magplus.right - 2,magplus.top +  (magplus.bottom - magplus.top)/2);
-        
+
         pDC->FrameRect(magminus, &greybrush);
         pDC->MoveTo(magminus.left + 2, magminus.top + (magminus.bottom - magminus.top)/2);
         pDC->LineTo(magminus.right - 2,magminus.top +  (magminus.bottom - magminus.top)/2);
 
         if ((m_Appflags & MAGWHILEEYEDROP)&&(m_isEyedropping)&&(!m_MagDrop)) {
-            
+
             int pxwid = m_MagLevel;
             insiderect = magrect;
             insiderect.DeflateRect(magrect.Width()/2, magrect.Height()/2);
@@ -1316,7 +1316,7 @@ void CColorCopDlg::DisplayColor()
             insiderect.bottom = (magrect.bottom - magrect.Height()/2) + (pxwid/2);
 
             insiderect.left =  (magrect.left  +  magrect.Width()/2) -  (pxwid /2);
-            insiderect.right = (magrect.right - magrect.Width()/2) +(pxwid /2); 
+            insiderect.right = (magrect.right - magrect.Width()/2) +(pxwid /2);
             if (pxwid % 2 != 0)
             {
                 insiderect.left++;
@@ -1325,11 +1325,11 @@ void CColorCopDlg::DisplayColor()
                 insiderect.bottom++;
             }*/
 
-            
-            
 
-            if ((m_Appflags & Sampling3x3) || 
-                (m_Appflags & Sampling5x5) || 
+
+
+            if ((m_Appflags & Sampling3x3) ||
+                (m_Appflags & Sampling5x5) ||
                 ((m_Appflags & SamplingMULTI )&&(m_iSamplingOffset <= 10))
                 ) {
 
@@ -1340,7 +1340,7 @@ void CColorCopDlg::DisplayColor()
             // show the point that the eyedropper is on
 
 /*
-            if (m_Appflags & ExpandedDialog) 
+            if (m_Appflags & ExpandedDialog)
 
                          magrect.TopLeft().x+2, magrect.TopLeft().y+2 , // upper left dest
                          magrect.Width()-4, magrect.Height()-4,  // width of dest rect
@@ -1352,98 +1352,98 @@ void CColorCopDlg::DisplayColor()
 //    char jj[80];
 //    wsprintf(jj," colorpal blocks are .. %d x %d", m_nwide, m_ntall);
 //    SetStatusBarText(jj);
-    
+
     ReleaseDC(pDC);        // free memory
     return;
 }
 
-void CColorCopDlg::OnAbout() 
+void CColorCopDlg::OnAbout()
 {
-    CAboutDlg dlg; 
+    CAboutDlg dlg;
     dlg.DoModal();
 }
 
-void CColorCopDlg::OnChangeGreen() 
+void CColorCopDlg::OnChangeGreen()
 {
-    UpdateData(TRUE); 
+    UpdateData(TRUE);
     if (m_Greendec > 255)
-    { 
+    {
         m_Greendec = 255;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 
 }
 
-void CColorCopDlg::OnChangeBlue() 
+void CColorCopDlg::OnChangeBlue()
 {
-    UpdateData(TRUE); 
+    UpdateData(TRUE);
     if (m_Bluedec>255)
-    { 
+    {
         m_Bluedec = 255;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeRed() 
+void CColorCopDlg::OnChangeRed()
 {
     UpdateData(TRUE);
-    if (m_Reddec>255) {    
+    if (m_Reddec>255) {
         m_Reddec = 255;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
-void CColorCopDlg::OnChangeBlack() 
+void CColorCopDlg::OnChangeBlack()
 {
     UpdateData(TRUE);
-    if (m_Black>100) {    
+    if (m_Black>100) {
         m_Black = 100;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeCyan() 
+void CColorCopDlg::OnChangeCyan()
 {
     UpdateData(TRUE);
-    if (m_Cyan>100) {    
+    if (m_Cyan>100) {
         m_Cyan = 100;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();        
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeMagenta() 
+void CColorCopDlg::OnChangeMagenta()
 {
     UpdateData(TRUE);
-    if (m_Magenta>100) {    
+    if (m_Magenta>100) {
         m_Magenta = 100;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeYellow() 
+void CColorCopDlg::OnChangeYellow()
 {
     UpdateData(TRUE);
-    if (m_Yellow>100) {    
+    if (m_Yellow>100) {
         m_Yellow = 100;
     }
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
 
-void CColorCopDlg::OnColorPick() 
+void CColorCopDlg::OnColorPick()
 {
     // set up the common windows color dialog
     COLORREF temp;
@@ -1453,7 +1453,7 @@ void CColorCopDlg::OnColorPick()
     dlgcolor.m_cc.lpCustColors = CustColorBank;        // pointer to custom colors aray
 
     // show the dialog
-    if (dlgcolor.DoModal() == IDOK)    
+    if (dlgcolor.DoModal() == IDOK)
     {
         // if they pressed OK
         temp=dlgcolor.GetColor();
@@ -1477,7 +1477,7 @@ void CColorCopDlg::OnColorPick()
     }
 }
 
-void CColorCopDlg::OnCopytoclip() 
+void CColorCopDlg::OnCopytoclip()
 {
     if(m_Appflags & AutoCopytoClip)    // the option to auto copy to the clipboard is ON
     {
@@ -1490,7 +1490,7 @@ void CColorCopDlg::OnCopytoclip()
             ::EmptyClipboard();
 
             // empty clipboard is bad because it will remove DIBs too
-//The window identified by the hWndNewOwner parameter does not 
+//The window identified by the hWndNewOwner parameter does not
     //become the clipboard owner unless the EmptyClipboard function is called
 
             clipbuffer=::GlobalAlloc(GMEM_DDESHARE, m_Hexcolor.GetLength()+1);
@@ -1512,16 +1512,16 @@ void CColorCopDlg::StopCapture()
     // we don't want to capture anymore, they let up the left mouse button, or hit ESC
     m_isMagnifying = m_isEyedropping = FALSE;
     SetCursor(m_hStandardCursor);    // put standard cursor back on
-    
+
     ReleaseCapture();                // let go of the mouse
 
     CWinApp* pApp = AfxGetApp();
 
     // put the icons back in their holders
     if (m_Appflags & USECROSSHAIR) {
-        
+
         m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_MYCROSS));                        // location cursor
-    
+
     } else {
 
         if (m_Appflags & Sampling5x5) {
@@ -1529,7 +1529,7 @@ void CColorCopDlg::StopCapture()
         } else if (m_Appflags & Sampling3x3) {
             m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
         } else { // 1x1 or multi
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));                    // location cursor 
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));                    // location cursor
 
         }
     }
@@ -1543,7 +1543,7 @@ void CColorCopDlg::StopCapture()
     return;
 }
 
-void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
     CDialog::OnLButtonDown(nFlags, point);
 //
@@ -1553,7 +1553,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
     CWnd* pWnd = ChildWindowFromPoint(point);
     if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
-        
+
         // left mouse button down on the eyedropper
         //SetStatusBarText(_T("Drag this control around the screen"));
         m_isEyedropping = TRUE;
@@ -1568,7 +1568,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetCursor(m_hEyeCursor);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
        //  left mouse button down on the magnifier
 
         SetCursor(m_hMagCursor);
@@ -1599,7 +1599,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM (point.x, point.y));
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
 
         m_isEyedropping = TRUE;
         m_InitialMove = FALSE;    // Push color to color history
@@ -1609,8 +1609,8 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetCursor(m_hEyeCursor);
         PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM (point.x, point.y));
         return;
-    
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {    
+
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
 
         if (m_MagLevel != 16) {
              m_MagLevel++;
@@ -1626,7 +1626,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetTimer(2,145,NULL);        // install the timer
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
 
         if (m_MagLevel != 1) {
             m_MagLevel--;
@@ -1642,37 +1642,37 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetTimer(2,145,NULL);        // install the timer
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
+
         GetHistoryColor(0);    // calls on copy clip
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
+
         GetHistoryColor(1);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
+
         GetHistoryColor(2);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
+
         GetHistoryColor(3);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
+
         GetHistoryColor(4);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
+
         GetHistoryColor(5);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
 
         GetHistoryColor(6);
         return;
@@ -1684,10 +1684,10 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         // has left clicked on the  the caption, Note: does not maximize on double click
         // from MSDN:
         //
-        //        The WM_NCLBUTTONDOWN message is posted when the user presses 
-        //        the left mouse button while the cursor is within the nonclient 
+        //        The WM_NCLBUTTONDOWN message is posted when the user presses
+        //        the left mouse button while the cursor is within the nonclient
         //        area of a window.
-        
+
         if (m_Appflags & EasyMove)    {    // one click move is enabled
             PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
             SetCursor(m_hMoveCursor);
@@ -1696,18 +1696,18 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
     return;
 }
 
-void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
     HWND CCopHWND=AfxGetApp()->GetMainWnd()->m_hWnd;
 
     CWnd* pWnd = ChildWindowFromPoint(point);
 
-    if (pWnd && pWnd->GetSafeHwnd() == m_ColorPreview.GetSafeHwnd())    
+    if (pWnd && pWnd->GetSafeHwnd() == m_ColorPreview.GetSafeHwnd())
     {
         OnColorPick();    // user double clicked in the color preview control
                         // open custom color dialog
         return;
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) 
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd())
     {
         if (hBitmap)
         {
@@ -1717,7 +1717,7 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
             if (IDYES == AfxMessageBox(strQuestion, MB_YESNO))
             {
                 if(::OpenClipboard(CCopHWND)) {
-                    
+
                     ::EmptyClipboard();
 
                     hBitmapClip = CopyBitmap(hBitmap);
@@ -1728,18 +1728,18 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
             }
 
         }
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
 
         // treat double click on mag plus like two clicks
         CColorCopDlg::OnLButtonDown(nFlags, point);
         return;
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
 
         // treat double click on mag minus like two clicks
         CColorCopDlg::OnLButtonDown(nFlags, point);
         return;
-    
+
     } else {
         SetCursor(m_hStandardCursor);    // put standard cursor back on
         return;
@@ -1772,7 +1772,7 @@ HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc)
 }
 
 
-void CColorCopDlg::OnLButtonUp(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
     // left mouse buttom was released
     // OK - no more eyedropping or magnifying because we don't own the cursor anymore..
@@ -1799,19 +1799,19 @@ void CColorCopDlg::OnLButtonUp(UINT nFlags, CPoint point)
 
     if (m_isMagMinusDown) {
         m_isMagMinusDown = FALSE;
-        KillTimer(2);        
+        KillTimer(2);
     }
 
     if (m_isMagPlusDown) {
         m_isMagPlusDown = FALSE;
-        KillTimer(2);        
+        KillTimer(2);
     }
 
     if (m_Appflags & EasyMove)    {
         // easy move is on so the cursor is probably wrong on the way up
-        SetCursor(m_hStandardCursor);        
+        SetCursor(m_hStandardCursor);
     }
-    CDialog::OnLButtonUp(nFlags, point);    
+    CDialog::OnLButtonUp(nFlags, point);
 }
 
 /*
@@ -1828,25 +1828,25 @@ void CColorCopDlg::BlockMeasure(POINT ptBeg, POINT ptEnd) {
 
 }
 */
-void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
         bool bSkipColor = false;
         CString strStatus = "";
 
 
-        //HWND CCopHWND=AfxGetApp()->GetMainWnd()->m_hWnd; 
+        //HWND CCopHWND=AfxGetApp()->GetMainWnd()->m_hWnd;
         if ((m_isEyedropping) || (m_isMagnifying)) {
 
-            if (::GetCapture() == NULL) { 
-                
+            if (::GetCapture() == NULL) {
+
                 //StopCapture();                                            // and do we have capture?
                 //SetStatusBarText("Error, Lost Mouse Capture.");            // if not, stopcapturing..
                 //m_isEyedropping = m_isMagnifying = FALSE;
-                
+
                                 // we used to abandon ship
                                 // if we don't have capture, get it back
                                 // hopefully this will stop all the emails
-            
+
                 SetCapture();
 
             } else  {
@@ -1856,12 +1856,12 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                 // We have capture and we are either eyedropping or magnifying
 
                 ClientToScreen(&point); //use screen coordinates..
-                
+
 
 
             }
 
-    
+
         }// else {
         //
         //        CWnd* pWnd = ChildWindowFromPoint(point);
@@ -1875,7 +1875,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
             }
 
             COLORREF crefxy;
-            hdc = ::GetDC(NULL);    
+            hdc = ::GetDC(NULL);
 
             if (m_Appflags & Sampling1)    // only sample one pixel.
             {
@@ -1897,12 +1897,12 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
     //Black   = minimum(1-Red,1-Green,1-Blue)
     //Cyan    = (1-Red-Black)/(1-Black)
     //Magenta = (1-Green-Black)/(1-Black)
-    //Yellow  = (1-Blue-Black)/(1-Black) 
+    //Yellow  = (1-Blue-Black)/(1-Black)
 
                     } else {
                         bSkipColor = true;
                     }
-                } 
+                }
             } else {
                 // the user wants to sample a 3x3 or a 5x5 average of pixels.
                 bSkipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
@@ -1935,7 +1935,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                     // we need to add one since they are zero based
                     double dWidth = (double)iWidth+1;
                     double dHeight = (double)iHeight+1;
-                    
+
                     double dLength = sqrt(dWidth*dWidth + dHeight * dHeight);
                     //If W=0 then A=90 else A=ATAN(H/W)*(180/PI())
                     double dAngle = 0.0;
@@ -1943,7 +1943,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                     if (iWidth == 0) {
                         // prevent the divide by zero
                         dAngle =90;
-                    
+
                     } else {
                         dAngle=atan(dHeight/dWidth)*((double)180/(double)PI);
                     }
@@ -1951,7 +1951,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 
                     strStatus.LoadString(IDS_RELATIVE_POS);
-                    strStatus.Format(strStatus, iWidth, 
+                    strStatus.Format(strStatus, iWidth,
                                                 iHeight,
                                                 dLength,
                                                 dAngle
@@ -1968,33 +1968,33 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                 } else { // SampleRate == 1
 
                     strStatus.LoadString(IDS_EYEDROPPING);
-                    if (m_Appflags & DetectWebsafeColors) {    
+                    if (m_Appflags & DetectWebsafeColors) {
                         if (isWebsafeColor(m_Reddec, m_Greendec, m_Bluedec)) {
                             strWebSafe.LoadString(IDS_WEBSAFE);
                         } else {
                             strWebSafe.LoadString(IDS_NOT_WEBSAFE);
                         }
-                    } 
+                    }
                     strStatus +=strWebSafe;
 
                     strStatus.Format(CString(strStatus), point.x, point.y);
 
                 }
 
-                
+
                 if (m_Appflags & MAGWHILEEYEDROP) {
-                    
+
                     if (!m_MagDrop) {
                         m_MagLevel = 4;
                         // default mag level to 4x
                         GetScreenBitmap(point);
-                        InvalidateRect(&magrect, FALSE); 
+                        InvalidateRect(&magrect, FALSE);
                     }
                 }
                 SetStatusBarText(strStatus);
-                
+
                 //}
-        
+
                 if (!bSkipColor) {
                     OnconvertRGB();
                 }
@@ -2008,20 +2008,20 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
         SetStatusBarText(strStatus);
 
         GetScreenBitmap(point);
-        InvalidateRect(magrect, FALSE); 
+        InvalidateRect(magrect, FALSE);
         // go redraw... but don't erase or it will flicker
         return;
-    } 
+    }
     else
     {
         // not magnifying oreyedropping
 
         CWnd* pWnd = ChildWindowFromPoint(point);
         if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
-        
+
             SetCursor(m_hHandCursor);
 
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {    
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
             //  left mouse button down on the magnifier
 
             SetCursor(m_hHandCursor);
@@ -2036,50 +2036,50 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hEyeCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
 
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hEyeCursor);
-    
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {    
+
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
 
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
 
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
 
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
+
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
+
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
+
         //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
+
     //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {    
-    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
+
     //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
 
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {    
+    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
 
     //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
@@ -2104,7 +2104,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
         hZoomBitmap = NULL;
     }
             hdc = ::GetDC(NULL);        // dEVICEcONEXT to the whole desktop
-        
+
     hdcMem = ::CreateCompatibleDC(hdc);
     hdcZoomMem = ::CreateCompatibleDC(hdc);
 
@@ -2146,7 +2146,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
               point.y - (magheight / 2), // y coordinate of source
               magwidth, magheight,            // width of source
               SRCCOPY);            // raster mode
-        
+
     //      magrect.Width()/2, magrect.Height()/2,    // w x h of destination
 
     ::DeleteDC(hdcMem);
@@ -2168,16 +2168,16 @@ void CColorCopDlg::GetHistoryColor(int Cindex)
         m_Reddec   = GetRValue(ColorHistory[Cindex]);
         m_Greendec = GetGValue(ColorHistory[Cindex]);
         m_Bluedec  = GetBValue(ColorHistory[Cindex]);
-    
+
         UpdateData(false);    // update vars
         OnconvertRGB();
         CalcColorPal();
-        OnCopytoclip();    
+        OnCopytoclip();
     }
 
 }
 
-void CColorCopDlg::AdvanceColorHistory() 
+void CColorCopDlg::AdvanceColorHistory()
 {
     // this function will advance the colors in the color history..
     // the 7th color is lost, the first color is the current color
@@ -2195,13 +2195,13 @@ void CColorCopDlg::AdvanceColorHistory()
     ColorHistory[0] = RGB(m_Reddec, m_Greendec, m_Bluedec);
 }
 
-void CColorCopDlg::FloatPrecisionUp() {    
+void CColorCopDlg::FloatPrecisionUp() {
     if (m_Appflags & RGBFLOAT) {
         if (m_FloatPrecision < 6)
             m_FloatPrecision++;
         SetStatusBarText(IDS_FLOATUP, 0);
         OnconvertRGB();
-        OnCopytoclip();    
+        OnCopytoclip();
 
     }
     return;
@@ -2212,23 +2212,23 @@ void CColorCopDlg::FloatPrecisionDown() {
             m_FloatPrecision--;
         SetStatusBarText(IDS_FLOATDOWN, 0);
         OnconvertRGB();
-        OnCopytoclip();    
+        OnCopytoclip();
 
     }
     return;
 }
 
-BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) 
-{    
-    //HCURSOR hCurs1, hCurs2;    // cursor handles 
-    POINT pt;                  // cursor location  
-    //RECT rc;                   // client area coordinates 
-    static int repeat = 1;     // repeat key counter 
+BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
+{
+    //HCURSOR hCurs1, hCurs2;    // cursor handles
+    POINT pt;                  // cursor location
+    //RECT rc;                   // client area coordinates
+    static int repeat = 1;     // repeat key counter
 
     // pass a mouse message to the tool tip control for processing
     m_ToolTip.RelayEvent(pMsg);
 
-    if (m_hAcceleratorTable) {        // use the Accelerator resource 
+    if (m_hAcceleratorTable) {        // use the Accelerator resource
 
         if(::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
             return TRUE;    // escape
@@ -2236,8 +2236,8 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
     }
 
     // fix the WinHelp problem...  test to see if F1 is being pressed
-    if (pMsg->message == 0x4d) {        
-        if (GetKeyState(VK_SHIFT) >= 0)    {        
+    if (pMsg->message == 0x4d) {
+        if (GetKeyState(VK_SHIFT) >= 0)    {
             AfxGetApp()->WinHelp(0, HELP_CONTENTS);        // fire help
             return TRUE;
         }
@@ -2245,8 +2245,8 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 
     /************************************************
     * ESC key Check
-    * - hitting the escape key, should only stop the 
-    *   eyedropper or magnifing glass and should not 
+    * - hitting the escape key, should only stop the
+    *   eyedropper or magnifing glass and should not
     *   exit the app
     ************************************************/
 
@@ -2265,12 +2265,12 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
                 // invert the old one back
                  bRelativePosition = FALSE;
             }
-            return TRUE;    // return control rather than letting it 
+            return TRUE;    // return control rather than letting it
                             // exit the app
         } else if (m_isEyedropping || m_isMagnifying) {
-            
+
               CString strStatus;
-            CWinApp* pApp;    
+            CWinApp* pApp;
             switch(pMsg->wParam) {
             case VK_CONTROL:
                 //repeat=5;
@@ -2280,9 +2280,9 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
                     strStatus.Format(strStatus, 0, 0,0,90);
                     SetStatusBarText(strStatus);
 
-                    if (!(m_Appflags & USECROSSHAIR)) { 
+                    if (!(m_Appflags & USECROSSHAIR)) {
                         // set the cross hair cursor if they app isn't already using it
-                        pApp = AfxGetApp();        
+                        pApp = AfxGetApp();
                         m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
                         SetCursor(m_hEyeCursor);
                     }
@@ -2290,56 +2290,56 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
                 }
                 break;
 
-            case VK_RIGHT:                // right arrow 
+            case VK_RIGHT:                // right arrow
                 if (GetCursorPos(&pt))
                 {
-                    SetCursorPos(pt.x+repeat, pt.y); 
+                    SetCursorPos(pt.x+repeat, pt.y);
                 }
                 break;
-            case VK_LEFT:              // left arrow 
+            case VK_LEFT:              // left arrow
                 if (GetCursorPos(&pt))
                 {
-                    SetCursorPos(pt.x-repeat, pt.y); 
+                    SetCursorPos(pt.x-repeat, pt.y);
                 }
                 break;
-            case VK_UP:                    // up arrow 
+            case VK_UP:                    // up arrow
                 if (GetCursorPos(&pt))
                 {
-                    SetCursorPos(pt.x, pt.y-repeat); 
+                    SetCursorPos(pt.x, pt.y-repeat);
                 }
                 break;
-            case VK_DOWN:              // down arrow 
+            case VK_DOWN:              // down arrow
                 if (GetCursorPos(&pt))
                 {
-                    SetCursorPos(pt.x, pt.y+repeat); 
+                    SetCursorPos(pt.x, pt.y+repeat);
                 }
                 break;
-                
+
             }
             //if (!bRelativePosition)
         }
-    
+
     return CDialog::PreTranslateMessage(pMsg);
 }
 
 
 
-void CColorCopDlg::OnChangeHexcolor() 
+void CColorCopDlg::OnChangeHexcolor()
 {
     // the user is typing in the hex edit control
-    // or they pasted a hex code.  
+    // or they pasted a hex code.
     // OK - parse out the RGB values and convert
-    
+
     int hexrange,offset;
-    
+
     UpdateData(1);    // save from control to m_Hexcolor
     int hexsize=0;
     hexsize=m_Hexcolor.GetLength();
 
     if (m_Appflags & ModeHTML)
     {
-        if (m_Hexcolor.Left(1) =='#') 
-        {     
+        if (m_Hexcolor.Left(1) =='#')
+        {
             hexrange=5;
             offset=1;
         }
@@ -2358,11 +2358,11 @@ void CColorCopDlg::OnChangeHexcolor()
         ParseHTML(m_Hexcolor);
 
     }
-    else if (m_Appflags & ModeClarion) 
+    else if (m_Appflags & ModeClarion)
     {
                 // Clarion Starts with 0s
-        if (m_Hexcolor.Left(1) =='0') 
-        {     
+        if (m_Hexcolor.Left(1) =='0')
+        {
             hexrange=7;
             offset=1;
             ParseClarion(m_Hexcolor);
@@ -2371,8 +2371,8 @@ void CColorCopDlg::OnChangeHexcolor()
     }
     else //Delphi hex change
     {
-        if (m_Hexcolor.Left(1) =='$') 
-        {     
+        if (m_Hexcolor.Left(1) =='$')
+        {
             hexrange=7;
             offset=1;
         }
@@ -2381,7 +2381,7 @@ void CColorCopDlg::OnChangeHexcolor()
             hexrange=8;
              offset=0;
         }
-        
+
         while (hexsize>hexrange)
         {
             m_Hexcolor.Delete(8+offset);
@@ -2399,14 +2399,14 @@ void CColorCopDlg::ParseDelphi(CString inst)
     // they are typing in delphi hex codes
     // determine the RGB values
 
-    if (inst.GetLength() < 3)    
-    {        
+    if (inst.GetLength() < 3)
+    {
         m_Reddec=m_Greendec=m_Bluedec=0;
-        UpdateData(false); 
-        return;        
+        UpdateData(false);
+        return;
     }
 
-    if (inst.Left(1)=='$') 
+    if (inst.Left(1)=='$')
         inst.Delete(0);
     inst.Delete(0);
     inst.Delete(0);
@@ -2431,14 +2431,14 @@ void CColorCopDlg::ParseClarion(CString inst)
     // they are typing in clarion hex codes
     // determine the RGB values
 
-    if (inst.GetLength() < 2)    
-    {        
+    if (inst.GetLength() < 2)
+    {
         m_Reddec=m_Greendec=m_Bluedec=0;
-        UpdateData(false); 
-        return;        
+        UpdateData(false);
+        return;
     }
 
-    if (inst.Left(1)=='0') 
+    if (inst.Left(1)=='0')
         inst.Delete(0);
     m_Bluedec = strtoul( inst.Left(2), NULL, 16);
     inst.Delete(0);
@@ -2461,8 +2461,8 @@ void CColorCopDlg::ParseHTML(CString inst)
     // the user is typing in HTML hex codes
     // get the RGB values
 
-    if (inst.Left(1) == '#')    
-        inst.Delete(0);  
+    if (inst.Left(1) == '#')
+        inst.Delete(0);
 
     m_Reddec = strtoul( inst.Left(2), NULL, 16);
 
@@ -2511,7 +2511,7 @@ CString CColorCopDlg::GetTempFolder()
 //    DWORD dwL;
 
     //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
-    
+
     GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
 
 
@@ -2529,7 +2529,7 @@ CString CColorCopDlg::GetTempFolder()
 
   char appDataPath [MAX_PATH + 1];
   csString path;
-  
+
   // Try to retrieve "Application Data" directory
   if (!GetShellFolderPath (CSIDL_APPDATA, appDataPath))
   {
@@ -2543,22 +2543,22 @@ CString CColorCopDlg::GetTempFolder()
 
     strTmpPath.ReleaseBuffer();
 
-    
+
     return strTmpPath;
 }
 
-void CColorCopDlg::OnDestroy() 
+void CColorCopDlg::OnDestroy()
 {
     //
     // The app is about to close, save the variables
 
-    
+
     // save the location
     tagRECT *winSize = new tagRECT;
     GetWindowRect(winSize);
     WinLocX = winSize->left;        // Store x,y
     WinLocY = winSize->top;        // in variables
-    
+
 
     // save the bitmap
 //    TCHAR szPath[MAX_PATH];
@@ -2594,19 +2594,19 @@ void CColorCopDlg::OnDestroy()
 
         strBMPFile.ReleaseBuffer();
 
-        
+
     }
 
     CDialog::OnDestroy();
     return;
 }
 
-void CColorCopDlg::OnFileExit() 
-{    
-    EndDialog(IDOK);    
+void CColorCopDlg::OnFileExit()
+{
+    EndDialog(IDOK);
 }
 
-void CColorCopDlg::OnOptionsAlwaysontop() 
+void CColorCopDlg::OnOptionsAlwaysontop()
 {
     m_Appflags ^= AlwaysOnTop;
     ToggleOnTop(true);
@@ -2617,7 +2617,7 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
 {
     if (m_Appflags & AlwaysOnTop) // Make Always on Top
     {
-        if (bSetStatusbartext) 
+        if (bSetStatusbartext)
         {
             SetStatusBarText(IDS_ALWAYSOTOP, 1);
         }
@@ -2626,7 +2626,7 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
     }
     else        // Not always on top, NORMAL
     {
-        if (bSetStatusbartext) 
+        if (bSetStatusbartext)
         {
         SetStatusBarText(IDS_ALWAYSOTOP, 2);
         }
@@ -2639,9 +2639,9 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
     CMenu* pSysMenu = GetSystemMenu(FALSE);
     if (pSysMenu != NULL)
     {
-        if (m_Appflags & AlwaysOnTop) 
+        if (m_Appflags & AlwaysOnTop)
             pSysMenu->CheckMenuItem(IDM_ALWAYSONTOP, MF_CHECKED);        // check the menu item
-        else 
+        else
             pSysMenu->CheckMenuItem(IDM_ALWAYSONTOP, MF_UNCHECKED);        // uncheck the item
     }
 
@@ -2649,9 +2649,9 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
 }
 
 
-void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu) 
-{        
-    // this function is called when the top level 
+void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
+{
+    // this function is called when the top level
     // menu items are selected.
     UpdateMenu(pMenu);
 }
@@ -2679,17 +2679,17 @@ void CColorCopDlg::UpdateMenu(CMenu* pMenu)
 }
 
 
-void CColorCopDlg::OnUpdateOptionsAutocopytoclipboard(CCmdUI* pCmdUI) 
-{   
-    pCmdUI->SetCheck(m_Appflags & AutoCopytoClip); 
+void CColorCopDlg::OnUpdateOptionsAutocopytoclipboard(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(m_Appflags & AutoCopytoClip);
 }
 
-void CColorCopDlg::OnUpdateOptionsAlwaysontop(CCmdUI* pCmdUI)         
-{   
+void CColorCopDlg::OnUpdateOptionsAlwaysontop(CCmdUI* pCmdUI)
+{
     pCmdUI->SetCheck(m_Appflags & AlwaysOnTop);
 }
 
-void CColorCopDlg::OnOptionsAutocopytoclipboard() 
+void CColorCopDlg::OnOptionsAutocopytoclipboard()
 {
     m_Appflags ^= AutoCopytoClip;
     OnCopytoclip();
@@ -2698,7 +2698,7 @@ void CColorCopDlg::OnOptionsAutocopytoclipboard()
 
 
 
-void CColorCopDlg::OnColorRandom() 
+void CColorCopDlg::OnColorRandom()
 {
     // Generates a random color and updates
     // current decimal value MOD 256 - make a random value from 0 to 255
@@ -2709,12 +2709,12 @@ void CColorCopDlg::OnColorRandom()
     SetStatusBarText(IDS_RANDOMCOLOR,0);
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 
 
 }
 
-void CColorCopDlg::OnColorReverse() 
+void CColorCopDlg::OnColorReverse()
 {
     // Reverse the current colors.
     // ABS (current decimal value - 255)  then update
@@ -2725,11 +2725,11 @@ void CColorCopDlg::OnColorReverse()
     m_Bluedec  = abs(m_Bluedec  - 255);
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
 
-void CColorCopDlg::OnPopupColorConverttograyscale() 
+void CColorCopDlg::OnPopupColorConverttograyscale()
 {
     unsigned short L=0,Min=0,Max=0;
     CString strStatus;
@@ -2747,10 +2747,10 @@ void CColorCopDlg::OnPopupColorConverttograyscale()
         // grayscale values have identical R, G, B values.
         //
         // Actually, it uses an approximation to this idea;
-        // it chooses the point on the neutral axis determined by computing , which corresponds 
-        // to the definition of lightness. After applying Desaturate, the image remains in RGB space 
-        // and continues to have three color channels, but now the channels have identical values, 
-        // which is why the image appears as a grayscale. 
+        // it chooses the point on the neutral axis determined by computing , which corresponds
+        // to the definition of lightness. After applying Desaturate, the image remains in RGB space
+        // and continues to have three color channels, but now the channels have identical values,
+        // which is why the image appears as a grayscale.
 
         // formula: L = {Max(R,G,B) + Min(R,G,B)}/2;
         Max = __max(m_Reddec,m_Greendec);
@@ -2765,22 +2765,22 @@ void CColorCopDlg::OnPopupColorConverttograyscale()
         m_Bluedec  = L;
         UpdateData(false);
         OnconvertRGB();
-        OnCopytoclip();    
+        OnCopytoclip();
     }
     return;
 }
 
-void CColorCopDlg::OnFileAbout() 
+void CColorCopDlg::OnFileAbout()
 {
-    CAboutDlg dlg; 
+    CAboutDlg dlg;
     dlg.DoModal();
 }
 
-void CColorCopDlg::OnColorSnaptowebsafe() 
+void CColorCopDlg::OnColorSnaptowebsafe()
 {
     m_Appflags ^= SnaptoWebsafe;
 
-    
+
     if (m_Appflags & SnaptoWebsafe) {
         m_Appflags &= ~DetectWebsafeColors; // shut off Websafe Detection
         SetStatusBarText(IDS_SNAPTOWEBSAFE, 1);
@@ -2788,7 +2788,7 @@ void CColorCopDlg::OnColorSnaptowebsafe()
         SetStatusBarText(IDS_SNAPTOWEBSAFE, 2);
     }
 
-    if ((m_Appflags ^ SnaptoWebsafe) && (bOldClrExist)) 
+    if ((m_Appflags ^ SnaptoWebsafe) && (bOldClrExist))
     {
         // the user switched snap to websafe off, which means it was previously on
         // revert back to the saved colors
@@ -2798,13 +2798,13 @@ void CColorCopDlg::OnColorSnaptowebsafe()
 
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 
 }
 
-void CColorCopDlg::OnUpdateColorSnaptowebsafe(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdateColorSnaptowebsafe(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & SnaptoWebsafe); 
+    pCmdUI->SetRadio(m_Appflags & SnaptoWebsafe);
 }
 
 void CColorCopDlg::TestForWebsafe()
@@ -2825,14 +2825,14 @@ void CColorCopDlg::TestForWebsafe()
 
 int CColorCopDlg::DecimaltoWebsafe(int originalDec)
 {
-    // this function takes an int and converts 
+    // this function takes an int and converts
     // it to the closest web safe int
     //
     int offset = originalDec % WEBSAFE_STEP;
-    
+
     if (offset == 0) {
         // already a web safe int
-        return (originalDec);        
+        return (originalDec);
     } else if (offset < 25) {
         // go down one
         return (originalDec - offset);
@@ -2842,47 +2842,47 @@ int CColorCopDlg::DecimaltoWebsafe(int originalDec)
     }
 }
 
-void CColorCopDlg::OnOptionsOmitsymbol() 
+void CColorCopDlg::OnOptionsOmitsymbol()
 {
     m_Appflags ^= OmitPound;
     if (m_Appflags & OmitPound)
         SetStatusBarText(IDS_OMITSYMBOL, 1);
     else
         SetStatusBarText(IDS_OMITSYMBOL, 2);
-    
+
     FigurePound();
 }
 
-void CColorCopDlg::FigurePound() 
+void CColorCopDlg::FigurePound()
 {
     // This function adds or removes characters from the hex edit control
 
-    if (m_Appflags & OmitPound) 
+    if (m_Appflags & OmitPound)
     {
         if (m_Appflags & ModeHTML) {
             if (m_Hexcolor.Left(1) == '#')            // remove the # is it exists
-                m_Hexcolor.Delete(0); 
+                m_Hexcolor.Delete(0);
         } else if (m_Appflags & ModeDelphi) {
-            if (m_Hexcolor.Left(1) == '$') 
+            if (m_Hexcolor.Left(1) == '$')
                 m_Hexcolor.Delete(0);
         }
     }
     else
     {
         if (m_Appflags & ModeHTML) {
-            if (m_Hexcolor.Left(1) != '#')  
+            if (m_Hexcolor.Left(1) != '#')
                 m_Hexcolor = "#" + m_Hexcolor;        // add the # if it exsits
         } else if (m_Appflags & ModeDelphi) {
-            if (m_Hexcolor.Left(1) != '$') 
+            if (m_Hexcolor.Left(1) != '$')
                 m_Hexcolor = "$" + m_Hexcolor;
         }
     }
-    UpdateData(false);                            
+    UpdateData(false);
     // update changes to the edit control (m_Hexcolor)
 }
 
-void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI) 
-{    
+void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI)
+{
 //    CString str;
     //pCmdUI->SetCheck(m_Appflags & OmitPound);
 
@@ -2890,19 +2890,19 @@ void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI)
     //    pCmdUI->SetText(_T("&Omit $ Symbol\tCtrl+O"));
     //}
     //else { //if (m_Appflags & ModeHTML) {
-      
+
 //        str.LoadString(IDS_OMITSYMBOL);
 //        pCmdUI->SetText(str);
 
-    
+
         //pCmdUI->SetText(_T("&Omit # Symbol\tCtrl+O"));
   //  }
 }
 
-BOOL CAboutDlg::OnInitDialog() 
+BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
+
     // setup the hyperlinks
 
     m_link.SetLink(TRUE)
@@ -2914,11 +2914,11 @@ BOOL CAboutDlg::OnInitDialog()
         .SetTextColor(RGB(0,0,255))
         .SetFontUnderline(TRUE)
         .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
-    
+
     return TRUE;
 }
 
-void CColorCopDlg::OnExpandDialog() 
+void CColorCopDlg::OnExpandDialog()
 {
     m_Appflags ^= ExpandedDialog;
 
@@ -2941,13 +2941,13 @@ void CColorCopDlg::TestForExpand()
     // usr small for both
     //    smWidth = lgWidth;
     //    smHeight = lgHeight;
-    
+
     if (m_Appflags & ExpandedDialog) {
         currect.right = currect.left + lgWidth;
         currect.bottom = currect.top + lgHeight;
 
-        m_ExpandDialog.SetWindowText( _T("&<<") ); 
-        
+        m_ExpandDialog.SetWindowText( _T("&<<") );
+
         m_Magnifier.ShowWindow(TRUE);
 
         MoveWindow(&currect);
@@ -2967,28 +2967,28 @@ void CColorCopDlg::TestForExpand()
         currect.bottom = currect.top + smHeight;
         MoveWindow(&currect);
 
-        m_ExpandDialog.SetWindowText(_T("&>>")); 
+        m_ExpandDialog.SetWindowText(_T("&>>"));
     }
     InvalidateRect(&currect, false); // go redraw... but don't erase or it will flicker
 }
 
-void CColorCopDlg::OnOptionsMinimizetosystray() 
+void CColorCopDlg::OnOptionsMinimizetosystray()
 {
     m_Appflags ^= MimimizetoTray;
-    
-    if (m_Appflags & MimimizetoTray) 
+
+    if (m_Appflags & MimimizetoTray)
         SetStatusBarText(IDS_MINIMIZETOTRAY, 1);
     else
         SetStatusBarText(IDS_MINIMIZETOTRAY, 2);
     return;
 }
 
-void CColorCopDlg::OnUpdateOptionsMinimizetosystray(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdateOptionsMinimizetosystray(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetCheck(m_Appflags & MimimizetoTray); 
+    pCmdUI->SetCheck(m_Appflags & MimimizetoTray);
 }
 
-void CColorCopDlg::OnOptionsUppercasehex() 
+void CColorCopDlg::OnOptionsUppercasehex()
 {
     m_Appflags ^= UpperCaseHex;
 
@@ -3000,9 +3000,9 @@ void CColorCopDlg::OnOptionsUppercasehex()
     TestForUpperHex();
 }
 
-void CColorCopDlg::OnUpdateOptionsUppercasehex(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdateOptionsUppercasehex(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetCheck(m_Appflags & UpperCaseHex); 
+    pCmdUI->SetCheck(m_Appflags & UpperCaseHex);
 }
 
 void CColorCopDlg::TestForUpperHex()
@@ -3029,7 +3029,7 @@ void CColorCopDlg::TestForUpperHex()
     UpdateData(false);    // update control
 }
 
-void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point)
 {
     CWnd* pWnd = ChildWindowFromPoint(point);
 
@@ -3038,7 +3038,7 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point)
             m_MagLevel++;
         }
         return;
-    } else if (m_isEyedropping)    {    // right clicked while eydropping 
+    } else if (m_isEyedropping)    {    // right clicked while eydropping
         AdvanceColorHistory();        // push color to color history
         return;
     } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd())    {
@@ -3055,24 +3055,24 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point)
     CMenu *pPopup = tempMenu.GetSubMenu(0);
 
     pPopup->TrackPopupMenu(TPM_LEFTALIGN    | TPM_RIGHTBUTTON,
-                           point.x, point.y, 
+                           point.x, point.y,
                            this, NULL);
 
-    
+
     CDialog::OnRButtonDown(nFlags, point);
 }
 
-void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point) 
+void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point)
 {
     // right mouse button came up, watch out for capture
 
 //    if (m_isEyedropping || m_isMagnifying)
 //        StopCapture();
-    
+
     CDialog::OnRButtonUp(nFlags, point);
 }
 
-void CColorCopDlg::ChangeTo1pixelSampling() 
+void CColorCopDlg::ChangeTo1pixelSampling()
 {
     if (m_Appflags ^ Sampling1) {
         m_Appflags |= Sampling1;
@@ -3087,7 +3087,7 @@ void CColorCopDlg::ChangeTo1pixelSampling()
     return;
 }
 
-void CColorCopDlg::ChangeTo3x3Sampling() 
+void CColorCopDlg::ChangeTo3x3Sampling()
 {
     if (m_Appflags ^ Sampling3x3) {
         m_Appflags &= ~Sampling1;
@@ -3103,7 +3103,7 @@ void CColorCopDlg::ChangeTo3x3Sampling()
     return;
 }
 
-void CColorCopDlg::ChangeTo5x5Sampling() 
+void CColorCopDlg::ChangeTo5x5Sampling()
 {
     if (m_Appflags ^ Sampling5x5) {
         m_Appflags &= ~Sampling1;
@@ -3119,25 +3119,25 @@ void CColorCopDlg::ChangeTo5x5Sampling()
     return;
 }
 
-void CColorCopDlg::OnUpdatePopupSampling1pixel(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupSampling1pixel(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & Sampling1);     
+    pCmdUI->SetRadio(m_Appflags & Sampling1);
 }
 
-void CColorCopDlg::OnUpdatePopupSampling5by5average(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupSampling5by5average(CCmdUI* pCmdUI)
 {
 
-    pCmdUI->SetRadio(m_Appflags & Sampling5x5);     
+    pCmdUI->SetRadio(m_Appflags & Sampling5x5);
 }
 
-void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & Sampling3x3); 
+    pCmdUI->SetRadio(m_Appflags & Sampling3x3);
 }
 
 bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoint point)
 {
-    // this function averages a matrix of pixels.  
+    // this function averages a matrix of pixels.
     // either a 3 by 3 or a 5 by 5 average of pixels.
 
     // we want to modify this so it can be any range.
@@ -3155,7 +3155,7 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
         offset = 1;
         elements = 9;        // 3x3 - add up and divide by 9
 
-    } else { // (m_Appflags & Sampling5x5) 
+    } else { // (m_Appflags & Sampling5x5)
 
         offset = 2;
         elements = 25;        // 5x5 - add up and divide by 25
@@ -3189,55 +3189,55 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     }
 }
 
-void CColorCopDlg::OnPopupApplicationExpandeddialog() 
+void CColorCopDlg::OnPopupApplicationExpandeddialog()
 {
     OnExpandDialog();
 }
 
-void CColorCopDlg::OnUpdatePopupApplicationExpandeddialog(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupApplicationExpandeddialog(CCmdUI* pCmdUI)
 {
         pCmdUI->SetCheck(m_Appflags & ExpandedDialog);
 }
 
-void CColorCopDlg::OnUpdateViewHtmlhexmode(CCmdUI* pCmdUI)        
-{   
-    pCmdUI->SetRadio(m_Appflags & ModeHTML);     
+void CColorCopDlg::OnUpdateViewHtmlhexmode(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetRadio(m_Appflags & ModeHTML);
 }
-void CColorCopDlg::OnUpdateOptionsDelphimode(CCmdUI* pCmdUI)          
-{   
-    pCmdUI->SetRadio(m_Appflags & ModeDelphi);   
+void CColorCopDlg::OnUpdateOptionsDelphimode(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetRadio(m_Appflags & ModeDelphi);
 }
-void CColorCopDlg::OnUpdatePopupHexmodePowerbuilder(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupHexmodePowerbuilder(CCmdUI* pCmdUI)
 {
     pCmdUI->SetRadio(m_Appflags & ModePowerBuilder);
 }
-void CColorCopDlg::OnUpdatePopupModeVisualbasichex(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupModeVisualbasichex(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & ModeVisualBasic);    
+    pCmdUI->SetRadio(m_Appflags & ModeVisualBasic);
 }
-void CColorCopDlg::OnUpdatePopupModeVisualchex(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupModeVisualchex(CCmdUI* pCmdUI)
 {
     pCmdUI->SetRadio(m_Appflags & ModeVisualC);
 }
-void CColorCopDlg::OnUpdatePopupModeRgbfloat(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupModeRgbfloat(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & RGBFLOAT); 
+    pCmdUI->SetRadio(m_Appflags & RGBFLOAT);
 }
-void CColorCopDlg::OnUpdatePopupModeRgbint(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupModeRgbint(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & RGBINT); 
-}
-
-void CColorCopDlg::OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI) 
-{
-    pCmdUI->SetRadio(m_Appflags & ModeClarion); 
+    pCmdUI->SetRadio(m_Appflags & RGBINT);
 }
 
-void CColorCopDlg::OnPopupModeRgbfloat() 
+void CColorCopDlg::OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetRadio(m_Appflags & ModeClarion);
+}
+
+void CColorCopDlg::OnPopupModeRgbfloat()
 {
     SetStatusBarText(IDS_MODE_RGBFLOAT, 1);
     if (m_Appflags ^ ModeHTML) {
-        m_Appflags &= ~ModeHTML;            
+        m_Appflags &= ~ModeHTML;
         m_Appflags &= ~ModeDelphi;
         m_Appflags &= ~ModePowerBuilder;
         m_Appflags &= ~ModeVisualBasic;
@@ -3247,18 +3247,18 @@ void CColorCopDlg::OnPopupModeRgbfloat()
         m_Appflags &= ~ModeClarion;
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 
 
 }
 
 
-void CColorCopDlg::OnPopupModeRgbint() 
+void CColorCopDlg::OnPopupModeRgbint()
 {
     SetStatusBarText(IDS_MODE_RGBINT, 1);
     if (m_Appflags ^ ModeHTML)
     {
-        m_Appflags &= ~ModeHTML;            
+        m_Appflags &= ~ModeHTML;
         m_Appflags &= ~ModeDelphi;
         m_Appflags &= ~ModePowerBuilder;
         m_Appflags &= ~ModeVisualBasic;
@@ -3269,10 +3269,10 @@ void CColorCopDlg::OnPopupModeRgbint()
 
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnViewHtmlhexmode() 
+void CColorCopDlg::OnViewHtmlhexmode()
 {
     SetStatusBarText(IDS_MODE_HTML, 1);
     if (m_Appflags ^ ModeHTML)
@@ -3288,10 +3288,10 @@ void CColorCopDlg::OnViewHtmlhexmode()
 
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnOptionsDelphimode() 
+void CColorCopDlg::OnOptionsDelphimode()
 {
     SetStatusBarText(IDS_MODE_DELPHI, 1);
     if (m_Appflags ^ ModeDelphi) {
@@ -3305,16 +3305,16 @@ void CColorCopDlg::OnOptionsDelphimode()
         m_Appflags &= ~ModeClarion;
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnPopupHexmodePowerbuilder() 
+void CColorCopDlg::OnPopupHexmodePowerbuilder()
 {
     SetStatusBarText(IDS_MODE_POWERBUILDER, 1);
     if (m_Appflags ^ ModePowerBuilder)
     {
         m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;        
+        m_Appflags &= ~ModeDelphi;
         m_Appflags |= ModePowerBuilder;        // PowerBuilder ON
         m_Appflags &= ~ModeVisualBasic;
         m_Appflags &= ~ModeVisualC;
@@ -3323,15 +3323,15 @@ void CColorCopDlg::OnPopupHexmodePowerbuilder()
         m_Appflags &= ~ModeClarion;
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnPopupModeVisualbasichex() 
+void CColorCopDlg::OnPopupModeVisualbasichex()
 {
     SetStatusBarText(IDS_MODE_VISUALB, 1);
     {
         m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;        
+        m_Appflags &= ~ModeDelphi;
         m_Appflags &= ~ModePowerBuilder;
         m_Appflags |= ModeVisualBasic;        // VisualBasic ON
         m_Appflags &= ~ModeVisualC;
@@ -3340,16 +3340,16 @@ void CColorCopDlg::OnPopupModeVisualbasichex()
         m_Appflags &= ~ModeClarion;
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
-void CColorCopDlg::OnPopupModeVisualchex() 
+void CColorCopDlg::OnPopupModeVisualchex()
 {
     SetStatusBarText(IDS_MODE_VISUALC, 1);
     if (m_Appflags ^ ModeVisualC)
     {
         m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;        
+        m_Appflags &= ~ModeDelphi;
         m_Appflags &= ~ModePowerBuilder;
         m_Appflags &= ~ModeVisualBasic;
         m_Appflags |= ModeVisualC;            // VisualC ON
@@ -3358,86 +3358,86 @@ void CColorCopDlg::OnPopupModeVisualchex()
         m_Appflags &= ~ModeClarion;
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
 
 
-void CColorCopDlg::OnPopupModeClarionhex() 
+void CColorCopDlg::OnPopupModeClarionhex()
 {
     SetStatusBarText(IDS_MODE_CLARION, 1);
     if (m_Appflags ^ ModeClarion)
     {
         m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;        
+        m_Appflags &= ~ModeDelphi;
         m_Appflags &= ~ModePowerBuilder;
         m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;            
+        m_Appflags &= ~ModeVisualC;
         m_Appflags &= ~RGBFLOAT;
         m_Appflags &= ~RGBINT;
         m_Appflags |= ModeClarion;            // Clarion ON
     }
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 }
-    
 
-void CColorCopDlg::OnPopupRestore() 
+
+void CColorCopDlg::OnPopupRestore()
 {
     m_bvisible=true;
 
     ShowWindow(SW_RESTORE);        // user wants to restore from systray
     bMinimized = false;            // remove the systray icon
-    SetupTrayIcon();     
+    SetupTrayIcon();
     SetupTaskBarButton();        // add taskbar button
 }
 
-void CColorCopDlg::OnPopupExit() 
+void CColorCopDlg::OnPopupExit()
 {
     bMinimized = false;            // user wants to exit color cop
     SetupTrayIcon();            // remove the systray icon
-    EndDialog(IDOK);     
+    EndDialog(IDOK);
 }
 
 void CColorCopDlg::SetupStatusBar()
 {
 
     int nTotWide;        // total width of status bar
-    
+
     CRect rect;
        this->GetWindowRect(&rect);
     rect.top = rect.bottom -25;
-        
-    BOOL bStatOk = m_StatBar.Create(CCS_NODIVIDER  | WS_CHILD | 
+
+    BOOL bStatOk = m_StatBar.Create(CCS_NODIVIDER  | WS_CHILD |
                                     /*WS_BORDER |*/ WS_VISIBLE | CCS_BOTTOM,
                                     rect,this, IDC_STATUSBAR);
 
-    if (bStatOk == NULL)    
+    if (bStatOk == NULL)
     {
              AfxMessageBox ("Status B err");
             return;
     }
-    
+
     //
        // get size of window, use to configure the status bar
     //
-        
+
     CRect rWin;
        this->GetWindowRect(&rWin);
        nTotWide = rWin.right-rWin.left;
-    
+
     //
     // Make each part 1/4 of the total width of the window.
     //
     int m_Widths[1];
 
-       
+
     m_Widths[0] = nTotWide; // / 4;
-   
+
     m_StatBar.SetMinHeight(25);
-    m_StatBar.SetParts( 1, m_Widths); 
+    m_StatBar.SetParts( 1, m_Widths);
 
     SetStatusBarText(IDS_RIGHTCLICK_MENU,0);
-    
+
     return;
 }
 
@@ -3483,7 +3483,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
     return;
 }
 
-BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     // first check if we are magnifying...
 
@@ -3492,7 +3492,7 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     } else if (m_isMagnifying) {
 
         m_MagLevel += zDelta/WHEEL_DELTA;
-        
+
         if (m_MagLevel <= 0)
             m_MagLevel = 1;
         else if (m_MagLevel >= 17)
@@ -3505,7 +3505,7 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     CWnd* curfocus = GetFocus();    // handle to the window with focus
 
     if (curfocus == NULL)    // There is nothing with the focus
-        return TRUE;        // jump out 
+        return TRUE;        // jump out
 
     int offset = 1;                    // default
 
@@ -3534,13 +3534,13 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
     } else {            // there is focus, but it's not on either the Red,
         return TRUE;    // Green, or Blue edit controls -> jump out
-    }        
-    
+    }
+
 
     UpdateData(false);
     CalcColorPal();
     OnconvertRGB();
-    OnCopytoclip();    
+    OnCopytoclip();
 
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }
@@ -3562,7 +3562,7 @@ int CColorCopDlg::RangeCheck(int icolorval)
     }
 }
 
-void CColorCopDlg::OnTimer(UINT nIDEvent) 
+void CColorCopDlg::OnTimer(UINT nIDEvent)
 {
     // this allows animations to be magnified and eyedropped
 
@@ -3601,7 +3601,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent)
             RecalcZoom();
 
         } else if (m_isMagPlusDown) {
-        
+
             if (m_MagLevel != 16) {
                  m_MagLevel++;
             }
@@ -3619,13 +3619,13 @@ void CColorCopDlg::OnTimer(UINT nIDEvent)
     CDialog::OnTimer(nIDEvent);
 }
 
-void CColorCopDlg::OnPopupApplicationHelp() 
+void CColorCopDlg::OnPopupApplicationHelp()
 {
-    AfxGetApp()->WinHelp(0, HELP_CONTENTS);        
+    AfxGetApp()->WinHelp(0, HELP_CONTENTS);
     // this actually does nothing...
 }
 
-void CColorCopDlg::OnPopupColorDetectwebsafe() 
+void CColorCopDlg::OnPopupColorDetectwebsafe()
 {
     m_Appflags ^= DetectWebsafeColors;
     if (m_Appflags & DetectWebsafeColors) {
@@ -3636,12 +3636,12 @@ void CColorCopDlg::OnPopupColorDetectwebsafe()
     }
 }
 
-void CColorCopDlg::OnUpdatePopupColorDetectwebsafe(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupColorDetectwebsafe(CCmdUI* pCmdUI)
 {
     pCmdUI->SetRadio(m_Appflags & DetectWebsafeColors);
 }
 
-void CColorCopDlg::OnPopupApplicationEasymove() 
+void CColorCopDlg::OnPopupApplicationEasymove()
 {
     m_Appflags ^= EasyMove;
     if (m_Appflags & EasyMove) {
@@ -3651,12 +3651,12 @@ void CColorCopDlg::OnPopupApplicationEasymove()
     }
 }
 
-void CColorCopDlg::OnUpdatePopupApplicationEasymove(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupApplicationEasymove(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_Appflags & EasyMove);
 }
 
-void CColorCopDlg::OnPopupApplicationMinimizetosystemtrayonstart() 
+void CColorCopDlg::OnPopupApplicationMinimizetosystemtrayonstart()
 {
     m_Appflags ^= MinimizeonStart;
 
@@ -3666,36 +3666,36 @@ void CColorCopDlg::OnPopupApplicationMinimizetosystemtrayonstart()
         SetStatusBarText(IDS_MINIMIZEONSTART, 2);
 }
 
-void CColorCopDlg::OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_Appflags & MinimizeonStart);
 }
 
 
-void CColorCopDlg::OnPopupApplicationAllowmultipleinstances() 
+void CColorCopDlg::OnPopupApplicationAllowmultipleinstances()
 {
     m_Appflags ^= MultipleInstances;
-    SetStatusBarText(IDS_RESTART_COLORCOP,0);    
+    SetStatusBarText(IDS_RESTART_COLORCOP,0);
     return;
 }
 
-void CColorCopDlg::OnUpdatePopupApplicationAllowmultipleinstances(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupApplicationAllowmultipleinstances(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetCheck(m_Appflags & MultipleInstances);    
+    pCmdUI->SetCheck(m_Appflags & MultipleInstances);
 }
 
-void CColorCopDlg::OnPopupOptionsMagnifywhileeyedropping() 
+void CColorCopDlg::OnPopupOptionsMagnifywhileeyedropping()
 {
         m_Appflags ^= MAGWHILEEYEDROP;
 }
 
-void CColorCopDlg::OnUpdatePopupOptionsMagnifywhileeyedropping(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupOptionsMagnifywhileeyedropping(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_Appflags & MAGWHILEEYEDROP);
 
 }
 
-void CColorCopDlg::OnPopupOptionsUsecrosshaircursor() 
+void CColorCopDlg::OnPopupOptionsUsecrosshaircursor()
 {
     CWinApp* pApp = AfxGetApp();    // get a pointer to the one and only CWinApp
     m_Appflags ^= USECROSSHAIR;
@@ -3710,7 +3710,7 @@ void CColorCopDlg::OnPopupOptionsUsecrosshaircursor()
     return;
 }
 
-void CColorCopDlg::OnUpdatePopupOptionsUsecrosshaircursor(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupOptionsUsecrosshaircursor(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_Appflags & USECROSSHAIR);
 }
@@ -3720,7 +3720,7 @@ HCURSOR CColorCopDlg::OnQueryDragIcon()
 {
     // The system calls this to obtain the cursor to display while the user drags
     //  the minimized window.
-    
+
     return (HCURSOR) m_hIcon;
 }
 
@@ -3752,152 +3752,152 @@ void CColorCopDlg::FireOptionMenu() {
 
 
 PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
-{ 
-    BITMAP bmp; 
-    PBITMAPINFO pbmi; 
-    WORD    cClrBits; 
+{
+    BITMAP bmp;
+    PBITMAPINFO pbmi;
+    WORD    cClrBits;
 
-    // Retrieve the bitmap color format, width, and height. 
-    if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp)) 
+    // Retrieve the bitmap color format, width, and height.
+    if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
         ;
 
-    // Convert the color format to a count of bits. 
-    cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel); 
-    if (cClrBits == 1) 
-        cClrBits = 1; 
-    else if (cClrBits <= 4) 
-        cClrBits = 4; 
-    else if (cClrBits <= 8) 
-        cClrBits = 8; 
-    else if (cClrBits <= 16) 
-        cClrBits = 16; 
-    else if (cClrBits <= 24) 
-        cClrBits = 24; 
-    else 
-        cClrBits = 32; 
+    // Convert the color format to a count of bits.
+    cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
+    if (cClrBits == 1)
+        cClrBits = 1;
+    else if (cClrBits <= 4)
+        cClrBits = 4;
+    else if (cClrBits <= 8)
+        cClrBits = 8;
+    else if (cClrBits <= 16)
+        cClrBits = 16;
+    else if (cClrBits <= 24)
+        cClrBits = 24;
+    else
+        cClrBits = 32;
 
-    // Allocate memory for the BITMAPINFO structure. (This structure 
-    // contains a BITMAPINFOHEADER structure and an array of RGBQUAD 
-    // data structures.) 
+    // Allocate memory for the BITMAPINFO structure. (This structure
+    // contains a BITMAPINFOHEADER structure and an array of RGBQUAD
+    // data structures.)
 
-     if (cClrBits != 24) 
-         pbmi = (PBITMAPINFO) LocalAlloc(LPTR, 
-                    sizeof(BITMAPINFOHEADER) + 
-                    sizeof(RGBQUAD) * (1<< cClrBits)); 
+     if (cClrBits != 24)
+         pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
+                    sizeof(BITMAPINFOHEADER) +
+                    sizeof(RGBQUAD) * (1<< cClrBits));
 
-     // There is no RGBQUAD array for the 24-bit-per-pixel format. 
+     // There is no RGBQUAD array for the 24-bit-per-pixel format.
 
-     else 
-         pbmi = (PBITMAPINFO) LocalAlloc(LPTR, 
-                    sizeof(BITMAPINFOHEADER)); 
+     else
+         pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
+                    sizeof(BITMAPINFOHEADER));
 
-    // Initialize the fields in the BITMAPINFO structure. 
+    // Initialize the fields in the BITMAPINFO structure.
 
-    pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER); 
-    pbmi->bmiHeader.biWidth = bmp.bmWidth; 
-    pbmi->bmiHeader.biHeight = bmp.bmHeight; 
-    pbmi->bmiHeader.biPlanes = bmp.bmPlanes; 
-    pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel; 
-    if (cClrBits < 24) 
-        pbmi->bmiHeader.biClrUsed = (1<<cClrBits); 
+    pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    pbmi->bmiHeader.biWidth = bmp.bmWidth;
+    pbmi->bmiHeader.biHeight = bmp.bmHeight;
+    pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
+    pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
+    if (cClrBits < 24)
+        pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
 
-    // If the bitmap is not compressed, set the BI_RGB flag. 
-    pbmi->bmiHeader.biCompression = BI_RGB; 
+    // If the bitmap is not compressed, set the BI_RGB flag.
+    pbmi->bmiHeader.biCompression = BI_RGB;
 
-    // Compute the number of bytes in the array of color 
-    // indices and store the result in biSizeImage. 
-    // For Windows NT, the width must be DWORD aligned unless 
-    // the bitmap is RLE compressed. This example shows this. 
-    // For Windows 95/98/Me, the width must be WORD aligned unless the 
+    // Compute the number of bytes in the array of color
+    // indices and store the result in biSizeImage.
+    // For Windows NT, the width must be DWORD aligned unless
+    // the bitmap is RLE compressed. This example shows this.
+    // For Windows 95/98/Me, the width must be WORD aligned unless the
     // bitmap is RLE compressed.
     pbmi->bmiHeader.biSizeImage = ((pbmi->bmiHeader.biWidth * cClrBits +31) & ~31) /8
-                                  * pbmi->bmiHeader.biHeight; 
-    // Set biClrImportant to 0, indicating that all of the 
-    // device colors are important. 
-     pbmi->bmiHeader.biClrImportant = 0; 
-     return pbmi; 
- } 
-void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC) 
- { 
+                                  * pbmi->bmiHeader.biHeight;
+    // Set biClrImportant to 0, indicating that all of the
+    // device colors are important.
+     pbmi->bmiHeader.biClrImportant = 0;
+     return pbmi;
+ }
+void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC)
+ {
 
-    HANDLE hf;                 // file handle 
-    BITMAPFILEHEADER hdr;       // bitmap file-header 
-    PBITMAPINFOHEADER pbih;     // bitmap info-header 
-    LPBYTE lpBits;              // memory pointer 
-    DWORD dwTotal;              // total count of bytes 
-    DWORD cb;                   // incremental count of bytes 
-    BYTE *hp;                   // byte pointer 
-    DWORD dwTmp; 
+    HANDLE hf;                 // file handle
+    BITMAPFILEHEADER hdr;       // bitmap file-header
+    PBITMAPINFOHEADER pbih;     // bitmap info-header
+    LPBYTE lpBits;              // memory pointer
+    DWORD dwTotal;              // total count of bytes
+    DWORD cb;                   // incremental count of bytes
+    BYTE *hp;                   // byte pointer
+    DWORD dwTmp;
 
-    pbih = (PBITMAPINFOHEADER) pbi; 
+    pbih = (PBITMAPINFOHEADER) pbi;
     lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
 
-    if (!lpBits) 
+    if (!lpBits)
         ;
 
-    // Retrieve the color table (RGBQUAD array) and the bits 
-    // (array of palette indices) from the DIB. 
-    if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi, 
-        DIB_RGB_COLORS)) 
+    // Retrieve the color table (RGBQUAD array) and the bits
+    // (array of palette indices) from the DIB.
+    if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi,
+        DIB_RGB_COLORS))
     {
         ;
     }
 
-    // Create the .BMP file. 
-    hf = CreateFile(pszFile, 
-                   GENERIC_READ | GENERIC_WRITE, 
-                   (DWORD) 0, 
-                   NULL, 
-                   CREATE_ALWAYS, 
-                   FILE_ATTRIBUTE_NORMAL, 
-                   (HANDLE) NULL); 
-    if (hf == INVALID_HANDLE_VALUE) 
+    // Create the .BMP file.
+    hf = CreateFile(pszFile,
+                   GENERIC_READ | GENERIC_WRITE,
+                   (DWORD) 0,
+                   NULL,
+                   CREATE_ALWAYS,
+                   FILE_ATTRIBUTE_NORMAL,
+                   (HANDLE) NULL);
+    if (hf == INVALID_HANDLE_VALUE)
     {
         ;
         return;
     }
 
-    hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M" 
+    hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M"
 
 
-    // Compute the size of the entire file. 
-    hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) + 
-                 pbih->biSize + pbih->biClrUsed 
-                 * sizeof(RGBQUAD) + pbih->biSizeImage); 
-    hdr.bfReserved1 = 0; 
-    hdr.bfReserved2 = 0; 
+    // Compute the size of the entire file.
+    hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) +
+                 pbih->biSize + pbih->biClrUsed
+                 * sizeof(RGBQUAD) + pbih->biSizeImage);
+    hdr.bfReserved1 = 0;
+    hdr.bfReserved2 = 0;
 
-    // Compute the offset to the array of color indices. 
-    hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) + 
-                    pbih->biSize + pbih->biClrUsed 
-                    * sizeof (RGBQUAD); 
+    // Compute the offset to the array of color indices.
+    hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
+                    pbih->biSize + pbih->biClrUsed
+                    * sizeof (RGBQUAD);
 
-    // Copy the BITMAPFILEHEADER into the .BMP file. 
-    if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER), 
-        (LPDWORD) &dwTmp,  NULL)) 
+    // Copy the BITMAPFILEHEADER into the .BMP file.
+    if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
+        (LPDWORD) &dwTmp,  NULL))
     {
-       ;//errhandler("WriteFile", hwnd); 
+       ;//errhandler("WriteFile", hwnd);
     }
 
-    // Copy the BITMAPINFOHEADER and RGBQUAD array into the file. 
-    if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) 
-                  + pbih->biClrUsed * sizeof (RGBQUAD), 
+    // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
+    if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
+                  + pbih->biClrUsed * sizeof (RGBQUAD),
                   (LPDWORD) &dwTmp, ( NULL)) )
                   {
                     ;
                   }
-    
-    // Copy the array of color indices into the .BMP file. 
-    dwTotal = cb = pbih->biSizeImage; 
-    hp = lpBits; 
-    if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL)) 
+
+    // Copy the array of color indices into the .BMP file.
+    dwTotal = cb = pbih->biSizeImage;
+    hp = lpBits;
+    if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL))
         ;
 
-    // Close the .BMP file. 
+    // Close the .BMP file.
     if (!CloseHandle(hf)) {
             ;
     }
-    // Free memory. 
+    // Free memory.
     GlobalFree((HGLOBAL)lpBits);
 }
 
@@ -3908,20 +3908,20 @@ bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
            (B % WEBSAFE_STEP == 0);
 }
 
-void CColorCopDlg::OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI)
 {
         pCmdUI->SetCheck(m_Appflags & SETCURSORONEYEDROP);
-    
+
 }
 
-void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper() 
+void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper()
 {
     m_Appflags ^= SETCURSORONEYEDROP;
-    SetStatusBarText(IDS_RESTART_COLORCOP,0);    
+    SetStatusBarText(IDS_RESTART_COLORCOP,0);
     return;
 }
 
-void CColorCopDlg::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos) 
+void CColorCopDlg::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
 {
 
 //    if(!m_bvisible) {
@@ -3931,7 +3931,7 @@ void CColorCopDlg::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
     CDialog::OnWindowPosChanging(lpwndpos);
 }
 
-void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() 
+void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 {
     // force to sampling multi.  TODO: refactor this into a method:
     m_Appflags &= ~Sampling1;
@@ -3954,7 +3954,7 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
     SetStatusBarText(strStatus);
 }
 
-void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage() 
+void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage()
 {
     // force to sampling multi.  TODO: refactor this into a method:
     m_Appflags &= ~Sampling1;
@@ -3974,10 +3974,10 @@ void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage()
 
     }
     SetStatusBarText(strStatus);
-    
+
 }
 
-void CColorCopDlg::OnPopupSamplingMultipixel() 
+void CColorCopDlg::OnPopupSamplingMultipixel()
 {
 
     if (m_Appflags ^ SamplingMULTI) {
@@ -3987,15 +3987,15 @@ void CColorCopDlg::OnPopupSamplingMultipixel()
         m_Appflags |= SamplingMULTI;
     }
     SetStatusBarText(IDS_MULTIPIX, 0);
-    
+
 }
 
-void CColorCopDlg::OnUpdatePopupSamplingMultipixel(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupSamplingMultipixel(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetRadio(m_Appflags & SamplingMULTI);     
+    pCmdUI->SetRadio(m_Appflags & SamplingMULTI);
 }
 
-void CColorCopDlg::OnPopupSpaceRgb() 
+void CColorCopDlg::OnPopupSpaceRgb()
 {
     if (m_Appflags ^ SpaceRGB) {
         m_Appflags &= ~SpaceCMYK;
@@ -4005,12 +4005,12 @@ void CColorCopDlg::OnPopupSpaceRgb()
     SetStatusBarText(IDS_SPACE_RGB, 1);
 }
 
-void CColorCopDlg::OnUpdatePopupSpaceRgb(CCmdUI* pCmdUI) 
-{    
+void CColorCopDlg::OnUpdatePopupSpaceRgb(CCmdUI* pCmdUI)
+{
     pCmdUI->SetCheck(m_Appflags & SpaceRGB);
 }
 
-void CColorCopDlg::OnPopupSpaceCmyk() 
+void CColorCopDlg::OnPopupSpaceCmyk()
 {
     if (m_Appflags ^ SpaceCMYK) {
         m_Appflags &= ~SpaceRGB;
@@ -4020,13 +4020,13 @@ void CColorCopDlg::OnPopupSpaceCmyk()
     SetStatusBarText(IDS_SPACE_CMYK, 1);
 }
 
-void CColorCopDlg::OnUpdatePopupSpaceCmyk(CCmdUI* pCmdUI) 
+void CColorCopDlg::OnUpdatePopupSpaceCmyk(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_Appflags & SpaceCMYK);
-    
+
 }
 
-void CColorCopDlg::ChangeColorSpace(bool bRGB) 
+void CColorCopDlg::ChangeColorSpace(bool bRGB)
 {
     CString txt;
 
@@ -4049,7 +4049,7 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB)
         txt.LoadString(IDS_B);
         m_Lbl3.SetWindowText(txt);
         // Hide 4th Label
-        m_Lbl4.ShowWindow(SW_HIDE);        
+        m_Lbl4.ShowWindow(SW_HIDE);
         // Hide Cyan
         GetDlgItem(IDC_CYAN)->ShowWindow(SW_HIDE);
         // Hide Magenta
@@ -4060,7 +4060,7 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB)
         GetDlgItem(IDC_BLACK)->ShowWindow(SW_HIDE);
 
     } else {
-    
+
         // Show Cyan
         GetDlgItem(IDC_CYAN)->ShowWindow(SW_SHOW);
         // Show Magenta
@@ -4069,23 +4069,23 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB)
         GetDlgItem(IDC_YELLOW)->ShowWindow(SW_SHOW);
         // Show Black
         GetDlgItem(IDC_BLACK)->ShowWindow(SW_SHOW);
-        
+
         // C
         txt.LoadString(IDS_C);
         m_Lbl1.SetWindowText(txt);
         // M
         txt.LoadString(IDS_M);
         m_Lbl2.SetWindowText(txt);
-        
+
         // Y
         txt.LoadString(IDS_Y);
         m_Lbl3.SetWindowText(txt);
-        
+
         // K
         txt.LoadString(IDS_K);
         m_Lbl4.SetWindowText(txt);
-        
-        m_Lbl4.ShowWindow(SW_SHOW);        
+
+        m_Lbl4.ShowWindow(SW_SHOW);
 
         // Hide Red
         GetDlgItem(IDC_RED)->ShowWindow(SW_HIDE);
