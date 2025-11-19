@@ -11,7 +11,7 @@
 // Joerg Koenig suggested the icon animation stuff
 //
 // This class is a light wrapper around the windows system tray stuff. It
-// adds an icon to the system tray with the specified ToolTip text and 
+// adds an icon to the system tray with the specified ToolTip text and
 // callback notification value, which is sent back to the Parent window.
 //
 // The tray icon can be instantiated using either the constructor or by
@@ -19,10 +19,10 @@
 // program. eg.
 //
 //        CSystemTray m_SystemTray;    // Member variable of some class
-//        
-//        ... 
+//
+//        ...
 //        // in some member function maybe...
-//        m_SystemTray.Create(pParentWnd, WM_MY_NOTIFY, "Click here", 
+//        m_SystemTray.Create(pParentWnd, WM_MY_NOTIFY, "Click here",
 //                          hIcon, nSystemTrayID);
 //
 // Written by Chris Maunder (chrismaunder@codeguru.com)
@@ -35,11 +35,11 @@
 //                        by Enrico Lelina.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. If 
-// the source code in  this file is used in any commercial application 
-// then acknowledgement must be made to the author of this file 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included. If
+// the source code in  this file is used in any commercial application
+// then acknowledgement must be made to the author of this file
 // (in whatever form you wish).
 //
 // This file is provided "as is" with no expressed or implied warranty.
@@ -48,13 +48,13 @@
 // makes you car start emitting strange noises when you start it up.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 //
 /////////////////////////////////////////////////////////////////////////////
-    
+
 #include "stdafx.h"
 #include "SystemTray.h"
 
@@ -77,7 +77,7 @@ CSystemTray::CSystemTray()
     Initialise();
 }
 
-CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
+CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
                          HICON icon, UINT uID)
 {
     Initialise();
@@ -95,7 +95,7 @@ void CSystemTray::Initialise()
     m_DefaultMenuItemByPos = TRUE;
 }
 
-BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
+BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
                          HICON icon, UINT uID)
 {
     // this is only for Windows 95 (or higher)
@@ -105,7 +105,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     // Make sure Notification window is valid (not needed - CJM)
     // VERIFY(m_bEnabled = (pParent && ::IsWindow(pParent->GetSafeHwnd())));
     // if (!m_bEnabled) return FALSE;
-    
+
     // Make sure we avoid conflict with other messages
     ASSERT(uCallbackMessage >= WM_USER);
 
@@ -149,7 +149,7 @@ void CSystemTray::MoveToRight()
 
 void CSystemTray::RemoveIcon()
 {
-    if (!m_bEnabled) 
+    if (!m_bEnabled)
         return;
 
     m_tnd.uFlags = 0;
@@ -210,7 +210,7 @@ BOOL CSystemTray::SetStandardIcon(UINT nIDResource)
 
     return SetIcon(hIcon);
 }
- 
+
 HICON CSystemTray::GetIcon() const
 {
     return (m_bEnabled)? m_tnd.hIcon : NULL;
@@ -275,11 +275,11 @@ CWnd* CSystemTray::GetNotificationWnd() const
 
 BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
 {
-    if ((m_DefaultMenuItemID == uItem) && (m_DefaultMenuItemByPos == bByPos)) 
+    if ((m_DefaultMenuItemID == uItem) && (m_DefaultMenuItemByPos == bByPos))
         return TRUE;
 
     m_DefaultMenuItemID = uItem;
-    m_DefaultMenuItemByPos = bByPos;   
+    m_DefaultMenuItemByPos = bByPos;
 
     CMenu menu, *pSubMenu;
 
@@ -307,20 +307,20 @@ BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
 END_MESSAGE_MAP()
 
 
-LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam) 
+LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 {
     //Return quickly if its not for this tray icon
     if (wParam != m_tnd.uID)
         return 0L;
 
-      
+
 
     CMenu menu, *pSubMenu;
     CWnd* pTarget = AfxGetMainWnd();
 
     // Clicking with right button brings up a context menu
     if (LOWORD(lParam) == WM_RBUTTONUP)
-    {    
+    {
         if (!menu.LoadMenu(m_tnd.uID)) return 0;
         if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
 
@@ -331,22 +331,22 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         CPoint pos;
         GetCursorPos(&pos);
 
-        pTarget->SetForegroundWindow();  
-        ::TrackPopupMenu(pSubMenu->m_hMenu, 0, pos.x, pos.y, 0, 
+        pTarget->SetForegroundWindow();
+        ::TrackPopupMenu(pSubMenu->m_hMenu, 0, pos.x, pos.y, 0,
                          pTarget->GetSafeHwnd(), NULL);
 
         // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
         pTarget->PostMessage(WM_NULL, 0, 0);
 
         menu.DestroyMenu();
-    } 
-    else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) 
+    }
+    else if (LOWORD(lParam) == WM_LBUTTONDBLCLK)
     {
 
 
 
         // double click received, the default action is to execute default menu item
-        pTarget->SetForegroundWindow();  
+        pTarget->SetForegroundWindow();
 
         UINT uItem;
         if (m_DefaultMenuItemByPos)
@@ -357,20 +357,20 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         }
         else
             uItem = m_DefaultMenuItemID;
-        
+
         pTarget->SendMessage(WM_COMMAND, uItem, 0);
 
         menu.DestroyMenu();
-  
+
     }
 
     return 1;
 }
 
-LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (message == m_tnd.uCallbackMessage)
         return OnTrayNotification(wParam, lParam);
-    
+
     return CWnd::WindowProc(message, wParam, lParam);
 }

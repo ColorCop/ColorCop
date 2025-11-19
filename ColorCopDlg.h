@@ -99,7 +99,7 @@ protected:
     // Store for snapback from websafe,  unsigned char only takes 1 byte, 0 - 255
     unsigned char m_OldRed, m_OldBlue, m_OldGreen;
     BOOL bOldClrExist;
-    
+
     BOOL m_isEyedropping;
     BOOL m_isMagnifying;
     BOOL bMinimized;
@@ -195,7 +195,7 @@ protected:
     bool CColorCopDlg::isWebsafeColor(int R, int G, int B);
     CString CColorCopDlg::GetTempFolder();
     BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
-    
+
     void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal);
 
     void CColorCopDlg::CalcColorPal();
