@@ -3,8 +3,6 @@ name: lint
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '0 0 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -24,8 +22,8 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Install CPPLint
+    - name: Install Dependencies
       run: pip install cpplint
 
-    - name: Run CPPLint
-      run: cpplint --recursive .
+    - name: Run Linters
+      run: ./lint.sh
