@@ -31,7 +31,7 @@
 #define ModePowerBuilder    8192
 #define ModeVisualBasic        16384
 #define ModeVisualC            32768
-#define Sampling1            65536    
+#define Sampling1            65536
 #define Sampling3x3            131072
 #define Sampling5x5            262144
 #define MultipleInstances    524288
