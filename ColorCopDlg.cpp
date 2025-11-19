@@ -20,8 +20,11 @@
 #include <math.h>
 #include <windows.h>
 #include <winuser.h>
+#include <random>
 
 constexpr int WEBSAFE_STEP = 51;
+constexpr int RGB_MIN = 0;
+constexpr int RGB_MAX = 255;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2695,23 +2698,22 @@ void CColorCopDlg::OnOptionsAutocopytoclipboard()
     OnCopytoclip();
 }
 
-
-
-
 void CColorCopDlg::OnColorRandom()
 {
     // Generates a random color and updates
     // current decimal value MOD 256 - make a random value from 0 to 255
-    srand((unsigned) time(NULL));    // seed with the to actually make it random
-    m_Reddec   = rand() % 256;
-    m_Greendec = rand() % 256;
-    m_Bluedec  = rand() % 256;
-    SetStatusBarText(IDS_RANDOMCOLOR,0);
+    // Thread-safe random number generation
+    static thread_local std::mt19937 generator(std::random_device{}());
+    std::uniform_int_distribution<int> distribution(RGB_MIN, RGB_MAX);
+
+    m_Reddec   = distribution(generator);
+    m_Greendec = distribution(generator);
+    m_Bluedec  = distribution(generator);
+
+    SetStatusBarText(IDS_RANDOMCOLOR, 0);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
-
-
 }
 
 void CColorCopDlg::OnColorReverse()
