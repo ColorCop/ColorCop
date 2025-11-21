@@ -42,7 +42,7 @@ END_MESSAGE_MAP()
 
 CColorCopApp::CColorCopApp()
 {
-    m_hMutex=NULL;
+    m_hMutex = nullptr;
 }
 
 CColorCopApp::~CColorCopApp()
@@ -106,7 +106,7 @@ bool CColorCopApp::InstanceRunning()
 {
     m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
 
-    if(m_hMutex)
+    if (m_hMutex)
     {
         DWORD dwWait = WaitForSingleObject(m_hMutex, 10);
 
@@ -321,10 +321,10 @@ void CColorCopApp::LoadDefaultSettings() {
         dlg.m_Appflags |= MAGWHILEEYEDROP;
         dlg.m_Appflags |= SpaceRGB;
 
-        dlg.WinLocX=200;
-        dlg.WinLocY=200;
+        dlg.WinLocX = 200;
+        dlg.WinLocY = 200;
 
-        dlg.m_iSamplingOffset=3;
+        dlg.m_iSamplingOffset = 3;
 
 
         // set all custom color blocks to white
@@ -384,9 +384,9 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar << dlg.m_Appflags;
             ar << dlg.WinLocX;
             ar << dlg.WinLocY;
-            for (int j = 0; j<16; j++)        //load custom color values to array
+            for (int j = 0; j < 16; j++)        //load custom color values to array
                 ar << dlg.CustColorBank[j];
-            for(int w = 0; w<7; w++)        // save color history values
+            for(int w = 0; w < 7; w++)        // save color history values
                 ar << dlg.ColorHistory[w];
 
             ar <<  dlg.m_iSamplingOffset;
@@ -403,9 +403,9 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar >> dlg.m_Appflags;
             ar >> dlg.WinLocX;
             ar >> dlg.WinLocY;
-            for (int j = 0; j<16; j++)        //load custom color values to array
+            for (int j = 0; j < 16; j++)        //load custom color values to array
                 ar >> dlg.CustColorBank[j];
-            for(int w = 0; w<7; w++)        // save color history values
+            for(int w = 0; w < 7; w++)        // save color history values
                 ar >> dlg.ColorHistory[w];
 
             ar >>  dlg.m_iSamplingOffset;
