@@ -1,0 +1,14 @@
+{
+  "components": [
+    {
+      "id": "Microsoft.VisualStudio.Component.VC.Tools.MSVC",
+      "version": "[15.0,17.0)",
+      "optional": false
+    },
+    {
+      "id": "Microsoft.VisualStudio.Component.VC.ATLMFC",
+      "version": "[15.0,17.0)",
+      "optional": false
+    }
+  ]
+}
