@@ -29,7 +29,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Release\ColorCop.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\packaging\colorcop\ColorCop.HLP"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\packaging\ColorCop.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.TXT"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

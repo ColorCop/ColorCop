@@ -2239,6 +2239,13 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
     }
 
     // fix the WinHelp problem...  test to see if F1 is being pressed
+    if (pMsg->message == 0x4d) {        
+        if (GetKeyState(VK_SHIFT) >= 0)    {        
+            // old
+            // AfxGetApp()->WinHelp(0, HELP_CONTENTS);        // fire help
+            // Load the .chm file
+            CString strHelpFile = _T("ColorCop.chm");
+            HtmlHelp(m_hWnd, strHelpFile, HH_DISPLAY_TOC, NULL);
     if (pMsg->message == 0x4d) {
         if (GetKeyState(VK_SHIFT) >= 0)    {
             AfxGetApp()->WinHelp(0, HELP_CONTENTS);        // fire help
