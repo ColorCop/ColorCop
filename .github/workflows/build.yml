@@ -71,3 +71,27 @@ jobs:
           name: installers
           path: .\output
           retention-days: 30
+
+      - name: Create Flat Zip Archive
+        run: |
+          Remove-Item -Path "Release-standalone" -Recurse -Force -ErrorAction SilentlyContinue
+
+          New-Item -ItemType Directory -Path "Release-standalone"
+
+          Copy-Item -Path "Release\*.exe" -Destination "Release-standalone"
+          Copy-Item -Path "README.md" -Destination "Release-standalone"
+          Copy-Item -Path "LICENSE.txt" -Destination "Release-standalone"
+          Copy-Item -Path "packaging\*.HLP" -Destination "Release-standalone"
+
+          Set-Location "Release-standalone"
+
+          Compress-Archive -Path "*" -DestinationPath "../colorcop.zip" -Force
+        shell: pwsh
+
+      - name: Publish Release Artifacts
+        uses: actions/upload-artifact@v5
+        if: matrix.configuration == 'Release'
+        with:
+          name: colorcop-zip
+          path: colorcop.zip
+          retention-days: 30
