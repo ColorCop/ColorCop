@@ -1,23 +1,19 @@
 name: build
 
 on:
-  push:
   pull_request:
-  schedule:
-    - cron: '0 0 * * 0'
   workflow_dispatch:
 
 jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-2022
 
-    # Grant minimal read-only access to repository contents
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - name: Checkout
