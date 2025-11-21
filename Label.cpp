@@ -55,7 +55,7 @@ CLabel& CLabel::SetTextColor(COLORREF crText)
 }
 
 CLabel& CLabel::SetFontBold(BOOL bBold)
-{    
+{
     m_lf.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
     ReconstructFont();
     RedrawWindow();
@@ -63,7 +63,7 @@ CLabel& CLabel::SetFontBold(BOOL bBold)
 }
 
 CLabel& CLabel::SetFontUnderline(BOOL bSet)
-{    
+{
     m_lf.lfUnderline = bSet;
     ReconstructFont();
     RedrawWindow();
@@ -75,7 +75,7 @@ CLabel& CLabel::SetFontItalic(BOOL bSet)
     m_lf.lfItalic = bSet;
     ReconstructFont();
     RedrawWindow();
-    return *this;    
+    return *this;
 }
 
 
@@ -93,13 +93,13 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd)
 {
     if (m_hBrush)
         ::DeleteObject(m_hBrush);
-    
+
     m_hBrush = ::CreateSolidBrush(crBkgnd);
     return *this;
 }
 
 CLabel& CLabel::SetFontName(const CString& strFont)
-{    
+{
     //strcpy_s(m_lf.lfFaceName, 32, strFont);
     strcpy(m_lf.lfFaceName, strFont);
     ReconstructFont();
@@ -120,11 +120,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLabel message handlers
 
-HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor) 
+HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor)
 {
-    // TODO: Change any attributes of the DC here
-    
-    // TODO: Return a non-NULL brush if the parent's handler should not be called
+    // TODO(j4y): Change any attributes of the DC here
+    // TODO(j4y): Return a non-NULL brush if the parent's handler should not be called
 
     if (CTLCOLOR_STATIC == nCtlColor)
     {
@@ -153,7 +152,7 @@ void CLabel::ReconstructFont()
 
 
 
-void CLabel::OnTimer(UINT nIDEvent) 
+void CLabel::OnTimer(UINT nIDEvent)
 {
     m_bState = !m_bState;
 
@@ -171,7 +170,7 @@ void CLabel::OnTimer(UINT nIDEvent)
             UpdateWindow();
         break;
     }
-    
+
     CStatic::OnTimer(nIDEvent);
 }
 
@@ -187,17 +186,17 @@ CLabel& CLabel::SetLink(BOOL bLink)
     return *this;
 }
 
-void CLabel::OnLButtonDown(UINT nFlags, CPoint point) 
+void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 {
     CString strLink;
 
     GetWindowText(strLink);
     ShellExecute(NULL,"open",strLink,NULL,NULL,SW_SHOWNORMAL);
-        
+
     CStatic::OnLButtonDown(nFlags, point);
 }
 
-BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
     if (m_hCursor)
     {

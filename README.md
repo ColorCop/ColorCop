@@ -66,7 +66,7 @@ pip install cpplint
 
 **Run linting:**
 ```bash
-cpplint --recursive .
+./lint.sh
 ```
 
 ### Contributing

@@ -8,11 +8,11 @@
 // Copyright (c) 1998.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. If 
-// the source code in  this file is used in any commercial application 
-// then acknowledgement must be made to the author of this file 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included. If
+// the source code in  this file is used in any commercial application
+// then acknowledgement must be made to the author of this file
 // (in whatever form you wish).
 //
 // This file is provided "as is" with no expressed or implied warranty.
@@ -21,10 +21,10 @@
 // makes you car start emitting strange noises when you start it up.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 
 #ifndef _INCLUDED_SYSTEMTRAY_H_
 #define _INCLUDED_SYSTEMTRAY_H_

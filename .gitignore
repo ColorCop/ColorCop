@@ -11,6 +11,10 @@
 *.gch
 *.pch
 
+# Generated files
+*.dep
+*.mak
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -40,6 +44,9 @@
 # legacy Visual Studio 97/5.0 temporary files
 *.001
 *.002
+
+# exlude Class Wizard files from version control
+*.clw
 
 # Visual Studio build output
 Release/

@@ -20,7 +20,6 @@
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
-//#include "WavTipCtrl.h"        // used to add tooltips to the dialog :)
 
 
 class CSystemTray;
@@ -30,7 +29,6 @@ class CColorCopDlg : public CDialog
 // Construction
 public:
     CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
-    //CWavTipCtrl m_tooltip;
     COLORREF ColorHistory[7];
     COLORREF CustColorBank[16];
     int m_Appflags;
@@ -99,7 +97,7 @@ protected:
     // Store for snapback from websafe,  unsigned char only takes 1 byte, 0 - 255
     unsigned char m_OldRed, m_OldBlue, m_OldGreen;
     BOOL bOldClrExist;
-    
+
     BOOL m_isEyedropping;
     BOOL m_isMagnifying;
     BOOL bMinimized;
@@ -195,7 +193,7 @@ protected:
     bool CColorCopDlg::isWebsafeColor(int R, int G, int B);
     CString CColorCopDlg::GetTempFolder();
     BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
-    
+
     void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal);
 
     void CColorCopDlg::CalcColorPal();
