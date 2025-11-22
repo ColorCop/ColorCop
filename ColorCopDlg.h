@@ -211,8 +211,7 @@ protected:
     PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
     void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
     void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue);
-
-void CColorCopDlg::ChangeColorSpace(bool bRGB) ;
+    void CColorCopDlg::ChangeColorSpace(bool bRGB);
 
     // Generated message map functions
     //{{AFX_MSG(CColorCopDlg)

@@ -2670,7 +2670,7 @@ void CColorCopDlg::UpdateMenu(CMenu* pMenu)
         if (pSubMenu == NULL)
         {
             cmdUI.m_nIndexMax = pMenu->GetMenuItemCount();
-            for (UINT i = 0; i < cmdUI.m_nIndexMax;++i)
+            for (UINT i = 0; i < cmdUI.m_nIndexMax; ++i)
             {
                 cmdUI.m_nIndex = i;
                 cmdUI.m_nID = pMenu->GetMenuItemID(i);
@@ -2938,7 +2938,7 @@ void CColorCopDlg::OnExpandDialog()
 void CColorCopDlg::TestForExpand()
 {
     RECT currect;
-    GetWindowRect(&currect) ;
+    GetWindowRect(&currect);
 
     // usr small for both
     //    smWidth = lgWidth;
@@ -3166,8 +3166,8 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     offset = m_iSamplingOffset;
     elements = (m_iSamplingOffset*2+1)*(m_iSamplingOffset*2+1);
 
-    for (xrel = point.x - offset;xrel <= point.x + offset; xrel ++) {
-        for (yrel = point.y - offset; yrel <= point.y + offset; yrel ++) {
+    for (xrel = point.x - offset; xrel <= point.x + offset; xrel++) {
+        for (yrel = point.y - offset; yrel <= point.y + offset; yrel++) {
             crefxy=::GetPixel(hdc, xrel, yrel);
             reddec += GetRValue(crefxy);
             greendec += GetGValue(crefxy);
@@ -3761,7 +3761,7 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
 
     // Retrieve the bitmap color format, width, and height.
     if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
-        ;
+        AfxMessageBox("Unable to receive bitmap information");
 
     // Convert the color format to a count of bits.
     cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
@@ -3834,15 +3834,17 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     pbih = (PBITMAPINFOHEADER) pbi;
     lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
 
-    if (!lpBits)
-        ;
+    // TODO(j4y): error handling
+    //if (!lpBits)
+    //    ;
 
     // Retrieve the color table (RGBQUAD array) and the bits
     // (array of palette indices) from the DIB.
     if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi,
         DIB_RGB_COLORS))
     {
-        ;
+        AfxMessageBox("GetDIBits failed");
+        return;
     }
 
     // Create the .BMP file.
@@ -3855,7 +3857,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
                    (HANDLE) NULL);
     if (hf == INVALID_HANDLE_VALUE)
     {
-        ;
+        AfxMessageBox("Could not create BMP file");
         return;
     }
 
@@ -3878,7 +3880,8 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
         (LPDWORD) &dwTmp,  NULL))
     {
-       ;//errhandler("WriteFile", hwnd);
+        AfxMessageBox("WriteFile failed");
+        return;
     }
 
     // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
@@ -3886,18 +3889,21 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
                   + pbih->biClrUsed * sizeof (RGBQUAD),
                   (LPDWORD) &dwTmp, ( NULL)) )
                   {
-                    ;
+                    AfxMessageBox("WriteFile failed");
+                    return;
                   }
 
     // Copy the array of color indices into the .BMP file.
     dwTotal = cb = pbih->biSizeImage;
     hp = lpBits;
     if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL))
-        ;
-
+    {
+        AfxMessageBox("WriteFile failed");
+    }
     // Close the .BMP file.
-    if (!CloseHandle(hf)) {
-            ;
+    if (!CloseHandle(hf))
+    {
+        AfxMessageBox("Could not close BMP file");
     }
     // Free memory.
     GlobalFree((HGLOBAL)lpBits);
