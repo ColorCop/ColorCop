@@ -100,8 +100,9 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd)
 
 CLabel& CLabel::SetFontName(const CString& strFont)
 {
-    //strcpy_s(m_lf.lfFaceName, 32, strFont);
-    strcpy(m_lf.lfFaceName, strFont);
+    // Use secure CRT helper to avoid C4996 and buffer overruns.
+    // sizeof(m_lf.lfFaceName)/sizeof(TCHAR) yields the element count (LF_FACESIZE).
+    _tcscpy_s(m_lf.lfFaceName, sizeof(m_lf.lfFaceName) / sizeof(TCHAR), (LPCTSTR)strFont);
     ReconstructFont();
     RedrawWindow();
     return *this;
