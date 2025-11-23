@@ -34,9 +34,9 @@ public:
     int m_Appflags;
     int m_iSamplingOffset;
 
-    int WinLocX,WinLocY;
-    unsigned short m_MagLevel;
-    unsigned short m_FloatPrecision;
+    int WinLocX, WinLocY;
+    int16_t m_MagLevel;
+    int16_t m_FloatPrecision;
 
 
 
@@ -270,7 +270,7 @@ protected:
     afx_msg void OnPopupRestore();
     afx_msg void OnPopupExit();
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+    afx_msg BOOL OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt);
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnPopupApplicationHelp();
     afx_msg void OnPopupApplicationEasymove();
