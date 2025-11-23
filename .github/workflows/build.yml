@@ -1,6 +1,9 @@
 name: build
 
 on:
+  push:
+    tags:
+      - 'v*'
   pull_request:
   workflow_dispatch:
 
@@ -91,3 +94,12 @@ jobs:
           name: colorcop-zip
           path: colorcop.zip
           retention-days: 30
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            colorcop.zip
+            output|*.exe
+
