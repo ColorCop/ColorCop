@@ -21,6 +21,7 @@
 #include <windows.h>
 #include <winuser.h>
 #include <random>
+#include <cstdint>
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
@@ -2733,12 +2734,12 @@ void CColorCopDlg::OnColorReverse()
 
 void CColorCopDlg::OnPopupColorConverttograyscale()
 {
-    unsigned short L=0,Min=0,Max=0;
+    uint16_t L = 0, Min = 0, Max = 0;
+
     CString strStatus;
 
     // Converts the current color to grayscale
-
-    if ((m_Reddec == m_Greendec)&&(m_Greendec == m_Bluedec)) {
+    if ((m_Reddec == m_Greendec) && (m_Greendec == m_Bluedec)) {
 
         strStatus.LoadString(IDS_COLOR_GRAY);
         SetStatusBarText(strStatus);
@@ -2760,7 +2761,7 @@ void CColorCopDlg::OnPopupColorConverttograyscale()
 
         Min = __min(m_Reddec,m_Greendec);
         Min = __min(Min,m_Bluedec);
-        L = (int) (Min + Max)/2;
+        L = (int) (Min + Max) / 2;
 
         m_Reddec   = L;
         m_Greendec = L;
@@ -3485,7 +3486,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
     return;
 }
 
-BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt)
 {
     // first check if we are magnifying...
 
