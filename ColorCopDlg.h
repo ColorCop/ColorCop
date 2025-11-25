@@ -28,7 +28,7 @@ class CColorCopDlg : public CDialog
 {
 // Construction
 public:
-    CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
+    explicit CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
     COLORREF ColorHistory[7];
     COLORREF CustColorBank[16];
     int m_Appflags;
@@ -138,7 +138,7 @@ protected:
     CRect Q1rect, Q2rect, Q3rect, Q4rect, Q5rect, Q6rect, Q7rect;
     CRect buttonrect;                    // color window rect
 
-    CRect magrect, colorpalrect;        // magnifyer rect, based off color window rect
+    CRect magrect, colorpalrect;        // magnifier rect, based off color window rect
     CRect testrect;
     CRect magplus,magminus;
     RECT CCopRect, CCopsmRect;
