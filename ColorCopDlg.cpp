@@ -22,6 +22,7 @@
 #include <winuser.h>
 #include <random>
 #include <cstdint>
+#include <htmlhelp.h>
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
@@ -2239,10 +2240,10 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
 
-    // fix the WinHelp problem...  test to see if F1 is being pressed
+    // test to see if F1 is being pressed to bring up help
     if (pMsg->message == 0x4d) {
         if (GetKeyState(VK_SHIFT) >= 0)    {
-            AfxGetApp()->WinHelp(0, HELP_CONTENTS);        // fire help
+            ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
             return TRUE;
         }
     }
@@ -3624,8 +3625,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent)
 
 void CColorCopDlg::OnPopupApplicationHelp()
 {
-    AfxGetApp()->WinHelp(0, HELP_CONTENTS);
-    // this actually does nothing...
+    ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
 }
 
 void CColorCopDlg::OnPopupColorDetectwebsafe()
