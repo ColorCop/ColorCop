@@ -81,7 +81,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>MSVCRT.LIB;kernel32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MSVCRT.LIB;Htmlhelp.lib;kernel32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/ColorCop.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>

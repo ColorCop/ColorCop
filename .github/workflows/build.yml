@@ -78,9 +78,9 @@ jobs:
           New-Item -ItemType Directory -Path "Release-standalone"
 
           Copy-Item -Path "Release\*.exe" -Destination "Release-standalone"
-          Copy-Item -Path "README.md" -Destination "Release-standalone"
+          Copy-Item -Path "ReadMe.txt" -Destination "Release-standalone"
           Copy-Item -Path "LICENSE.txt" -Destination "Release-standalone"
-          Copy-Item -Path "packaging\*.HLP" -Destination "Release-standalone"
+          Copy-Item -Path "packaging\*.chm" -Destination "Release-standalone"
 
           Set-Location "Release-standalone"
 
