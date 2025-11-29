@@ -676,8 +676,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
                 // uncheck the item
             }
         }
-    }
-    else
+    } else
     {
         BOOL bOldMin = bMinimized;    // remember previous state
 
@@ -708,8 +707,7 @@ void CColorCopDlg::SetupTaskBarButton()
         ShowWindow(SW_HIDE);
         m_bvisible=false;
 
-    }
-    else {
+    } else {
         ShowWindow(SW_SHOW);
         m_bvisible=true;
     }
@@ -726,8 +724,7 @@ void CColorCopDlg::SetupTrayIcon()
         pTrayIcon_ = new CSystemTray;
         pTrayIcon_->Create(0, nTrayNotificationMsg_, strAppName,
                 hIcon_, IDR_SYSTRAY_MENU);
-    }
-    else {
+    } else {
         delete pTrayIcon_;
         pTrayIcon_ = 0;
     }
@@ -746,8 +743,7 @@ void CColorCopDlg::OnPaint()
         int x = (rect.Width() - cxIcon + 1) / 2;
         int y = (rect.Height() - cyIcon + 1) / 2;
         dc.DrawIcon(x, y, m_hIcon);
-    }
-    else
+    } else
     {
         CDialog::OnPaint();
         // only paint here..
@@ -902,24 +898,20 @@ void CColorCopDlg::OnconvertHEX()
         if ((m_Greendec==0) && (m_Bluedec==0) && (m_Reddec!=0))
         {
             m_Hexcolor.Format("#%.2x0000",m_Reddec);
-        }
-        else if ((m_Greendec!=0) && (m_Bluedec==0) && (m_Reddec!=0))
+        } else if ((m_Greendec!=0) && (m_Bluedec==0) && (m_Reddec!=0))
         {
             m_Hexcolor.Format("#%.2x%.2x00", m_Reddec, m_Greendec);
-        }
-        else
-        {
+        } else {
             m_Hexcolor.Format("#%.2x%.2x%.2x", m_Reddec, m_Greendec, m_Bluedec);
         }
-    }
-    else
+    } else {
         m_Hexcolor.Format("$00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
+    }
 
     if ((m_Appflags & OmitPound) && (m_Appflags & ModeHTML)) {
         if (m_Hexcolor.Left(1) == '#')
             m_Hexcolor.Delete(0);
-    }
-    else if ((m_Appflags & OmitPound) && (m_Appflags & ModeDelphi)) {
+    } else if ((m_Appflags & OmitPound) && (m_Appflags & ModeDelphi)) {
         if (m_Hexcolor.Left(1) == '$')
             m_Hexcolor.Delete(0);
     }
@@ -2016,8 +2008,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
         InvalidateRect(magrect, FALSE);
         // go redraw... but don't erase or it will flicker
         return;
-    }
-    else
+    } else
     {
         // not magnifying oreyedropping
 
@@ -2347,9 +2338,7 @@ void CColorCopDlg::OnChangeHexcolor()
         {
             hexrange=5;
             offset=1;
-        }
-        else
-        {
+        } else {
             hexrange=6;
              offset=0;
         }
@@ -2362,8 +2351,7 @@ void CColorCopDlg::OnChangeHexcolor()
         m_Reddec=m_Greendec=m_Bluedec=0;
         ParseHTML(m_Hexcolor);
 
-    }
-    else if (m_Appflags & ModeClarion)
+    } else if (m_Appflags & ModeClarion)
     {
                 // Clarion Starts with 0s
         if (m_Hexcolor.Left(1) =='0')
@@ -2373,15 +2361,13 @@ void CColorCopDlg::OnChangeHexcolor()
             ParseClarion(m_Hexcolor);
         }
 
-    }
-    else //Delphi hex change
+    } else //Delphi hex change
     {
         if (m_Hexcolor.Left(1) =='$')
         {
             hexrange=7;
             offset=1;
-        }
-        else
+        } else
         {
             hexrange=8;
              offset=0;
@@ -2628,8 +2614,7 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
         }
         //mfc call
         SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | WS_EX_TOPMOST);
-    }
-    else        // Not always on top, NORMAL
+    } else        // Not always on top, NORMAL
     {
         if (bSetStatusbartext)
         {
@@ -2870,8 +2855,7 @@ void CColorCopDlg::FigurePound()
             if (m_Hexcolor.Left(1) == '$')
                 m_Hexcolor.Delete(0);
         }
-    }
-    else
+    } else
     {
         if (m_Appflags & ModeHTML) {
             if (m_Hexcolor.Left(1) != '#')
