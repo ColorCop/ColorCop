@@ -95,11 +95,12 @@ jobs:
           path: colorcop.zip
           retention-days: 30
 
-      - name: Release
+      - name: Release to GitHub Releases
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
           files: |
             colorcop.zip
-            output|*.exe
+            output/colorcop-setup.exe
+
 
