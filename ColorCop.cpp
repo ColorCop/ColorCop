@@ -47,6 +47,10 @@ CColorCopApp::CColorCopApp()
 
 CColorCopApp::~CColorCopApp()
 {
+    if (m_hMutex != nullptr)
+    {
+        CloseHandle(m_hMutex);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -104,21 +108,16 @@ BOOL CColorCopApp::InitInstance()
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning()
 {
-    m_hMutex = CreateMutex(NULL, false, "ColorCop_Mutex");
+    m_hMutex = CreateMutex(NULL, true, "ColorCop_Mutex");
 
     if (m_hMutex)
     {
-        DWORD dwWait = WaitForSingleObject(m_hMutex, 10);
-
-        switch(dwWait)
+        if (GetLastError() == ERROR_ALREADY_EXISTS)
         {
-        case WAIT_OBJECT_0:
-            break;
-        case WAIT_TIMEOUT:
+            CloseHandle(m_hMutex);  // Close the duplicate handle
             return true;
-        case WAIT_FAILED:
-            break;
         }
+        return false;
     }
 
     return false;
