@@ -1,4 +1,4 @@
----------------------------[ Color Cop v5.4.5 ]--------------------------
+---------------------------[ Color Cop v5.5.1 ]--------------------------
 
 Color Cop is a multi-purpose color picker for web designers and
 programmers. It features an eyedropper, magnifier, variable magnification
@@ -222,15 +222,20 @@ https://colorcop.net/donate
 
 ** Requirements ***
 - 24 Bit color
-- A PC running Windows 98/2000/XP/Vista
+- A PC running Windows
 
 
 
 *** Color Cop Revision History ***
+
+v5.5.1 - 12/01/25 - Releasing from Github repository
+                  - Switch to HTML-based help system for improved compatibility and accessibility
+                  - Press F1 to open the new HTML help interface
+
 v5.4.5 - 10/24/07 - added Clarion Hex mode
-	              - added arrow key support while eyedropping or magnifying
-	              - added multi-pixel average sampling 3x3 - 31x31
-	              - started CMYK
+	                - added arrow key support while eyedropping or magnifying
+	                - added multi-pixel average sampling 3x3 - 31x31
+	                - started CMYK
 
 v5.4.2 - 09/19/06 - added Put cursor over Eyedropper on startup feature
                   - fixed minimize on startup so that it doesn't flash when starting
@@ -242,9 +247,9 @@ v5.4  - 09/03/06 - new Icon created by Raul Matei.
                  - changed location of .dat file and .bmp file
                  - updated the domain used in the urls
 
-v5.3  - 02/23/03 : Added Use Cross Hair Cursor, Detect WebSafe color,
-                    Relative position measurements, magnify while eyedropping,
-                    Allow multiple instances, RGB int mode, and RGB float mode
+v5.3  - 02/23/03 - Added Use Cross Hair Cursor, Detect WebSafe color,
+                 - Relative position measurements, magnify while eyedropping,
+                 - Allow multiple instances, RGB int mode, and RGB float mode
 
 v5.2   - 11/23/02 : Added Convert to Grayscale and the ability to
                     click on the magnified area and get that color.
