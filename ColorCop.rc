@@ -84,7 +84,7 @@ CAPTION "About Color Cop"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
-    LTEXT           "Color Cop version 5.4.6",IDC_STATIC,40,8,100,8,
+    LTEXT           "Color Cop version 5.5.1",IDC_STATIC,40,8,100,8,
                     SS_NOPREFIX
     LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
     LTEXT           "This program is freeware and can be used and distributed freely.",
@@ -177,14 +177,14 @@ BEGIN
             VALUE "Comments", "please email your suggestions\0"
             VALUE "CompanyName", "colorcop.net\0"
             VALUE "FileDescription", "multi-purpose color picker\0"
-            VALUE "FileVersion", "v5.4.6\0"
+            VALUE "FileVersion", "v5.5.1\0"
             VALUE "InternalName", "Color Cop\0"
-            VALUE "LegalCopyright", "Copyright © 2012 Jay Prall\0"
+            VALUE "LegalCopyright", "Copyright ï¿½ 2012 Jay Prall\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "Color Cop\0"
-            VALUE "ProductVersion", "v5.4.6\0"
+            VALUE "ProductVersion", "v5.5.1\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -448,7 +448,7 @@ BEGIN
     IDS_COLOR_CONVERT_GRAY  " Color Converted to grayscale"
     IDS_MAGNIFYING          " Magnifying: %d, %d at %dx"
     IDS_APPLICATION_NAME    "Color Cop"
-    IDS_RELATIVE_POS        " W: %d, H: %d, L: %.1f, A°: %1.f"
+    IDS_RELATIVE_POS        " W: %d, H: %d, L: %.1f, Aï¿½: %1.f"
     IDS_EYEDROPPING         " Eyedropping: %d, %d"
     IDS_WEBSAFE             " (WebSafe)"
     IDS_NOT_WEBSAFE         " (not WebSafe)"

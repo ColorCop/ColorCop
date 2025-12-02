@@ -2,8 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
+AppID={{197A931D-2802-405D-B53E-67DF09D5BE2E}
 AppName=Color Cop
-AppVerName=Color Cop 5.4.6
+AppVerName=Color Cop 5.5.1
 AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
