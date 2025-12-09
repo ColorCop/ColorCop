@@ -123,7 +123,6 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
     m_tnd.uCallbackMessage = uCallbackMessage;
 
-    //_tcscpy_s(m_tnd.szTip, 128, szToolTip);
     _tcscpy(m_tnd.szTip, szToolTip);
 
     // Set the tray icon
