@@ -750,7 +750,6 @@ void CColorCopDlg::OnPaint()
           }
 
         if (m_Appflags & ExpandedDialog) {
-            //pDC->DrawEdge(magrect, EDGE_SUNKEN, BF_RECT);
             ::DrawEdge(hdc, &magrect, EDGE_SUNKEN, BF_RECT);
         }
         ::ReleaseDC(CCopHWNDtemp, hdc);  // let go of the memory
@@ -845,7 +844,7 @@ void CColorCopDlg::OnconvertRGB() {
 
         TCHAR placeh[64];        // dynamic float precision
         wsprintf(placeh, "%%0.%df,%%0.%df,%%0.%df", m_FloatPrecision, m_FloatPrecision, m_FloatPrecision);
-        m_Hexcolor.Format(placeh, ((float) m_Reddec) /255.0,(float) (m_Greendec) /255.0, ((float) m_Bluedec) /255.0);
+        m_Hexcolor.Format(placeh, ((float) m_Reddec) / 255.0,(float) (m_Greendec) / 255.0, ((float) m_Bluedec) / 255.0);
 
     } else if (m_Appflags & ModeVisualC) {
 
