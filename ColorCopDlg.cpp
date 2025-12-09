@@ -8,9 +8,6 @@
  ************************************************************************************/
 
 
-
-
-
 #include "stdafx.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
@@ -320,25 +317,14 @@ BOOL CColorCopDlg::OnInitDialog()
 
     if (pApp)
     {
-    //    VERIFY(m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER));
-    //    VERIFY(m_hEyeCursor_3x3 = pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-    //    VERIFY(m_hEyeCursor_5x5 = pApp->LoadCursor(IDC_EYEDROPPER_5X5));
         m_hMagCursor = pApp->LoadCursor(IDC_MEDIUM_MAGNIFY);
 
         m_Magnifier.SetIcon(m_hMagCursor);
         m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
-    //    m_hHandCursor = pApp->LoadCursor(IDC_HAND);
-
-
-        //  m_hHandCursor = ::LoadCursor(AfxGetResourceHandle(), MAKEINTRESOURCE(IDC_HAND));
-
         m_hMoveCursor = pApp->LoadCursor(IDC_CURMOVE);
         m_hBlank = pApp->LoadIcon(IDI_BLANK);
         m_hStandardCursor = pApp->LoadStandardCursor(IDC_ARROW);
     }
-
-
-
 
     // upgrade case -- make sure there is a color space set
     if ((!(m_Appflags & SpaceCMYK)) && (!(m_Appflags & SpaceRGB))) {
@@ -389,7 +375,6 @@ BOOL CColorCopDlg::OnInitDialog()
     // user wants to minimize on app start
     if (m_Appflags & MinimizeonStart)
     {
-    //    m_Appflags ^= MimimizetoTray;
         m_bvisible=true;
         bMinimized = true;
         ShowWindow(SW_MINIMIZE);
@@ -456,18 +441,9 @@ bool CColorCopDlg::LoadPersistentVariables()
 {
     bool retval = false;        // Attempt to open ColorCop.dat
 
-    //TCHAR szPath[MAX_PATH];
-
-
     CString strBMPFile = GetTempFolder();
-
-//    strBMPFile.Append(BMP_FILE);
-
-    //
     strBMPFile +=BMP_FILE_DIR;
     strBMPFile +=BMP_FILE;
-
-
 
 //    if( 0 != GetModuleFileName(AfxGetInstanceHandle(),szPath,sizeof(szPath)) )
     //{
