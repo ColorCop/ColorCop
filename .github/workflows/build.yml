@@ -64,7 +64,7 @@ jobs:
           options: /O+
 
       - name: Publish Release Artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: matrix.configuration == 'Release'
         with:
           name: installers
@@ -88,7 +88,7 @@ jobs:
         shell: pwsh
 
       - name: Publish Release Artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: matrix.configuration == 'Release'
         with:
           name: colorcop-zip
