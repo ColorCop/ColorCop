@@ -4,6 +4,7 @@
 [Setup]
 AppID={{197A931D-2802-405D-B53E-67DF09D5BE2E}
 AppName=Color Cop
+AppVersion=5.5.1
 AppVerName=Color Cop 5.5.1
 AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
@@ -19,6 +20,7 @@ OutputBaseFilename=colorcop-setup
 SetupIconFile=..\Res\idr_main.ico
 Compression=lzma
 SolidCompression=yes
+VersionInfoVersion=5.5.1
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -32,7 +34,6 @@ Source: "..\readme.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Release\ColorCop.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\packaging\ColorCop.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.TXT"; DestDir: "{app}"; Flags: ignoreversion
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
 Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://colorcop.net/"
@@ -41,11 +42,4 @@ Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String:
 Name: "{group}\Color Cop"; Filename: "{app}\ColorCop.exe"
 Name: "{group}\{cm:ProgramOnTheWeb,Color Cop}"; Filename: "{app}\ColorCop.url"
 Name: "{userdesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: quicklaunchicon
-
-[Run]
-Filename: "{app}\ColorCop.exe"; Description: "{cm:LaunchProgram,Color Cop}"; Flags: nowait postinstall skipifsilent
-
-[UninstallDelete]
-Type: files; Name: "{app}\ColorCop.url"
-
+Name: "{user
