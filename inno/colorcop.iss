@@ -42,4 +42,10 @@ Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String:
 Name: "{group}\Color Cop"; Filename: "{app}\ColorCop.exe"
 Name: "{group}\{cm:ProgramOnTheWeb,Color Cop}"; Filename: "{app}\ColorCop.url"
 Name: "{userdesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
-Name: "{user
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: quicklaunchicon
+
+[Run]
+Filename: "{app}\ColorCop.exe"; Description: "{cm:LaunchProgram,Color Cop}"; Flags: nowait postinstall skipifsilent
+
+[UninstallDelete]
+Type: files; Name: "{app}\ColorCop.url"
