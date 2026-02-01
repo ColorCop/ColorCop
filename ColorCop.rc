@@ -84,7 +84,7 @@ CAPTION "About Color Cop"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
-    LTEXT           "Color Cop version 5.5.1",IDC_STATIC,40,8,100,8,
+    LTEXT           "Color Cop version 5.5.2",IDC_STATIC,40,8,100,8,
                     SS_NOPREFIX
     LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
     LTEXT           "This program is freeware and can be used and distributed freely.",
@@ -158,8 +158,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 5,4,6,0
- PRODUCTVERSION 5,4,6,0
+ FILEVERSION 5,5,2,0
+ PRODUCTVERSION 5,5,2,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -177,14 +177,14 @@ BEGIN
             VALUE "Comments", "please email your suggestions\0"
             VALUE "CompanyName", "colorcop.net\0"
             VALUE "FileDescription", "multi-purpose color picker\0"
-            VALUE "FileVersion", "v5.5.1\0"
+            VALUE "FileVersion", "v5.5.2\0"
             VALUE "InternalName", "Color Cop\0"
             VALUE "LegalCopyright", "Copyright � 2012 Jay Prall\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "Color Cop\0"
-            VALUE "ProductVersion", "v5.5.1\0"
+            VALUE "ProductVersion", "v5.5.2\0"
             VALUE "SpecialBuild", "\0"
         END
     END
