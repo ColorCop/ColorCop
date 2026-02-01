@@ -312,8 +312,6 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     if (wParam != m_tnd.uID)
         return 0L;
 
-
-
     CMenu menu, *pSubMenu;
     CWnd* pTarget = AfxGetMainWnd();
 
@@ -338,10 +336,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         pTarget->PostMessage(WM_NULL, 0, 0);
 
         menu.DestroyMenu();
-    } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK)
-    {
-
-
+    } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
 
         // double click received, the default action is to execute default menu item
         pTarget->SetForegroundWindow();
@@ -352,8 +347,9 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
             if (!menu.LoadMenu(m_tnd.uID)) return 0;
             if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
             uItem = pSubMenu->GetMenuItemID(m_DefaultMenuItemID);
-        } else
+        } else {
             uItem = m_DefaultMenuItemID;
+        }
 
         pTarget->SendMessage(WM_COMMAND, uItem, 0);
 
