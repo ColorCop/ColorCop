@@ -1,4 +1,4 @@
----------------------------[ Color Cop v5.5.1 ]--------------------------
+---------------------------[ Color Cop v5.5.2 ]--------------------------
 
 Color Cop is a multi-purpose color picker for web designers and
 programmers. It features an eyedropper, magnifier, variable magnification
@@ -227,7 +227,7 @@ https://colorcop.net/donate
 
 
 *** Color Cop Revision History ***
-
+v5.5.2 - 01/31/26 - Fix Inno setup configuration
 v5.5.1 - 12/01/25 - Releasing from Github repository
                   - Switch to HTML-based help system for improved compatibility and accessibility
                   - Press F1 to open the new HTML help interface
