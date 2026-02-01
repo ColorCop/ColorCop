@@ -45,6 +45,17 @@ start ColorCop.sln
 2. Run `ColorCop.exe` from the `Release/` directory
 3. The application will appear in your system tray
 
+
+## Release Workflow
+
+ColorCop uses Git tags to trigger automated GitHub releases and publish compiled binaries.
+
+### Listing existing tags
+
+```bash
+git tag --list
+```
+
 ## Development
 
 ### Project Structure
