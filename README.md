@@ -2,6 +2,16 @@
 
 A Windows-based color picker utility built with Microsoft Foundation Classes (MFC).
 
+## Installation
+
+Color Cop is available as a simple Windows installer for every release.
+
+You can download the latest version from our [GitHub releases](https://github.com/ColorCop/ColorCop/releases), or install it using [winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/):
+
+```sh
+winget install JayPrall.ColorCop
+```
+
 ## Features
 
 - System tray color picker for Windows
@@ -18,20 +28,8 @@ A Windows-based color picker utility built with Microsoft Foundation Classes (MF
 
 ## Building
 
-### Quick Build
-
-```bash
-build.bat
-```
-
-### Manual Build
-
-```bash
-# Using MSBuild directly
+```sh
 MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
-
-# Or open in Visual Studio 2022
-start ColorCop.sln
 ```
 
 ### Build Configurations
@@ -39,20 +37,13 @@ start ColorCop.sln
 - **Debug**: Development build with debugging symbols
 - **Release**: Optimized production build
 
-## Installation
-
-1. Build the project using the steps above
-2. Run `ColorCop.exe` from the `Release/` directory
-3. The application will appear in your system tray
-
-
 ## Release Workflow
 
 ColorCop uses Git tags to trigger automated GitHub releases and publish compiled binaries.
 
 ### Listing existing tags
 
-```bash
+```sh
 git tag --list
 ```
 
@@ -71,12 +62,14 @@ git tag --list
 This project uses `[cpplint](https://github.com/cpplint/cpplint)` to enforce C++ style guidelines.
 
 **Install:**
-```bash
+
+```sh
 pip install cpplint
 ```
 
 **Run linting:**
-```bash
+
+```sh
 ./lint.sh
 ```
 
