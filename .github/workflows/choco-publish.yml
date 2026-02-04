@@ -1,0 +1,69 @@
+name: Build and Publish Chocolatey Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-choco:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: get_version
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          $version = $tag.TrimStart("v")
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Download release asset
+        run: |
+          gh release download ${{ github.event.release.tag_name }} `
+            --repo ${{ github.repository }} `
+            --pattern "colorcop-setup.exe"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Chocolatey
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+          iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+      - name: Prepare tools folder
+        run: |
+          mkdir choco/tools -Force
+          Copy-Item colorcop-setup.exe choco/tools/
+
+      - name: Generate checksum
+        id: checksum
+        run: |
+          $hash = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
+          echo "sha256=$hash" >> $env:GITHUB_OUTPUT
+
+      - name: Update nuspec version
+        run: |
+          $version = "${{ steps.get_version.outputs.version }}"
+          (Get-Content choco/ColorCop.nuspec) `
+            -replace '<version>[^<]+</version>', "<version>$version</version>" `
+            | Set-Content choco/ColorCop.nuspec
+
+      - name: Build Chocolatey package
+        working-directory: choco
+        run: choco pack --debug
+
+      - name: Upload .nupkg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chocolatey-package
+          path: "choco/*.nupkg"
+
+      - name: Push to Chocolatey.org
+        run: |
+          choco push choco/*.nupkg `
+            --source https://push.chocolatey.org/ `
+            --api-key ${{ secrets.CHOCO_API_KEY }} `
+            --yes

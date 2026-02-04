@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>colorcop</id>
+    <version>0.0.0</version> <!-- Replaced by GitHub Action -->
+    <title>Color Cop</title>
+    <authors>Jay Prall</authors>
+
+    <summary>A lightweight Windows color picker utility.</summary>
+    <description>
+Color Cop is a multi-purpose color picker for Windows, featuring an eyedropper, magnifier, color history, and multiple output formats including HEX, RGB, and HTML color codes.
+    </description>
+
+    <projectUrl>https://colorcop.net</projectUrl>
+    <projectSourceUrl>https://github.com/ColorCop/ColorCop</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/ColorCop/ColorCop/issues</bugTrackerUrl>
+    <licenseUrl>https://raw.githubusercontent.com/ColorCop/ColorCop/main/LICENSE.TXT</licenseUrl>
+    <iconUrl>https://colorcop.net/images/ccicon.png</iconUrl>
+
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>color picker eyedropper design developer utility mfc windows</tags>
+
+    <releaseNotes>https://github.com/ColorCop/ColorCop/releases</releaseNotes>
+  </metadata>
+
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
