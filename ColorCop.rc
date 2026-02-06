@@ -32,18 +32,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE DISCARDABLE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE DISCARDABLE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE DISCARDABLE
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -84,7 +84,7 @@ CAPTION "About Color Cop"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
-    LTEXT           "Color Cop version 5.5.2",IDC_STATIC,40,8,100,8,
+    LTEXT           "Color Cop version 5.5.3",IDC_STATIC,40,8,100,8,
                     SS_NOPREFIX
     LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
     LTEXT           "This program is freeware and can be used and distributed freely.",
@@ -98,19 +98,19 @@ BEGIN
 END
 
 IDD_HTMLCOP_DIALOG DIALOGEX 0, 0, 132, 166
-STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP |
     WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_RED,18,5,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_RED,18,5,29,12,ES_CENTER | ES_AUTOHSCROLL |
                     ES_NUMBER
-    EDITTEXT        IDC_GREEN,18,16,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_GREEN,18,16,29,12,ES_CENTER | ES_AUTOHSCROLL |
                     ES_NUMBER
-    EDITTEXT        IDC_BLUE,18,27,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_BLUE,18,27,29,12,ES_CENTER | ES_AUTOHSCROLL |
                     ES_NUMBER
     EDITTEXT        IDC_HEXCOLOR,51,54,52,12,ES_CENTER | ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "&Custom",IDC_ColorPick,51,70,33,12,BS_CENTER | 
+    DEFPUSHBUTTON   "&Custom",IDC_ColorPick,51,70,33,12,BS_CENTER |
                     BS_VCENTER
     PUSHBUTTON      "&>>",IDC_EXPAND_DIALOG,88,70,15,12
     LTEXT           "1 :",IDC_LBL1,5,8,9,8
@@ -142,7 +142,7 @@ BEGIN
                     40,87,10,9
     CONTROL         "",IDC_MAG_MINUS,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
                     40,97,10,9
-    EDITTEXT        IDC_BLACK,18,40,29,12,ES_CENTER | ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_BLACK,18,40,29,12,ES_CENTER | ES_AUTOHSCROLL |
                     ES_NUMBER
     LTEXT           "4 :",IDC_LBL4,6,39,9,8
     EDITTEXT        IDC_CYAN,73,8,29,12,ES_CENTER | ES_AUTOHSCROLL
@@ -158,8 +158,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 5,5,2,0
- PRODUCTVERSION 5,5,2,0
+ FILEVERSION 5,5,3,0
+ PRODUCTVERSION 5,5,3,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -177,14 +177,14 @@ BEGIN
             VALUE "Comments", "please email your suggestions\0"
             VALUE "CompanyName", "colorcop.net\0"
             VALUE "FileDescription", "multi-purpose color picker\0"
-            VALUE "FileVersion", "v5.5.2\0"
+            VALUE "FileVersion", "v5.5.3\0"
             VALUE "InternalName", "Color Cop\0"
             VALUE "LegalCopyright", "Copyright � 2012 Jay Prall\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "Color Cop\0"
-            VALUE "ProductVersion", "v5.5.2\0"
+            VALUE "ProductVersion", "v5.5.3\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -203,7 +203,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO DISCARDABLE
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -242,7 +242,7 @@ IDC_MYCROSS             CURSOR  DISCARDABLE     "Res\\cross.cur"
 // Menu
 //
 
-IDR_COPMENU MENU DISCARDABLE 
+IDR_COPMENU MENU DISCARDABLE
 BEGIN
     POPUP "POPUP"
     BEGIN
@@ -254,7 +254,7 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&Reverse\tCtrl+R",            ID_COLOR_REVERSE
             MENUITEM "Ra&ndom\tCtrl+Z",             ID_COLOR_RANDOM
-            MENUITEM "Convert to Grayscale\tCtrl+G", 
+            MENUITEM "Convert to Grayscale\tCtrl+G",
                                                     ID_POPUP_COLOR_CONVERTTOGRAYSCALE
 
         END
@@ -288,16 +288,16 @@ BEGIN
             MENUITEM "Multi-Pixel Average",         ID_POPUP_SAMPLING_MULTIPIXEL
 
             MENUITEM SEPARATOR
-            MENUITEM "Increase Multi-Pixel Average\t(Plus) +", 
+            MENUITEM "Increase Multi-Pixel Average\t(Plus) +",
                                                     ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE
 
-            MENUITEM "Decrease Multi-Pixel Average\t(Minus) -", 
+            MENUITEM "Decrease Multi-Pixel Average\t(Minus) -",
                                                     ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE
 
         END
         POPUP "Options"
         BEGIN
-            MENUITEM "&Auto Copy Hex to Clipboard\tCtrl+K", 
+            MENUITEM "&Auto Copy Hex to Clipboard\tCtrl+K",
                                                     ID_OPTIONS_AUTOCOPYTOCLIPBOARD
             , CHECKED
             MENUITEM "&Omit Hex Symbol\tCtrl+O",    ID_OPTIONS_OMITSYMBOL
@@ -307,7 +307,7 @@ BEGIN
             , CHECKED
             MENUITEM "Use Cross Hair Cursor",       ID_POPUP_OPTIONS_USECROSSHAIRCURSOR
 
-            MENUITEM "Put cursor over Eyedropper on Startup", 
+            MENUITEM "Put cursor over Eyedropper on Startup",
                                                     ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER
 
         END
@@ -319,7 +319,7 @@ BEGIN
 
             MENUITEM "&Expanded Dialog\tCtrl+E",    ID_POPUP_APPLICATION_EXPANDEDDIALOG
 
-            MENUITEM "&Minimize to System tray\tCtrl+M", 
+            MENUITEM "&Minimize to System tray\tCtrl+M",
                                                     ID_OPTIONS_MINIMIZETOSYSTRAY
 
             MENUITEM "Minimize on Startup",         ID_POPUP_APPLICATION_MINIMIZETOSYSTEMTRAYONSTART
@@ -335,7 +335,7 @@ BEGIN
     END
 END
 
-IDR_SYSTRAY_MENU MENU DISCARDABLE 
+IDR_SYSTRAY_MENU MENU DISCARDABLE
 BEGIN
     POPUP "POPUP"
     BEGIN
@@ -350,35 +350,35 @@ END
 // Accelerator
 //
 
-IDR_COLORCOP_ACCEL ACCELERATORS DISCARDABLE 
+IDR_COLORCOP_ACCEL ACCELERATORS DISCARDABLE
 BEGIN
     "1",            ID_POPUP_SAMPLING_1PIXEL, VIRTKEY, CONTROL, NOINVERT
-    "3",            ID_POPUP_SAMPLING_3BY3AVERAGE, VIRTKEY, CONTROL, 
+    "3",            ID_POPUP_SAMPLING_3BY3AVERAGE, VIRTKEY, CONTROL,
                                                     NOINVERT
-    "5",            ID_POPUP_SAMPLING_5BY5AVERAGE, VIRTKEY, CONTROL, 
+    "5",            ID_POPUP_SAMPLING_5BY5AVERAGE, VIRTKEY, CONTROL,
                                                     NOINVERT
     "B",            ID_POPUP_MODE_VISUALBASICHEX, VIRTKEY, CONTROL, NOINVERT
     "D",            ID_OPTIONS_DELPHIMODE,  VIRTKEY, CONTROL, NOINVERT
-    "E",            ID_POPUP_APPLICATION_EXPANDEDDIALOG, VIRTKEY, CONTROL, 
+    "E",            ID_POPUP_APPLICATION_EXPANDEDDIALOG, VIRTKEY, CONTROL,
                                                     NOINVERT
-    "G",            ID_POPUP_COLOR_CONVERTTOGRAYSCALE, VIRTKEY, CONTROL, 
+    "G",            ID_POPUP_COLOR_CONVERTTOGRAYSCALE, VIRTKEY, CONTROL,
                                                     NOINVERT
     "H",            ID_VIEW_HTMLHEXMODE,    VIRTKEY, CONTROL, NOINVERT
-    "K",            ID_OPTIONS_AUTOCOPYTOCLIPBOARD, VIRTKEY, CONTROL, 
+    "K",            ID_OPTIONS_AUTOCOPYTOCLIPBOARD, VIRTKEY, CONTROL,
                                                     NOINVERT
     "M",            ID_OPTIONS_MINIMIZETOSYSTRAY, VIRTKEY, CONTROL, NOINVERT
-    "N",            ID_POPUP_APPLICATION_EASYMOVE, VIRTKEY, CONTROL, 
+    "N",            ID_POPUP_APPLICATION_EASYMOVE, VIRTKEY, CONTROL,
                                                     NOINVERT
     "O",            ID_OPTIONS_OMITSYMBOL,  VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_POPUP_HEXMODE_POWERBUILDER, VIRTKEY, CONTROL, 
+    "P",            ID_POPUP_HEXMODE_POWERBUILDER, VIRTKEY, CONTROL,
                                                     NOINVERT
     "R",            ID_COLOR_REVERSE,       VIRTKEY, CONTROL, NOINVERT
     "T",            ID_OPTIONS_ALWAYSONTOP, VIRTKEY, CONTROL, NOINVERT
     "U",            ID_OPTIONS_UPPERCASEHEX, VIRTKEY, CONTROL, NOINVERT
-    VK_ADD,         ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE, VIRTKEY, 
+    VK_ADD,         ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE, VIRTKEY,
                                                     NOINVERT
     VK_F10,         ID_OPTIONMENU,          VIRTKEY, SHIFT, NOINVERT
-    VK_SUBTRACT,    ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE, VIRTKEY, 
+    VK_SUBTRACT,    ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE, VIRTKEY,
                                                     NOINVERT
     "W",            ID_COLOR_SNAPTOWEBSAFE, VIRTKEY, CONTROL, NOINVERT
     "Y",            ID_POPUP_MODE_VISUALCHEX, VIRTKEY, CONTROL, NOINVERT
@@ -393,7 +393,7 @@ END
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_ABOUTBOX            "About Color Cop"
     IDS_HEXCOLOR_TOOLTIP    "Hexadecimal value"
@@ -402,19 +402,19 @@ BEGIN
     IDS_COLOR_PICK          "Custom Color Picker"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     ID_COLOR_REVERSE        "Reverses the current color"
     ID_OPTIONS_UPPERCASEHEX "this will be upper case"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_ALWAYSONTOP         "Always on &Top"
     ID_POPUP_RESTORE        "Restore"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_MAG_WINDOW          "This is the mag window"
     IDS_OPTIONMENU          "Option Menu"
@@ -434,7 +434,7 @@ BEGIN
     IDS_REVERSECOLOR        " Color Reversed"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_1PIXEL              " 1 Pixel Sampling ON"
     IDS_3PIXEL              " 3x3 Pixel Sampling ON"
@@ -454,7 +454,7 @@ BEGIN
     IDS_NOT_WEBSAFE         " (not WebSafe)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_MULTIPIX_SET        " Multi-Pixel Average set to %dx%d"
     IDS_MULTIPIX_LIMIT      " Multi-Pixel MIN: %d MAX: %d"
@@ -474,7 +474,7 @@ BEGIN
     IDS_R                   "R:"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE DISCARDABLE
 BEGIN
     IDS_G                   "G:"
     IDS_B                   "B:"

@@ -3,8 +3,8 @@
 [Setup]
 AppID={{197A931D-2802-405D-B53E-67DF09D5BE2E}}
 AppName=Color Cop
-AppVersion=5.5.2
-AppVerName=Color Cop 5.5.2
+AppVersion=5.5.3
+AppVerName=Color Cop 5.5.3
 AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
@@ -18,7 +18,7 @@ OutputBaseFilename=colorcop-setup
 SetupIconFile=..\Res\idr_main.ico
 Compression=lzma
 SolidCompression=yes
-VersionInfoVersion=5.5.2
+VersionInfoVersion=5.5.3
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 
