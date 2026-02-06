@@ -1,0 +1,12 @@
+VERIFICATION
+The following installer is downloaded during installation:
+
+URL: {{URL}}
+Checksum: {{CHECKSUM}}
+ChecksumType: sha256
+
+To verify:
+1. Download the installer from the URL above.
+2. Compute its SHA256 checksum.
+3. Confirm it matches the checksum listed here.
+

@@ -4,6 +4,13 @@ on:
   release:
     types: [published]
 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to package (e.g., 1.0.0)
+        required: false
+        default: 0.0.0-test
+
 jobs:
   build-choco:
     runs-on: windows-latest
@@ -12,20 +19,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract version from tag
+      - name: Determine version
         id: get_version
+        shell: pwsh
         run: |
-          $tag = "${{ github.event.release.tag_name }}"
-          $version = $tag.TrimStart("v")
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ github.event.inputs.version }}"
+          } else {
+            $tag = "${{ github.event.release.tag_name }}"
+            $version = $tag.TrimStart("v")
+          }
           echo "version=$version" >> $env:GITHUB_OUTPUT
 
-      - name: Download release asset
+      - name: Download release asset (real releases only)
+        if: ${{ github.event_name == 'release' }}
         run: |
           gh release download ${{ github.event.release.tag_name }} `
             --repo ${{ github.repository }} `
             --pattern "colorcop-setup.exe"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Use local test EXE if manual run
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: pwsh
+        run: |
+          "Test build for version ${{ steps.get_version.outputs.version }}" | Out-File colorcop-setup.exe
 
       - name: Install Chocolatey
         run: |
@@ -34,22 +53,52 @@ jobs:
           iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
       - name: Prepare tools folder
+        shell: pwsh
         run: |
           mkdir choco/tools -Force
           Copy-Item colorcop-setup.exe choco/tools/
+          Copy-Item LICENSE.TXT choco/tools/
 
       - name: Generate checksum
         id: checksum
+        shell: pwsh
         run: |
-          $hash = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
-          echo "sha256=$hash" >> $env:GITHUB_OUTPUT
+          $sha = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
+          echo "sha256=$sha" >> $env:GITHUB_OUTPUT
 
       - name: Update nuspec version
+        shell: pwsh
         run: |
           $version = "${{ steps.get_version.outputs.version }}"
-          (Get-Content choco/ColorCop.nuspec) `
+          (Get-Content choco/colorcop.nuspec) `
             -replace '<version>[^<]+</version>', "<version>$version</version>" `
-            | Set-Content choco/ColorCop.nuspec
+            | Set-Content choco/colorcop.nuspec
+
+      - name: Generate VERIFICATION.txt
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "release") {
+            $url = "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/colorcop-setup.exe"
+          } else {
+            $url = "LOCAL TEST RUN — NO DOWNLOAD URL"
+          }
+
+          $checksum = "${{ steps.checksum.outputs.sha256 }}"
+
+          (Get-Content choco/tools/VERIFICATION.template.txt) `
+            -replace "{{URL}}", $url `
+            -replace "{{CHECKSUM}}", $checksum `
+            | Set-Content choco/tools/VERIFICATION.txt
+
+      - name: Dump generated files
+        shell: pwsh
+        run: |
+          Write-Host "=== VERIFICATION.txt ==="
+          Get-Content choco/tools/VERIFICATION.txt
+          Write-Host "`n=== chocolateyinstall.ps1 ==="
+          Get-Content choco/tools/chocolateyinstall.ps1
+          Write-Host "`n=== colorcop.nuspec ==="
+          Get-Content choco/colorcop.nuspec
 
       - name: Build Chocolatey package
         working-directory: choco
@@ -62,6 +111,7 @@ jobs:
           path: "choco/*.nupkg"
 
       - name: Push to Chocolatey.org
+        if: ${{ github.event_name == 'release' }}
         run: |
           choco push choco/*.nupkg `
             --source https://push.chocolatey.org/ `
