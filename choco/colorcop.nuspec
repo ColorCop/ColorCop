@@ -24,6 +24,10 @@ Color Cop is a multi-purpose color picker for Windows, featuring an eyedropper, 
   </metadata>
 
   <files>
-    <file src="tools\**" target="tools" />
+    <file src="tools\chocolateyinstall.ps1" target="tools" />
+    <file src="tools\chocolateyuninstall.ps1" target="tools" />
+    <file src="tools\colorcop-setup.exe" target="tools" />
+    <file src="tools\LICENSE.TXT" target="tools" />
+    <file src="tools\VERIFICATION.txt" target="tools" />
   </files>
 </package>
