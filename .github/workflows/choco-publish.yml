@@ -103,7 +103,6 @@ jobs:
           path: "choco/*.nupkg"
 
       - name: Push to Chocolatey.org
-        if: ${{ github.event_name == 'release' }}
         run: |
           choco push choco/*.nupkg `
             --source https://push.chocolatey.org/ `
