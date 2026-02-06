@@ -59,10 +59,11 @@ jobs:
           Copy-Item LICENSE.TXT choco/tools/
 
       - name: Generate checksum
+        id: checksum
         shell: pwsh
         run: |
           $sha = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
-          echo "ASSET_SHA256=$sha" >> $env:GITHUB_ENV
+          echo "sha256=$sha" >> $env:GITHUB_ENV
 
       - name: Update nuspec version
         run: |
