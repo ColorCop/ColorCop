@@ -4,6 +4,14 @@ on:
   release:
     types: [published]
 
+  # Allow manual runs for testing
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to package (e.g., 1.0.0)
+        required: false
+        default: 0.0.0-test
+
 jobs:
   build-choco:
     runs-on: windows-latest
@@ -12,20 +20,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract version from tag
+      - name: Determine version
         id: get_version
         run: |
-          $tag = "${{ github.event.release.tag_name }}"
-          $version = $tag.TrimStart("v")
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ github.event.inputs.version }}"
+          } else {
+            $tag = "${{ github.event.release.tag_name }}"
+            $version = $tag.TrimStart("v")
+          }
           echo "version=$version" >> $env:GITHUB_OUTPUT
 
-      - name: Download release asset
+      - name: Download release asset (only for real releases)
+        if: ${{ github.event_name == 'release' }}
         run: |
           gh release download ${{ github.event.release.tag_name }} `
             --repo ${{ github.repository }} `
             --pattern "colorcop-setup.exe"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Use local test EXE if manual run
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo "Creating dummy test EXE"
+          echo "Test build for version ${{ steps.get_version.outputs.version }}" > colorcop-setup.exe
 
       - name: Install Chocolatey
         run: |
@@ -37,19 +56,40 @@ jobs:
         run: |
           mkdir choco/tools -Force
           Copy-Item colorcop-setup.exe choco/tools/
+          Copy-Item LICENSE.TXT choco/tools/
 
       - name: Generate checksum
-        id: checksum
+        shell: pwsh
         run: |
-          $hash = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
-          echo "sha256=$hash" >> $env:GITHUB_OUTPUT
+          $sha = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
+          echo "ASSET_SHA256=$sha" >> $env:GITHUB_ENV
 
       - name: Update nuspec version
         run: |
           $version = "${{ steps.get_version.outputs.version }}"
-          (Get-Content choco/ColorCop.nuspec) `
+          (Get-Content choco/colorcop.nuspec) `
             -replace '<version>[^<]+</version>', "<version>$version</version>" `
-            | Set-Content choco/ColorCop.nuspec
+            | Set-Content choco/colorcop.nuspec
+
+      - name: Generate VERIFICATION.txt from template
+        run: |
+          $url = "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/colorcop-setup.exe"
+          $checksum = "${{ steps.checksum.outputs.sha256 }}"
+
+          (Get-Content tools/VERIFICATION.template.txt) `
+            -replace "{{URL}}", $url `
+            -replace "{{CHECKSUM}}", $checksum `
+            | Set-Content tools/VERIFICATION.txt
+
+      - name: Dump generated files
+        shell: pwsh
+        run: |
+          Write-Host "=== VERIFICATION.txt ==="
+          Get-Content choco\tools\VERIFICATION.txt
+          Write-Host "`n=== chocolateyinstall.ps1 ==="
+          Get-Content choco\tools\chocolateyinstall.ps1
+          Write-Host "`n=== colorcop.nuspec ==="
+          Get-Content choco\colorcop.nuspec
 
       - name: Build Chocolatey package
         working-directory: choco
@@ -62,6 +102,8 @@ jobs:
           path: "choco/*.nupkg"
 
       - name: Push to Chocolatey.org
+      # only push if this is a real release, not a manual test run
+        if: ${{ github.event_name == 'release' }}
         run: |
           choco push choco/*.nupkg `
             --source https://push.chocolatey.org/ `
