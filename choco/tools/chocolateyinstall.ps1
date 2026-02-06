@@ -8,9 +8,8 @@ $packageArgs = @{
     packageName    = $packageName
     fileType       = 'exe'
     file           = $installer
-    silentArgs     = '/S'
+    silentArgs     = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
     validExitCodes = @(0)
 }
 
 Install-ChocolateyInstallPackage @packageArgs
-
