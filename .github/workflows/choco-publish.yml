@@ -6,10 +6,9 @@ on:
 
   workflow_dispatch:
     inputs:
-      version:
-        description: Version to package (e.g., 1.0.0)
-        required: false
-        default: 0.0.0-test
+      tag:
+        description: "Tag to package (e.g., v1.0.0)"
+        required: true
 
 jobs:
   build-choco:
@@ -19,32 +18,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Determine version
+      - name: Determine version + tag
         id: get_version
         shell: pwsh
         run: |
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            $version = "${{ github.event.inputs.version }}"
+            $tag = "${{ github.event.inputs.tag }}"
           } else {
             $tag = "${{ github.event.release.tag_name }}"
-            $version = $tag.TrimStart("v")
           }
+
+          $version = $tag.TrimStart("v")
+
+          echo "tag=$tag" >> $env:GITHUB_OUTPUT
           echo "version=$version" >> $env:GITHUB_OUTPUT
 
-      - name: Download release asset (real releases only)
-        if: ${{ github.event_name == 'release' }}
+      - name: Download release asset
+        shell: pwsh
         run: |
-          gh release download ${{ github.event.release.tag_name }} `
+          gh release download ${{ steps.get_version.outputs.tag }} `
             --repo ${{ github.repository }} `
             --pattern "colorcop-setup.exe"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Use local test EXE if manual run
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        shell: pwsh
-        run: |
-          "Test build for version ${{ steps.get_version.outputs.version }}" | Out-File colorcop-setup.exe
 
       - name: Install Chocolatey
         run: |
@@ -77,12 +73,8 @@ jobs:
       - name: Generate VERIFICATION.txt
         shell: pwsh
         run: |
-          if ("${{ github.event_name }}" -eq "release") {
-            $url = "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/colorcop-setup.exe"
-          } else {
-            $url = "LOCAL TEST RUN — NO DOWNLOAD URL"
-          }
-
+          $tag = "${{ steps.get_version.outputs.tag }}"
+          $url = "https://github.com/${{ github.repository }}/releases/download/$tag/colorcop-setup.exe"
           $checksum = "${{ steps.checksum.outputs.sha256 }}"
 
           (Get-Content choco/tools/VERIFICATION.template.txt) `
