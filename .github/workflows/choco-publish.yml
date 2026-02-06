@@ -94,17 +94,21 @@ jobs:
 
       - name: Build Chocolatey package
         working-directory: choco
-        run: choco pack --debug
+        run: |
+          choco pack --debug
 
-      - name: Upload .nupkg artifact
+      - name: Upload Chocolatey package artifact
         uses: actions/upload-artifact@v4
         with:
           name: chocolatey-package
-          path: "choco/*.nupkg"
+          path: choco/*.nupkg
 
       - name: Push to Chocolatey.org
+        working-directory: choco
+        env:
+          CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
         run: |
-          choco push choco/*.nupkg `
+          choco push *.nupkg `
             --source https://push.chocolatey.org/ `
-            --api-key ${{ secrets.CHOCO_API_KEY }} `
+            --api-key $env:CHOCO_API_KEY `
             --yes
