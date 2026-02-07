@@ -14,6 +14,10 @@ jobs:
   build-choco:
     runs-on: windows-latest
 
+    # Grant minimal read-only access to repository contents
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
