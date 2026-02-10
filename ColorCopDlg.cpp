@@ -437,67 +437,40 @@ void CColorCopDlg::SetupSystemMenu()
     return;
 }
 
-bool CColorCopDlg::LoadPersistentVariables()
-{
-    bool retval = false;        // Attempt to open ColorCop.dat
+bool CColorCopDlg::LoadPersistentVariables() {
+  bool retval = false;
 
-    CString strBMPFile = GetTempFolder();
-    strBMPFile +=BMP_FILE_DIR;
-    strBMPFile +=BMP_FILE;
+  // Build full bitmap path safely
+  CString strBMPFile = GetTempFolder();
+  strBMPFile += BMP_FILE_DIR;
+  strBMPFile += BMP_FILE;
 
-//    if( 0 != GetModuleFileName(AfxGetInstanceHandle(),szPath,sizeof(szPath)) )
-    //{
-        //LPTSTR BMPName = _tcsrchr(szPath, '\\');
-        //if(!BMPName)
-            //BMPName = szPath;
+  // Load bitmap from file
+  hBitmap = (HBITMAP)LoadImage(AfxGetApp()->m_hInstance, strBMPFile,
+                               IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-        //strcpy_s(BMPName, MAX_PATH-13, "\\ColorCop5.bmp");
-        //_tcscpy(BMPName, "\\ColorCop5.bmp");
+  if (hBitmap != nullptr) {
+    hZoomBitmap = hBitmap;
+  } else {
+    // Bitmap missing or unreadable — not fatal
+    TRACE("Warning: Could not load bitmap: %s\n", strBMPFile.GetString());
+  }
 
+  // Fix window position if saved as "minimized"
+  // Win9x stored minimized windows at (3000,3000)
+  // NT stored them at (-32000,-32000)
+  //
+  if (WinLocX < 0 || WinLocY < 0 || WinLocX == 3000 || WinLocY == 3000) {
+    WinLocX = 200;
+    WinLocY = 200;
+  }
 
-        hBitmap =(HBITMAP)LoadImage(AfxGetApp()->m_hInstance, strBMPFile.GetBuffer(MAX_PATH), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+  // Restore window position (no size change)
+  SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
 
-        // free memory used by GetBuffer
-        strBMPFile.ReleaseBuffer();
-
-        if (hBitmap) {
-                hZoomBitmap = hBitmap;
-        }
-        //else { //there was no bitmap to load        }
-//    }
-
-            //Minimize Close Bug,
-
-            /*
-
-            This is to check to see if the location of colorcop was stored
-            as minimized.  programs aren't actually minimized, they seem to
-            just be moved off the screen.  The problem is different
-            operating systems handle this differently:
-
-            Win NT/2000/Me - moves the window to -32000, -32000
-            Win98 / 95 - moves the window to 3000,3000
-
-            The follow if checks to see if this is the case, if it is -
-            the program is repositioned.
-            */
-
-            if (WinLocX < 0 || WinLocY < 0  /*negative*/
-                || WinLocX  == 3000 || WinLocY == 3000)
-            {
-
-
-                WinLocX = 200;    // default position..  quickfix
-                WinLocY = 200;
-            }
-
-            SetWindowPos(&wndTopMost,WinLocX,WinLocY, 0, 0, SWP_NOSIZE | WS_EX_TOPMOST);
-            retval = true;    // if we get this far, everything is cool
-
-
-    return retval;
+  retval = true;
+  return retval;
 }
-
 
 void CColorCopDlg::SetupWindowRects()
 {
