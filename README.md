@@ -39,7 +39,7 @@ MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
 
 ## Release Workflow
 
-ColorCop uses Git tags to trigger automated GitHub releases and publish compiled binaries.
+ColorCop uses **semantic version tags** (e.g., `v5.5.2`) to drive the release pipeline. Pushing a new tag triggers GitHub Actions to build the application, update version metadata, and publish a new GitHub Release with compiled binaries.
 
 ### Listing existing tags
 
@@ -59,7 +59,7 @@ git tag --list
 
 ## Code Linting
 
-This project uses `[cpplint](https://github.com/cpplint/cpplint)` to enforce C++ style guidelines.
+This project uses [cpplint](https://github.com/cpplint/cpplint) to enforce C++ style guidelines.
 
 **Install:**
 
