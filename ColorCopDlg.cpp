@@ -824,11 +824,16 @@ void CColorCopDlg::OnconvertRGB() {
         m_Hexcolor.Format("0x00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
     }
 
+    // Only apply uppercase formatting when NOT in Visual C++ hex mode.
+    // // VC+ mode requires lowercase hex, so skip TestForUpperHex() in that case.
+    if ((m_Appflags & ModeVisualC) == 0)
+    {
+        TestForUpperHex();
+    }
 
-   if (m_Appflags ^ ModeVisualC)    // don't allow upper case vc++ codes
-        TestForUpperHex();    // after conversion
-
-    UpdateData(false); //send m_Hexcolor back to edit control
+    // Push updated member variables (including m_Hexcolor) out to their dialog
+    // controls.
+    UpdateData(FALSE);
 
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
