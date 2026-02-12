@@ -1447,7 +1447,8 @@ void CColorCopDlg::OnCopytoclip()
             buffer = (char *) GlobalLock(clipbuffer);
             //_tcscpy_s(m_tnd.szTip, 128, szToolTip);
 
-            strcpy(buffer, LPCSTR(m_Hexcolor));
+            strcpy_s(buffer, m_Hexcolor.GetLength() + 1, LPCSTR(m_Hexcolor));
+
 
             ::GlobalUnlock(clipbuffer);
             ::SetClipboardData(CF_TEXT,clipbuffer);
