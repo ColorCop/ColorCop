@@ -156,36 +156,7 @@ CString CColorCopApp::GetTempFolder()
     CString strTmpPath;
 
     GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
-
-
-
-/*
-    DWORD dwL;
-
-    // temp path isn't what we want
-    //dwL = GetTempPath(MAX_PATH, strTmpPath.GetBuffer(MAX_PATH));
-
-    //char ShellPath[MAX_PATH];
-
-    GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
-
-
-  char appDataPath [MAX_PATH + 1];
-  csString path;
-
-  // Try to retrieve "Application Data" directory
-  if (!GetShellFolderPath (CSIDL_APPDATA, appDataPath))
-  {
-    // Fall back to My Documents
-    if (!GetShellFolderPath (CSIDL_PERSONAL, appDataPath))
-    {
-      // Guess...
-      strcpy (appDataPath, ".");
-    }
-  }*/
-
     strTmpPath.ReleaseBuffer();
-
 
     return strTmpPath;
 }
@@ -233,71 +204,6 @@ BOOL CColorCopApp::InitApplication()
 
     return CWinApp::InitApplication();
 }
-
-
-/*
-
-//
-//  ClipOrCenterRectToMonitor
-//
-//  The most common problem apps have when running on a
-//  multimonitor system is that they "clip" or "pin" windows
-//  based on the SM_CXSCREEN and SM_CYSCREEN system metrics.
-//  Because of app compatibility reasons these system metrics
-//  return the size of the primary monitor.
-//
-//  This shows how you use the multi-monitor functions
-//  to do the same thing.
-//
-void CColorCopApp::ClipOrCenterRectToMonitor(LPRECT prc, UINT flags) {
-    HMONITOR hMonitor;
-    MONITORINFO mi;
-    RECT        rc;
-    int         w = prc->right  - prc->left;
-    int         h = prc->bottom - prc->top;
-    rc.left = prc->left;
-    rc.right = prc->left+1;
-    rc.top = prc->top;
-    rc.bottom = prc->top+1;
-    //
-    // get the nearest monitor to the passed rect.
-    //
-    hMonitor = MonitorFromRect(&rc, MONITOR_DEFAULTTONEAREST);
-
-    //
-    // get the work area or entire monitor rect.
-    //
-    mi.cbSize = sizeof(mi);
-    GetMonitorInfo(hMonitor, &mi);
-
-    if (flags & MONITOR_WORKAREA)
-       rc = mi.rcWork;
-    else
-       rc = mi.rcMonitor;
-
-    //
-    // center or clip the passed rect to the monitor rect
-    //
-    if (flags & MONITOR_CENTER)
-    {
-       prc->left   = rc.left + (rc.right  - rc.left - w) / 2;
-       prc->top    = rc.top  + (rc.bottom - rc.top  - h) / 2;
-       prc->right  = prc->left + w;
-       prc->bottom = prc->top  + h;
-    }
-    else
-    {
-       prc->left   = max(rc.left, min(rc.right-w,  prc->left));
-       prc->top    = max(rc.top,  min(rc.bottom-h, prc->top));
-       prc->right  = prc->left + w;
-       prc->bottom = prc->top  + h;
-    }
-
-
-}
-*/
-
-
 
 void CColorCopApp::LoadDefaultSettings() {
 

@@ -1261,22 +1261,6 @@ void CColorCopDlg::DisplayColor()
             insiderect.bottom+=4;
             insiderect.top+=4;
 
-            /*insiderect.top = (magrect.top + magrect.Height()/2)- (pxwid/2);
-            insiderect.DeflateRect(
-            insiderect.bottom = (magrect.bottom - magrect.Height()/2) + (pxwid/2);
-
-            insiderect.left =  (magrect.left  +  magrect.Width()/2) -  (pxwid /2);
-            insiderect.right = (magrect.right - magrect.Width()/2) +(pxwid /2);
-            if (pxwid % 2 != 0)
-            {
-                insiderect.left++;
-                insiderect.right++;
-                insiderect.top++;
-                insiderect.bottom++;
-            }*/
-
-
-
 
             if ((m_Appflags & Sampling3x3) ||
                 (m_Appflags & Sampling5x5) ||
@@ -1298,10 +1282,6 @@ void CColorCopDlg::DisplayColor()
 */
         }
     }
-
-//    char jj[80];
-//    wsprintf(jj," colorpal blocks are .. %d x %d", m_nwide, m_ntall);
-//    SetStatusBarText(jj);
 
     ReleaseDC(pDC);        // free memory
     return;
