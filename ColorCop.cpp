@@ -8,11 +8,10 @@
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
 
+#define INI_FILE _T("\\Color_Cop.dat")
+#define INI_FILE_DIR _T("\\ColorCop")
 
-#define INI_FILE "\\Color_Cop_5.4.dat"
-#define INI_FILE_DIR "\\ColorCop"
-
-#define MONITOR_CENTER     0x0001        // center rect to monitor
+#define MONITOR_CENTER   0x0001        // center rect to monitor
 #define MONITOR_CLIP     0x0000        // clip rect to monitor
 #define MONITOR_WORKAREA 0x0002        // use monitor work area
 #define MONITOR_AREA     0x0000        // use monitor entire area
@@ -79,17 +78,12 @@ BOOL CColorCopApp::InitInstance()
         // multiple instances are not allowed. check if we have one running
             if(InstanceRunning())
             {
-                // release the obj that we tried to create
-                ReleaseMutex(m_hMutex);
-
                 // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
                 AfxMessageBox(IDS_APP_RUNNING);
 
                 // error instead
-
                 return false;
             }
-
     }
 
     // set the main window
@@ -108,7 +102,7 @@ BOOL CColorCopApp::InitInstance()
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning()
 {
-    m_hMutex = CreateMutex(NULL, true, "ColorCop_Mutex");
+    m_hMutex = CreateMutex(NULL, true, _T("ColorCop_Mutex"));
 
     if (m_hMutex)
     {
@@ -271,7 +265,6 @@ void CColorCopApp::CloseApplication() {
         Serialize(ar);
     }
 
-    // release mutex.  what if this fails
     ReleaseMutex(m_hMutex);
 
     return;
