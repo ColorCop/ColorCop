@@ -814,10 +814,10 @@ void CColorCopDlg::OnconvertRGB() {
         m_Hexcolor.Format("%d,%d,%d", m_Reddec, m_Greendec, m_Bluedec);
 
     } else if (m_Appflags & RGBFLOAT) {
-
-        TCHAR placeh[64];        // dynamic float precision
-        wsprintf(placeh, "%%0.%df,%%0.%df,%%0.%df", m_FloatPrecision, m_FloatPrecision, m_FloatPrecision);
-        m_Hexcolor.Format(placeh, ((float) m_Reddec) / 255.0,(float) (m_Greendec) / 255.0, ((float) m_Bluedec) / 255.0);
+        r = (float)m_Reddec / 255.0f;
+        g = (float)m_Greendec / 255.0f;
+        b = (float)m_Bluedec / 255.0f;
+        m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
 
     } else if (m_Appflags & ModeVisualC) {
 
@@ -1014,13 +1014,6 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
         double p = L * (1.0 - S);
         double q = L * (1.0 - S * f);
         double t = L * (1.0 - (S * (1.0 - f)));
-
-        /*
-            char tt[80];
-        wsprintf(tt,"H:%f  S:%f  L:%f ", H, S, L);
-       SetStatusBarText(tt);
-*/
-
 
         switch (caseH) {
             case 0:
