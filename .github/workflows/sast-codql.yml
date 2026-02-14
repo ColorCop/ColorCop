@@ -1,0 +1,58 @@
+name: sast-codeql
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'   # Every Monday at 03:00 UTC
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: CodeQL Security Scan
+    runs-on: windows-2022
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'cpp' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          # Optional: enable additional queries
+          # queries: +security-and-quality
+
+      # --- OPTIONAL: Build your MFC project so CodeQL can extract full dataflow ---
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install MFC libraries via Chocolatey
+        run: |
+          choco install visualstudio2022-workload-vctools --package-parameters "--add Microsoft.VisualStudio.Component.VC.ATLMFC" --yes
+        shell: powershell
+
+      - name: Build solution for CodeQL extraction
+        run: |
+          MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
+        shell: powershell
+
+      # --- END OPTIONAL BUILD ---
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/security"
+
