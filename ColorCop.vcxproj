@@ -10,46 +10,64 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1786EBED-8856-4392-AD04-CFC32D438A4A}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
+
+  <ImportGroup Label="ExtensionSettings" />
+
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform" />
   </ImportGroup>
+
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform" />
   </ImportGroup>
+
   <PropertyGroup Label="UserMacros" />
+
   <PropertyGroup>
     <_ProjectFileVersion>16.0.33801.447</_ProjectFileVersion>
+
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <EnableUAC>true</EnableUAC>
+    <UACExecutionLevel>AsInvoker</UACExecutionLevel>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\Release\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -72,8 +90,8 @@
       <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
-      <BrowseInformation>true</BrowseInformation>
-      <WarningLevel>Level2</WarningLevel>
+      <BrowseInformation>false</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <ResourceCompile>
@@ -87,7 +105,7 @@
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -96,6 +114,7 @@
       <OutputFile>.\Release/ColorCop.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
+
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -115,7 +134,7 @@
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <ResourceCompile>
@@ -128,7 +147,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>Htmlhelp.lib;kernel32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -138,6 +157,7 @@
       <OutputFile>.\Debug/ColorCop.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
+
   <ItemGroup>
     <ClCompile Include="ColorCop.cpp" />
     <ClCompile Include="ColorCopDlg.cpp" />
@@ -149,9 +169,11 @@
     </ClCompile>
     <ClCompile Include="SystemTray.cpp" />
   </ItemGroup>
+
   <ItemGroup>
     <ResourceCompile Include="ColorCop.rc" />
   </ItemGroup>
+
   <ItemGroup>
     <ClInclude Include="ColorCop.h" />
     <ClInclude Include="ColorCopDlg.h" />
@@ -161,6 +183,7 @@
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="SystemTray.h" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="res\ColorCop.rc2" />
     <None Include="Res\cross.cur" />
@@ -171,7 +194,10 @@
     <None Include="Res\cursor_m.cur" />
     <None Include="Res\hand.cur" />
     <None Include="Res\MOVE4WAY.CUR" />
+
+    <None Include="app.manifest" />
   </ItemGroup>
+
   <ItemGroup>
     <Image Include="Res\eyeyedropper.ico" />
     <Image Include="Res\ico00001.ico" />
@@ -180,10 +206,12 @@
     <Image Include="Res\icon1.ico" />
     <Image Include="Res\idr_main.ico" />
   </ItemGroup>
+
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
