@@ -1125,7 +1125,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
 
 void CColorCopDlg::DisplayColor()
 {
-
     CDC *pDC = GetDC();
 
     int soff = 0;
@@ -1135,37 +1134,8 @@ void CColorCopDlg::DisplayColor()
     CBrush greybrush;    //create a grey brush
     greybrush.CreateSolidBrush(0x00808080);
 
-
     pDC->FillSolidRect(buttonrect, RGB(m_Reddec,m_Greendec,m_Bluedec));
     pDC->DrawEdge(buttonrect, EDGE_SUNKEN, BF_RECT);
-
-
-    //testing
-    //HUE
-
-//hue arrows
-    /*
-
-    soff = int(abs(buttonrect.bottom - buttonrect.top) * Hue);
-    pDC->MoveTo(buttonrect.left-5,buttonrect.top+soff);
-    pDC->LineTo(buttonrect.left,buttonrect.top+soff);
-
-
-    //Sat
-    soff = int(abs(buttonrect.right - buttonrect.left) * Sat);
-    pDC->MoveTo(buttonrect.left+soff,buttonrect.top-5);
-    pDC->LineTo(buttonrect.left+soff,buttonrect.top);
-
-    //Lumin
-    soff = int(abs(buttonrect.bottom - buttonrect.top) * Light);
-    pDC->MoveTo(buttonrect.right+5,buttonrect.top+soff);
-    pDC->LineTo(buttonrect.right-1,buttonrect.top+soff);
-
-
-
-*/
-
-
 
     if (m_Appflags & ExpandedDialog) {
 
@@ -1200,7 +1170,7 @@ void CColorCopDlg::DisplayColor()
         insiderect.right = insiderect.left + m_nwide;
         insiderect.bottom = insiderect.top + m_ntall;
 
-        for    (int col = 0; col < 7; col++) {
+        for (int col = 0; col < 7; col++) {
             if (col) {
                 // not the top row
 
@@ -1265,14 +1235,6 @@ void CColorCopDlg::DisplayColor()
 
             pDC->FrameRect(&insiderect, &blackbrush);
             // show the point that the eyedropper is on
-
-/*
-            if (m_Appflags & ExpandedDialog)
-
-                         magrect.TopLeft().x+2, magrect.TopLeft().y+2 , // upper left dest
-                         magrect.Width()-4, magrect.Height()-4,  // width of dest rect
-        }
-*/
         }
     }
 
@@ -1302,7 +1264,7 @@ void CColorCopDlg::OnChangeGreen()
 void CColorCopDlg::OnChangeBlue()
 {
     UpdateData(TRUE);
-    if (m_Bluedec>255)
+    if (m_Bluedec > 255)
     {
         m_Bluedec = 255;
     }
@@ -1314,7 +1276,7 @@ void CColorCopDlg::OnChangeBlue()
 void CColorCopDlg::OnChangeRed()
 {
     UpdateData(TRUE);
-    if (m_Reddec>255) {
+    if (m_Reddec > 255) {
         m_Reddec = 255;
     }
     CalcColorPal();
@@ -1324,7 +1286,7 @@ void CColorCopDlg::OnChangeRed()
 void CColorCopDlg::OnChangeBlack()
 {
     UpdateData(TRUE);
-    if (m_Black>100) {
+    if (m_Black > 100) {
         m_Black = 100;
     }
     CalcColorPal();
@@ -1335,7 +1297,7 @@ void CColorCopDlg::OnChangeBlack()
 void CColorCopDlg::OnChangeCyan()
 {
     UpdateData(TRUE);
-    if (m_Cyan>100) {
+    if (m_Cyan > 100) {
         m_Cyan = 100;
     }
     CalcColorPal();
@@ -1346,7 +1308,7 @@ void CColorCopDlg::OnChangeCyan()
 void CColorCopDlg::OnChangeMagenta()
 {
     UpdateData(TRUE);
-    if (m_Magenta>100) {
+    if (m_Magenta > 100) {
         m_Magenta = 100;
     }
     CalcColorPal();
@@ -1357,7 +1319,7 @@ void CColorCopDlg::OnChangeMagenta()
 void CColorCopDlg::OnChangeYellow()
 {
     UpdateData(TRUE);
-    if (m_Yellow>100) {
+    if (m_Yellow > 100) {
         m_Yellow = 100;
     }
     CalcColorPal();
