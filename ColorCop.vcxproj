@@ -76,6 +76,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>app.manifest</AdditionalManifestFiles>
+    </Manifest>
     <Link>
       <AdditionalDependencies>Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/ColorCop.exe</OutputFile>
@@ -101,6 +104,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>app.manifest</AdditionalManifestFiles>
+    </Manifest>
     <Link>
       <OutputFile>.\Debug/ColorCop.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
