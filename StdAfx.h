@@ -1,65 +1,49 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
-
-#if !defined(AFX_STDAFX_H__EC2A34E8_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
-#define AFX_STDAFX_H__EC2A34E8_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_
-
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
-
-#define WINVER          0x0501    // Windows XP
-#define _WIN32_WINNT   0x0501    // Windows XP
-
-#define AlwaysOnTop            4
-#define UpperCaseHex        8
-#define OmitPound            16
-#define SnaptoWebsafe        32
-#define AutoCopytoClip        64
-#define MimimizetoTray        128
-#define EasyMove            256
-#define MinimizeonStart        512
-#define ExpandedDialog        1024
-#define ModeHTML            2048
-#define ModeDelphi            4096
-#define ModePowerBuilder    8192
-#define ModeVisualBasic        16384
-#define ModeVisualC            32768
-#define Sampling1            65536
-#define Sampling3x3            131072
-#define Sampling5x5            262144
-#define MultipleInstances    524288
-#define DetectWebsafeColors    1048576
-#define RGBINT                2097152
-#define RGBFLOAT            4194304
-#define MAGWHILEEYEDROP        8388608
-#define USECROSSHAIR        16777216
-#define SETCURSORONEYEDROP    16777216*2
-#define MULTIPIXELSAMPLE    16777216*2*2
-#define SamplingMULTI         16777216*2*2*2
-#define SpaceRGB             16777216*2*2*2*2
-#define SpaceCMYK             16777216*2*2*2*2*2
-#define ModeClarion             16777216*2*2*2*2*2*2
+// Feature flags (bitmask values)
+#define AlwaysOnTop            (1 << 2)
+#define UpperCaseHex           (1 << 3)
+#define OmitPound              (1 << 4)
+#define SnaptoWebsafe          (1 << 5)
+#define AutoCopytoClip         (1 << 6)
+#define MimimizetoTray         (1 << 7)
+#define EasyMove               (1 << 8)
+#define MinimizeonStart        (1 << 9)
+#define ExpandedDialog         (1 << 10)
+#define ModeHTML               (1 << 11)
+#define ModeDelphi             (1 << 12)
+#define ModePowerBuilder       (1 << 13)
+#define ModeVisualBasic        (1 << 14)
+#define ModeVisualC            (1 << 15)
+#define Sampling1              (1 << 16)
+#define Sampling3x3            (1 << 17)
+#define Sampling5x5            (1 << 18)
+#define MultipleInstances      (1 << 19)
+#define DetectWebsafeColors    (1 << 20)
+#define RGBINT                 (1 << 21)
+#define RGBFLOAT               (1 << 22)
+#define MAGWHILEEYEDROP        (1 << 23)
+#define USECROSSHAIR           (1 << 24)
+#define SETCURSORONEYEDROP     (1 << 25)
+#define MULTIPIXELSAMPLE       (1 << 26)
+#define SamplingMULTI          (1 << 27)
+#define SpaceRGB               (1 << 28)
+#define SpaceCMYK              (1 << 29)
+#define ModeClarion            (1 << 30)
 
 #define MULTIPIX_MIN 1
 #define MULTIPIX_MAX 15
 
-#define     PI   (3.1415926535897932384626433832795)
+#define PI (3.1415926535897932384626433832795)
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
+// MFC includes
+#include <afxwin.h>
+#include <afxext.h>
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>            // MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
+#include <afxcmn.h>
+#endif
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__EC2A34E8_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
