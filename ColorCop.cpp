@@ -62,16 +62,6 @@ CColorCopApp theApp;
 
 BOOL CColorCopApp::InitInstance()
 {
-
-    #ifdef _DEBUG
-        // enables ATLTRACE debugging
-        ::afxTraceEnabled = true;
-    #endif
-
-    // see srand
-    srand( (unsigned)time(NULL) );
-
-
     // multiple instances are not allowed?
     if (!(dlg.m_Appflags & MultipleInstances))
     {
@@ -86,7 +76,7 @@ BOOL CColorCopApp::InitInstance()
             }
     }
 
-    // set the main window
+        // set the main window
         m_pMainWnd = &dlg;
 
         int nResponse = dlg.DoModal();        // Launch the color cop dialog
@@ -135,7 +125,7 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
     if (rc == ERROR_SUCCESS){
         rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
                 (BYTE *) pShellPath, &length);
-    RegCloseKey(hkey);
+        RegCloseKey(hkey);
     }
 
     if (rc == ERROR_SUCCESS) {
@@ -167,20 +157,17 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
 
 BOOL CColorCopApp::InitApplication()
 {
-
     CString strInitFile = GetTempFolder();
 
     strInitFile += INI_FILE_DIR;
 
     strInitFile += INI_FILE;
 
-
     CFile file;
     if(file.Open(strInitFile, CFile::modeRead)) {
         CArchive ar(&file, CArchive::load);
         Serialize(ar);
     } else {
-
         // First time we are running color Cop
         CString strAppDirectory = GetTempFolder();
         strAppDirectory += INI_FILE_DIR;
@@ -189,10 +176,7 @@ BOOL CColorCopApp::InitApplication()
 
         LoadDefaultSettings();
 
-
-
         ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);;
-
         // set the window to be in the middle
     }
 
