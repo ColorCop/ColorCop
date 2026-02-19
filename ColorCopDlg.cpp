@@ -1364,33 +1364,37 @@ void CColorCopDlg::OnColorPick()
 
 void CColorCopDlg::OnCopytoclip()
 {
-    if(m_Appflags & AutoCopytoClip)    // the option to auto copy to the clipboard is ON
+    if (m_Appflags & AutoCopytoClip)
     {
-        HWND CCopHWND=::GetForegroundWindow();        // get a handle to the app window
+        HWND hWndOwner = ::GetForegroundWindow();
 
-        if(::OpenClipboard(CCopHWND))
+        if (::OpenClipboard(hWndOwner))
         {
-            HGLOBAL clipbuffer;
-              char * buffer;
             ::EmptyClipboard();
 
-            // empty clipboard is bad because it will remove DIBs too
-//The window identified by the hWndNewOwner parameter does not
-    //become the clipboard owner unless the EmptyClipboard function is called
+            // CString is UTF‑16 in Unicode builds, so copy its raw buffer.
+            const int len = m_Hexcolor.GetLength();
+            const SIZE_T bytes = (len + 1) * sizeof(wchar_t);
 
-            clipbuffer=::GlobalAlloc(GMEM_DDESHARE, m_Hexcolor.GetLength()+1);
-            buffer = (char *) GlobalLock(clipbuffer);
-            //_tcscpy_s(m_tnd.szTip, 128, szToolTip);
+            HGLOBAL hMem = ::GlobalAlloc(GMEM_MOVEABLE, bytes);
+            if (hMem)
+            {
+                void* pMem = ::GlobalLock(hMem);
+                if (pMem)
+                {
+                    memcpy(pMem, m_Hexcolor.GetString(), bytes);
+                    ::GlobalUnlock(hMem);
 
-            strcpy_s(buffer, m_Hexcolor.GetLength() + 1, LPCSTR(m_Hexcolor));
+                    // Correct modern clipboard format
+                    ::SetClipboardData(CF_UNICODETEXT, hMem);
+                } else {
+                    ::GlobalFree(hMem);
+                }
+            }
 
-
-            ::GlobalUnlock(clipbuffer);
-            ::SetClipboardData(CF_TEXT,clipbuffer);
             ::CloseClipboard();
         }
     }
-    return;
 }
 
 void CColorCopDlg::StopCapture()
