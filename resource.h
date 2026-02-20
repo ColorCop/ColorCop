@@ -174,6 +174,8 @@
 #define IDS_K                           32853
 #define IDS_MODE_CLARION                32854
 #define IDS_CUSTOM_COLOR                32855
+#define IDS_ERROR_SAVING                32856
+#define IDS_ERROR_LOADING               32857
 
 // Next default values for new objects
 // 

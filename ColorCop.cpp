@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
+#include "Defaults.h"
 
 #define INI_FILE _T("\\Color_Cop.dat")
 #define INI_FILE_DIR _T("\\ColorCop")
@@ -154,7 +155,6 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
     dlg.WinLocY= rc.top;
 }
 
-
 BOOL CColorCopApp::InitApplication()
 {
     CString strInitFile = GetTempFolder();
@@ -211,7 +211,7 @@ void CColorCopApp::LoadDefaultSettings() {
 
 
         // set all custom color blocks to white
-        for(int initcolor = 0; initcolor < 16; initcolor++)
+        for(int initcolor = 0; initcolor < kCustomColorCount; initcolor++)
         {
           dlg.CustColorBank[initcolor] = (COLORREF)0x00FFFFFF;
           dlg.CustColorBank[initcolor] = (COLORREF)0x0000FF99;
@@ -224,13 +224,10 @@ void CColorCopApp::LoadDefaultSettings() {
         dlg.ColorHistory[4] = 0x00FF9900;
         dlg.ColorHistory[5] = 0x00FFFF99;
         dlg.ColorHistory[6] = 0x00999900;
-
-
     return;
 }
 
 void CColorCopApp::CloseApplication() {
-
     ////////////////////////////////////////////////////////////
     // This function writes the settings to a file.  It is the
     // last thing the application will do. It will only write to
@@ -257,7 +254,6 @@ void CColorCopApp::CloseApplication() {
 
 void CColorCopApp::Serialize(CArchive& ar)
 {
-
     if (ar.IsStoring())    {
         // storing code
         try {
@@ -267,9 +263,9 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar << dlg.m_Appflags;
             ar << dlg.WinLocX;
             ar << dlg.WinLocY;
-            for (int j = 0; j < 16; j++)        //load custom color values to array
+            for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
                 ar << dlg.CustColorBank[j];
-            for(int w = 0; w < 7; w++)        // save color history values
+            for(int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar << dlg.ColorHistory[w];
 
             ar <<  dlg.m_iSamplingOffset;
@@ -286,9 +282,9 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar >> dlg.m_Appflags;
             ar >> dlg.WinLocX;
             ar >> dlg.WinLocY;
-            for (int j = 0; j < 16; j++)        //load custom color values to array
+            for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
                 ar >> dlg.CustColorBank[j];
-            for(int w = 0; w < 7; w++)        // save color history values
+            for(int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar >> dlg.ColorHistory[w];
 
             ar >>  dlg.m_iSamplingOffset;
