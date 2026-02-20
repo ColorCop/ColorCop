@@ -275,7 +275,7 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar <<  dlg.m_iSamplingOffset;
 
         } catch (CArchiveException*) {
-            AfxMessageBox(_T("Error writing data.."));
+            AfxMessageBox(IDS_ERROR_SAVING);
         }
     } else {
         // loading code
@@ -294,8 +294,7 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar >>  dlg.m_iSamplingOffset;
 
         } catch (CArchiveException*) {
-
-            AfxMessageBox(_T("Please delete ColorCop.dat"));
+            AfxMessageBox(IDS_ERROR_LOADING);
         }
     }
 }

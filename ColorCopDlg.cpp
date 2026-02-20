@@ -2661,7 +2661,6 @@ void CColorCopDlg::OnColorSnaptowebsafe()
     }
     OnconvertRGB();
     OnCopytoclip();
-
 }
 
 void CColorCopDlg::OnUpdateColorSnaptowebsafe(CCmdUI* pCmdUI)
@@ -2742,22 +2741,8 @@ void CColorCopDlg::FigurePound()
     // update changes to the edit control (m_Hexcolor)
 }
 
-void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI)
-{
-//    CString str;
-    //pCmdUI->SetCheck(m_Appflags & OmitPound);
-
-    //if (m_Appflags & ModeDelphi) {
-    //    pCmdUI->SetText(_T("&Omit $ Symbol\tCtrl+O"));
-    //}
-    //else { //if (m_Appflags & ModeHTML) {
-
-//        str.LoadString(IDS_OMITSYMBOL);
-//        pCmdUI->SetText(str);
-
-
-        //pCmdUI->SetText(_T("&Omit # Symbol\tCtrl+O"));
-  //  }
+void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI) {
+    pCmdUI->SetCheck((m_Appflags & OmitPound) ? 1 : 0);
 }
 
 BOOL CAboutDlg::OnInitDialog()
@@ -2814,15 +2799,7 @@ void CColorCopDlg::TestForExpand()
         MoveWindow(&currect);
 
     } else {
-
         // use smWidth and smHeight
-
-        //CWnd* GetDlgItem( int nID ) const;
-        //CWnd* tmp = GetDlgItem(IDC_MAGE);
-
-        //HWND buttonhand;
-        //Wnd::GetDlgItem(IDC_CPreview,&buttonhand);
-
         m_Magnifier.ShowWindow(FALSE);
         currect.right  = currect.left + smWidth;
         currect.bottom = currect.top + smHeight;
@@ -2926,10 +2903,6 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point)
 void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point)
 {
     // right mouse button came up, watch out for capture
-
-//    if (m_isEyedropping || m_isMagnifying)
-//        StopCapture();
-
     CDialog::OnRButtonUp(nFlags, point);
 }
 
@@ -3268,20 +3241,15 @@ void CColorCopDlg::SetupStatusBar()
        this->GetWindowRect(&rect);
     rect.top = rect.bottom -25;
 
-    BOOL bStatOk = m_StatBar.Create(CCS_NODIVIDER  | WS_CHILD |
-                                    /*WS_BORDER |*/ WS_VISIBLE | CCS_BOTTOM,
-                                    rect,this, IDC_STATUSBAR);
-
-    if (bStatOk == NULL)
+    if (!m_StatBar.Create(CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_BOTTOM,
+                          rect, this, IDC_STATUSBAR))
     {
-             AfxMessageBox ("Status B err");
-            return;
+        AfxMessageBox("Failed to create status bar.");
     }
 
     //
-       // get size of window, use to configure the status bar
+    // get size of window, use to configure the status bar
     //
-
     CRect rWin;
        this->GetWindowRect(&rWin);
        nTotWide = rWin.right-rWin.left;
@@ -3291,8 +3259,7 @@ void CColorCopDlg::SetupStatusBar()
     //
     int m_Widths[1];
 
-
-    m_Widths[0] = nTotWide; // / 4;
+    m_Widths[0] = nTotWide;
 
     m_StatBar.SetMinHeight(25);
     m_StatBar.SetParts( 1, m_Widths);
