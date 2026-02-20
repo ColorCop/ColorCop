@@ -25,12 +25,6 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 class CAboutDlg : public CDialog
 {
 public:
@@ -251,17 +245,11 @@ END_MESSAGE_MAP()
 
 BOOL CColorCopDlg::OnInitDialog()
 {
-    //ModifyStyleEx(0, WS_EX_CONTEXTHELP);
     CDialog::OnInitDialog();
 
     SetupSystemMenu();            // add about and always on top to the system menu
 
     bool FoundDatFile = LoadPersistentVariables();
-
-    // Set the Window Title to Color Cop
-    CString strAppName;
-    strAppName.LoadString(IDS_APPLICATION_NAME);
-    SetWindowText(strAppName);
 
     ToggleOnTop(false); //make always on top, unless save file said not to
 
@@ -275,13 +263,10 @@ BOOL CColorCopDlg::OnInitDialog()
     } else {
         // Add tool tips to the controls, either by hard coded string
         // or using the string table resource
-    //    m_ToolTip.AddTool( &m_myButton, _T("This is a tool tip!"));
         m_ToolTip.AddTool( &m_ExpandDialog, IDS_EXPANDEDDIALOG);
         m_ToolTip.AddTool( &m_ColorPick, IDS_CUSTOM_COLOR);
         m_ToolTip.Activate(TRUE);
     }
-
-
 
     nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
 
@@ -291,11 +276,6 @@ BOOL CColorCopDlg::OnInitDialog()
     m_OldRed = m_OldBlue = m_OldGreen = 0;
     bMinimized_= false;
     pTrayIcon_ = 0;
-
-    //    hIcon_ = AfxGetApp()->LoadIcon(IDR_MAINFRAME);    // old way
-
-    // new non aliased way to do the icon :)
-    //SetIcon:: Specifies a 32 pixel by 32 pixel icon if TRUE; specifies a 16 pixel by 16 pixel icon if FALSE.
 
     // small one
     hIcon_ = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
@@ -453,7 +433,7 @@ bool CColorCopDlg::LoadPersistentVariables() {
     hZoomBitmap = hBitmap;
   } else {
     // Bitmap missing or unreadable — not fatal
-    TRACE("Warning: Could not load bitmap: %s\n", strBMPFile.GetString());
+    TRACE(_T("Warning: Could not load bitmap: %s\n"), strBMPFile.GetString());
   }
 
   // Fix window position if saved as "minimized"

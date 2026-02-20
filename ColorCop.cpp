@@ -213,17 +213,18 @@ void CColorCopApp::LoadDefaultSettings() {
         // set all custom color blocks to white
         for(int initcolor = 0; initcolor < 16; initcolor++)
         {
-            dlg.CustColorBank[initcolor] = (COLORREF) 0x00FFFFFF;
+          dlg.CustColorBank[initcolor] = (COLORREF)0x00FFFFFF;
+          dlg.CustColorBank[initcolor] = (COLORREF)0x0000FF99;
         }
-                    //C++ explicit hex 0x00bbggrr
+        // COLORREF format: 0x00BBGGRR
+        dlg.ColorHistory[0] = 0x00223300;
+        dlg.ColorHistory[1] = 0x000000FF;
+        dlg.ColorHistory[2] = 0x0000FF99;
+        dlg.ColorHistory[3] = 0x009999FF;
+        dlg.ColorHistory[4] = 0x00FF9900;
+        dlg.ColorHistory[5] = 0x00FFFF99;
+        dlg.ColorHistory[6] = 0x00999900;
 
-        dlg.ColorHistory[0] = (COLORREF) 0x00223300;    // setup default colors for the
-        dlg.ColorHistory[1] = (COLORREF) 0x000000FF;    // color history bar
-        dlg.ColorHistory[2] = (COLORREF) 0x0000FF99;
-        dlg.ColorHistory[3] = (COLORREF) 0x009999FF;
-        dlg.ColorHistory[4] = (COLORREF) 0x00FF9900;
-        dlg.ColorHistory[5] = (COLORREF) 0x00FFFF99;
-        dlg.ColorHistory[6] = (COLORREF) 0x00999900;
 
     return;
 }
