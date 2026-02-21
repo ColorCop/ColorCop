@@ -196,26 +196,21 @@ void CColorCopApp::LoadDefaultSettings() {
         dlg.m_Appflags |= MAGWHILEEYEDROP;
         dlg.m_Appflags |= SpaceRGB;
 
-        dlg.WinLocX = 200;
-        dlg.WinLocY = 200;
+        dlg.WinLocX = kDefaultWinLocX;
+        dlg.WinLocY = kDefaultWinLocY;
 
-        dlg.m_iSamplingOffset = 3;
-
+        dlg.m_iSamplingOffset = kDefaultSamplingOffset;
 
         // set all custom color blocks to white
         for(int initcolor = 0; initcolor < kCustomColorCount; initcolor++)
         {
           dlg.CustColorBank[initcolor] = (COLORREF)0x00FFFFFF;
-          dlg.CustColorBank[initcolor] = (COLORREF)0x0000FF99;
         }
-        // COLORREF format: 0x00BBGGRR
-        dlg.ColorHistory[0] = 0x00223300;
-        dlg.ColorHistory[1] = 0x000000FF;
-        dlg.ColorHistory[2] = 0x0000FF99;
-        dlg.ColorHistory[3] = 0x009999FF;
-        dlg.ColorHistory[4] = 0x00FF9900;
-        dlg.ColorHistory[5] = 0x00FFFF99;
-        dlg.ColorHistory[6] = 0x00999900;
+
+        for (int i = 0; i < kHistoryCount; ++i)
+        {
+            dlg.ColorHistory[i] = kDefaultColorHistory[i];
+        }
     return;
 }
 
