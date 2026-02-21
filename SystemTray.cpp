@@ -58,13 +58,6 @@
 #include "stdafx.h"
 #include "SystemTray.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNAMIC(CSystemTray, CWnd)
 
 UINT CSystemTray::m_nIDEvent = 4567;
@@ -225,7 +218,6 @@ BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
     if (!m_bEnabled) return FALSE;
 
     m_tnd.uFlags = NIF_TIP;
-//    _tcscpy_s(m_tnd.szTip, 128, pszTip);
     _tcscpy(m_tnd.szTip, pszTip);
 
     return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);

@@ -17,14 +17,6 @@
 #define MONITOR_WORKAREA 0x0002        // use monitor work area
 #define MONITOR_AREA     0x0000        // use monitor entire area
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopApp
 
