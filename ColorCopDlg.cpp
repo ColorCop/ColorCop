@@ -89,10 +89,10 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
     m_Bluedec = 0;
     m_Reddec = 0;
     m_Hexcolor = _T("");
-    r=0;
-    g=0;
-    b=0;
-    m_bvisible=false;
+    r = 0;
+    g = 0;
+    b = 0;
+    m_bvisible = false;
     m_Black = 0;
     m_Cyan = 0;
     m_Magenta = 0;
@@ -221,7 +221,6 @@ BEGIN_MESSAGE_MAP(CColorCopDlg, CDialog)
     ON_UPDATE_COMMAND_UI(ID_POPUP_OPTIONS_USECROSSHAIRCURSOR, OnUpdatePopupOptionsUsecrosshaircursor)
     ON_UPDATE_COMMAND_UI(ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER, OnUpdatePopupOptionsStartcursoroneyedropper)
     ON_COMMAND(ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER, OnPopupOptionsStartcursoroneyedropper)
-    ON_WM_WINDOWPOSCHANGING()
     ON_COMMAND(ID_POPUP_SAMPLING_DECREASEMULTIPIXELAVERAGE, OnPopupSamplingDecreasemultipixelaverage)
     ON_COMMAND(ID_POPUP_SAMPLING_INCREASEMULTIPIXELAVERAGE, OnPopupSamplingIncreasemultipixelaverage)
     ON_COMMAND(ID_POPUP_SAMPLING_MULTIPIXEL, OnPopupSamplingMultipixel)
@@ -355,7 +354,7 @@ BOOL CColorCopDlg::OnInitDialog()
     // user wants to minimize on app start
     if (m_Appflags & MinimizeonStart)
     {
-        m_bvisible=true;
+        m_bvisible = true;
         bMinimized = true;
         ShowWindow(SW_MINIMIZE);
 
@@ -366,7 +365,7 @@ BOOL CColorCopDlg::OnInitDialog()
 
     } else     if (m_Appflags & SETCURSORONEYEDROP)
     {
-        m_bvisible=true;
+        m_bvisible = true;
         // don't move the cursor if the app is minimized
         CRect eyerect;
         m_EyeLoc.GetWindowRect(&eyerect);
@@ -634,11 +633,11 @@ void CColorCopDlg::SetupTaskBarButton()
     {
         // hide the tray icon if it belongs in the system tray
         ShowWindow(SW_HIDE);
-        m_bvisible=false;
+        m_bvisible = false;
 
     } else {
         ShowWindow(SW_SHOW);
-        m_bvisible=true;
+        m_bvisible = true;
     }
 
 }
@@ -824,32 +823,34 @@ void CColorCopDlg::OnconvertRGB() {
 
 void CColorCopDlg::OnconvertHEX()
 {
-    TestForWebsafe();        // before
+    TestForWebsafe();    // before
 
+    // --- Format hex string ---
     if (m_Appflags & ModeHTML)
     {
-        if ((m_Greendec==0) && (m_Bluedec==0) && (m_Reddec!=0))
-        {
-            m_Hexcolor.Format("#%.2x0000",m_Reddec);
-        } else if ((m_Greendec!=0) && (m_Bluedec==0) && (m_Reddec!=0))
-        {
-            m_Hexcolor.Format("#%.2x%.2x00", m_Reddec, m_Greendec);
-        } else {
-            m_Hexcolor.Format("#%.2x%.2x%.2x", m_Reddec, m_Greendec, m_Bluedec);
-        }
+        // Always emit full 6‑digit HTML hex
+        m_Hexcolor.Format("#%.2x%.2x%.2x",
+                          m_Reddec,
+                          m_Greendec,
+                          m_Bluedec);
     } else {
-        m_Hexcolor.Format("$00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
+        // Delphi format: $00BBGGRR
+        m_Hexcolor.Format("$00%.2x%.2x%.2x",
+                          m_Bluedec,
+                          m_Greendec,
+                          m_Reddec);
     }
 
-    if ((m_Appflags & OmitPound) && (m_Appflags & ModeHTML)) {
-        if (m_Hexcolor.Left(1) == '#')
+    // --- Optional prefix removal ---
+    if (m_Appflags & OmitPound)
+    {
+        if ((m_Appflags & ModeHTML) && m_Hexcolor.Left(1) == "#")
             m_Hexcolor.Delete(0);
-    } else if ((m_Appflags & OmitPound) && (m_Appflags & ModeDelphi)) {
-        if (m_Hexcolor.Left(1) == '$')
+
+        if ((m_Appflags & ModeDelphi) && m_Hexcolor.Left(1) == "$")
             m_Hexcolor.Delete(0);
     }
 
-    //DisplayColor();
     OnCopytoclip();
     Invalidate(FALSE);    // Call WM_PAINT, but don't erase background
 }
@@ -958,9 +959,6 @@ double CColorCopDlg::shiftHue(double hue)
 {
     double rethue = (hue + (60.0 / 360.0));
 
-//    if (rethue > 1) {                    // don't do this...
-        //rethue = (hue - 1.0);
-//    }
     return rethue;
 }
 
@@ -1032,15 +1030,15 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
 
-    double r,g,b;
-    r= (double)red/255.0;
-    g= (double)green/255.0;
-    b= (double)blue/255.0;
-    m_Cyan  = (int) pow(1.0-r,  45);
-    m_Magenta = (int) pow(1.0-g, 45);
-    m_Yellow = (int) pow(1.0-b, 45);
+    double r, g, b;
+    r = (double)red / 255.0;
+    g = (double)green / 255.0;
+    b = (double)blue / 255.0;
+    m_Cyan  = (int) pow(1.0 - r,  45);
+    m_Magenta = (int) pow(1.0 - g, 45);
+    m_Yellow = (int) pow(1.0 - b, 45);
 
-    m_Black = __min(__min(m_Cyan,m_Magenta), m_Yellow);
+    m_Black = __min(__min(m_Cyan, m_Magenta), m_Yellow);
 
     m_Cyan = m_Cyan - m_Black;
     m_Magenta = m_Magenta - m_Black;
@@ -3217,7 +3215,7 @@ void CColorCopDlg::OnPopupModeClarionhex()
 
 void CColorCopDlg::OnPopupRestore()
 {
-    m_bvisible=true;
+    m_bvisible = true;
 
     ShowWindow(SW_RESTORE);        // user wants to restore from systray
     bMinimized = false;            // remove the systray icon
@@ -3754,16 +3752,6 @@ void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper()
     return;
 }
 
-void CColorCopDlg::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
-{
-
-//    if(!m_bvisible) {
-  //      lpwndpos->flags &= ~SWP_SHOWWINDOW;
-//    }
-
-    CDialog::OnWindowPosChanging(lpwndpos);
-}
-
 void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 {
     // force to sampling multi.  TODO: refactor this into a method:
@@ -3771,7 +3759,6 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
     m_Appflags &= ~Sampling3x3;
     m_Appflags &= ~Sampling5x5;
     m_Appflags |= SamplingMULTI;
-
 
     CString strStatus="";
     strStatus.LoadString(IDS_MULTIPIX_SET);

@@ -293,7 +293,6 @@ protected:
     afx_msg void OnUpdatePopupOptionsUsecrosshaircursor(CCmdUI* pCmdUI);
     afx_msg void OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI);
     afx_msg void OnPopupOptionsStartcursoroneyedropper();
-    afx_msg void OnWindowPosChanging(WINDOWPOS FAR* lpwndpos);
     afx_msg void OnPopupSamplingDecreasemultipixelaverage();
     afx_msg void OnPopupSamplingIncreasemultipixelaverage();
     afx_msg void OnPopupSamplingMultipixel();
