@@ -177,41 +177,38 @@ BOOL CColorCopApp::InitApplication()
 
 void CColorCopApp::LoadDefaultSettings() {
 
-        // This function is called when we can't find a .DAT file
-        // with the persistent variables, or it was an old dat file
+    // This function is called when we can't find a .DAT file
+    // with the persistent variables, or it was an old dat file.
+    // Set the default settings and custom colors.
 
-        // OK - better set the default settings and custom colors
+    dlg.m_Reddec   = GetRValue(kDefaultSeedColor);
+    dlg.m_Greendec = GetGValue(kDefaultSeedColor);
+    dlg.m_Bluedec  = GetBValue(kDefaultSeedColor);
 
-        dlg.m_Reddec   = 171;    // load navy blue websafe, a cool color to start with
-        dlg.m_Greendec = 208;
-        dlg.m_Bluedec  = 188;
-        dlg.m_Appflags = 0;        // reset
-        dlg.m_Appflags |= AlwaysOnTop;
-        dlg.m_Appflags |= AutoCopytoClip;
-        dlg.m_Appflags |= ModeHTML;
-        dlg.m_Appflags |= EasyMove;
-        dlg.m_Appflags |= Sampling1;
-        dlg.m_Appflags |= ExpandedDialog;
-        dlg.m_Appflags |= MultipleInstances;
-        dlg.m_Appflags |= MAGWHILEEYEDROP;
-        dlg.m_Appflags |= SpaceRGB;
+    dlg.m_Appflags = 0;
+    dlg.m_Appflags |= AlwaysOnTop;
+    dlg.m_Appflags |= AutoCopytoClip;
+    dlg.m_Appflags |= ModeHTML;
+    dlg.m_Appflags |= EasyMove;
+    dlg.m_Appflags |= Sampling1;
+    dlg.m_Appflags |= ExpandedDialog;
+    dlg.m_Appflags |= MultipleInstances;
+    dlg.m_Appflags |= MAGWHILEEYEDROP;
+    dlg.m_Appflags |= SpaceRGB;
 
-        dlg.WinLocX = kDefaultWinLocX;
-        dlg.WinLocY = kDefaultWinLocY;
+    dlg.WinLocX = kDefaultWinLocX;
+    dlg.WinLocY = kDefaultWinLocY;
 
-        dlg.m_iSamplingOffset = kDefaultSamplingOffset;
+    dlg.m_iSamplingOffset = kDefaultSamplingOffset;
 
-        // set all custom color blocks to white
-        for(int initcolor = 0; initcolor < kCustomColorCount; initcolor++)
-        {
-          dlg.CustColorBank[initcolor] = (COLORREF)0x00FFFFFF;
-        }
+    // Set all custom color blocks to the default custom color
+    for (int i = 0; i < kCustomColorCount; ++i) {
+        dlg.CustColorBank[i] = kDefaultCustomColor;
+    }
 
-        for (int i = 0; i < kHistoryCount; ++i)
-        {
-            dlg.ColorHistory[i] = kDefaultColorHistory[i];
-        }
-    return;
+    for (int i = 0; i < kHistoryCount; ++i) {
+        dlg.ColorHistory[i] = kDefaultColorHistory[i];
+    }
 }
 
 void CColorCopApp::CloseApplication() {

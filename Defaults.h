@@ -23,3 +23,7 @@ constexpr COLORREF kDefaultColorHistory[kHistoryCount] = {
     0x00FFFF99,
     0x00999900
 };
+
+constexpr COLORREF kDefaultSeedColor = RGB(171, 208, 188);
+
+constexpr COLORREF kDefaultCustomColor = 0x00FFFFFF;
