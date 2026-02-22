@@ -25,24 +25,51 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
-      - name: Install MFC libraries via Chocolatey
+
+
+      - name: Install MFC libraries via Visual Studio bootstrapper
+        shell: pwsh
         run: |
-          Write-Host "Installing MFC components via Chocolatey..."
-          choco install visualstudio2022-workload-vctools --package-parameters "--add Microsoft.VisualStudio.Component.VC.ATLMFC" --yes
+          Write-Host "Locating existing Visual Studio installation..."
 
-          # Wait for installation to complete
-          Start-Sleep -Seconds 30
+          # GitHub runners always have VS 2022 Enterprise here
+          $vsInstall = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
 
-          # Verify installation
-          $mfcPath = Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\*\atlmfc" -ErrorAction SilentlyContinue
+          if (-Not (Test-Path $vsInstall)) {
+            Write-Host "❌ Could not find Visual Studio installation at $vsInstall"
+            exit 1
+          }
+
+          Write-Host "Found Visual Studio at: $vsInstall"
+
+          Write-Host "Downloading Visual Studio Build Tools bootstrapper..."
+          $vsUrl = "https://aka.ms/vs/17/release/vs_buildtools.exe"
+          $vsExe = "$env:TEMP\vs_buildtools.exe"
+          Invoke-WebRequest $vsUrl -OutFile $vsExe
+
+          Write-Host "Installing required Visual Studio components into existing installation..."
+
+          & $vsExe `
+            --quiet --wait --norestart --nocache `
+            --installPath "$vsInstall" `
+            --add Microsoft.VisualStudio.Workload.VCTools `
+            --add Microsoft.VisualStudio.Component.VC.ATLMFC `
+            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+
+          Write-Host "Verifying MFC installation..."
+
+          $mfcPath = Get-ChildItem "$vsInstall\VC\Tools\MSVC\*\atlmfc" -ErrorAction SilentlyContinue
+
           if ($mfcPath) {
             Write-Host "✅ MFC libraries found at: $($mfcPath.FullName)"
           } else {
             Write-Host "❌ MFC installation failed"
-            Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\" -ErrorAction SilentlyContinue
+            Write-Host "Contents of MSVC folder:"
+            Get-ChildItem "$vsInstall\VC\Tools\MSVC\" -ErrorAction SilentlyContinue
             exit 1
           }
-        shell: powershell
+
+
 
       - name: Run MSBuild with Code Analysis
         run: |
@@ -102,5 +129,3 @@ jobs:
           files: |
             colorcop.zip
             output/colorcop-setup.exe
-
-
