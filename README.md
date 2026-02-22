@@ -2,35 +2,36 @@
 
 A Windows-based color picker utility built with Microsoft Foundation Classes (MFC).
 
-## Installation
+## About this repository
 
-Color Cop is available as a simple Windows installer for every release.
+This GitHub repository contains the source code for Color Cop.
+It is intended for **developers and contributors** who want to build, debug, or improve the application.
 
-You can download the latest version from our [GitHub releases](https://github.com/ColorCop/ColorCop/releases), or install it using [winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/):
+If you just want to **download and use Color Cop**, please visit the official website: [colorcop.net](https://colorcop.net)
 
-```sh
-winget install JayPrall.ColorCop
-```
+The website provides the latest stable installer and user-focused information.
+This repository is focused on development, issue tracking, and contribution workflows.
 
-## Features
+## Quick start for developers
 
-- System tray color picker for Windows
-- Real-time color sampling from anywhere on screen
-- Multiple color format support (RGB, HEX, HSV)
+If you want to build and run Color Cop from source:
 
-## Requirements
+1. **Install prerequisites**
+   - Windows 10/11
+   - Visual Studio 2022 with:
+     - MSVC v143 compiler toolset
+     - Windows 10/11 SDK
+     - MFC for latest v143 build tools (x86 & x64)
 
-- **Windows 10/11** (x86/x64)
-- **Visual Studio 2022** with the following components:
-  - MSVC v143 compiler toolset
-  - Windows 10/11 SDK
-  - MFC for latest v143 build tools (x86 & x64)
+2. **Clone the repository**
+
+   ```sh
+   git clone https://github.com/ColorCop/ColorCop.git
+   cd ColorCop
 
 ## Building
 
-```sh
-MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
-```
+  MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
 
 ### Build Configurations
 
