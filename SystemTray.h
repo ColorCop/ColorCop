@@ -26,10 +26,7 @@
 // that you have found/implemented and I will fix/incorporate them into this
 // file.
 
-#ifndef _INCLUDED_SYSTEMTRAY_H_
-#define _INCLUDED_SYSTEMTRAY_H_
-
-#include <afxtempl.h>
+#pragma once
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
@@ -113,8 +110,5 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
