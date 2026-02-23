@@ -1,16 +1,11 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-
-
-#ifndef COLORSPACE_H
-#define COLORSPACE_H
+#pragma once
 
 COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k);
 
 void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k);
-
-
 
     BYTE    byRed = 0;
     BYTE    byGreen = 0;
@@ -24,5 +19,3 @@ void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k);
     BYTE    byMagenta = 0;
     BYTE    byYellow = 0;
     BYTE    byBlack = 0;
-
-#endif //XCMYK_H
