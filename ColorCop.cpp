@@ -59,7 +59,7 @@ BOOL CColorCopApp::InitInstance()
     if (!(dlg.m_Appflags & MultipleInstances))
     {
         // multiple instances are not allowed. check if we have one running
-            if(InstanceRunning())
+            if (InstanceRunning())
             {
                 // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
                 AfxMessageBox(IDS_APP_RUNNING);
@@ -156,7 +156,7 @@ BOOL CColorCopApp::InitApplication()
     strInitFile += INI_FILE;
 
     CFile file;
-    if(file.Open(strInitFile, CFile::modeRead)) {
+    if (file.Open(strInitFile, CFile::modeRead)) {
         CArchive ar(&file, CArchive::load);
         Serialize(ar);
     } else {
@@ -217,7 +217,6 @@ void CColorCopApp::CloseApplication() {
     // last thing the application will do. It will only write to
     // a file when the dialog has been closed IDOK or IDCANCEL
 
-
     CString strInitFile = GetTempFolder();
 
     strInitFile += INI_FILE_DIR;
@@ -225,7 +224,7 @@ void CColorCopApp::CloseApplication() {
     strInitFile += INI_FILE;
 
     CFile file;
-    if(file.Open(strInitFile,CFile::modeWrite|CFile::modeCreate))
+    if (file.Open(strInitFile,CFile::modeWrite|CFile::modeCreate))
     {
         CArchive ar(&file, CArchive::store);
         Serialize(ar);
@@ -249,7 +248,7 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar << dlg.WinLocY;
             for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
                 ar << dlg.CustColorBank[j];
-            for(int w = 0; w < kHistoryCount; w++)        // save color history values
+            for (int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar << dlg.ColorHistory[w];
 
             ar <<  dlg.m_iSamplingOffset;
@@ -268,7 +267,7 @@ void CColorCopApp::Serialize(CArchive& ar)
             ar >> dlg.WinLocY;
             for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
                 ar >> dlg.CustColorBank[j];
-            for(int w = 0; w < kHistoryCount; w++)        // save color history values
+            for (int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar >> dlg.ColorHistory[w];
 
             ar >>  dlg.m_iSamplingOffset;

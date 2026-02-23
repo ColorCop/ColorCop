@@ -262,8 +262,8 @@ BOOL CColorCopDlg::OnInitDialog()
     } else {
         // Add tool tips to the controls, either by hard coded string
         // or using the string table resource
-        m_ToolTip.AddTool( &m_ExpandDialog, IDS_EXPANDEDDIALOG);
-        m_ToolTip.AddTool( &m_ColorPick, IDS_CUSTOM_COLOR);
+        m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
+        m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
         m_ToolTip.Activate(TRUE);
     }
 
@@ -382,7 +382,7 @@ BOOL CColorCopDlg::OnInitDialog()
 void CColorCopDlg::SetupSystemMenu()
 {
     // Load accelerator resource..
-    m_hAcceleratorTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE (IDR_COLORCOP_ACCEL));
+    m_hAcceleratorTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
 
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
     //ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -408,10 +408,10 @@ void CColorCopDlg::SetupSystemMenu()
         pSysMenu->InsertMenu(2, MF_BYPOSITION | MF_SEPARATOR, NULL);
 
         // disable maxmize in the system menu
-        pSysMenu->EnableMenuItem(SC_MAXIMIZE, MF_BYCOMMAND | MF_GRAYED );
+        pSysMenu->EnableMenuItem(SC_MAXIMIZE, MF_BYCOMMAND | MF_GRAYED);
 
         // disable sizing in the system menu
-        pSysMenu->EnableMenuItem(SC_SIZE, MF_BYCOMMAND | MF_GRAYED );
+        pSysMenu->EnableMenuItem(SC_SIZE, MF_BYCOMMAND | MF_GRAYED);
     }
     return;
 }
@@ -686,7 +686,7 @@ void CColorCopDlg::OnPaint()
 
             hdcMem = ::CreateCompatibleDC(hdc);
 
-            ::SelectObject (hdcMem, hBitmap);
+            ::SelectObject(hdcMem, hBitmap);
 
             if (m_Appflags & ExpandedDialog)
 
@@ -697,7 +697,7 @@ void CColorCopDlg::OnPaint()
                      0, 0,      // upper left source
                      SRCCOPY);// mode
 
-            ::DeleteDC (hdcMem);                        // kill the temporary DC
+            ::DeleteDC(hdcMem);                        // kill the temporary DC
             hdcMem = NULL;
           }
 
@@ -741,10 +741,10 @@ void CColorCopDlg::RecalcZoom()
                  SRCCOPY);    // raster mode
 
 
-        ::DeleteDC (hdcZoomMem);// kill the temporary DC
-        ::DeleteDC (hdcMem);    // kill the temporary DC
+        ::DeleteDC(hdcZoomMem);// kill the temporary DC
+        ::DeleteDC(hdcMem);    // kill the temporary DC
 
-        ::ReleaseDC (CCopHWNDtemp, hdc);  // let go of the memory
+        ::ReleaseDC(CCopHWNDtemp, hdc);  // let go of the memory
     }
     InvalidateRect(&buttonrect, FALSE);
     return;
@@ -891,36 +891,36 @@ void CColorCopDlg::handleShifts()
     printSwatch();
 
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = plusValue(Swatch[i].B);
     }
     printSwatch();
 
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = minusValue(Swatch[i].B);
     }
     printSwatch();
     setupSwatches();
-    for(i = 0; i < 6; i++){
+    for (i = 0; i < 6; i++){
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
@@ -930,7 +930,7 @@ void CColorCopDlg::handleShifts()
 
 void CColorCopDlg::printSwatch()
 {
-    for(int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
 
         HSLtoRGB(Swatch[i].A,Swatch[i].B,Swatch[i].C);
         Swatch[i].A = r;
@@ -948,7 +948,7 @@ void CColorCopDlg::setupSwatches()
     Swatch[0].B = OrigSwatch.B;
     Swatch[0].C = OrigSwatch.C;
 
-    for(int i = 1; i < 6; i++) {
+    for (int i = 1; i < 6; i++) {
         Swatch[i].A = shiftHue(Swatch[i-1].A);
         Swatch[i].B = Swatch[i-1].B;
         Swatch[i].C = Swatch[i-1].C;
@@ -980,7 +980,7 @@ void CColorCopDlg::setSeedColor()
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
-    if(S == 0){
+    if (S == 0) {
         r = g = b = S * 255.0;
     } else {
 
@@ -1071,7 +1071,7 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
 
 
     // find the Saturation
-    if((MaxNum == 255) || (MinNum == 0)) {
+    if ((MaxNum == 255) || (MinNum == 0)) {
         Sat = 1.0;
     }
 
@@ -1205,7 +1205,7 @@ void CColorCopDlg::DisplayColor()
 
             if ((m_Appflags & Sampling3x3) ||
                 (m_Appflags & Sampling5x5) ||
-                ((m_Appflags & SamplingMULTI )&&(m_iSamplingOffset <= 10))
+                ((m_Appflags & SamplingMULTI)&&(m_iSamplingOffset <= 10))
                 ) {
 
                 insiderect.InflateRect(4 *m_iSamplingOffset, 4*m_iSamplingOffset);
@@ -1464,7 +1464,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetCapture();
         m_EyeLoc.SetIcon(m_hBlank);
         SetCursor(m_hEyeCursor);
-        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM (point.x, point.y));
+        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
@@ -1475,7 +1475,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetCapture();
         m_EyeLoc.SetIcon(m_hBlank);
         SetCursor(m_hEyeCursor);
-        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM (point.x, point.y));
+        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
@@ -1584,12 +1584,12 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 
             if (IDYES == AfxMessageBox(strQuestion, MB_YESNO))
             {
-                if(::OpenClipboard(CCopHWND)) {
+                if (::OpenClipboard(CCopHWND)) {
 
                     ::EmptyClipboard();
 
                     hBitmapClip = CopyBitmap(hBitmap);
-                    SetClipboardData (CF_BITMAP, hBitmapClip);
+                    SetClipboardData(CF_BITMAP, hBitmapClip);
                     ::CloseClipboard();
                     return;
                 }
@@ -1615,22 +1615,22 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
     CDialog::OnLButtonDblClk(nFlags, point);
 }
 
-HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc)
+HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc)
 {
      BITMAP  bitmap;
      HBITMAP hBitmapDst;
      HDC     hdcSrc, hdcDst;
 
-     ::GetObject (hBitmapSrc, sizeof (BITMAP), &bitmap);
-     hBitmapDst = ::CreateBitmapIndirect (&bitmap);
+     ::GetObject(hBitmapSrc, sizeof (BITMAP), &bitmap);
+     hBitmapDst = ::CreateBitmapIndirect(&bitmap);
 
      hdcSrc = ::CreateCompatibleDC(NULL);
      hdcDst = ::CreateCompatibleDC(NULL);
 
-     ::SelectObject (hdcSrc, hBitmapSrc);
-     ::SelectObject (hdcDst, hBitmapDst);
+     ::SelectObject(hdcSrc, hBitmapSrc);
+     ::SelectObject(hdcDst, hBitmapDst);
 
-     ::BitBlt (hdcDst, 0, 0, bitmap.bmWidth*2, bitmap.bmHeight*2,
+     ::BitBlt(hdcDst, 0, 0, bitmap.bmWidth*2, bitmap.bmHeight*2,
              hdcSrc, 0, 0, SRCCOPY);
 
      ::DeleteDC(hdcSrc);
@@ -1789,7 +1789,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
             }
 
-            ::ReleaseDC (::GetForegroundWindow(), hdc);    // free up the memory
+            ::ReleaseDC(::GetForegroundWindow(), hdc);    // free up the memory
 
             CString strStatus="",strWebSafe = "";
 
@@ -1822,8 +1822,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                     strStatus.Format(strStatus, iWidth,
                                                 iHeight,
                                                 dLength,
-                                                dAngle
-                                                );
+                                                dAngle);
 
                 } else     if ((m_Appflags & Sampling3x3)||
                             (m_Appflags & Sampling5x5)||
@@ -1997,7 +1996,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
 
 
 
-    ::BitBlt (hdcZoomMem,            // destination DC
+    ::BitBlt(hdcZoomMem,            // destination DC
               0, 0,                // destination upper left (always 0,0)
               magrect.Width(), magrect.Height(),    // w x h of destination
               hdc,                // source DC
@@ -2005,7 +2004,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
               point.y - (magrect.Height() / 2), // y coordinate of source
                  SRCCOPY);            // raster mode
 
-    ::StretchBlt (hdcMem,            // destination DC
+    ::StretchBlt(hdcMem,            // destination DC
                0, 0,                // destination upper left (always 0,0)
               magrect.Width(), magrect.Height(),    // w x h of destination
               hdc,                // source DC
@@ -2097,7 +2096,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 
     if (m_hAcceleratorTable) {        // use the Accelerator resource
 
-        if(::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
+        if (::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
             return TRUE;    // escape
         }
     }
@@ -2138,7 +2137,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
 
               CString strStatus;
             CWinApp* pApp;
-            switch(pMsg->wParam) {
+            switch (pMsg->wParam) {
             case VK_CONTROL:
                 //repeat=5;
                 if (m_isEyedropping && GetCursorPos(&RelativePoint)) {
@@ -2272,13 +2271,13 @@ void CColorCopDlg::ParseDelphi(CString inst)
         inst.Delete(0);
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = strtoul( inst.Left(2), NULL, 16);
+    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul( inst.Left(2), NULL, 16);
+    m_Greendec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
     inst.Delete(0);
-    m_Reddec = strtoul( inst.Left(2), NULL, 16);
+    m_Reddec = strtoul(inst.Left(2), NULL, 16);
 
     UpdateData(0);
 
@@ -2302,13 +2301,13 @@ void CColorCopDlg::ParseClarion(CString inst)
 
     if (inst.Left(1)=='0')
         inst.Delete(0);
-    m_Bluedec = strtoul( inst.Left(2), NULL, 16);
+    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul( inst.Left(2), NULL, 16);
+    m_Greendec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
     inst.Delete(0);
-    m_Reddec = strtoul( inst.Left(2), NULL, 16);
+    m_Reddec = strtoul(inst.Left(2), NULL, 16);
 
     UpdateData(0);
 
@@ -2326,14 +2325,14 @@ void CColorCopDlg::ParseHTML(CString inst)
     if (inst.Left(1) == '#')
         inst.Delete(0);
 
-    m_Reddec = strtoul( inst.Left(2), NULL, 16);
+    m_Reddec = strtoul(inst.Left(2), NULL, 16);
 
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul( inst.Left(2), NULL, 16);
+    m_Greendec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = strtoul( inst.Left(2), NULL, 16);
+    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
     UpdateData(0);
 
     OnconvertHEX();
@@ -2427,26 +2426,13 @@ void CColorCopDlg::OnDestroy()
 
     CString strBMPFile = GetTempFolder();
 
-//    strBMPFile.Append(BMP_FILE);
-
     strBMPFile +=BMP_FILE_DIR;
-
     strBMPFile +=BMP_FILE;
 
     HWND curwindowhwnd = ::GetForegroundWindow();
-/*
-    //HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
-    if(0!=GetModuleFileName(AfxGetInstanceHandle(),szPath,sizeof(szPath)))
-    {
-        LPTSTR BmpName = _tcsrchr(szPath, '\\');
-        if(!BmpName)
-            BmpName = szPath;
-        //_tcscpy_s(BmpName,MAX_PATH,"\\ColorCop5.bmp");
-        _tcscpy(BmpName,"\\ColorCop5.bmp");
-    }
-*/
+
     if (hBitmap) {
-        PBITMAPINFO MagBmpInfo = CreateBitmapInfoStruct( curwindowhwnd,hBitmap);
+        PBITMAPINFO MagBmpInfo = CreateBitmapInfoStruct(curwindowhwnd,hBitmap);
 //        CreateBMPFile(curwindowhwnd, (LPTSTR)strBMPFile.Tostring ,MagBmpInfo,hBitmap,::GetDC(NULL));
 
         // working
@@ -2790,7 +2776,7 @@ void CColorCopDlg::TestForExpand()
         currect.right = currect.left + lgWidth;
         currect.bottom = currect.top + lgHeight;
 
-        m_ExpandDialog.SetWindowText( _T("&<<") );
+        m_ExpandDialog.SetWindowText(_T("&<<"));
 
         m_Magnifier.ShowWindow(TRUE);
 
@@ -3260,7 +3246,7 @@ void CColorCopDlg::SetupStatusBar()
     m_Widths[0] = nTotWide;
 
     m_StatBar.SetMinHeight(25);
-    m_StatBar.SetParts( 1, m_Widths);
+    m_StatBar.SetParts(1, m_Widths);
 
     SetStatusBarText(IDS_RIGHTCLICK_MENU,0);
 
@@ -3391,10 +3377,8 @@ int CColorCopDlg::RangeCheck(int icolorval)
 void CColorCopDlg::OnTimer(UINT nIDEvent)
 {
     // this allows animations to be magnified and eyedropped
-
     CString strStatus;
-
-    switch(nIDEvent)
+    switch (nIDEvent)
     {
     case 1:
 
@@ -3406,7 +3390,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent)
                 {
 
                     ScreenToClient(&point);
-                    PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM (point.x, point.y));
+                    PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
                     //PostMessage(
                 }
         }
@@ -3710,7 +3694,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
     if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
                   + pbih->biClrUsed * sizeof (RGBQUAD),
-                  (LPDWORD) &dwTmp, ( NULL)) )
+                  (LPDWORD) &dwTmp, (NULL)))
                   {
                     AfxMessageBox("WriteFile failed");
                     return;
@@ -3850,7 +3834,7 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB)
 {
     CString txt;
 
-    if(bRGB)
+    if (bRGB)
     {
 
         // Show Red

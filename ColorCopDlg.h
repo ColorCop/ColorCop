@@ -189,7 +189,7 @@ protected:
     int CColorCopDlg::RangeCheck(int icolorval);
     void CColorCopDlg::AdvanceColorHistory();
     void CColorCopDlg::GetHistoryColor(int Cindex);
-    HBITMAP CColorCopDlg::CopyBitmap (HBITMAP hBitmapSrc);
+    HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc);
     bool CColorCopDlg::isWebsafeColor(int R, int G, int B);
     CString CColorCopDlg::GetTempFolder();
     BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
