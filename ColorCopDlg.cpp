@@ -710,44 +710,51 @@ void CColorCopDlg::OnPaint()
     }
 }
 
-
-
-
 void CColorCopDlg::RecalcZoom()
 {
-    // zoom level has changed while not magnifying..
+    if (m_MagLevel <= 0)
+        return;
 
-    int    magwidth = magrect.Width() / m_MagLevel;
+    int magwidth  = magrect.Width()  / m_MagLevel;
     int magheight = magrect.Height() / m_MagLevel;
-    HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd;
+
+    HWND hwnd = AfxGetMainWnd()->GetSafeHwnd();
 
     if (hZoomBitmap)
     {
-        hdc = ::GetDC(CCopHWNDtemp);   // needed only for color depth
+        hdc = ::GetDC(hwnd);
+        if (!hdc)
+            return;
 
-        hdcMem = ::CreateCompatibleDC(hdc);
+        hdcMem     = ::CreateCompatibleDC(hdc);
         hdcZoomMem = ::CreateCompatibleDC(hdc);
 
-       ::SelectObject(hdcMem, hBitmap);
-       ::SelectObject(hdcZoomMem, hZoomBitmap);
+        if (hdcMem && hdcZoomMem)
+        {
+            HGDIOBJ oldMemBmp  = ::SelectObject(hdcMem, hBitmap);
+            HGDIOBJ oldZoomBmp = ::SelectObject(hdcZoomMem, hZoomBitmap);
 
-           ::StretchBlt(hdcMem, // destination DC
-                 0, 0, // upper left dest
-                 magrect.Width(), magrect.Height(),  // width of dest rect
-                 hdcZoomMem,  // source DC
-                    ((magrect.right - magrect.left)/2) - (magwidth/2), // x coordinate of source
-                 ((magrect.bottom - magrect.top)/2) - (magheight/2), // y coordinate of source
-                 magwidth, magheight,        // width of source
-                 SRCCOPY);    // raster mode
+            ::StretchBlt(
+                hdcMem,
+                0, 0,
+                magrect.Width(), magrect.Height(),
+                hdcZoomMem,
+                ((magrect.Width())  / 2) - (magwidth  / 2),
+                ((magrect.Height()) / 2) - (magheight / 2),
+                magwidth, magheight,
+                SRCCOPY);
 
+            ::SelectObject(hdcMem, oldMemBmp);
+            ::SelectObject(hdcZoomMem, oldZoomBmp);
+        }
 
-        ::DeleteDC(hdcZoomMem);// kill the temporary DC
-        ::DeleteDC(hdcMem);    // kill the temporary DC
+        if (hdcZoomMem) ::DeleteDC(hdcZoomMem);
+        if (hdcMem)     ::DeleteDC(hdcMem);
 
-        ::ReleaseDC(CCopHWNDtemp, hdc);  // let go of the memory
+        ::ReleaseDC(hwnd, hdc);
     }
+
     InvalidateRect(&buttonrect, FALSE);
-    return;
 }
 
 void CColorCopDlg::OnconvertRGB() {
@@ -772,34 +779,23 @@ void CColorCopDlg::OnconvertRGB() {
         }
 
     } else if (m_Appflags & ModePowerBuilder) {
-
         m_Hexcolor.Format("%d", (65536 * m_Bluedec) + (256 * m_Greendec) + (m_Reddec));
-
     } else if (m_Appflags & ModeVisualBasic) {
-
         m_Hexcolor.Format("&H%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
-
     } else if (m_Appflags & ModeClarion) {
-
         // same as VB, but in addition
         //1) remove the &H at start.
         //2) prefix with 0
         //3) add H after the color
         m_Hexcolor.Format("0%.2x%.2x%.2xH", m_Bluedec, m_Greendec, m_Reddec);
-
-
     } else if (m_Appflags & RGBINT) {
-
         m_Hexcolor.Format("%d,%d,%d", m_Reddec, m_Greendec, m_Bluedec);
-
     } else if (m_Appflags & RGBFLOAT) {
         r = (float)m_Reddec / 255.0f;
         g = (float)m_Greendec / 255.0f;
         b = (float)m_Bluedec / 255.0f;
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
-
     } else if (m_Appflags & ModeVisualC) {
-
         m_Hexcolor.Format("0x00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
     }
 
