@@ -1630,7 +1630,7 @@ HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc)
      ::SelectObject(hdcSrc, hBitmapSrc);
      ::SelectObject(hdcDst, hBitmapDst);
 
-     ::BitBlt(hdcDst, 0, 0, bitmap.bmWidth*2, bitmap.bmHeight*2,
+     ::BitBlt(hdcDst, 0, 0, bitmap.bmWidth, bitmap.bmHeight,
              hdcSrc, 0, 0, SRCCOPY);
 
      ::DeleteDC(hdcSrc);
