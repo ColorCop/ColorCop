@@ -4,23 +4,13 @@
 // ColorCopDlg.h : header file
 //
 
-
-
-#if !defined(AFX_HTMLCOPDLG_H__EC2A34E6_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
-#define AFX_HTMLCOPDLG_H__EC2A34E6_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_
-
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
-
-
 
 class CSystemTray;
 
@@ -37,8 +27,6 @@ public:
     int WinLocX, WinLocY;
     int16_t m_MagLevel;
     int16_t m_FloatPrecision;
-
-
 
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 
@@ -114,9 +102,8 @@ protected:
     int smHeight, smWidth, lgHeight, lgWidth;
     unsigned int m_nwide, m_ntall;
 
-
     // color palette stuff
-    double r,g,b;
+    double r, g, b;
     double Hue, Sat, Light;
 
     struct swatchStruct{
@@ -140,7 +127,7 @@ protected:
 
     CRect magrect, colorpalrect;        // magnifier rect, based off color window rect
     CRect testrect;
-    CRect magplus,magminus;
+    CRect magplus, magminus;
     RECT CCopRect, CCopsmRect;
 
 
@@ -150,7 +137,6 @@ protected:
     HCURSOR m_hStandardCursor;
     HCURSOR m_hMoveCursor;
     HCURSOR m_hHandCursor;
-    //HCURSOR m_hEyeCursor_3x3, m_hEyeCursor_5x5;
 
     ////  systray Internal data
     HICON hIcon_;
@@ -313,5 +299,3 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_HTMLCOPDLG_H__EC2A34E6_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
