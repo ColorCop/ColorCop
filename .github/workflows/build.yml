@@ -69,8 +69,6 @@ jobs:
             exit 1
           }
 
-
-
       - name: Run MSBuild with Code Analysis
         run: |
           $msbuildArgs = @(
@@ -83,11 +81,11 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
-      - name: Build x64 Installer
+      - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
         if: matrix.configuration == 'Release'
         with:
-          path: inno\colorcop.iss
+          path: installer\colorcop.iss
           options: /O+
 
       - name: Publish Release Artifacts
