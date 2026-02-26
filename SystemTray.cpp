@@ -106,7 +106,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     ASSERT(_tcslen(szToolTip) <= 64);
 
     // Create an invisible window
-    CWnd::CreateEx(0, AfxRegisterWndClass(0), _T(""), WS_POPUP, 0,0,10,10, NULL, 0);
+    CWnd::CreateEx(0, AfxRegisterWndClass(0), _T(""), WS_POPUP, 0, 0, 10, 10, NULL, 0);
 
     // load up the NOTIFYICONDATA structure
     m_tnd.cbSize = sizeof(NOTIFYICONDATA);

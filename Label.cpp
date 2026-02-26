@@ -16,7 +16,7 @@ CLabel::CLabel()
     m_crText = GetSysColor(COLOR_WINDOWTEXT);
     m_hBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 
-    ::GetObject((HFONT)GetStockObject(DEFAULT_GUI_FONT),sizeof(m_lf),&m_lf);
+    ::GetObject((HFONT)GetStockObject(DEFAULT_GUI_FONT), sizeof(m_lf), &m_lf);
 
     m_font.CreateFontIndirect(&m_lf);
     m_bTimer = FALSE;
@@ -161,7 +161,7 @@ void CLabel::OnTimer(UINT nIDEvent)
         break;
 
         case Background:
-            InvalidateRect(NULL,FALSE);
+            InvalidateRect(NULL, FALSE);
             UpdateWindow();
         break;
     }
@@ -174,9 +174,9 @@ CLabel& CLabel::SetLink(BOOL bLink)
     m_bLink = bLink;
 
     if (bLink)
-        ModifyStyle(0,SS_NOTIFY);
+        ModifyStyle(0, SS_NOTIFY);
     else
-        ModifyStyle(SS_NOTIFY,0);
+        ModifyStyle(SS_NOTIFY, 0);
 
     return *this;
 }
@@ -186,7 +186,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
     CString strLink;
 
     GetWindowText(strLink);
-    ShellExecute(NULL,"open",strLink,NULL,NULL,SW_SHOWNORMAL);
+    ShellExecute(NULL, "open", strLink, NULL, NULL, SW_SHOWNORMAL);
 
     CStatic::OnLButtonDown(nFlags, point);
 }

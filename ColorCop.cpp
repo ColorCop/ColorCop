@@ -224,7 +224,7 @@ void CColorCopApp::CloseApplication() {
     strInitFile += INI_FILE;
 
     CFile file;
-    if (file.Open(strInitFile,CFile::modeWrite|CFile::modeCreate))
+    if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate))
     {
         CArchive ar(&file, CArchive::store);
         Serialize(ar);

@@ -436,8 +436,8 @@ bool CColorCopDlg::LoadPersistentVariables() {
   }
 
   // Fix window position if saved as "minimized"
-  // Win9x stored minimized windows at (3000,3000)
-  // NT stored them at (-32000,-32000)
+  // Win9x stored minimized windows at (3000, 3000)
+  // NT stored them at (-32000, -32000)
   //
   if (WinLocX < 0 || WinLocY < 0 || WinLocX == 3000 || WinLocY == 3000) {
     WinLocX = 200;
@@ -456,8 +456,8 @@ void CColorCopDlg::SetupWindowRects()
 
     // setup color window rect based on the Static box
     HWND temphandle;
-    CWnd::GetDlgItem(IDC_CPreview,&temphandle);
-    ::GetWindowRect(temphandle,&buttonrect);
+    CWnd::GetDlgItem(IDC_CPreview, &temphandle);
+    ::GetWindowRect(temphandle, &buttonrect);
     CWnd::ScreenToClient(&buttonrect);
 
 
@@ -502,7 +502,7 @@ void CColorCopDlg::SetupWindowRects()
     CWnd::ScreenToClient(&colorpalrect);
 
     HWND maghand;
-    CWnd::GetDlgItem(IDC_MagWindow,&maghand);
+    CWnd::GetDlgItem(IDC_MagWindow, &maghand);
     ::GetWindowRect(maghand, &magrect);
     CWnd::ScreenToClient(magrect);
 
@@ -928,7 +928,7 @@ void CColorCopDlg::printSwatch()
 {
     for (int i = 0; i < 6; i++) {
 
-        HSLtoRGB(Swatch[i].A,Swatch[i].B,Swatch[i].C);
+        HSLtoRGB(Swatch[i].A, Swatch[i].B, Swatch[i].C);
         Swatch[i].A = r;
         Swatch[i].B = g;
         Swatch[i].C = b;
@@ -1052,8 +1052,8 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
     /////////////////////////////////////
     // get min, max, and diff
     //
-    MinNum = __min(R, __min(G,B));        // min
-    MaxNum = __max(R, __max(G,B));        // max
+    MinNum = __min(R, __min(G, B));        // min
+    MaxNum = __max(R, __max(G, B));        // max
 
     Diff = (MaxNum - MinNum);            // diff
 
@@ -1108,7 +1108,7 @@ void CColorCopDlg::DisplayColor()
     CBrush greybrush;    //create a grey brush
     greybrush.CreateSolidBrush(0x00808080);
 
-    pDC->FillSolidRect(buttonrect, RGB(m_Reddec,m_Greendec,m_Bluedec));
+    pDC->FillSolidRect(buttonrect, RGB(m_Reddec, m_Greendec, m_Bluedec));
     pDC->DrawEdge(buttonrect, EDGE_SUNKEN, BF_RECT);
 
     if (m_Appflags & ExpandedDialog) {
@@ -1154,7 +1154,6 @@ void CColorCopDlg::DisplayColor()
             for (int row = 0; row< 6; row++) {
                 pDC->FillSolidRect(insiderect, ColorPal[row][col]);
 
-                //    pDC->FrameRect(insiderect, &blackbrush);    // frame each color
                 insiderect.right+=m_nwide;
                 insiderect.left+=m_nwide;
             }
@@ -1172,27 +1171,23 @@ void CColorCopDlg::DisplayColor()
 
         colorpalrect.DeflateRect(1, 1, 1, 1);
 
-        //magmod.SetRect(colorpalrect.right-9,magrect.top, colorpalrect.right, magrect.top+9);
-
         pDC->FrameRect(magplus, &greybrush);
         pDC->MoveTo(magplus.left + 2, magplus.top + (magplus.bottom - magplus.top)/2);
-        pDC->LineTo(magplus.right - 2,magplus.top +  (magplus.bottom - magplus.top)/2);
+        pDC->LineTo(magplus.right - 2, magplus.top +  (magplus.bottom - magplus.top)/2);
 
         pDC->MoveTo(magplus.left + (magplus.right - magplus.left)/2, magplus.top + 2);
         pDC->LineTo(magplus.left + (magplus.right - magplus.left)/2, magplus.bottom - 2);
 
-        //pDC->LineTo(magplus.right - 2,magplus.top +  (magplus.bottom - magplus.top)/2);
-
         pDC->FrameRect(magminus, &greybrush);
         pDC->MoveTo(magminus.left + 2, magminus.top + (magminus.bottom - magminus.top)/2);
-        pDC->LineTo(magminus.right - 2,magminus.top +  (magminus.bottom - magminus.top)/2);
+        pDC->LineTo(magminus.right - 2, magminus.top +  (magminus.bottom - magminus.top)/2);
 
         if ((m_Appflags & MAGWHILEEYEDROP)&&(m_isEyedropping)&&(!m_MagDrop)) {
 
             int pxwid = m_MagLevel;
             insiderect = magrect;
             insiderect.DeflateRect(magrect.Width()/2, magrect.Height()/2);
-            insiderect.InflateRect(3,3); // mag 4
+            insiderect.InflateRect(3, 3); // mag 4
             insiderect.left+=4;
             insiderect.right+=4;
             insiderect.bottom+=4;
@@ -1307,7 +1302,7 @@ void CColorCopDlg::OnColorPick()
     // set up the common windows color dialog
     COLORREF temp;
     CColorDialog dlgcolor;
-    dlgcolor.m_cc.rgbResult = RGB(m_Reddec,m_Greendec,m_Bluedec);
+    dlgcolor.m_cc.rgbResult = RGB(m_Reddec, m_Greendec, m_Bluedec);
     dlgcolor.m_cc.Flags = CC_RGBINIT | CC_FULLOPEN;
     dlgcolor.m_cc.lpCustColors = CustColorBank;        // pointer to custom colors aray
 
@@ -1426,7 +1421,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 
         SetCapture();
-        SetTimer(1,100,NULL);        // install the timer
+        SetTimer(1, 100, NULL);        // install the timer
 
         m_EyeLoc.SetIcon(m_hBlank);
         SetCursor(m_hEyeCursor);
@@ -1438,7 +1433,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         SetCursor(m_hMagCursor);
         m_isMagnifying = true;
         SetCapture();
-        SetTimer(1,100,NULL);        // install the timer
+        SetTimer(1, 100, NULL);        // install the timer
 
         m_Magnifier.SetIcon(m_hBlank);
 
@@ -1487,7 +1482,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         RecalcZoom();
 
         m_isMagPlusDown = TRUE;
-        SetTimer(2,145,NULL);        // install the timer
+        SetTimer(2, 145, NULL);        // install the timer
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
@@ -1503,7 +1498,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
         RecalcZoom();
 
         m_isMagMinusDown = TRUE;
-        SetTimer(2,145,NULL);        // install the timer
+        SetTimer(2, 145, NULL);        // install the timer
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
@@ -1758,7 +1753,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
                         UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
 
-    //Black   = minimum(1-Red,1-Green,1-Blue)
+    //Black   = minimum(1-Red, 1-Green, 1-Blue)
     //Cyan    = (1-Red-Black)/(1-Black)
     //Magenta = (1-Green-Black)/(1-Black)
     //Yellow  = (1-Blue-Black)/(1-Black)
@@ -1787,7 +1782,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
             ::ReleaseDC(::GetForegroundWindow(), hdc);    // free up the memory
 
-            CString strStatus="",strWebSafe = "";
+            CString strStatus="", strWebSafe = "";
 
 
                 if (bRelativePosition)  {
@@ -1993,7 +1988,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
 
 
     ::BitBlt(hdcZoomMem,            // destination DC
-              0, 0,                // destination upper left (always 0,0)
+              0, 0,                // destination upper left (always 0, 0)
               magrect.Width(), magrect.Height(),    // w x h of destination
               hdc,                // source DC
               point.x - (magrect.Width() / 2), // x coordinate of source
@@ -2001,7 +1996,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point)
                  SRCCOPY);            // raster mode
 
     ::StretchBlt(hdcMem,            // destination DC
-               0, 0,                // destination upper left (always 0,0)
+               0, 0,                // destination upper left (always 0, 0)
               magrect.Width(), magrect.Height(),    // w x h of destination
               hdc,                // source DC
               point.x - (magwidth / 2), // x coordinate of source
@@ -2024,7 +2019,7 @@ void CColorCopDlg::GetHistoryColor(int Cindex)
     // this function sets the current color
     // to the history color which was clicked on
 
-    if (RGB(m_Reddec,m_Greendec,m_Bluedec) != ColorHistory[Cindex]) {
+    if (RGB(m_Reddec, m_Greendec, m_Bluedec) != ColorHistory[Cindex]) {
         // the color is different.  get it
 
         m_Reddec   = GetRValue(ColorHistory[Cindex]);
@@ -2139,7 +2134,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
                 if (m_isEyedropping && GetCursorPos(&RelativePoint)) {
                     RelativePointEnd = RelativePoint;
                     strStatus.LoadString(IDS_RELATIVE_POS);
-                    strStatus.Format(strStatus, 0, 0,0,90);
+                    strStatus.Format(strStatus, 0, 0, 0, 90);
                     SetStatusBarText(strStatus);
 
                     if (!(m_Appflags & USECROSSHAIR)) {
@@ -2192,7 +2187,7 @@ void CColorCopDlg::OnChangeHexcolor()
     // or they pasted a hex code.
     // OK - parse out the RGB values and convert
 
-    int hexrange,offset;
+    int hexrange, offset;
 
     UpdateData(1);    // save from control to m_Hexcolor
     int hexsize=0;
@@ -2413,13 +2408,11 @@ void CColorCopDlg::OnDestroy()
     // save the location
     tagRECT *winSize = new tagRECT;
     GetWindowRect(winSize);
-    WinLocX = winSize->left;        // Store x,y
+    WinLocX = winSize->left;        // Store x, y
     WinLocY = winSize->top;        // in variables
 
 
     // save the bitmap
-//    TCHAR szPath[MAX_PATH];
-
     CString strBMPFile = GetTempFolder();
 
     strBMPFile +=BMP_FILE_DIR;
@@ -2428,17 +2421,10 @@ void CColorCopDlg::OnDestroy()
     HWND curwindowhwnd = ::GetForegroundWindow();
 
     if (hBitmap) {
-        PBITMAPINFO MagBmpInfo = CreateBitmapInfoStruct(curwindowhwnd,hBitmap);
-//        CreateBMPFile(curwindowhwnd, (LPTSTR)strBMPFile.Tostring ,MagBmpInfo,hBitmap,::GetDC(NULL));
-
-        // working
-        //CreateBMPFile(curwindowhwnd, szPath ,MagBmpInfo,hBitmap,::GetDC(NULL));
-
-        CreateBMPFile(curwindowhwnd, strBMPFile.GetBuffer(MAX_PATH) ,MagBmpInfo,hBitmap,::GetDC(NULL));
+        PBITMAPINFO MagBmpInfo = CreateBitmapInfoStruct(curwindowhwnd, hBitmap);
+        CreateBMPFile(curwindowhwnd, strBMPFile.GetBuffer(MAX_PATH) , MagBmpInfo, hBitmap, ::GetDC(NULL));
 
         strBMPFile.ReleaseBuffer();
-
-
     }
 
     CDialog::OnDestroy();
@@ -2455,7 +2441,6 @@ void CColorCopDlg::OnOptionsAlwaysontop()
     m_Appflags ^= AlwaysOnTop;
     ToggleOnTop(true);
 }
-
 
 void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext)
 {
@@ -2561,7 +2546,7 @@ void CColorCopDlg::OnColorReverse()
     // Reverse the current colors.
     // ABS (current decimal value - 255)  then update
 
-    SetStatusBarText(IDS_REVERSECOLOR,0);
+    SetStatusBarText(IDS_REVERSECOLOR, 0);
     m_Reddec   = abs(m_Reddec - 255);
     m_Greendec = abs(m_Greendec - 255);
     m_Bluedec  = abs(m_Bluedec  - 255);
@@ -2594,12 +2579,12 @@ void CColorCopDlg::OnPopupColorConverttograyscale()
         // and continues to have three color channels, but now the channels have identical values,
         // which is why the image appears as a grayscale.
 
-        // formula: L = {Max(R,G,B) + Min(R,G,B)}/2;
-        Max = __max(m_Reddec,m_Greendec);
-        Max = __max(Max,m_Bluedec);
+        // formula: L = {Max(R, G, B) + Min(R, G, B)}/2;
+        Max = __max(m_Reddec, m_Greendec);
+        Max = __max(Max, m_Bluedec);
 
-        Min = __min(m_Reddec,m_Greendec);
-        Min = __min(Min,m_Bluedec);
+        Min = __min(m_Reddec, m_Greendec);
+        Min = __min(Min, m_Bluedec);
         L = (int) (Min + Max) / 2;
 
         m_Reddec   = L;
@@ -2732,12 +2717,12 @@ BOOL CAboutDlg::OnInitDialog()
     // setup the hyperlinks
 
     m_link.SetLink(TRUE)
-        .SetTextColor(RGB(0,0,255))
+        .SetTextColor(RGB(0, 0, 255))
         .SetFontUnderline(TRUE)
         .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
 
     m_maillink.SetLink(TRUE)
-        .SetTextColor(RGB(0,0,255))
+        .SetTextColor(RGB(0, 0, 255))
         .SetFontUnderline(TRUE)
         .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
 
@@ -2830,19 +2815,19 @@ void CColorCopDlg::TestForUpperHex()
     if (m_Appflags & UpperCaseHex)
     {
         // make currenthex uppercase
-        m_Hexcolor.Replace('a','A');
-        m_Hexcolor.Replace('b','B');
-        m_Hexcolor.Replace('c','C');
-        m_Hexcolor.Replace('d','D');
-        m_Hexcolor.Replace('e','E');
-        m_Hexcolor.Replace('f','F');
+        m_Hexcolor.Replace('a', 'A');
+        m_Hexcolor.Replace('b', 'B');
+        m_Hexcolor.Replace('c', 'C');
+        m_Hexcolor.Replace('d', 'D');
+        m_Hexcolor.Replace('e', 'E');
+        m_Hexcolor.Replace('f', 'F');
     } else {
-        m_Hexcolor.Replace('A','a');
-        m_Hexcolor.Replace('B','b');
-        m_Hexcolor.Replace('C','c');
-        m_Hexcolor.Replace('D','d');
-        m_Hexcolor.Replace('E','e');
-        m_Hexcolor.Replace('F','f');
+        m_Hexcolor.Replace('A', 'a');
+        m_Hexcolor.Replace('B', 'b');
+        m_Hexcolor.Replace('C', 'c');
+        m_Hexcolor.Replace('D', 'd');
+        m_Hexcolor.Replace('E', 'e');
+        m_Hexcolor.Replace('F', 'f');
     }
     UpdateData(false);    // update control
 }
@@ -2990,7 +2975,7 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     greendec = (int) greendec / elements; // average
     bluedec = (int) bluedec / elements; // average
 
-    if (RGB(reddec,greendec,bluedec) != RGB(m_Reddec, m_Greendec, m_Bluedec)) {
+    if (RGB(reddec, greendec, bluedec) != RGB(m_Reddec, m_Greendec, m_Bluedec)) {
 
         *m_R = reddec;
         *m_G = greendec;
@@ -3244,14 +3229,14 @@ void CColorCopDlg::SetupStatusBar()
     m_StatBar.SetMinHeight(25);
     m_StatBar.SetParts(1, m_Widths);
 
-    SetStatusBarText(IDS_RIGHTCLICK_MENU,0);
+    SetStatusBarText(IDS_RIGHTCLICK_MENU, 0);
 
     return;
 }
 
 void CColorCopDlg::SetStatusBarText(LPCTSTR statusText)
 {
-    m_StatBar.SetText(statusText, 0,0);
+    m_StatBar.SetText(statusText, 0, 0);
     return;
 }
 
@@ -3264,7 +3249,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
     switch (toggleVal) {
         case 0:
             // Load String and set it
-            m_StatBar.SetText(_T(strTemp), 0,0);
+            m_StatBar.SetText(_T(strTemp), 0, 0);
             strTemp.FreeExtra();
         break;
 
@@ -3274,7 +3259,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
             strTemp.Insert(strTemp.GetLength(), _T(" "));
             strTemp.Insert(strTemp.GetLength(), strOn);
             strTemp.FreeExtra();
-            m_StatBar.SetText(_T(strTemp), 0,0);
+            m_StatBar.SetText(_T(strTemp), 0, 0);
 
         break;
 
@@ -3284,7 +3269,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
             strTemp.Insert(strTemp.GetLength(), _T(" "));
             strTemp.Insert(strTemp.GetLength(), strOn);
             strTemp.FreeExtra();
-            m_StatBar.SetText(_T(strTemp), 0,0);
+            m_StatBar.SetText(_T(strTemp), 0, 0);
         break;
     }
 
@@ -3435,9 +3420,9 @@ void CColorCopDlg::OnPopupColorDetectwebsafe()
     m_Appflags ^= DetectWebsafeColors;
     if (m_Appflags & DetectWebsafeColors) {
         m_Appflags &= ~SnaptoWebsafe;        // shut off snap to websafe
-        SetStatusBarText(IDS_DETECTWEBSAFE,1);
+        SetStatusBarText(IDS_DETECTWEBSAFE, 1);
     } else {
-        SetStatusBarText(IDS_DETECTWEBSAFE,2);
+        SetStatusBarText(IDS_DETECTWEBSAFE, 2);
     }
 }
 
@@ -3450,9 +3435,9 @@ void CColorCopDlg::OnPopupApplicationEasymove()
 {
     m_Appflags ^= EasyMove;
     if (m_Appflags & EasyMove) {
-        SetStatusBarText(IDS_EASYMOVE,1);
+        SetStatusBarText(IDS_EASYMOVE, 1);
     } else {
-        SetStatusBarText(IDS_EASYMOVE,2);
+        SetStatusBarText(IDS_EASYMOVE, 2);
     }
 }
 
@@ -3480,7 +3465,7 @@ void CColorCopDlg::OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* p
 void CColorCopDlg::OnPopupApplicationAllowmultipleinstances()
 {
     m_Appflags ^= MultipleInstances;
-    SetStatusBarText(IDS_RESTART_COLORCOP,0);
+    SetStatusBarText(IDS_RESTART_COLORCOP, 0);
     return;
 }
 
@@ -3544,7 +3529,7 @@ void CColorCopDlg::FireOptionMenu() {
     // Pop up the system menu when a user hits SHIFT + F10 (right click equivalent)
     // suggested by that dude from PC Mag
 
-    CPoint targetp = (0,0);
+    CPoint targetp = (0, 0);
 
     CMenu tempMenu;
     tempMenu.LoadMenu(IDR_COPMENU);
@@ -3699,7 +3684,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // Copy the array of color indices into the .BMP file.
     dwTotal = cb = pbih->biSizeImage;
     hp = lpBits;
-    if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL))
+    if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, NULL))
     {
         AfxMessageBox("WriteFile failed");
     }
@@ -3728,7 +3713,7 @@ void CColorCopDlg::OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI)
 void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper()
 {
     m_Appflags ^= SETCURSORONEYEDROP;
-    SetStatusBarText(IDS_RESTART_COLORCOP,0);
+    SetStatusBarText(IDS_RESTART_COLORCOP, 0);
     return;
 }
 
@@ -3745,10 +3730,10 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 
     if (m_iSamplingOffset>MULTIPIX_MIN) {
         m_iSamplingOffset--;
-        strStatus.Format(strStatus, m_iSamplingOffset*2+1,m_iSamplingOffset*2+1);
+        strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
     } else {
         strStatus.LoadString(IDS_MULTIPIX_LIMIT);
-        strStatus.Format(strStatus, MULTIPIX_MIN*2+1,MULTIPIX_MAX*2+1);
+        strStatus.Format(strStatus, MULTIPIX_MIN*2+1, MULTIPIX_MAX*2+1);
 
     }
     SetStatusBarText(strStatus);
@@ -3767,10 +3752,10 @@ void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage()
 
     if (m_iSamplingOffset<MULTIPIX_MAX) {
         m_iSamplingOffset++;
-        strStatus.Format(strStatus, m_iSamplingOffset*2+1,m_iSamplingOffset*2+1);
+        strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
     } else {
         strStatus.LoadString(IDS_MULTIPIX_LIMIT);
-        strStatus.Format(strStatus, MULTIPIX_MIN*2+1,MULTIPIX_MAX*2+1);
+        strStatus.Format(strStatus, MULTIPIX_MIN*2+1, MULTIPIX_MAX*2+1);
 
     }
     SetStatusBarText(strStatus);

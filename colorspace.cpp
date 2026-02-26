@@ -68,9 +68,9 @@ public:
 //
 // RGB --> CMYK                              CMYK --> RGB
 // ---------------------------------------   --------------------------------------------
-// Black   = minimum(1-Red,1-Green,1-Blue)   Red   = 1-minimum(1,Cyan*(1-Black)+Black)
-// Cyan    = (1-Red-Black)/(1-Black)         Green = 1-minimum(1,Magenta*(1-Black)+Black)
-// Magenta = (1-Green-Black)/(1-Black)       Blue  = 1-minimum(1,Yellow*(1-Black)+Black)
+// Black   = minimum(1-Red, 1-Green, 1-Blue)   Red   = 1-minimum(1, Cyan*(1-Black)+Black)
+// Cyan    = (1-Red-Black)/(1-Black)         Green = 1-minimum(1, Magenta*(1-Black)+Black)
+// Magenta = (1-Green-Black)/(1-Black)       Blue  = 1-minimum(1, Yellow*(1-Black)+Black)
 // Yellow  = (1-Blue-Black)/(1-Black)
 //
 
@@ -143,7 +143,7 @@ COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k)
     g = (BYTE) G;
     b = (BYTE) B;
 
-    rgb = RGB(r,g,b);
+    rgb = RGB(r, g, b);
 
     return rgb;
 }
