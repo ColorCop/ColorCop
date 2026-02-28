@@ -273,7 +273,7 @@ BOOL CColorCopDlg::OnInitDialog()
     m_isMagPlusDown = m_isMagMinusDown = bOldClrExist = FALSE;
     m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
     m_OldRed = m_OldBlue = m_OldGreen = 0;
-    bMinimized_= false;
+    bMinimized_ = false;
     pTrayIcon_ = 0;
 
     // small one
@@ -676,7 +676,7 @@ void CColorCopDlg::OnPaint()
         CDialog::OnPaint();
         // only paint here..
 
-        HWND CCopHWNDtemp=AfxGetApp()->GetMainWnd()->m_hWnd;
+        HWND CCopHWNDtemp = AfxGetApp()->GetMainWnd()->m_hWnd;
 
         //::SetForegroundWindow(CCopHWND);        // warning:        the task bar will flash if you call this
                                                 //                when the window is losing focus
@@ -1148,8 +1148,8 @@ void CColorCopDlg::DisplayColor()
             if (col) {
                 // not the top row
 
-                insiderect.top+=m_ntall;
-                insiderect.bottom+=m_ntall;
+                insiderect.top += m_ntall;
+                insiderect.bottom += m_ntall;
             }
             for (int row = 0; row< 6; row++) {
                 pDC->FillSolidRect(insiderect, ColorPal[row][col]);
@@ -1158,8 +1158,8 @@ void CColorCopDlg::DisplayColor()
                 insiderect.left+=m_nwide;
             }
 
-            insiderect.right-=m_nwide * 6;
-            insiderect.left-=m_nwide * 6;
+            insiderect.right -= m_nwide * 6;
+            insiderect.left -= m_nwide * 6;
         }
 
         // calculate the rect for FrameRect
@@ -1310,11 +1310,11 @@ void CColorCopDlg::OnColorPick()
     if (dlgcolor.DoModal() == IDOK)
     {
         // if they pressed OK
-        temp=dlgcolor.GetColor();
+        temp = dlgcolor.GetColor();
 
-        m_Reddec=GetRValue(temp);
-        m_Greendec=GetGValue(temp);
-        m_Bluedec=GetBValue(temp);
+        m_Reddec = GetRValue(temp);
+        m_Greendec = GetGValue(temp);
+        m_Bluedec = GetBValue(temp);
 
         UpdateData(false);
         CalcColorPal();
@@ -1395,7 +1395,7 @@ void CColorCopDlg::StopCapture()
     //m_EyeLoc.SetIcon(m_hEyeCursor);
     m_Magnifier.SetIcon(m_hMagCursor);
 
-    bRelativePosition=false;
+    bRelativePosition = false;
     // stop the timer
     KillTimer(1);
 
@@ -1557,7 +1557,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-    HWND CCopHWND=AfxGetApp()->GetMainWnd()->m_hWnd;
+    HWND CCopHWND = AfxGetApp()->GetMainWnd()->m_hWnd;
 
     CWnd* pWnd = ChildWindowFromPoint(point);
 
@@ -1739,7 +1739,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
             if (m_Appflags & Sampling1)    // only sample one pixel.
             {
 
-                crefxy=::GetPixel(hdc, point.x, point.y);    // api call
+                crefxy = ::GetPixel(hdc, point.x, point.y);    // api call
                 if (crefxy != CLR_INVALID) {
 
                     if (RGB(m_Reddec, m_Greendec, m_Bluedec) != crefxy) {
@@ -1771,18 +1771,13 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
 
             if (bRelativePosition) {
                 // store the new relative point.
-
-//                BlockMeasure(RelativePoint, RelativePointEnd);
                 RelativePointEnd.x = point.x;
                 RelativePointEnd.y = point.y;
-//                BlockMeasure(RelativePoint, RelativePointEnd);
-
-
             }
 
             ::ReleaseDC(::GetForegroundWindow(), hdc);    // free up the memory
 
-            CString strStatus="", strWebSafe = "";
+            CString strStatus = "", strWebSafe = "";
 
 
                 if (bRelativePosition)  {
@@ -1796,15 +1791,14 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
                     double dHeight = (double)iHeight+1;
 
                     double dLength = sqrt(dWidth*dWidth + dHeight * dHeight);
-                    //If W=0 then A=90 else A=ATAN(H/W)*(180/PI())
                     double dAngle = 0.0;
 
                     if (iWidth == 0) {
                         // prevent the divide by zero
-                        dAngle =90;
+                        dAngle = 90;
 
                     } else {
-                        dAngle=atan(dHeight/dWidth)*((double)180/(double)PI);
+                        dAngle = atan(dHeight / dWidth) * ((double)180 / (double)PI);
                     }
 
 
@@ -1869,8 +1863,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
         InvalidateRect(magrect, FALSE);
         // go redraw... but don't erase or it will flicker
         return;
-    } else
-    {
+    } else {
         // not magnifying oreyedropping
 
         CWnd* pWnd = ChildWindowFromPoint(point);
@@ -1907,40 +1900,19 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point)
             SetCursor(m_hHandCursor);
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
-
-        //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
-
-        //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
-
-        //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
-
-        //    m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
-
-    //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
-
-    //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
-
-    //        m_EyeLoc.SetIcon(m_hBlank);
             SetCursor(m_hHandCursor);
-
     }
 
     }
@@ -2041,7 +2013,7 @@ void CColorCopDlg::AdvanceColorHistory()
     // which is soon to be the older color.
 
     // if the new color is the same as the last color, don't switch.
-    if (ColorHistory[0] ==  (COLORREF) RGB(m_Reddec, m_Greendec, m_Bluedec))
+    if (ColorHistory[0] == (COLORREF) RGB(m_Reddec, m_Greendec, m_Bluedec))
         return;
 
     for (int sk = 6; sk > 0; sk--)        // swap
@@ -2173,7 +2145,6 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg)
                 break;
 
             }
-            //if (!bRelativePosition)
         }
 
     return CDialog::PreTranslateMessage(pMsg);
@@ -2190,56 +2161,55 @@ void CColorCopDlg::OnChangeHexcolor()
     int hexrange, offset;
 
     UpdateData(1);    // save from control to m_Hexcolor
-    int hexsize=0;
-    hexsize=m_Hexcolor.GetLength();
+    int hexsize = 0;
+    hexsize = m_Hexcolor.GetLength();
 
     if (m_Appflags & ModeHTML)
     {
-        if (m_Hexcolor.Left(1) =='#')
+        if (m_Hexcolor.Left(1) == '#')
         {
-            hexrange=5;
-            offset=1;
+            hexrange = 5;
+            offset = 1;
         } else {
-            hexrange=6;
-             offset=0;
+            hexrange = 6;
+            offset = 0;
         }
-
-        while (hexsize>hexrange)
+        while (hexsize > hexrange)
         {
             m_Hexcolor.Delete(6+offset);
             hexsize--;
         }
-        m_Reddec=m_Greendec=m_Bluedec=0;
+        m_Reddec = m_Greendec = m_Bluedec = 0;
         ParseHTML(m_Hexcolor);
 
     } else if (m_Appflags & ModeClarion)
     {
                 // Clarion Starts with 0s
-        if (m_Hexcolor.Left(1) =='0')
+        if (m_Hexcolor.Left(1) == '0')
         {
-            hexrange=7;
-            offset=1;
+            hexrange = 7;
+            offset = 1;
             ParseClarion(m_Hexcolor);
         }
 
     } else //Delphi hex change
     {
-        if (m_Hexcolor.Left(1) =='$')
+        if (m_Hexcolor.Left(1) == '$')
         {
-            hexrange=7;
-            offset=1;
+            hexrange = 7;
+            offset = 1;
         } else
         {
-            hexrange=8;
-             offset=0;
+            hexrange = 8;
+            offset = 0;
         }
 
-        while (hexsize>hexrange)
+        while (hexsize > hexrange)
         {
             m_Hexcolor.Delete(8+offset);
             hexsize--;
         }
-        m_Reddec=m_Greendec=m_Bluedec=0;
+        m_Reddec = m_Greendec = m_Bluedec = 0;
         ParseDelphi(m_Hexcolor);
     }
 }
@@ -2253,12 +2223,12 @@ void CColorCopDlg::ParseDelphi(CString inst)
 
     if (inst.GetLength() < 3)
     {
-        m_Reddec=m_Greendec=m_Bluedec=0;
+        m_Reddec = m_Greendec = m_Bluedec = 0;
         UpdateData(false);
         return;
     }
 
-    if (inst.Left(1)=='$')
+    if (inst.Left(1) == '$')
         inst.Delete(0);
     inst.Delete(0);
     inst.Delete(0);
@@ -2285,12 +2255,12 @@ void CColorCopDlg::ParseClarion(CString inst)
 
     if (inst.GetLength() < 2)
     {
-        m_Reddec=m_Greendec=m_Bluedec=0;
+        m_Reddec = m_Greendec = m_Bluedec = 0;
         UpdateData(false);
         return;
     }
 
-    if (inst.Left(1)=='0')
+    if (inst.Left(1) == '0')
         inst.Delete(0);
     m_Bluedec = strtoul(inst.Left(2), NULL, 16);
     inst.Delete(0);
@@ -2867,7 +2837,6 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point)
 {
-    // right mouse button came up, watch out for capture
     CDialog::OnRButtonUp(nFlags, point);
 }
 
@@ -2894,7 +2863,7 @@ void CColorCopDlg::ChangeTo3x3Sampling()
         m_Appflags &= ~Sampling5x5;
         m_Appflags &= ~SamplingMULTI;
     }
-    m_iSamplingOffset=1;
+    m_iSamplingOffset = 1;
     SetStatusBarText(IDS_3PIXEL, 0);
 
     CWinApp* pApp = AfxGetApp();
@@ -2910,7 +2879,7 @@ void CColorCopDlg::ChangeTo5x5Sampling()
         m_Appflags |= Sampling5x5;
         m_Appflags &= ~SamplingMULTI;
     }
-    m_iSamplingOffset=2;
+    m_iSamplingOffset = 2;
     SetStatusBarText(IDS_5PIXEL, 0);
 
     CWinApp* pApp = AfxGetApp();
@@ -2925,7 +2894,6 @@ void CColorCopDlg::OnUpdatePopupSampling1pixel(CCmdUI* pCmdUI)
 
 void CColorCopDlg::OnUpdatePopupSampling5by5average(CCmdUI* pCmdUI)
 {
-
     pCmdUI->SetRadio(m_Appflags & Sampling5x5);
 }
 
@@ -2948,24 +2916,12 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     int offset = 0, elements = 0, xrel, yrel;
     COLORREF crefxy;
 
-
-    /*if (m_Appflags & Sampling3x3)
-    {
-        offset = 1;
-        elements = 9;        // 3x3 - add up and divide by 9
-
-    } else { // (m_Appflags & Sampling5x5)
-
-        offset = 2;
-        elements = 25;        // 5x5 - add up and divide by 25
-    }*/
-
     offset = m_iSamplingOffset;
     elements = (m_iSamplingOffset*2+1)*(m_iSamplingOffset*2+1);
 
     for (xrel = point.x - offset; xrel <= point.x + offset; xrel++) {
         for (yrel = point.y - offset; yrel <= point.y + offset; yrel++) {
-            crefxy=::GetPixel(hdc, xrel, yrel);
+            crefxy = ::GetPixel(hdc, xrel, yrel);
             reddec += GetRValue(crefxy);
             greendec += GetGValue(crefxy);
             bluedec += GetBValue(crefxy);
@@ -3573,7 +3529,7 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
      if (cClrBits != 24)
          pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
                     sizeof(BITMAPINFOHEADER) +
-                    sizeof(RGBQUAD) * (1<< cClrBits));
+                    sizeof(RGBQUAD) * (1 << cClrBits));
 
      // There is no RGBQUAD array for the 24-bit-per-pixel format.
 
@@ -3589,7 +3545,7 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp)
     pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
     pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
     if (cClrBits < 24)
-        pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
+        pbmi->bmiHeader.biClrUsed = (1 << cClrBits);
 
     // If the bitmap is not compressed, set the BI_RGB flag.
     pbmi->bmiHeader.biCompression = BI_RGB;
@@ -3719,38 +3675,35 @@ void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper()
 
 void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage()
 {
-    // force to sampling multi.  TODO: refactor this into a method:
     m_Appflags &= ~Sampling1;
     m_Appflags &= ~Sampling3x3;
     m_Appflags &= ~Sampling5x5;
     m_Appflags |= SamplingMULTI;
 
-    CString strStatus="";
+    CString strStatus = "";
     strStatus.LoadString(IDS_MULTIPIX_SET);
 
-    if (m_iSamplingOffset>MULTIPIX_MIN) {
+    if (m_iSamplingOffset > MULTIPIX_MIN) {
         m_iSamplingOffset--;
         strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
     } else {
         strStatus.LoadString(IDS_MULTIPIX_LIMIT);
         strStatus.Format(strStatus, MULTIPIX_MIN*2+1, MULTIPIX_MAX*2+1);
-
     }
     SetStatusBarText(strStatus);
 }
 
 void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage()
 {
-    // force to sampling multi.  TODO: refactor this into a method:
     m_Appflags &= ~Sampling1;
     m_Appflags &= ~Sampling3x3;
     m_Appflags &= ~Sampling5x5;
     m_Appflags |= SamplingMULTI;
 
-    CString strStatus="";
+    CString strStatus = "";
     strStatus.LoadString(IDS_MULTIPIX_SET);
 
-    if (m_iSamplingOffset<MULTIPIX_MAX) {
+    if (m_iSamplingOffset < MULTIPIX_MAX) {
         m_iSamplingOffset++;
         strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
     } else {
@@ -3759,12 +3712,10 @@ void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage()
 
     }
     SetStatusBarText(strStatus);
-
 }
 
 void CColorCopDlg::OnPopupSamplingMultipixel()
 {
-
     if (m_Appflags ^ SamplingMULTI) {
         m_Appflags &= ~Sampling1;
         m_Appflags &= ~Sampling3x3;
@@ -3772,7 +3723,6 @@ void CColorCopDlg::OnPopupSamplingMultipixel()
         m_Appflags |= SamplingMULTI;
     }
     SetStatusBarText(IDS_MULTIPIX, 0);
-
 }
 
 void CColorCopDlg::OnUpdatePopupSamplingMultipixel(CCmdUI* pCmdUI)
