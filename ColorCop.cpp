@@ -74,7 +74,7 @@ BOOL CColorCopApp::InitInstance()
 
         int nResponse = dlg.DoModal();        // Launch the color cop dialog
 
-        if ((nResponse == IDOK)||(nResponse == IDCANCEL)) {
+        if ((nResponse == IDOK) || (nResponse == IDCANCEL)) {
 
             CloseApplication();        // write the data to a file
         }
@@ -143,8 +143,8 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
     RECT rc;
     GetWindowRect(hwnd, &rc);
     SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-    dlg.WinLocX= rc.left;
-    dlg.WinLocY= rc.top;
+    dlg.WinLocX = rc.left;
+    dlg.WinLocY = rc.top;
 }
 
 BOOL CColorCopApp::InitApplication()
@@ -251,7 +251,7 @@ void CColorCopApp::Serialize(CArchive& ar)
             for (int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar << dlg.ColorHistory[w];
 
-            ar <<  dlg.m_iSamplingOffset;
+            ar << dlg.m_iSamplingOffset;
 
         } catch (CArchiveException*) {
             AfxMessageBox(IDS_ERROR_SAVING);
