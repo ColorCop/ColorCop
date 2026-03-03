@@ -11,8 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CLabel
 
-CLabel::CLabel()
-{
+CLabel::CLabel() {
     m_crText = GetSysColor(COLOR_WINDOWTEXT);
     m_hBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 
@@ -29,43 +28,37 @@ CLabel::CLabel()
 }
 
 
-CLabel::~CLabel()
-{
+CLabel::~CLabel() {
     m_font.DeleteObject();
     ::DeleteObject(m_hBrush);
 }
 
-CLabel& CLabel::SetText(const CString& strText)
-{
+CLabel& CLabel::SetText(const CString& strText) {
     SetWindowText(strText);
     return *this;
 }
 
-CLabel& CLabel::SetTextColor(COLORREF crText)
-{
+CLabel& CLabel::SetTextColor(COLORREF crText) {
     m_crText = crText;
     RedrawWindow();
     return *this;
 }
 
-CLabel& CLabel::SetFontBold(BOOL bBold)
-{
+CLabel& CLabel::SetFontBold(BOOL bBold) {
     m_lf.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
     ReconstructFont();
     RedrawWindow();
     return *this;
 }
 
-CLabel& CLabel::SetFontUnderline(BOOL bSet)
-{
+CLabel& CLabel::SetFontUnderline(BOOL bSet) {
     m_lf.lfUnderline = bSet;
     ReconstructFont();
     RedrawWindow();
     return *this;
 }
 
-CLabel& CLabel::SetFontItalic(BOOL bSet)
-{
+CLabel& CLabel::SetFontItalic(BOOL bSet) {
     m_lf.lfItalic = bSet;
     ReconstructFont();
     RedrawWindow();
@@ -73,8 +66,7 @@ CLabel& CLabel::SetFontItalic(BOOL bSet)
 }
 
 
-CLabel& CLabel::SetFontSize(int nSize)
-{
+CLabel& CLabel::SetFontSize(int nSize) {
     nSize*=-1;
     m_lf.lfHeight = nSize;
     ReconstructFont();
@@ -83,8 +75,7 @@ CLabel& CLabel::SetFontSize(int nSize)
 }
 
 
-CLabel& CLabel::SetBkColor(COLORREF crBkgnd)
-{
+CLabel& CLabel::SetBkColor(COLORREF crBkgnd) {
     if (m_hBrush)
         ::DeleteObject(m_hBrush);
 
@@ -92,8 +83,7 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd)
     return *this;
 }
 
-CLabel& CLabel::SetFontName(const CString& strFont)
-{
+CLabel& CLabel::SetFontName(const CString& strFont) {
     // Use secure CRT helper to avoid C4996 and buffer overruns.
     // sizeof(m_lf.lfFaceName)/sizeof(TCHAR) yields the element count (LF_FACESIZE).
     _tcscpy_s(m_lf.lfFaceName, sizeof(m_lf.lfFaceName) / sizeof(TCHAR), (LPCTSTR)strFont);
@@ -115,8 +105,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLabel message handlers
 
-HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor)
-{
+HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor) {
     // TODO(j4y): Change any attributes of the DC here
     // TODO(j4y): Return a non-NULL brush if the parent's handler should not be called
 
@@ -137,29 +126,24 @@ HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor)
     return m_hBrush;
 }
 
-void CLabel::ReconstructFont()
-{
+void CLabel::ReconstructFont() {
     m_font.DeleteObject();
     BOOL bCreated = m_font.CreateFontIndirect(&m_lf);
 
     ASSERT(bCreated);
 }
 
-
-
-void CLabel::OnTimer(UINT nIDEvent)
-{
+void CLabel::OnTimer(UINT nIDEvent) {
     m_bState = !m_bState;
 
-    switch (m_Type)
-    {
+    switch (m_Type) {
         case Text:
-            if (m_bState)
+            if (m_bState) {
                 SetWindowText("");
-            else
+            } else {
                 SetWindowText(m_strText);
+            }
         break;
-
         case Background:
             InvalidateRect(NULL, FALSE);
             UpdateWindow();
@@ -169,8 +153,7 @@ void CLabel::OnTimer(UINT nIDEvent)
     CStatic::OnTimer(nIDEvent);
 }
 
-CLabel& CLabel::SetLink(BOOL bLink)
-{
+CLabel& CLabel::SetLink(BOOL bLink) {
     m_bLink = bLink;
 
     if (bLink)
@@ -181,8 +164,7 @@ CLabel& CLabel::SetLink(BOOL bLink)
     return *this;
 }
 
-void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
-{
+void CLabel::OnLButtonDown(UINT nFlags, CPoint point) {
     CString strLink;
 
     GetWindowText(strLink);
@@ -191,8 +173,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
     CStatic::OnLButtonDown(nFlags, point);
 }
 
-BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
-{
+BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
     if (m_hCursor)
     {
         ::SetCursor(m_hCursor);
@@ -202,8 +183,7 @@ BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
     return CStatic::OnSetCursor(pWnd, nHitTest, message);
 }
 
-CLabel& CLabel::SetLinkCursor(HCURSOR hCursor)
-{
+CLabel& CLabel::SetLinkCursor(HCURSOR hCursor) {
     m_hCursor = hCursor;
     return *this;
 }
