@@ -32,13 +32,11 @@ END_MESSAGE_MAP()
 // CColorCopApp construction
 
 
-CColorCopApp::CColorCopApp()
-{
+CColorCopApp::CColorCopApp() {
     m_hMutex = nullptr;
 }
 
-CColorCopApp::~CColorCopApp()
-{
+CColorCopApp::~CColorCopApp() {
     if (m_hMutex != nullptr)
     {
         CloseHandle(m_hMutex);
@@ -53,8 +51,7 @@ CColorCopApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopApp initialization
 
-BOOL CColorCopApp::InitInstance()
-{
+BOOL CColorCopApp::InitInstance() {
     // multiple instances are not allowed?
     if (!(dlg.m_Appflags & MultipleInstances))
     {
@@ -82,14 +79,11 @@ BOOL CColorCopApp::InitInstance()
 }
 
 // uses a Mutex to figure out if there is an instance of color cop running
-bool CColorCopApp::InstanceRunning()
-{
+bool CColorCopApp::InstanceRunning() {
     m_hMutex = CreateMutex(NULL, true, _T("ColorCop_Mutex"));
 
-    if (m_hMutex)
-    {
-        if (GetLastError() == ERROR_ALREADY_EXISTS)
-        {
+    if (m_hMutex) {
+        if (GetLastError() == ERROR_ALREADY_EXISTS) {
             CloseHandle(m_hMutex);  // Close the duplicate handle
             return true;
         }
@@ -99,8 +93,7 @@ bool CColorCopApp::InstanceRunning()
     return false;
 }
 
-BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
-{
+BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath) {
     // pShellFolder can be one of the following
     // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
     // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
@@ -127,8 +120,7 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath)
     }
 }
 
-CString CColorCopApp::GetTempFolder()
-{
+CString CColorCopApp::GetTempFolder() {
     CString strTmpPath;
 
     GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
@@ -137,8 +129,7 @@ CString CColorCopApp::GetTempFolder()
     return strTmpPath;
 }
 
-void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
-{
+void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
     RECT rc;
     GetWindowRect(hwnd, &rc);
     SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
@@ -146,8 +137,7 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
     dlg.WinLocY = rc.top;
 }
 
-BOOL CColorCopApp::InitApplication()
-{
+BOOL CColorCopApp::InitApplication() {
     CString strInitFile = GetTempFolder();
 
     strInitFile += INI_FILE_DIR;
@@ -233,8 +223,7 @@ void CColorCopApp::CloseApplication() {
     return;
 }
 
-void CColorCopApp::Serialize(CArchive& ar)
-{
+void CColorCopApp::Serialize(CArchive& ar) {
     if (ar.IsStoring())    {
         // storing code
         try {

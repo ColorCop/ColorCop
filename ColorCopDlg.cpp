@@ -25,8 +25,7 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
-class CAboutDlg : public CDialog
-{
+class CAboutDlg : public CDialog {
 public:
     CAboutDlg();
 
@@ -52,15 +51,13 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD) {
     //{{AFX_DATA_INIT(CAboutDlg)
     //}}AFX_DATA_INIT
 }
 
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CAboutDlg)
     DDX_Control(pDX, IDC_MAILLINK, m_maillink);
@@ -81,8 +78,7 @@ const char* kpcTrayNotificationMsg_ = "color cop tray notification";
 // CColorCopDlg dialog
 
 CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CColorCopDlg::IDD, pParent)
-{
+    : CDialog(CColorCopDlg::IDD, pParent) {
     //{{AFX_DATA_INIT(CColorCopDlg)
     m_Greendec = 0;
     m_Bluedec = 0;
@@ -101,8 +97,7 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
     //m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CColorCopDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CColorCopDlg::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CColorCopDlg)
     DDX_Control(pDX, IDC_ColorPick, m_ColorPick);
@@ -241,8 +236,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg message handlers
 
-BOOL CColorCopDlg::OnInitDialog()
-{
+BOOL CColorCopDlg::OnInitDialog() {
     CDialog::OnInitDialog();
 
     SetupSystemMenu();            // add about and always on top to the system menu
@@ -360,8 +354,7 @@ BOOL CColorCopDlg::OnInitDialog()
 
 
 
-    } else     if (m_Appflags & SETCURSORONEYEDROP)
-    {
+    } else if (m_Appflags & SETCURSORONEYEDROP) {
         m_bvisible = true;
         // don't move the cursor if the app is minimized
         CRect eyerect;
@@ -371,8 +364,7 @@ BOOL CColorCopDlg::OnInitDialog()
     return FALSE;  // return TRUE  unless you set the focus to a control
 }
 
-void CColorCopDlg::SetupSystemMenu()
-{
+void CColorCopDlg::SetupSystemMenu() {
     // Load accelerator resource..
     m_hAcceleratorTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
 
@@ -443,8 +435,7 @@ bool CColorCopDlg::LoadPersistentVariables() {
   return retval;
 }
 
-void CColorCopDlg::SetupWindowRects()
-{
+void CColorCopDlg::SetupWindowRects() {
     // setup color window rect based on the Static box
     HWND temphandle;
     CWnd::GetDlgItem(IDC_CPreview, &temphandle);
@@ -561,8 +552,7 @@ void CColorCopDlg::SetupWindowRects()
     GetDlgItem(IDC_BLACK)->MoveWindow(&recttemp);
 }
 
-void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
-{
+void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam) {
     // this is function is called when the user selects an item
     // from the system menu. (right clicking on the minimized program,
     // or right clicking on the system icon
@@ -590,8 +580,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
                 // uncheck the item
             }
         }
-    } else
-    {
+    } else {
         BOOL bOldMin = bMinimized;    // remember previous state
 
         if (nID == SC_MINIMIZE) {
@@ -610,8 +599,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam)
     }
 }
 
-void CColorCopDlg::SetupTaskBarButton()
-{
+void CColorCopDlg::SetupTaskBarButton() {
     if ((bMinimized) && (m_Appflags & MimimizetoTray ))
     {
         // hide the tray icon if it belongs in the system tray
@@ -624,8 +612,7 @@ void CColorCopDlg::SetupTaskBarButton()
     }
 }
 
-void CColorCopDlg::SetupTrayIcon()
-{
+void CColorCopDlg::SetupTrayIcon() {
     if (bMinimized && (pTrayIcon_ == 0) && (m_Appflags & MimimizetoTray)) {
         CString strAppName;
         strAppName.LoadString(IDS_APPLICATION_NAME);
@@ -639,8 +626,7 @@ void CColorCopDlg::SetupTrayIcon()
     }
 }
 
-void CColorCopDlg::OnPaint()
-{
+void CColorCopDlg::OnPaint() {
     if (IsIconic())
     {
         CPaintDC dc(this);
@@ -690,8 +676,7 @@ void CColorCopDlg::OnPaint()
     }
 }
 
-void CColorCopDlg::RecalcZoom()
-{
+void CColorCopDlg::RecalcZoom() {
     if (m_MagLevel <= 0)
         return;
 
@@ -787,20 +772,17 @@ void CColorCopDlg::OnconvertRGB() {
     // controls.
     UpdateData(FALSE);
 
-
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();        // Re-Calculate color palette
     }
     Invalidate(FALSE);    // Call WM_PAINT, but don't erase background
 }
 
-void CColorCopDlg::OnconvertHEX()
-{
+void CColorCopDlg::OnconvertHEX() {
     TestForWebsafe();    // before
 
     // --- Format hex string ---
-    if (m_Appflags & ModeHTML)
-    {
+    if (m_Appflags & ModeHTML) {
         // Always emit full 6‑digit HTML hex
         m_Hexcolor.Format("#%.2x%.2x%.2x",
                           m_Reddec,
@@ -815,23 +797,21 @@ void CColorCopDlg::OnconvertHEX()
     }
 
     // --- Optional prefix removal ---
-    if (m_Appflags & OmitPound)
-    {
-        if ((m_Appflags & ModeHTML) && m_Hexcolor.Left(1) == "#")
+    if (m_Appflags & OmitPound) {
+        if ((m_Appflags & ModeHTML) && m_Hexcolor.Left(1) == "#") {
             m_Hexcolor.Delete(0);
-
-        if ((m_Appflags & ModeDelphi) && m_Hexcolor.Left(1) == "$")
+        }
+        if ((m_Appflags & ModeDelphi) && m_Hexcolor.Left(1) == "$") {
             m_Hexcolor.Delete(0);
+        }
     }
 
     OnCopytoclip();
     Invalidate(FALSE);    // Call WM_PAINT, but don't erase background
 }
 
-void CColorCopDlg::CalcColorPal()
-{
+void CColorCopDlg::CalcColorPal() {
     // generate a new color palette from the current color
-
     setSeedColor();        // step 1. - set the RGB color
                         //         - calc the Hue, Sat, Light
                         //         - create the swatch
@@ -839,8 +819,7 @@ void CColorCopDlg::CalcColorPal()
     handleShifts();
 }
 
-double CColorCopDlg::plusValue(double num)
-{
+double CColorCopDlg::plusValue(double num) {
     num = num + 0.15;
     if (num > 1.0)
         num = 1.0;
@@ -848,8 +827,7 @@ double CColorCopDlg::plusValue(double num)
     return num;
 }
 
-double CColorCopDlg::minusValue(double num)
-{
+double CColorCopDlg::minusValue(double num) {
     num = num - 0.15;
     if (num < 0.0)
         num = num + 1.0;
@@ -857,8 +835,7 @@ double CColorCopDlg::minusValue(double num)
 }
 
 
-void CColorCopDlg::handleShifts()
-{
+void CColorCopDlg::handleShifts() {
     int i;
     setupSwatches();
     printSwatch();
@@ -900,8 +877,7 @@ void CColorCopDlg::handleShifts()
     printSwatch();
 }
 
-void CColorCopDlg::printSwatch()
-{
+void CColorCopDlg::printSwatch() {
     for (int i = 0; i < 6; i++) {
         HSLtoRGB(Swatch[i].A, Swatch[i].B, Swatch[i].C);
         Swatch[i].A = r;
@@ -913,8 +889,7 @@ void CColorCopDlg::printSwatch()
     palcol++;
 }
 
-void CColorCopDlg::setupSwatches()
-{
+void CColorCopDlg::setupSwatches() {
     Swatch[0].A = OrigSwatch.A;
     Swatch[0].B = OrigSwatch.B;
     Swatch[0].C = OrigSwatch.C;
@@ -1012,8 +987,7 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     m_Yellow = m_Yellow - m_Black;
 }
 
-void CColorCopDlg::RGBtoHSL(double R, double G, double B)
-{
+void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     // the function converts the RGB model to the HSL model.
 
     double MinNum, MaxNum, Diff;
@@ -1032,9 +1006,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
     }                    // lets give it something
 
     Light = MaxNum / 255.0;            // find the Light
-
-
-
 
     // find the Saturation
     if ((MaxNum == 255) || (MinNum == 0)) {
@@ -1066,8 +1037,7 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B)
     }
 }
 
-void CColorCopDlg::DisplayColor()
-{
+void CColorCopDlg::DisplayColor() {
     CDC *pDC = GetDC();
 
     int soff = 0;
@@ -1150,15 +1120,15 @@ void CColorCopDlg::DisplayColor()
         pDC->MoveTo(magminus.left + 2, magminus.top + (magminus.bottom - magminus.top)/2);
         pDC->LineTo(magminus.right - 2, magminus.top +  (magminus.bottom - magminus.top)/2);
 
-        if ((m_Appflags & MAGWHILEEYEDROP)&&(m_isEyedropping)&&(!m_MagDrop)) {
+        if ((m_Appflags & MAGWHILEEYEDROP) && (m_isEyedropping) && (!m_MagDrop)) {
             int pxwid = m_MagLevel;
             insiderect = magrect;
-            insiderect.DeflateRect(magrect.Width()/2, magrect.Height()/2);
+            insiderect.DeflateRect(magrect.Width() / 2, magrect.Height() / 2);
             insiderect.InflateRect(3, 3); // mag 4
-            insiderect.left+=4;
-            insiderect.right+=4;
-            insiderect.bottom+=4;
-            insiderect.top+=4;
+            insiderect.left += 4;
+            insiderect.right += 4;
+            insiderect.bottom += 4;
+            insiderect.top += 4;
 
 
             if ((m_Appflags & Sampling3x3) ||
@@ -1177,17 +1147,14 @@ void CColorCopDlg::DisplayColor()
     return;
 }
 
-void CColorCopDlg::OnAbout()
-{
+void CColorCopDlg::OnAbout() {
     CAboutDlg dlg;
     dlg.DoModal();
 }
 
-void CColorCopDlg::OnChangeGreen()
-{
+void CColorCopDlg::OnChangeGreen() {
     UpdateData(TRUE);
-    if (m_Greendec > 255)
-    {
+    if (m_Greendec > 255) {
         m_Greendec = 255;
     }
     CalcColorPal();
@@ -1195,11 +1162,9 @@ void CColorCopDlg::OnChangeGreen()
     OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeBlue()
-{
+void CColorCopDlg::OnChangeBlue() {
     UpdateData(TRUE);
-    if (m_Bluedec > 255)
-    {
+    if (m_Bluedec > 255) {
         m_Bluedec = 255;
     }
     CalcColorPal();
@@ -1207,8 +1172,7 @@ void CColorCopDlg::OnChangeBlue()
     OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeRed()
-{
+void CColorCopDlg::OnChangeRed() {
     UpdateData(TRUE);
     if (m_Reddec > 255) {
         m_Reddec = 255;
@@ -1217,8 +1181,7 @@ void CColorCopDlg::OnChangeRed()
     OnconvertRGB();
     OnCopytoclip();
 }
-void CColorCopDlg::OnChangeBlack()
-{
+void CColorCopDlg::OnChangeBlack() {
     UpdateData(TRUE);
     if (m_Black > 100) {
         m_Black = 100;
@@ -1228,8 +1191,7 @@ void CColorCopDlg::OnChangeBlack()
     OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeCyan()
-{
+void CColorCopDlg::OnChangeCyan() {
     UpdateData(TRUE);
     if (m_Cyan > 100) {
         m_Cyan = 100;
@@ -1239,8 +1201,7 @@ void CColorCopDlg::OnChangeCyan()
     OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeMagenta()
-{
+void CColorCopDlg::OnChangeMagenta() {
     UpdateData(TRUE);
     if (m_Magenta > 100) {
         m_Magenta = 100;
@@ -1250,8 +1211,7 @@ void CColorCopDlg::OnChangeMagenta()
     OnCopytoclip();
 }
 
-void CColorCopDlg::OnChangeYellow()
-{
+void CColorCopDlg::OnChangeYellow() {
     UpdateData(TRUE);
     if (m_Yellow > 100) {
         m_Yellow = 100;
@@ -1262,8 +1222,7 @@ void CColorCopDlg::OnChangeYellow()
 }
 
 
-void CColorCopDlg::OnColorPick()
-{
+void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
     COLORREF temp;
     CColorDialog dlgcolor;
