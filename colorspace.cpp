@@ -9,10 +9,7 @@
 class colorspace
 {
 protected:
-
-
 public:
-
     // Red
     BYTE GetRed() { return byRed; }
     void SetRed(BYTE r) { byRed = r; }
@@ -56,8 +53,6 @@ public:
     // ctor
     colorspace()
     {
-
-
     }
 
 
@@ -147,7 +142,4 @@ COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k)
 
     return rgb;
 }
-
-
-
 };

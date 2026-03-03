@@ -329,7 +329,6 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 
         menu.DestroyMenu();
     } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
-
         // double click received, the default action is to execute default menu item
         pTarget->SetForegroundWindow();
 
@@ -346,9 +345,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         pTarget->SendMessage(WM_COMMAND, uItem, 0);
 
         menu.DestroyMenu();
-
     }
-
     return 1;
 }
 
