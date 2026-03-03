@@ -167,7 +167,7 @@ BOOL CColorCopApp::InitApplication()
 
         LoadDefaultSettings();
 
-        ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);;
+        ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);
         // set the window to be in the middle
     }
 
