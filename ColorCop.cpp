@@ -75,7 +75,6 @@ BOOL CColorCopApp::InitInstance()
         int nResponse = dlg.DoModal();        // Launch the color cop dialog
 
         if ((nResponse == IDOK) || (nResponse == IDCANCEL)) {
-
             CloseApplication();        // write the data to a file
         }
 
@@ -176,7 +175,6 @@ BOOL CColorCopApp::InitApplication()
 }
 
 void CColorCopApp::LoadDefaultSettings() {
-
     // This function is called when we can't find a .DAT file
     // with the persistent variables, or it was an old dat file.
     // Set the default settings and custom colors.
@@ -252,7 +250,6 @@ void CColorCopApp::Serialize(CArchive& ar)
                 ar << dlg.ColorHistory[w];
 
             ar << dlg.m_iSamplingOffset;
-
         } catch (CArchiveException*) {
             AfxMessageBox(IDS_ERROR_SAVING);
         }
@@ -271,7 +268,6 @@ void CColorCopApp::Serialize(CArchive& ar)
                 ar >> dlg.ColorHistory[w];
 
             ar >>  dlg.m_iSamplingOffset;
-
         } catch (CArchiveException*) {
             AfxMessageBox(IDS_ERROR_LOADING);
         }
