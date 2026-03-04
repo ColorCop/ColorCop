@@ -31,8 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
-class CSystemTray : public CWnd
-{
+class CSystemTray : public CWnd {
 // Construction/destruction
 public:
     CSystemTray();

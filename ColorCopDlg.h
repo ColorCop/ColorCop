@@ -14,8 +14,7 @@
 
 class CSystemTray;
 
-class CColorCopDlg : public CDialog
-{
+class CColorCopDlg : public CDialog {
 // Construction
 public:
     explicit CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
@@ -70,6 +69,7 @@ public:
     //{{AFX_VIRTUAL(CColorCopDlg)
     public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
+
     protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -106,7 +106,7 @@ protected:
     double r, g, b;
     double Hue, Sat, Light;
 
-    struct swatchStruct{
+    struct swatchStruct {
         double A;
         double B;
         double C;

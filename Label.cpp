@@ -109,16 +109,14 @@ HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor) {
     // TODO(j4y): Change any attributes of the DC here
     // TODO(j4y): Return a non-NULL brush if the parent's handler should not be called
 
-    if (CTLCOLOR_STATIC == nCtlColor)
-    {
+    if (CTLCOLOR_STATIC == nCtlColor) {
         pDC->SelectObject(&m_font);
         pDC->SetTextColor(m_crText);
         pDC->SetBkMode(TRANSPARENT);
     }
 
 
-    if (m_Type == Background)
-    {
+    if (m_Type == Background) {
         if (!m_bState)
             return m_hwndBrush;
     }
@@ -174,8 +172,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point) {
 }
 
 BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
-    if (m_hCursor)
-    {
+    if (m_hCursor) {
         ::SetCursor(m_hCursor);
         return TRUE;
     }

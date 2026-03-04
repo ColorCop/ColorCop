@@ -65,20 +65,17 @@ UINT CSystemTray::m_nIDEvent = 4567;
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
-CSystemTray::CSystemTray()
-{
+CSystemTray::CSystemTray() {
     Initialise();
 }
 
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
-                         HICON icon, UINT uID)
-{
+                         HICON icon, UINT uID) {
     Initialise();
     Create(pParent, uCallbackMessage, szToolTip, icon, uID);
 }
 
-void CSystemTray::Initialise()
-{
+void CSystemTray::Initialise() {
     memset(&m_tnd, 0, sizeof(m_tnd));
     m_bEnabled   = FALSE;
     m_bHidden    = FALSE;
@@ -89,8 +86,7 @@ void CSystemTray::Initialise()
 }
 
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
-                         HICON icon, UINT uID)
-{
+                         HICON icon, UINT uID) {
     // this is only for Windows 95 (or higher)
     VERIFY(m_bEnabled = (GetVersion() & 0xff) >= 4);
     if (!m_bEnabled) return FALSE;
@@ -123,8 +119,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     return m_bEnabled;
 }
 
-CSystemTray::~CSystemTray()
-{
+CSystemTray::~CSystemTray() {
     RemoveIcon();
     m_IconList.RemoveAll();
     DestroyWindow();
@@ -133,14 +128,12 @@ CSystemTray::~CSystemTray()
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray icon manipulation
 
-void CSystemTray::MoveToRight()
-{
+void CSystemTray::MoveToRight() {
     HideIcon();
     ShowIcon();
 }
 
-void CSystemTray::RemoveIcon()
-{
+void CSystemTray::RemoveIcon() {
     if (!m_bEnabled)
         return;
 
@@ -149,8 +142,7 @@ void CSystemTray::RemoveIcon()
     m_bEnabled = FALSE;
 }
 
-void CSystemTray::HideIcon()
-{
+void CSystemTray::HideIcon() {
     if (m_bEnabled && !m_bHidden) {
         m_tnd.uFlags = NIF_ICON;
         Shell_NotifyIcon(NIM_DELETE, &m_tnd);
@@ -158,8 +150,7 @@ void CSystemTray::HideIcon()
     }
 }
 
-void CSystemTray::ShowIcon()
-{
+void CSystemTray::ShowIcon() {
     if (m_bEnabled && m_bHidden) {
         m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
         Shell_NotifyIcon(NIM_ADD, &m_tnd);
@@ -167,8 +158,7 @@ void CSystemTray::ShowIcon()
     }
 }
 
-BOOL CSystemTray::SetIcon(HICON hIcon)
-{
+BOOL CSystemTray::SetIcon(HICON hIcon) {
     if (!m_bEnabled) return FALSE;
 
     m_tnd.uFlags = NIF_ICON;
@@ -177,34 +167,29 @@ BOOL CSystemTray::SetIcon(HICON hIcon)
     return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
 
-BOOL CSystemTray::SetIcon(LPCTSTR lpszIconName)
-{
+BOOL CSystemTray::SetIcon(LPCTSTR lpszIconName) {
     HICON hIcon = AfxGetApp()->LoadIcon(lpszIconName);
     return SetIcon(hIcon);
 }
 
-BOOL CSystemTray::SetIcon(UINT nIDResource)
-{
+BOOL CSystemTray::SetIcon(UINT nIDResource) {
     HICON hIcon = AfxGetApp()->LoadIcon(nIDResource);
     return SetIcon(hIcon);
 }
 
-BOOL CSystemTray::SetStandardIcon(LPCTSTR lpIconName)
-{
+BOOL CSystemTray::SetStandardIcon(LPCTSTR lpIconName) {
     HICON hIcon = LoadIcon(NULL, lpIconName);
 
     return SetIcon(hIcon);
 }
 
-BOOL CSystemTray::SetStandardIcon(UINT nIDResource)
-{
+BOOL CSystemTray::SetStandardIcon(UINT nIDResource) {
     HICON hIcon = LoadIcon(NULL, MAKEINTRESOURCE(nIDResource));
 
     return SetIcon(hIcon);
 }
 
-HICON CSystemTray::GetIcon() const
-{
+HICON CSystemTray::GetIcon() const {
     return (m_bEnabled)? m_tnd.hIcon : NULL;
 }
 
@@ -213,8 +198,7 @@ HICON CSystemTray::GetIcon() const
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray tooltip text manipulation
 
-BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
-{
+BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip) {
     if (!m_bEnabled) return FALSE;
 
     m_tnd.uFlags = NIF_TIP;
@@ -223,16 +207,14 @@ BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
     return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
 
-BOOL CSystemTray::SetTooltipText(UINT nID)
-{
+BOOL CSystemTray::SetTooltipText(UINT nID) {
     CString strText;
     VERIFY(strText.LoadString(nID));
 
     return SetTooltipText(strText);
 }
 
-CString CSystemTray::GetTooltipText() const
-{
+CString CSystemTray::GetTooltipText() const {
     CString strText;
     if (m_bEnabled)
         strText = m_tnd.szTip;
@@ -243,8 +225,7 @@ CString CSystemTray::GetTooltipText() const
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray notification window stuff
 
-BOOL CSystemTray::SetNotificationWnd(CWnd* pWnd)
-{
+BOOL CSystemTray::SetNotificationWnd(CWnd* pWnd) {
     if (!m_bEnabled) return FALSE;
 
     // Make sure Notification window is valid
@@ -256,16 +237,14 @@ BOOL CSystemTray::SetNotificationWnd(CWnd* pWnd)
     return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
 
-CWnd* CSystemTray::GetNotificationWnd() const
-{
+CWnd* CSystemTray::GetNotificationWnd() const {
     return CWnd::FromHandle(m_tnd.hWnd);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray menu manipulation
 
-BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
-{
+BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos) {
     if ((m_DefaultMenuItemID == uItem) && (m_DefaultMenuItemByPos == bByPos))
         return TRUE;
 
@@ -282,8 +261,7 @@ BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
     return TRUE;
 }
 
-void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos)
-{
+void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) {
     uItem = m_DefaultMenuItemID;
     bByPos = m_DefaultMenuItemByPos;
 }
@@ -298,8 +276,7 @@ BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
 END_MESSAGE_MAP()
 
 
-LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
-{
+LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam) {
     //Return quickly if its not for this tray icon
     if (wParam != m_tnd.uID)
         return 0L;
@@ -308,8 +285,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     CWnd* pTarget = AfxGetMainWnd();
 
     // Clicking with right button brings up a context menu
-    if (LOWORD(lParam) == WM_RBUTTONUP)
-    {
+    if (LOWORD(lParam) == WM_RBUTTONUP) {
         if (!menu.LoadMenu(m_tnd.uID)) return 0;
         if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
 
@@ -333,8 +309,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         pTarget->SetForegroundWindow();
 
         UINT uItem;
-        if (m_DefaultMenuItemByPos)
-        {
+        if (m_DefaultMenuItemByPos) {
             if (!menu.LoadMenu(m_tnd.uID)) return 0;
             if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
             uItem = pSubMenu->GetMenuItemID(m_DefaultMenuItemID);
@@ -349,8 +324,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     return 1;
 }
 
-LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) {
     if (message == m_tnd.uCallbackMessage)
         return OnTrayNotification(wParam, lParam);
 

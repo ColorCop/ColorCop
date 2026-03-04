@@ -6,9 +6,7 @@
 #include "colorspace.h"
 
 
-class colorspace
-{
-protected:
+class colorspace {
 public:
     // Red
     BYTE GetRed() { return byRed; }
@@ -51,8 +49,7 @@ public:
     void SetBrightness(BYTE c) { byCyan = c; }
 
     // ctor
-    colorspace()
-    {
+    colorspace() {
     }
 
 
@@ -72,8 +69,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 // RGB2CMYK
-void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k)
-{
+void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k) {
     double R, G, B;
     R = (double) r;
     G = (double) g;
@@ -108,8 +104,7 @@ void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k)
 
 ///////////////////////////////////////////////////////////////////////////////
 // CMYK2RGB
-COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k)
-{
+COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k) {
     BYTE r, g, b;
     COLORREF rgb;
 
