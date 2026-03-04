@@ -1618,12 +1618,12 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                                                 dLength,
                                                 dAngle);
 
-                } else     if ((m_Appflags & Sampling3x3)||
-                            (m_Appflags & Sampling5x5)||
+                } else if ((m_Appflags & Sampling3x3) ||
+                            (m_Appflags & Sampling5x5) ||
                             (m_Appflags & SamplingMULTI)) {
                     strStatus.LoadString(IDS_EYEDROPPING);
                     strStatus += ", %dx%d";
-                    strStatus.Format(strStatus, point.x, point.y, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
+                    strStatus.Format(strStatus, point.x, point.y, m_iSamplingOffset * 2 + 1, m_iSamplingOffset * 2 + 1);
 
                 } else { // SampleRate == 1
                     strStatus.LoadString(IDS_EYEDROPPING);
@@ -1863,7 +1863,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
     *   exit the app
     ************************************************/
 
-    if (pMsg->message == WM_KEYDOWN)
+    if (pMsg->message == WM_KEYDOWN) {
         if (pMsg->wParam == VK_ESCAPE) {
             if (m_isEyedropping || m_isMagnifying) {
                 // dropper or magnifier in use
@@ -1921,7 +1921,7 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
                 break;
             }
         }
-
+    }
     return CDialog::PreTranslateMessage(pMsg);
 }
 
@@ -2567,7 +2567,7 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     COLORREF crefxy;
 
     offset = m_iSamplingOffset;
-    elements = (m_iSamplingOffset*2+1)*(m_iSamplingOffset*2+1);
+    elements = (m_iSamplingOffset * 2 + 1) * (m_iSamplingOffset * 2 + 1);
 
     for (xrel = point.x - offset; xrel <= point.x + offset; xrel++) {
         for (yrel = point.y - offset; yrel <= point.y + offset; yrel++) {
@@ -3265,10 +3265,10 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() {
 
     if (m_iSamplingOffset > MULTIPIX_MIN) {
         m_iSamplingOffset--;
-        strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
+        strStatus.Format(strStatus, m_iSamplingOffset * 2 + 1, m_iSamplingOffset * 2 + 1);
     } else {
         strStatus.LoadString(IDS_MULTIPIX_LIMIT);
-        strStatus.Format(strStatus, MULTIPIX_MIN*2+1, MULTIPIX_MAX*2+1);
+        strStatus.Format(strStatus, MULTIPIX_MIN * 2 + 1, MULTIPIX_MAX * 2 + 1);
     }
     SetStatusBarText(strStatus);
 }
@@ -3284,10 +3284,10 @@ void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage() {
 
     if (m_iSamplingOffset < MULTIPIX_MAX) {
         m_iSamplingOffset++;
-        strStatus.Format(strStatus, m_iSamplingOffset*2+1, m_iSamplingOffset*2+1);
+        strStatus.Format(strStatus, m_iSamplingOffset * 2 + 1, m_iSamplingOffset * 2 + 1);
     } else {
         strStatus.LoadString(IDS_MULTIPIX_LIMIT);
-        strStatus.Format(strStatus, MULTIPIX_MIN*2+1, MULTIPIX_MAX*2+1);
+        strStatus.Format(strStatus, MULTIPIX_MIN * 2 + 1, MULTIPIX_MAX * 2 + 1);
     }
     SetStatusBarText(strStatus);
 }
