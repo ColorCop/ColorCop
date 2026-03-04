@@ -13,8 +13,7 @@
 // CLabel window
 enum FlashType {None, Text, Background };
 
-class CLabel : public CStatic
-{
+class CLabel : public CStatic {
 // Construction
 public:
     CLabel();
@@ -29,8 +28,6 @@ public:
     CLabel& SetLink(BOOL bLink);
     CLabel& SetLinkCursor(HCURSOR hCursor);
 
-// Attributes
-public:
 protected:
     void ReconstructFont();
     COLORREF    m_crText;

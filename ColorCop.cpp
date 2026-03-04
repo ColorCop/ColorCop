@@ -37,8 +37,7 @@ CColorCopApp::CColorCopApp() {
 }
 
 CColorCopApp::~CColorCopApp() {
-    if (m_hMutex != nullptr)
-    {
+    if (m_hMutex != nullptr) {
         CloseHandle(m_hMutex);
     }
 }
@@ -53,11 +52,9 @@ CColorCopApp theApp;
 
 BOOL CColorCopApp::InitInstance() {
     // multiple instances are not allowed?
-    if (!(dlg.m_Appflags & MultipleInstances))
-    {
+    if (!(dlg.m_Appflags & MultipleInstances)) {
         // multiple instances are not allowed. check if we have one running
-            if (InstanceRunning())
-            {
+            if (InstanceRunning()) {
                 // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
                 AfxMessageBox(IDS_APP_RUNNING);
 
@@ -107,7 +104,7 @@ BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath) {
         "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
         0, KEY_READ, &hkey);
 
-    if (rc == ERROR_SUCCESS){
+    if (rc == ERROR_SUCCESS) {
         rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
                 (BYTE *) pShellPath, &length);
         RegCloseKey(hkey);
@@ -212,8 +209,7 @@ void CColorCopApp::CloseApplication() {
     strInitFile += INI_FILE;
 
     CFile file;
-    if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate))
-    {
+    if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate)) {
         CArchive ar(&file, CArchive::store);
         Serialize(ar);
     }

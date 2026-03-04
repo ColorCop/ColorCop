@@ -22,8 +22,7 @@
 // See ColorCop.cpp for the implementation of this class
 //
 
-class CColorCopApp : public CWinApp
-{
+class CColorCopApp : public CWinApp {
 public:
     CColorCopDlg dlg;
     CColorCopApp();
