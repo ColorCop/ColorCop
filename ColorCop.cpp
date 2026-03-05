@@ -21,10 +21,10 @@
 // CColorCopApp
 
 BEGIN_MESSAGE_MAP(CColorCopApp, CWinApp)
-    //{{AFX_MSG_MAP(CColorCopApp)
+    //{{AFX_MSG_MAP(CColorCopApp) // NOLINT(whitespace/comments)
         // NOTE - the ClassWizard will add and remove mapping macros here.
         //    DO NOT EDIT what you see in these blocks of generated code!
-    //}}AFX_MSG
+    //}}AFX_MSG // NOLINT(whitespace/comments)
     ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
@@ -62,7 +62,6 @@ BOOL CColorCopApp::InitInstance() {
                 return false;
             }
     }
-
         // set the main window
         m_pMainWnd = &dlg;
 
@@ -229,7 +228,7 @@ void CColorCopApp::Serialize(CArchive& ar) {
             ar << dlg.m_Appflags;
             ar << dlg.WinLocX;
             ar << dlg.WinLocY;
-            for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
+            for (int j = 0; j < kCustomColorCount; j++)    // load custom color values to array
                 ar << dlg.CustColorBank[j];
             for (int w = 0; w < kHistoryCount; w++)        // save color history values
                 ar << dlg.ColorHistory[w];
@@ -247,12 +246,15 @@ void CColorCopApp::Serialize(CArchive& ar) {
             ar >> dlg.m_Appflags;
             ar >> dlg.WinLocX;
             ar >> dlg.WinLocY;
-            for (int j = 0; j < kCustomColorCount; j++)        //load custom color values to array
+            // load custom color values to array
+            for (int j = 0; j < kCustomColorCount; j++) {
                 ar >> dlg.CustColorBank[j];
-            for (int w = 0; w < kHistoryCount; w++)        // save color history values
+            }
+            // load color history values to array
+            for (int w = 0; w < kHistoryCount; w++) {
                 ar >> dlg.ColorHistory[w];
-
-            ar >>  dlg.m_iSamplingOffset;
+            }
+            ar >> dlg.m_iSamplingOffset;
         } catch (CArchiveException*) {
             AfxMessageBox(IDS_ERROR_LOADING);
         }

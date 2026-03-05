@@ -79,10 +79,10 @@ public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSystemTray)
+    //{{AFX_VIRTUAL(CSystemTray) // NOLINT(whitespace/comments)
     protected:
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-    //}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
 protected:
@@ -104,8 +104,8 @@ protected:
 
 // Generated message map functions
 protected:
-    //{{AFX_MSG(CSystemTray)
-    //}}AFX_MSG
+    //{{AFX_MSG(CSystemTray) // NOLINT(whitespace/comments)
+    //}}AFX_MSG // NOLINT(whitespace/comments)
 
     DECLARE_MESSAGE_MAP()
 };

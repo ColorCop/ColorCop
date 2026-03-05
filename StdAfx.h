@@ -46,4 +46,4 @@
 #include <afxcmn.h>
 #endif
 
-//{{AFX_INSERT_LOCATION}}
+//{{AFX_INSERT_LOCATION}} // NOLINT(whitespace/comments)

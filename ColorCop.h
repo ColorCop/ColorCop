@@ -44,26 +44,26 @@ protected:
 
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CColorCopApp)
+    //{{AFX_VIRTUAL(CColorCopApp) // NOLINT(whitespace/comments)
     public:
     virtual BOOL InitInstance();
     virtual BOOL InitApplication();
     virtual void Serialize(CArchive& ar);
-    //}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
 
-    //{{AFX_MSG(CColorCopApp)
+    //{{AFX_MSG(CColorCopApp) // NOLINT(whitespace/comments)
         // NOTE - the ClassWizard will add and remove member functions here.
         //    DO NOT EDIT what you see in these blocks of generated code !
-    //}}AFX_MSG
+    //}}AFX_MSG // NOLINT(whitespace/comments)
     DECLARE_MESSAGE_MAP()
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
 
-//{{AFX_INSERT_LOCATION}}
+//{{AFX_INSERT_LOCATION}} // NOLINT(whitespace/comments)
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_HTMLCOP_H__EC2A34E4_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_)
+#endif // !defined(AFX_HTMLCOP_H__EC2A34E4_4FAA_11D3_81A0_A79013DBA62A__INCLUDED_) // NOLINT(whitespace/comments)

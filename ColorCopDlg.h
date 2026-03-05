@@ -30,7 +30,7 @@ public:
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 
 // Dialog Data
-    //{{AFX_DATA(CColorCopDlg)
+    //{{AFX_DATA(CColorCopDlg) // NOLINT(whitespace/comments)
     enum { IDD = IDD_HTMLCOP_DIALOG };
     CButton    m_ColorPick;
     CStatic    m_Lbl4;
@@ -63,16 +63,16 @@ public:
     int        m_Cyan;
     int        m_Magenta;
     int        m_Yellow;
-    //}}AFX_DATA
+    //}}AFX_DATA // NOLINT(whitespace/comments)
 
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CColorCopDlg)
+    //{{AFX_VIRTUAL(CColorCopDlg) // NOLINT(whitespace/comments)
     public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
     protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
 protected:
@@ -146,7 +146,6 @@ protected:
     // end
     void CColorCopDlg::FloatPrecisionUp();
     void CColorCopDlg::FloatPrecisionDown();
-    //void CColorCopDlg::BlockMeasure(POINT ptBeg, POINT ptEnd);
     void CColorCopDlg::GetScreenBitmap(CPoint point);
 
     void CColorCopDlg::StopCapture(void);
@@ -200,7 +199,7 @@ protected:
     void CColorCopDlg::ChangeColorSpace(bool bRGB);
 
     // Generated message map functions
-    //{{AFX_MSG(CColorCopDlg)
+    //{{AFX_MSG(CColorCopDlg) // NOLINT(whitespace/comments)
     virtual BOOL OnInitDialog();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     afx_msg void OnPaint();
@@ -293,9 +292,9 @@ protected:
     afx_msg void OnChangeYellow();
     afx_msg void OnPopupModeClarionhex();
     afx_msg void OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI);
-    //}}AFX_MSG
+    //}}AFX_MSG // NOLINT(whitespace/comments)
     DECLARE_MESSAGE_MAP()
 };
 
-//{{AFX_INSERT_LOCATION}}
+//{{AFX_INSERT_LOCATION}} // NOLINT(whitespace/comments)
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
