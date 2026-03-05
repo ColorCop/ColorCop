@@ -270,14 +270,14 @@ void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) {
 // CSystemTray message handlers
 
 BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
-    //{{AFX_MSG_MAP(CSystemTray)
+    //{{AFX_MSG_MAP(CSystemTray) // NOLINT(whitespace/comments)
     ON_WM_TIMER()
-    //}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
 END_MESSAGE_MAP()
 
 
 LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam) {
-    //Return quickly if its not for this tray icon
+    // Return quickly if its not for this tray icon
     if (wParam != m_tnd.uID)
         return 0L;
 

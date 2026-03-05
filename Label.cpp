@@ -94,12 +94,12 @@ CLabel& CLabel::SetFontName(const CString& strFont) {
 
 
 BEGIN_MESSAGE_MAP(CLabel, CStatic)
-    //{{AFX_MSG_MAP(CLabel)
+    //{{AFX_MSG_MAP(CLabel) // NOLINT(whitespace/comments)
     ON_WM_CTLCOLOR_REFLECT()
     ON_WM_TIMER()
     ON_WM_LBUTTONDOWN()
     ON_WM_SETCURSOR()
-    //}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

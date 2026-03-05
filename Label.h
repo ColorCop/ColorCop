@@ -45,8 +45,8 @@ protected:
 public:
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CLabel)
-    //}}AFX_VIRTUAL
+    //{{AFX_VIRTUAL(CLabel) // NOLINT(whitespace/comments)
+    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
 public:
@@ -54,19 +54,19 @@ public:
 
     // Generated message map functions
 protected:
-    //{{AFX_MSG(CLabel)
+    //{{AFX_MSG(CLabel) // NOLINT(whitespace/comments)
     afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-    //}}AFX_MSG
+    //}}AFX_MSG // NOLINT(whitespace/comments)
 
     DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-//{{AFX_INSERT_LOCATION}}
+//{{AFX_INSERT_LOCATION}} // NOLINT(whitespace/comments)
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_LABEL_H__A4EABEC5_2E8C_11D1_B79F_00805F9ECE10__INCLUDED_)
+#endif //  !defined(AFX_LABEL_H__A4EABEC5_2E8C_11D1_B79F_00805F9ECE10__INCLUDED_) // NOLINT(whitespace/comments)
