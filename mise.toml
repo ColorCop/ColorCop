@@ -1,0 +1,10 @@
+[tools]
+python = "3.12"
+
+[tasks.lint]
+description = "Run linters"
+run = [
+  "python -m pip install --upgrade pip",
+  "pip install cpplint",
+  "cpplint --recursive ."
+]

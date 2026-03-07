@@ -71,7 +71,7 @@ pip install cpplint
 **Run linting:**
 
 ```sh
-./lint.sh
+mise lint
 ```
 
 ### Contributing
