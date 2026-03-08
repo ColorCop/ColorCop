@@ -39,6 +39,7 @@ CColorCopApp::CColorCopApp() {
 CColorCopApp::~CColorCopApp() {
     if (m_hMutex != nullptr) {
         CloseHandle(m_hMutex);
+        m_hMutex = nullptr;
     }
 }
 
@@ -76,11 +77,12 @@ BOOL CColorCopApp::InitInstance() {
 
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning() {
-    m_hMutex = CreateMutex(NULL, true, _T("ColorCop_Mutex"));
+    m_hMutex = CreateMutex(NULL, TRUE, _T("ColorCop_Mutex"));
 
     if (m_hMutex) {
         if (GetLastError() == ERROR_ALREADY_EXISTS) {
             CloseHandle(m_hMutex);  // Close the duplicate handle
+            m_hMutex = nullptr;
             return true;
         }
         return false;
@@ -212,10 +214,6 @@ void CColorCopApp::CloseApplication() {
         CArchive ar(&file, CArchive::store);
         Serialize(ar);
     }
-
-    ReleaseMutex(m_hMutex);
-
-    return;
 }
 
 void CColorCopApp::Serialize(CArchive& ar) {
