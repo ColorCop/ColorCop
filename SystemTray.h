@@ -33,7 +33,7 @@
 
 class CSystemTray : public CWnd {
 // Construction/destruction
-public:
+ public:
     CSystemTray();
     CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID);
     virtual ~CSystemTray();
@@ -41,7 +41,7 @@ public:
     DECLARE_DYNAMIC(CSystemTray)
 
 // Operations
-public:
+ public:
     BOOL Enabled() { return m_bEnabled; }
     BOOL Visible() { return !m_bHidden; }
 
@@ -80,12 +80,12 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSystemTray) // NOLINT(whitespace/comments)
-    protected:
+ protected:
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
-protected:
+ protected:
     void Initialise();
 
     BOOL            m_bEnabled;   // does O/S support tray icon?
@@ -96,14 +96,12 @@ protected:
     static UINT  m_nIDEvent;
     UINT         m_uIDTimer;
     int          m_nCurrentIcon;
-   // COleDateTime m_StartTime;
-   // int          m_nAnimationPeriod;
     HICON        m_hSavedIcon;
     UINT         m_DefaultMenuItemID;
     BOOL         m_DefaultMenuItemByPos;
 
 // Generated message map functions
-protected:
+ protected:
     //{{AFX_MSG(CSystemTray) // NOLINT(whitespace/comments)
     //}}AFX_MSG // NOLINT(whitespace/comments)
 

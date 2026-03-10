@@ -7,7 +7,7 @@
 
 
 class colorspace {
-public:
+ public:
     // Red
     BYTE GetRed() { return byRed; }
     void SetRed(BYTE r) { byRed = r; }

@@ -15,7 +15,7 @@ enum FlashType {None, Text, Background };
 
 class CLabel : public CStatic {
 // Construction
-public:
+ public:
     CLabel();
     CLabel& SetBkColor(COLORREF crBkgnd);
     CLabel& SetTextColor(COLORREF crText);
@@ -28,7 +28,7 @@ public:
     CLabel& SetLink(BOOL bLink);
     CLabel& SetLinkCursor(HCURSOR hCursor);
 
-protected:
+ protected:
     void ReconstructFont();
     COLORREF    m_crText;
     HBRUSH        m_hBrush;
@@ -42,18 +42,18 @@ protected:
     FlashType    m_Type;
     HCURSOR        m_hCursor;
             // Operations
-public:
+ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CLabel) // NOLINT(whitespace/comments)
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
-public:
+ public:
     virtual ~CLabel();
 
     // Generated message map functions
-protected:
+ protected:
     //{{AFX_MSG(CLabel) // NOLINT(whitespace/comments)
     afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
     afx_msg void OnTimer(UINT nIDEvent);
