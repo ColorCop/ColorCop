@@ -2120,7 +2120,7 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext) {
             SetStatusBarText(IDS_ALWAYSOTOP, 1);
         }
         // mfc call
-        SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | WS_EX_TOPMOST);
+        SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     } else {   // Not always on top, NORMAL
         if (bSetStatusbartext) {
             SetStatusBarText(IDS_ALWAYSOTOP, 2);
