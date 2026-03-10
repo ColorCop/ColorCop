@@ -8,22 +8,31 @@
  ************************************************************************************/
 
 
+// Precompiled header
 #include "stdafx.h"
+
+// Project headers
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
-#include "Label.h"            // used for the Links in the AboutDlg
-#include "SystemTray.h"        // used to minimize to the systray
-#include <commctrl.h>
-#include <math.h>
+#include "Label.h"       // used for the links in the AboutDlg
+#include "SystemTray.h"  // used to minimize to the systray
+
+// Windows headers
 #include <windows.h>
-#include <winuser.h>
-#include <random>
-#include <cstdint>
+#include <commctrl.h>
 #include <htmlhelp.h>
+
+// C++ standard library headers
+#include <cstdint>
+#include <random>
+#include <cmath>     // pow, sqrt, atan (or atan2)
+#include <cstdlib>   // strtoul, abs (int)
+#include <cstring>   // memcpy
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
+constexpr double kPi = 3.14159265358979323846;
 
 class CAboutDlg : public CDialog {
  public:
@@ -948,9 +957,9 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     r = (double)red / 255.0;
     g = (double)green / 255.0;
     b = (double)blue / 255.0;
-    m_Cyan  = (int) pow(1.0 - r,  45);
-    m_Magenta = (int) pow(1.0 - g, 45);
-    m_Yellow = (int) pow(1.0 - b, 45);
+    m_Cyan    = static_cast<int>(std::pow(1.0 - r, 45));
+    m_Magenta = static_cast<int>(std::pow(1.0 - g, 45));
+    m_Yellow  = static_cast<int>(std::pow(1.0 - b, 45));
 
     m_Black = __min(__min(m_Cyan, m_Magenta), m_Yellow);
 
@@ -1240,7 +1249,7 @@ void CColorCopDlg::OnCopytoclip() {
             if (hMem) {
                 void* pMem = ::GlobalLock(hMem);
                 if (pMem) {
-                    memcpy(pMem, m_Hexcolor.GetString(), bytes);
+                    std::memcpy(pMem, m_Hexcolor.GetString(), bytes);
                     ::GlobalUnlock(hMem);
 
                     // Correct modern clipboard format
@@ -1589,18 +1598,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                     double dWidth = (double)iWidth+1;
                     double dHeight = (double)iHeight+1;
 
-                    double dLength = sqrt(dWidth*dWidth + dHeight * dHeight);
-                    double dAngle = 0.0;
-
-                    if (iWidth == 0) {
-                        // prevent the divide by zero
-                        dAngle = 90;
-
-                    } else {
-                        dAngle = atan(dHeight / dWidth) * ((double)180 / (double)PI);
-                    }
-
-
+                    double dLength = std::sqrt(dWidth*dWidth + dHeight * dHeight);
+                    double dAngle = std::atan2(dHeight, dWidth) * (180.0 / kPi);
 
                     strStatus.LoadString(IDS_RELATIVE_POS);
                     strStatus.Format(strStatus, iWidth,
@@ -1977,13 +1976,13 @@ void CColorCopDlg::ParseDelphi(CString inst) {
     }
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
+    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul(inst.Left(2), NULL, 16);
+    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     inst.Delete(0);
     inst.Delete(0);
-    m_Reddec = strtoul(inst.Left(2), NULL, 16);
+    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
 
     UpdateData(0);
 
@@ -2005,13 +2004,13 @@ void CColorCopDlg::ParseClarion(CString inst) {
     if (inst.Left(1) == '0') {
         inst.Delete(0);
     }
-    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
+    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul(inst.Left(2), NULL, 16);
+    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     inst.Delete(0);
     inst.Delete(0);
-    m_Reddec = strtoul(inst.Left(2), NULL, 16);
+    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
 
     UpdateData(0);
 
@@ -2029,14 +2028,14 @@ void CColorCopDlg::ParseHTML(CString inst) {
         inst.Delete(0);
     }
 
-    m_Reddec = strtoul(inst.Left(2), NULL, 16);
+    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
 
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = strtoul(inst.Left(2), NULL, 16);
+    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = strtoul(inst.Left(2), NULL, 16);
+    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
     UpdateData(0);
 
     OnconvertHEX();
@@ -2197,9 +2196,9 @@ void CColorCopDlg::OnColorReverse() {
     // ABS (current decimal value - 255)  then update
 
     SetStatusBarText(IDS_REVERSECOLOR, 0);
-    m_Reddec   = abs(m_Reddec - 255);
-    m_Greendec = abs(m_Greendec - 255);
-    m_Bluedec  = abs(m_Bluedec  - 255);
+    m_Reddec   = std::abs(m_Reddec - 255);
+    m_Greendec = std::abs(m_Greendec - 255);
+    m_Bluedec  = std::abs(m_Bluedec  - 255);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -2904,7 +2903,7 @@ int CColorCopDlg::RangeCheck(int icolorval) {
         return (icolorval % 256);
     } else if (icolorval < 0) {
         // roll around to 255 or 254
-        return (256 - abs(icolorval));
+        return (256 - std::abs(icolorval));
     } else {
         // it's valid -- leave it alone
         return (icolorval);
