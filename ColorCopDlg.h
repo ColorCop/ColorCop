@@ -16,7 +16,7 @@ class CSystemTray;
 
 class CColorCopDlg : public CDialog {
 // Construction
-public:
+ public:
     explicit CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
     COLORREF ColorHistory[7];
     COLORREF CustColorBank[16];
@@ -67,15 +67,15 @@ public:
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColorCopDlg) // NOLINT(whitespace/comments)
-    public:
+ public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-    protected:
+ protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
-protected:
+ protected:
     bool m_bvisible;
 
     HICON m_hIcon, m_hBlank, m_hEye;

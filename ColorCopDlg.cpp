@@ -26,7 +26,7 @@ constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
 class CAboutDlg : public CDialog {
-public:
+ public:
     CAboutDlg();
 
 // Dialog Data
@@ -38,13 +38,13 @@ public:
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CAboutDlg) // NOLINT(whitespace/comments)
-    protected:
+ protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
 // Implementation
 
-protected:
+ protected:
     //{{AFX_MSG(CAboutDlg) // NOLINT(whitespace/comments)
     virtual BOOL OnInitDialog();
     //}}AFX_MSG // NOLINT(whitespace/comments)

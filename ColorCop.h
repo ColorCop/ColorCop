@@ -23,13 +23,13 @@
 //
 
 class CColorCopApp : public CWinApp {
-public:
+ public:
     CColorCopDlg dlg;
     CColorCopApp();
     ~CColorCopApp();
 
 
-protected:
+ protected:
     void CColorCopApp::CloseApplication();
     void CColorCopApp::LoadDefaultSettings();
     CString CColorCopApp::GetTempFolder();
@@ -45,7 +45,7 @@ protected:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColorCopApp) // NOLINT(whitespace/comments)
-    public:
+ public:
     virtual BOOL InitInstance();
     virtual BOOL InitApplication();
     virtual void Serialize(CArchive& ar);
