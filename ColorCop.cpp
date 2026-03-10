@@ -232,7 +232,7 @@ void CColorCopApp::Serialize(CArchive& ar) {
                 ar << dlg.ColorHistory[w];
 
             ar << dlg.m_iSamplingOffset;
-        } catch (CArchiveException*) {
+        } catch (CArchiveException& e) {
             AfxMessageBox(IDS_ERROR_SAVING);
         }
     } else {
@@ -253,7 +253,7 @@ void CColorCopApp::Serialize(CArchive& ar) {
                 ar >> dlg.ColorHistory[w];
             }
             ar >> dlg.m_iSamplingOffset;
-        } catch (CArchiveException*) {
+        } catch (CArchiveException& e) {
             AfxMessageBox(IDS_ERROR_LOADING);
         }
     }
