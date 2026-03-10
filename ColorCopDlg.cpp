@@ -2077,14 +2077,12 @@ CString CColorCopDlg::GetTempFolder() {
 }
 
 void CColorCopDlg::OnDestroy() {
-    //
-    // The app is about to close, save the variables
-    // save the location
-    tagRECT *winSize = new tagRECT;
-    GetWindowRect(winSize);
-    WinLocX = winSize->left;        // Store x, y
-    WinLocY = winSize->top;        // in variables
-
+    // Capture and store the dialog’s last on-screen position so it can be
+    // restored the next time the application starts.
+    RECT winSize{};
+    GetWindowRect(&winSize);
+    WinLocX = winSize.left;
+    WinLocY = winSize.top;
 
     // save the bitmap
     CString strBMPFile = GetTempFolder();
