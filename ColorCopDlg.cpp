@@ -3062,7 +3062,7 @@ void CColorCopDlg::FireOptionMenu() {
     // Pop up the system menu when a user hits SHIFT + F10 (right click equivalent)
     // suggested by that dude from PC Mag
 
-    CPoint targetp = (0, 0);
+    CPoint targetp = {0, 0};
 
     CMenu tempMenu;
     tempMenu.LoadMenu(IDR_COPMENU);
