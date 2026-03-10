@@ -1575,7 +1575,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                 RelativePointEnd.y = point.y;
             }
 
-            ::ReleaseDC(::GetForegroundWindow(), hdc);    // free up the memory
+            ::ReleaseDC(NULL, hdc);    // free up the memory
 
             CString strStatus = "", strWebSafe = "";
 
@@ -1762,7 +1762,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
 
     ::DeleteDC(hdcMem);
     ::DeleteDC(hdcZoomMem);
-    ::ReleaseDC(::GetForegroundWindow(), hdc);        // free up memory
+    ::ReleaseDC(NULL, hdc);        // free up memory
     return;
 }
 
