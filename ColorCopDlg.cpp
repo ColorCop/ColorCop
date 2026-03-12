@@ -81,7 +81,7 @@ END_MESSAGE_MAP()
 
 // Constants
 
-const char* kpcTrayNotificationMsg_ = "color cop tray notification";
+const TCHAR* kpcTrayNotificationMsg_ = _T("color cop tray notification");
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
@@ -258,7 +258,7 @@ BOOL CColorCopDlg::OnInitDialog() {
     TestForExpand();    // do not call this before SetupWindowRects();
 
     if (!m_ToolTip.Create(this)) {
-        TRACE0("Unable to create a tool tip obj");
+        TRACE0(_T("Unable to create a tool tip obj"));
     } else {
         // Add tool tips to the controls, either by hard coded string
         // or using the string table resource
@@ -710,39 +710,37 @@ void CColorCopDlg::OnconvertRGB() {
     TestForWebsafe();    // before conversion
 
     if (m_Appflags & ModeHTML) {
-        m_Hexcolor.Format("#%.2x%.2x%.2x", m_Reddec, m_Greendec, m_Bluedec);
+        m_Hexcolor.Format(_T("#%.2x%.2x%.2x"), m_Reddec, m_Greendec, m_Bluedec);
         if (m_Appflags & OmitPound) {
-            if (m_Hexcolor.Left(1) == '#') {
+            if (m_Hexcolor.Left(1) == _T("#")) {
                 m_Hexcolor.Delete(0);
             }
         }
     } else if (m_Appflags & ModeDelphi) {
-        m_Hexcolor.Format("$00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
+        m_Hexcolor.Format(_T("$00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
         if (m_Appflags & OmitPound) {
-            if (m_Hexcolor.Left(1) == '$') {
+            if (m_Hexcolor.Left(1) == _T("$")) {
                 m_Hexcolor.Delete(0);
             }
         }
-
     } else if (m_Appflags & ModePowerBuilder) {
-        m_Hexcolor.Format("%d", (65536 * m_Bluedec) + (256 * m_Greendec) + (m_Reddec));
+        // PowerBuilder decimal: B*65536 + G*256 + R
+        m_Hexcolor.Format(_T("%d"), (65536 * m_Bluedec) + (256 * m_Greendec) + (m_Reddec));
     } else if (m_Appflags & ModeVisualBasic) {
-        m_Hexcolor.Format("&H%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
+        // &HBBGGRR
+        m_Hexcolor.Format(_T("&H%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
     } else if (m_Appflags & ModeClarion) {
-        // same as VB, but in addition
-        // 1) remove the &H at start.
-        // 2) prefix with 0
-        // 3) add H after the color
-        m_Hexcolor.Format("0%.2x%.2x%.2xH", m_Bluedec, m_Greendec, m_Reddec);
+        // 0BBGGRRH
+        m_Hexcolor.Format(_T("0%.2x%.2x%.2xH"), m_Bluedec, m_Greendec, m_Reddec);
     } else if (m_Appflags & RGBINT) {
-        m_Hexcolor.Format("%d,%d,%d", m_Reddec, m_Greendec, m_Bluedec);
+        m_Hexcolor.Format(_T("%d,%d,%d"), m_Reddec, m_Greendec, m_Bluedec);
     } else if (m_Appflags & RGBFLOAT) {
         r = (float)m_Reddec / 255.0f;
         g = (float)m_Greendec / 255.0f;
         b = (float)m_Bluedec / 255.0f;
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
-        m_Hexcolor.Format("0x00%.2x%.2x%.2x", m_Bluedec, m_Greendec, m_Reddec);
+        m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
     }
 
     // Only apply uppercase formatting when NOT in Visual C++ hex mode.
@@ -767,13 +765,13 @@ void CColorCopDlg::OnconvertHEX() {
     // --- Format hex string ---
     if (m_Appflags & ModeHTML) {
         // Always emit full 6‑digit HTML hex
-        m_Hexcolor.Format("#%.2x%.2x%.2x",
+        m_Hexcolor.Format(_T("#%.2x%.2x%.2x"),
                           m_Reddec,
                           m_Greendec,
                           m_Bluedec);
     } else {
         // Delphi format: $00BBGGRR
-        m_Hexcolor.Format("$00%.2x%.2x%.2x",
+        m_Hexcolor.Format(_T("$00%.2x%.2x%.2x"),
                           m_Bluedec,
                           m_Greendec,
                           m_Reddec);
@@ -1436,8 +1434,8 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point) {
     CWnd* pWnd = ChildWindowFromPoint(point);
 
     if (pWnd && pWnd->GetSafeHwnd() == m_ColorPreview.GetSafeHwnd()) {
-        OnColorPick();    // user double clicked in the color preview control
-                        // open custom color dialog
+        // User double-clicked the color preview: open the custom color dialog
+        OnColorPick();
         return;
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) {
         if (hBitmap) {
@@ -1922,7 +1920,7 @@ void CColorCopDlg::OnChangeHexcolor() {
     hexsize = m_Hexcolor.GetLength();
 
     if (m_Appflags & ModeHTML) {
-        if (m_Hexcolor.Left(1) == '#') {
+        if (m_Hexcolor.Left(1) == _T("#")) {
             hexrange = 5;
             offset = 1;
         } else {
@@ -1938,13 +1936,13 @@ void CColorCopDlg::OnChangeHexcolor() {
 
     } else if (m_Appflags & ModeClarion) {
         // Clarion Starts with 0s
-        if (m_Hexcolor.Left(1) == '0') {
+        if (m_Hexcolor.Left(1) == _T("0")) {
             hexrange = 7;
             offset = 1;
             ParseClarion(m_Hexcolor);
         }
     } else {  // Delphi hex change
-        if (m_Hexcolor.Left(1) == '$') {
+        if (m_Hexcolor.Left(1) == _T("$")) {
             hexrange = 7;
             offset = 1;
         } else {
@@ -2318,19 +2316,19 @@ void CColorCopDlg::FigurePound() {
     // This function adds or removes characters from the hex edit control
     if (m_Appflags & OmitPound) {
         if (m_Appflags & ModeHTML) {
-            if (m_Hexcolor.Left(1) == '#')            // remove the # is it exists
+            if (m_Hexcolor.Left(1) == _T("#"))            // remove the # is it exists
                 m_Hexcolor.Delete(0);
         } else if (m_Appflags & ModeDelphi) {
-            if (m_Hexcolor.Left(1) == '$')
+            if (m_Hexcolor.Left(1) == _T("$"))
                 m_Hexcolor.Delete(0);
         }
     } else {
         if (m_Appflags & ModeHTML) {
-            if (m_Hexcolor.Left(1) != '#')
-                m_Hexcolor = "#" + m_Hexcolor;        // add the # if it exsits
+            if (m_Hexcolor.Left(1) != _T("#"))
+                m_Hexcolor = _T("#") + m_Hexcolor;        // add the # if it exsits
         } else if (m_Appflags & ModeDelphi) {
-            if (m_Hexcolor.Left(1) != '$')
-                m_Hexcolor = "$" + m_Hexcolor;
+            if (m_Hexcolor.Left(1) != _T("$"))
+                m_Hexcolor = _T("$") + m_Hexcolor;
         }
     }
     UpdateData(false);
@@ -2768,7 +2766,7 @@ void CColorCopDlg::SetupStatusBar() {
 
     if (!m_StatBar.Create(CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_BOTTOM,
                           rect, this, IDC_STATUSBAR)) {
-        AfxMessageBox("Failed to create status bar.");
+        AfxMessageBox(_T("Failed to create status bar."));
     }
 
     //
@@ -2806,7 +2804,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
     switch (toggleVal) {
         case 0:
             // Load String and set it
-            m_StatBar.SetText(_T(strTemp), 0, 0);
+            m_StatBar.SetText(strTemp, 0, 0);
             strTemp.FreeExtra();
         break;
 
@@ -2816,7 +2814,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
             strTemp.Insert(strTemp.GetLength(), _T(" "));
             strTemp.Insert(strTemp.GetLength(), strOn);
             strTemp.FreeExtra();
-            m_StatBar.SetText(_T(strTemp), 0, 0);
+            m_StatBar.SetText(strTemp, 0, 0);
 
         break;
 
@@ -2826,7 +2824,7 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
             strTemp.Insert(strTemp.GetLength(), _T(" "));
             strTemp.Insert(strTemp.GetLength(), strOn);
             strTemp.FreeExtra();
-            m_StatBar.SetText(_T(strTemp), 0, 0);
+            m_StatBar.SetText(strTemp, 0, 0);
         break;
     }
 
@@ -3077,24 +3075,24 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp) {
     WORD    cClrBits;
 
     // Retrieve the bitmap color format, width, and height.
-    if (!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
-        AfxMessageBox("Unable to receive bitmap information");
-
+    if (!GetObject(hBmp, sizeof(BITMAP), &bmp)) {
+        AfxMessageBox(_T("Unable to receive bitmap information"));
+    }
     // Convert the color format to a count of bits.
     cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
-    if (cClrBits == 1)
+    if (cClrBits == 1) {
         cClrBits = 1;
-    else if (cClrBits <= 4)
+    } else if (cClrBits <= 4) {
         cClrBits = 4;
-    else if (cClrBits <= 8)
+    } else if (cClrBits <= 8) {
         cClrBits = 8;
-    else if (cClrBits <= 16)
+    } else if (cClrBits <= 16) {
         cClrBits = 16;
-    else if (cClrBits <= 24)
+    } else if (cClrBits <= 24) {
         cClrBits = 24;
-    else
+    } else {
         cClrBits = 32;
-
+    }
     // Allocate memory for the BITMAPINFO structure. (This structure
     // contains a BITMAPINFOHEADER structure and an array of RGBQUAD
     // data structures.)
@@ -3158,7 +3156,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // (array of palette indices) from the DIB.
     if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi,
         DIB_RGB_COLORS)) {
-        AfxMessageBox("GetDIBits failed");
+        AfxMessageBox(_T("GetDIBits failed"));
         return;
     }
 
@@ -3171,12 +3169,11 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
                    FILE_ATTRIBUTE_NORMAL,
                    (HANDLE) NULL);
     if (hf == INVALID_HANDLE_VALUE) {
-        AfxMessageBox("Could not create BMP file");
+        AfxMessageBox(_T("Could not create BMP file"));
         return;
     }
 
     hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M"
-
 
     // Compute the size of the entire file.
     hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) +
@@ -3193,7 +3190,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // Copy the BITMAPFILEHEADER into the .BMP file.
     if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
         (LPDWORD) &dwTmp,  NULL)) {
-        AfxMessageBox("WriteFile failed");
+        AfxMessageBox(_T("WriteFile failed"));
         return;
     }
 
@@ -3201,7 +3198,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
                   + pbih->biClrUsed * sizeof (RGBQUAD),
                   (LPDWORD) &dwTmp, (NULL))) {
-                    AfxMessageBox("WriteFile failed");
+                    AfxMessageBox(_T("WriteFile failed"));
                     return;
                   }
 
@@ -3209,11 +3206,11 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     dwTotal = cb = pbih->biSizeImage;
     hp = lpBits;
     if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, NULL)) {
-        AfxMessageBox("WriteFile failed");
+        AfxMessageBox(_T("WriteFile failed"));
     }
     // Close the .BMP file.
     if (!CloseHandle(hf)) {
-        AfxMessageBox("Could not close BMP file");
+        AfxMessageBox(_T("Could not close BMP file"));
     }
     // Free memory.
     GlobalFree((HGLOBAL)lpBits);
