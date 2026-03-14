@@ -1,4 +1,4 @@
-name: build
+name: Build
 
 on:
   push:
@@ -24,8 +24,6 @@ jobs:
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
-
-
 
       - name: Install MFC libraries via Visual Studio bootstrapper
         shell: pwsh
@@ -124,6 +122,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
+          body: |
+            ## ColorCop Release
+
+            This release was generated automatically from tag `${{ github.ref_name }}`.
+            The changelog and commit summary appear below.
+
+          generate_release_notes: true
           files: |
             colorcop.zip
             output/colorcop-setup.exe
