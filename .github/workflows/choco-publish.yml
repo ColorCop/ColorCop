@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir choco/tools -Force
           Copy-Item colorcop-setup.exe choco/tools/
-          Copy-Item LICENSE.TXT choco/tools/
+          Copy-Item LICENSE.txt choco/tools/
 
       - name: Generate checksum
         id: checksum
