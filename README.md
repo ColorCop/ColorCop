@@ -84,7 +84,9 @@ mise lint
 
 ## License
 
-See [LICENSE.TXT](LICENSE.TXT) for details.
+ColorCop is licensed under the **MIT License**.
+
+See [LICENSE.txt](LICENSE.txt) for the full license text.
 
 ## Troubleshooting
 

@@ -11,7 +11,7 @@ AppSupportURL=https://colorcop.net
 AppUpdatesURL=https://colorcop.net
 DefaultDirName={pf}\Color Cop
 DefaultGroupName=Color Cop
-LicenseFile=..\LICENSE.TXT
+LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\ReadMe.txt
 OutputDir=..\Output
 OutputBaseFilename=colorcop-setup
@@ -32,7 +32,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 Source: "..\readme.txt"; DestDir: "{app}"
 Source: "..\Release\ColorCop.exe"; DestDir: "{app}"
 Source: "..\packaging\ColorCop.chm"; DestDir: "{app}"
-Source: "..\LICENSE.TXT"; DestDir: "{app}"
+Source: "..\LICENSE.txt"; DestDir: "{app}"
 
 [INI]
 Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://colorcop.net/"
