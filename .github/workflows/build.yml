@@ -79,6 +79,23 @@ jobs:
           )
           MSBuild.exe $msbuildArgs
 
+      - name: Download VC++ Redistributable
+        shell: pwsh
+        run: |
+          $url = "https://aka.ms/vs/17/release/vc_redist.x86.exe"
+          $out = "installer/vc_redist.x86.exe"
+
+          Invoke-WebRequest -Uri $url -OutFile $out
+
+          # Verify file integrity to avoid accidentally bundling a corrupted installer
+          $expected = "0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64"
+          $actual = (Get-FileHash $out -Algorithm SHA256).Hash
+
+          if ($actual -ne $expected) {
+            Write-Error "Checksum mismatch for vc_redist.x86.exe"
+            exit 1
+          }
+
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
         if: matrix.configuration == 'Release'
