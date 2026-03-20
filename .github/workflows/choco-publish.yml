@@ -1,4 +1,4 @@
-name: Build and Publish Chocolatey Package
+name: Publish Chocolatey Package
 
 on:
   release:
@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  build-choco:
+  publish:
     runs-on: windows-latest
 
     # Grant minimal read-only access to repository contents

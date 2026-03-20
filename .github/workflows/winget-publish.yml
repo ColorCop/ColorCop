@@ -1,0 +1,37 @@
+name: Publish to WinGet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish to WinGet (e.g., v1.0.0)"
+        required: true
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Determine version
+        id: meta
+        shell: pwsh
+        run: |
+          $tag = if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "${{ github.event.inputs.tag }}"
+          } else {
+            "${{ github.event.release.tag_name }}"
+          }
+
+          echo "version=$($tag.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+
+      - name: Publish to WinGet
+        uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: JayPrall.ColorCop
+          version: ${{ steps.meta.outputs.version }}
+          token: ${{ secrets.WINGET_TOKEN }}
