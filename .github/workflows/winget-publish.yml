@@ -17,7 +17,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Determine version
+      - name: Determine version and tag
         id: meta
         shell: pwsh
         run: |
@@ -27,11 +27,11 @@ jobs:
             "${{ github.event.release.tag_name }}"
           }
 
-          echo "version=$($tag.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+          echo "tag=$tag" >> $env:GITHUB_OUTPUT
 
       - name: Publish to WinGet
         uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: JayPrall.ColorCop
-          version: ${{ steps.meta.outputs.version }}
+          release-tag: ${{ steps.meta.outputs.tag }}
           token: ${{ secrets.WINGET_TOKEN }}
