@@ -40,7 +40,33 @@ If you want to build and run Color Cop from source:
 
 ## Release Workflow
 
-ColorCop uses **semantic version tags** (e.g., `v5.5.2`) to drive the release pipeline. Pushing a new tag triggers GitHub Actions to build the application, update version metadata, and publish a new GitHub Release with compiled binaries.
+ColorCop uses **semantic version tags** (e.g., `v5.5.2`) to drive the release pipeline.
+Pushing a new tag triggers GitHub Actions to:
+
+- Build the application
+- Update version metadata
+- Publish a new GitHub Release with compiled binaries
+
+> GitHub does **not** support a “post‑release” event.
+> The following steps must be run **after** the GitHub Release has been created.
+
+### Post‑release actions
+
+After a new release is published on GitHub, two manual follow‑up workflows must be run:
+
+#### 1. Publish to Chocolatey
+
+1. Go to **Actions → Publish Chocolatey Package**
+2. Click **Run workflow**
+3. Enter the release tag (e.g., `v5.5.2`)
+4. Run the workflow to publish the updated Chocolatey package
+
+#### 2. Publish to WinGet
+
+1. Go to **Actions → Publish to WinGet**
+2. Click **Run workflow**
+3. Enter the same release tag (e.g., `v5.5.2`)
+4. Run the workflow to submit the updated WinGet manifest
 
 ### Listing existing tags
 
