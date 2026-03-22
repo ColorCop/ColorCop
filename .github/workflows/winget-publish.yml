@@ -1,8 +1,8 @@
 name: Publish to WinGet
 
+# This workflow is triggered manually.
+# It is intentionally NOT triggered by GitHub Releases.
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -13,20 +13,16 @@ jobs:
   publish:
     runs-on: windows-latest
 
+    # Grant minimal read-only access to repository contents
     permissions:
       contents: read
 
     steps:
-      - name: Determine version and tag
+      - name: Determine tag
         id: meta
         shell: pwsh
         run: |
-          $tag = if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            "${{ github.event.inputs.tag }}"
-          } else {
-            "${{ github.event.release.tag_name }}"
-          }
-
+          $tag = "${{ github.event.inputs.tag }}"
           echo "tag=$tag" >> $env:GITHUB_OUTPUT
 
       - name: Publish to WinGet

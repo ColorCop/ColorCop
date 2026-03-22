@@ -1,13 +1,12 @@
 name: Publish Chocolatey Package
 
+# This workflow is triggered manually.
+# It is intentionally NOT triggered by GitHub Releases.
 on:
-  release:
-    types: [published]
-
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag to package (e.g., v1.0.0)"
+        description: "Tag to publish to Chocolatey (e.g., v1.0.0)"
         required: true
 
 jobs:
@@ -26,12 +25,7 @@ jobs:
         id: get_version
         shell: pwsh
         run: |
-          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            $tag = "${{ github.event.inputs.tag }}"
-          } else {
-            $tag = "${{ github.event.release.tag_name }}"
-          }
-
+          $tag = "${{ github.event.inputs.tag }}"
           $version = $tag.TrimStart("v")
 
           echo "tag=$tag" >> $env:GITHUB_OUTPUT
