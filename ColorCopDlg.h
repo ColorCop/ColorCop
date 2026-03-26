@@ -17,7 +17,7 @@ class CSystemTray;
 class CColorCopDlg : public CDialog {
 // Construction
  public:
-    explicit CColorCopDlg(CWnd* pParent = NULL);    // standard constructor
+    explicit CColorCopDlg(CWnd* pParent = nullptr);    // standard constructor
     COLORREF ColorHistory[7];
     COLORREF CustColorBank[16];
     int m_Appflags;
@@ -82,8 +82,11 @@ class CColorCopDlg : public CDialog {
 
     HACCEL m_hAcceleratorTable;            // Accelerator var
 
-    // Store for snapback from websafe,  unsigned char only takes 1 byte, 0 - 255
-    unsigned char m_OldRed, m_OldBlue, m_OldGreen;
+    // Store for snapback from websafe; 1‑byte values (0–255)
+    std::uint8_t m_OldRed{};
+    std::uint8_t m_OldGreen{};
+    std::uint8_t m_OldBlue{};
+
     BOOL bOldClrExist;
 
     BOOL m_isEyedropping;
@@ -114,10 +117,10 @@ class CColorCopDlg : public CDialog {
     swatchStruct OrigSwatch;
 
     COLORREF ColorPal[6][7];
-    int palcol;
+    int palcol{};
 
-    POINT RelativePoint;
-    POINT RelativePointEnd;
+    POINT RelativePoint{};
+    POINT RelativePointEnd{};
 
     CMenu copmenu;
     HDC hdc, hdcMem, hdcZoomMem;
@@ -129,8 +132,6 @@ class CColorCopDlg : public CDialog {
     CRect testrect;
     CRect magplus, magminus;
     RECT CCopRect, CCopsmRect;
-
-
 
     HCURSOR m_hEyeCursor;
     HCURSOR m_hMagCursor;
@@ -148,7 +149,7 @@ class CColorCopDlg : public CDialog {
     void CColorCopDlg::FloatPrecisionDown();
     void CColorCopDlg::GetScreenBitmap(CPoint point);
 
-    void CColorCopDlg::StopCapture(void);
+    void CColorCopDlg::StopCapture();
     void CColorCopDlg::DisplayColor();
     void CColorCopDlg::ParseHTML(CString inst);
     void CColorCopDlg::ParseDelphi(CString inst);
