@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
 
@@ -145,59 +147,59 @@ class CColorCopDlg : public CDialog {
     CSystemTray* pTrayIcon_;
     int nTrayNotificationMsg_;
     // end
-    void CColorCopDlg::FloatPrecisionUp();
-    void CColorCopDlg::FloatPrecisionDown();
-    void CColorCopDlg::GetScreenBitmap(CPoint point);
+    void FloatPrecisionUp();
+    void FloatPrecisionDown();
+    void GetScreenBitmap(CPoint point);
 
-    void CColorCopDlg::StopCapture();
-    void CColorCopDlg::DisplayColor();
-    void CColorCopDlg::ParseHTML(CString inst);
-    void CColorCopDlg::ParseDelphi(CString inst);
-    void CColorCopDlg::ParseClarion(CString inst);
-    void CColorCopDlg::FigurePound();
-    void CColorCopDlg::TestForExpand();
-    int CColorCopDlg::DecimaltoWebsafe(int originalDec);
-    void CColorCopDlg::TestForUpperHex();
-    void CColorCopDlg::OnconvertHEX();
-    void CColorCopDlg::OnconvertRGB();
-    void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
-    void CColorCopDlg::UpdateMenu(CMenu* pMenu);
-    void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext);
-    void CColorCopDlg::TestForWebsafe();
-    void CColorCopDlg::SetupTaskBarButton();
-    void CColorCopDlg::SetupTrayIcon();
-    void CColorCopDlg::SetupSystemMenu();
-    void CColorCopDlg::SetupWindowRects();
-    bool CColorCopDlg::LoadPersistentVariables();
-    bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
-    void CColorCopDlg::SetupStatusBar();
-    void CColorCopDlg::SetStatusBarText(LPCTSTR statusText);
-    int CColorCopDlg::RangeCheck(int icolorval);
-    void CColorCopDlg::AdvanceColorHistory();
-    void CColorCopDlg::GetHistoryColor(int Cindex);
-    HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc);
-    bool CColorCopDlg::isWebsafeColor(int R, int G, int B);
-    CString CColorCopDlg::GetTempFolder();
-    BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath);
+    void StopCapture();
+    void DisplayColor();
+    void ParseHTML(CString inst);
+    void ParseDelphi(CString inst);
+    void ParseClarion(CString inst);
+    void FigurePound();
+    void TestForExpand();
+    int DecimaltoWebsafe(int originalDec);
+    void TestForUpperHex();
+    void OnconvertHEX();
+    void OnconvertRGB();
+    void OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
+    void UpdateMenu(CMenu* pMenu);
+    void ToggleOnTop(bool bSetStatusbartext);
+    void TestForWebsafe();
+    void SetupTaskBarButton();
+    void SetupTrayIcon();
+    void SetupSystemMenu();
+    void SetupWindowRects();
+    bool LoadPersistentVariables();
+    bool AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
+    void SetupStatusBar();
+    void SetStatusBarText(LPCTSTR statusText);
+    int RangeCheck(int icolorval);
+    void AdvanceColorHistory();
+    void GetHistoryColor(int Cindex);
+    HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
+    bool isWebsafeColor(int R, int G, int B);
+    CString GetTempFolder();
+    BOOL GetShellFolderPath(char* pShellFolder, char* pShellPath);
 
-    void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal);
+    void SetStatusBarText(UINT strResource, int toggleVal);
 
-    void CColorCopDlg::CalcColorPal();
-    double CColorCopDlg::shiftHue(double hue);
-    void CColorCopDlg::setSeedColor();
-    void CColorCopDlg::RGBtoHSL(double R, double G, double B);
-    void CColorCopDlg::HSLtoRGB(double H, double S, double L);
-    void CColorCopDlg::setupSwatches();
-    void CColorCopDlg::handleShifts();
-    void CColorCopDlg::printSwatch();
-    double CColorCopDlg::plusValue(double num);
-    double CColorCopDlg::minusValue(double num);
-    void CColorCopDlg::RecalcZoom();
-    void CColorCopDlg::FireOptionMenu();
-    PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
-    void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
-    void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue);
-    void CColorCopDlg::ChangeColorSpace(bool bRGB);
+    void CalcColorPal();
+    double shiftHue(double hue);
+    void setSeedColor();
+    void RGBtoHSL(double R, double G, double B);
+    void HSLtoRGB(double H, double S, double L);
+    void setupSwatches();
+    void handleShifts();
+    void printSwatch();
+    double plusValue(double num);
+    double minusValue(double num);
+    void RecalcZoom();
+    void FireOptionMenu();
+    PBITMAPINFO CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
+    void CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+    void UpdateCMYKFromRGB(int red, int green, int blue);
+    void ChangeColorSpace(bool bRGB);
 
     // Generated message map functions
     //{{AFX_MSG(CColorCopDlg) // NOLINT(whitespace/comments)
