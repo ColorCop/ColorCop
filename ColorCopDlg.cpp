@@ -2040,7 +2040,7 @@ void CColorCopDlg::ParseHTML(CString inst) {
     return;
 }
 
-BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath) {
+BOOL CColorCopDlg::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     // pShellFolder can be one of the following
     // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
     // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
@@ -2068,7 +2068,7 @@ BOOL CColorCopDlg::GetShellFolderPath(char* pShellFolder, char* pShellPath) {
 
 CString CColorCopDlg::GetTempFolder() {
     CString strTmpPath;
-    GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
+    GetShellFolderPath(_T("AppData"), strTmpPath.GetBuffer(MAX_PATH));
     strTmpPath.ReleaseBuffer();
     return strTmpPath;
 }

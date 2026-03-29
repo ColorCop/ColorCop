@@ -28,9 +28,8 @@ class CColorCopApp : public CWinApp {
     void CloseApplication();
     void LoadDefaultSettings();
     CString GetTempFolder();
-    BOOL GetShellFolderPath(char * pShellFolder, char * pShellPath);
+    BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
     void ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
-
     // multi mon
     void ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
 
