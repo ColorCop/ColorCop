@@ -180,7 +180,7 @@ class CColorCopDlg : public CDialog {
     HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
     bool isWebsafeColor(int R, int G, int B);
     CString GetTempFolder();
-    BOOL GetShellFolderPath(char* pShellFolder, char* pShellPath);
+    BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
 
     void SetStatusBarText(UINT strResource, int toggleVal);
 

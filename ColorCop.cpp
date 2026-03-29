@@ -91,7 +91,7 @@ bool CColorCopApp::InstanceRunning() {
     return false;
 }
 
-BOOL CColorCopApp::GetShellFolderPath(char* pShellFolder, char* pShellPath) {
+BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     // pShellFolder can be one of the following
     // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
     // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
