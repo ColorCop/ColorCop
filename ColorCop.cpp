@@ -107,7 +107,7 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
 
     if (rc == ERROR_SUCCESS) {
         rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
-                (BYTE *) pShellPath, &length);
+                reinterpret_cast<BYTE*>(pShellPath), &length);
         RegCloseKey(hkey);
     }
 

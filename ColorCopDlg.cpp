@@ -735,9 +735,9 @@ void CColorCopDlg::OnconvertRGB() {
     } else if (m_Appflags & RGBINT) {
         m_Hexcolor.Format(_T("%d,%d,%d"), m_Reddec, m_Greendec, m_Bluedec);
     } else if (m_Appflags & RGBFLOAT) {
-        r = (float)m_Reddec / 255.0f;
-        g = (float)m_Greendec / 255.0f;
-        b = (float)m_Bluedec / 255.0f;
+        r = static_cast<float>(m_Reddec) / 255.0f;
+        g = static_cast<float>(m_Greendec) / 255.0f;
+        b = static_cast<float>(m_Bluedec) / 255.0f;
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
@@ -895,7 +895,7 @@ void CColorCopDlg::setSeedColor() {
     OrigSwatch.C = m_Bluedec;
 
     // convert the color to HSL
-    RGBtoHSL((int) OrigSwatch.A, (int) OrigSwatch.B, (int) OrigSwatch.C);
+    RGBtoHSL(static_cast<int>(OrigSwatch.A), static_cast<int>(OrigSwatch.B), static_cast<int>(OrigSwatch.C));
 
     // set the swatch to the HSL values
     OrigSwatch.A = Hue;
@@ -907,44 +907,44 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
     if (S == 0) {
         r = g = b = S * 255.0;
     } else {
-        double h = (H - int(H)) * 6.0;
-        int caseH = (int) int(h);
+        double h = (H - static_cast<int>(H)) * 6.0;
+        int caseH = static_cast<int>(h);
 
-        double f = h - int(h);
+        double f = h - static_cast<int>(h);
         double p = L * (1.0 - S);
         double q = L * (1.0 - S * f);
         double t = L * (1.0 - (S * (1.0 - f)));
 
         switch (caseH) {
             case 0:
-            r = (int) (L * 255.0);
-            g = (int) (t * 255.0);
-            b = (int) (p * 255.0);
+            r = static_cast<int>((L) * 255.0);
+            g = static_cast<int>((t) * 255.0);
+            b = static_cast<int>((p) * 255.0);
             break;
             case 1:
-            r = (int) (q * 255.0);
-            g = (int) (L * 255.0);
-            b = (int) (p * 255.0);
+            r = static_cast<int>((q) * 255.0);
+            g = static_cast<int>((L) * 255.0);
+            b = static_cast<int>((p) * 255.0);
             break;
             case 2:
-            r = (int) (p * 255.0);
-            g = (int) (L * 255.0);
-            b = (int) (t * 255.0);
+            r = static_cast<int>((p) * 255.0);
+            g = static_cast<int>((L) * 255.0);
+            b = static_cast<int>((t) * 255.0);
             break;
             case 3:
-            r = (int) (p * 255.0);
-            g = (int) (q * 255.0);
-            b = (int) (L * 255.0);
+            r = static_cast<int>((p) * 255.0);
+            g = static_cast<int>((q) * 255.0);
+            b = static_cast<int>((L) * 255.0);
             break;
             case 4:
-            r = (int) (t * 255.0);
-            g = (int) (p * 255.0);
-            b = (int) (L * 255.0);
+            r = static_cast<int>((t) * 255.0);
+            g = static_cast<int>((p) * 255.0);
+            b = static_cast<int>((L) * 255.0);
             break;
             case 5:
-            r = (int) (L * 255.0);
-            g = (int) (p * 255.0);
-            b = (int) (q * 255.0);
+            r = static_cast<int>((L) * 255.0);
+            g = static_cast<int>((p) * 255.0);
+            b = static_cast<int>((q) * 255.0);
             break;
           }
     }
@@ -952,9 +952,9 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     double r, g, b;
-    r = (double)red / 255.0;
-    g = (double)green / 255.0;
-    b = (double)blue / 255.0;
+    r = static_cast<double>(red) / 255.0;
+    g = static_cast<double>(green) / 255.0;
+    b = static_cast<double>(blue) / 255.0;
     m_Cyan    = static_cast<int>(std::pow(1.0 - r, 45));
     m_Magenta = static_cast<int>(std::pow(1.0 - g, 45));
     m_Yellow  = static_cast<int>(std::pow(1.0 - b, 45));
@@ -992,14 +992,14 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     }
 
     if (MaxNum != 0) {
-        Sat = ((double) Diff) / ((double) MaxNum);
+        Sat = (static_cast<double>(Diff)) / (static_cast<double>(MaxNum));
     }
 
 
     // find the Hue
-    R_Dist = (double) (MaxNum - R) / (double) (Diff);
-    G_Dist = (double) (MaxNum - G) / (double) (Diff);
-    B_Dist = (double) (MaxNum - B) / (double) (Diff);
+    R_Dist = static_cast<double>((MaxNum) - R) / static_cast<double>((Diff));
+    G_Dist = static_cast<double>((MaxNum) - G) / static_cast<double>((Diff));
+    B_Dist = static_cast<double>((MaxNum) - B) / static_cast<double>((Diff));
 
     if (R == MaxNum) {
         Hue = B_Dist - G_Dist;
@@ -1054,8 +1054,8 @@ void CColorCopDlg::DisplayColor() {
         int palWidth = (colorpalrect.right - colorpalrect.left);
         int palHeight = (colorpalrect.bottom - colorpalrect.top);
 
-        m_nwide = (int) (palWidth / 6.0);
-        m_ntall = (int) (palHeight / 7.0);
+        m_nwide = static_cast<int>((palWidth) / 6.0);
+        m_ntall = static_cast<int>((palHeight) / 7.0);
 
         CRect insiderect = colorpalrect;
         insiderect.right = insiderect.left + m_nwide;
@@ -1593,8 +1593,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                     int iHeight = (point.y - RelativePoint.y);
 
                     // we need to add one since they are zero based
-                    double dWidth = (double)iWidth+1;
-                    double dHeight = (double)iHeight+1;
+                    double dWidth = static_cast<double>(iWidth+1);
+                    double dHeight = static_cast<double>(iHeight+1);
 
                     double dLength = std::sqrt(dWidth*dWidth + dHeight * dHeight);
                     double dAngle = std::atan2(dHeight, dWidth) * (180.0 / kPi);
@@ -2056,7 +2056,7 @@ BOOL CColorCopDlg::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
 
     if (rc == ERROR_SUCCESS) {
         rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
-                (BYTE *) pShellPath, &length);
+                reinterpret_cast<BYTE*>(pShellPath), &length);
     RegCloseKey(hkey);
     }
 
@@ -2228,7 +2228,7 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
 
         Min = __min(m_Reddec, m_Greendec);
         Min = __min(Min, m_Bluedec);
-        L = (int) (Min + Max) / 2;
+        L = static_cast<int>((Min) + Max) / 2;
 
         m_Reddec   = L;
         m_Greendec = L;
@@ -2558,9 +2558,9 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
             bluedec += GetBValue(crefxy);
         }
     }
-    reddec = (int) reddec / elements;  // average
-    greendec = (int) greendec / elements;  // average
-    bluedec = (int) bluedec / elements;  // average
+    reddec = static_cast<int>(reddec) / elements;  // average
+    greendec = static_cast<int>(greendec) / elements;  // average
+    bluedec = static_cast<int>(bluedec) / elements;  // average
 
     if (RGB(reddec, greendec, bluedec) != RGB(m_Reddec, m_Greendec, m_Bluedec)) {
         *m_R = reddec;
@@ -3163,7 +3163,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // Create the .BMP file.
     hf = CreateFile(pszFile,
                    GENERIC_READ | GENERIC_WRITE,
-                   (DWORD) 0,
+                   static_cast<DWORD>(0),
                    NULL,
                    CREATE_ALWAYS,
                    FILE_ATTRIBUTE_NORMAL,
@@ -3176,14 +3176,14 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     hdr.bfType = 0x4d42;        // 0x42 = "B" 0x4d = "M"
 
     // Compute the size of the entire file.
-    hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) +
+    hdr.bfSize = static_cast<DWORD>((sizeof(BITMAPFILEHEADER)) +
                  pbih->biSize + pbih->biClrUsed
                  * sizeof(RGBQUAD) + pbih->biSizeImage);
     hdr.bfReserved1 = 0;
     hdr.bfReserved2 = 0;
 
     // Compute the offset to the array of color indices.
-    hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
+    hdr.bfOffBits = static_cast<DWORD>(sizeof(BITMAPFILEHEADER)) +
                     pbih->biSize + pbih->biClrUsed
                     * sizeof (RGBQUAD);
 
@@ -3205,7 +3205,7 @@ void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBI
     // Copy the array of color indices into the .BMP file.
     dwTotal = cb = pbih->biSizeImage;
     hp = lpBits;
-    if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, NULL)) {
+    if (!WriteFile(hf, (LPSTR) hp, static_cast<int>(cb), (LPDWORD) &dwTmp, NULL)) {
         AfxMessageBox(_T("WriteFile failed"));
     }
     // Close the .BMP file.
