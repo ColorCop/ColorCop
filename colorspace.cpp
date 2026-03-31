@@ -71,9 +71,9 @@ class colorspace {
 // RGB2CMYK
 void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k) {
     double R, G, B;
-    R = (double) r;
-    G = (double) g;
-    B = (double) b;
+    R = static_cast<double>(r);
+    G = static_cast<double>(g);
+    B = static_cast<double>(b);
 
     R = 1.0 - (R / 255.0);
     G = 1.0 - (G / 255.0);
@@ -111,10 +111,10 @@ COLORREF CMYK2RGB(BYTE c, BYTE m, BYTE y, BYTE k) {
     double R, G, B;
     double C, M, Y, K;
 
-    C = (double) c;
-    M = (double) m;
-    Y = (double) y;
-    K = (double) k;
+    C = static_cast<double>(c);
+    M = static_cast<double>(m);
+    Y = static_cast<double>(y);
+    K = static_cast<double>(k);
 
     C = C / 255.0;
     M = M / 255.0;
