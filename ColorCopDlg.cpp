@@ -17,22 +17,19 @@
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
 
-// Windows headers
-#include <windows.h>
+// Windows SDK headers (explicit APIs used in this file)
 #include <commctrl.h>
 #include <htmlhelp.h>
 
 // C++ standard library headers
-#include <cstdint>
-#include <random>
-#include <cmath>     // pow, sqrt, atan (or atan2)
-#include <cstdlib>   // strtoul, abs (int)
-#include <cstring>   // memcpy
+#include <algorithm>  // std::min, std::max
+#include <random>     // std::mt19937, std::uniform_int_distribution
+#include <cstdlib>    // strtoul, abs
+#include <cstring>    // memcpy
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
-constexpr double kPi = 3.14159265358979323846;
 
 class CAboutDlg : public CDialog {
  public:
@@ -959,7 +956,7 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     m_Magenta = static_cast<int>(std::pow(1.0 - g, 45));
     m_Yellow  = static_cast<int>(std::pow(1.0 - b, 45));
 
-    m_Black = __min(__min(m_Cyan, m_Magenta), m_Yellow);
+    m_Black = std::min({ m_Cyan, m_Magenta, m_Yellow });
 
     m_Cyan = m_Cyan - m_Black;
     m_Magenta = m_Magenta - m_Black;
@@ -975,10 +972,9 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     /////////////////////////////////////
     // get min, max, and diff
     //
-    MinNum = __min(R, __min(G, B));        // min
-    MaxNum = __max(R, __max(G, B));        // max
-
-    Diff = (MaxNum - MinNum);            // diff
+    MinNum = std::min({ R, G, B });
+    MaxNum = std::max({ R, G, B });
+    Diff = (MaxNum - MinNum);
 
     if (Diff == 0) {    // this is a greyscale color
         Diff = 5.0;    // since greyscale colors don't have compliments,
@@ -995,7 +991,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
         Sat = (static_cast<double>(Diff)) / (static_cast<double>(MaxNum));
     }
 
-
     // find the Hue
     R_Dist = static_cast<double>((MaxNum) - R) / static_cast<double>((Diff));
     G_Dist = static_cast<double>((MaxNum) - G) / static_cast<double>((Diff));
@@ -1009,7 +1004,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
         Hue = 4.0 + G_Dist - R_Dist;
     }
     Hue = Hue / 6.0;
-
 
     if (Hue < 0.0) {
         Hue = (Hue + 1.0);
@@ -2223,11 +2217,9 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
         // which is why the image appears as a grayscale.
 
         // formula: L = {Max(R, G, B) + Min(R, G, B)}/2;
-        Max = __max(m_Reddec, m_Greendec);
-        Max = __max(Max, m_Bluedec);
+        Max = std::max({ m_Reddec, m_Greendec, m_Bluedec });
+        Min = std::min({ m_Reddec, m_Greendec, m_Bluedec });
 
-        Min = __min(m_Reddec, m_Greendec);
-        Min = __min(Min, m_Bluedec);
         L = static_cast<int>((Min) + Max) / 2;
 
         m_Reddec   = L;
