@@ -29,7 +29,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [Files]
-Source: "..\readme.txt"; DestDir: "{app}"
+Source: "..\ReadMe.txt"; DestDir: "{app}"
 Source: "..\Release\ColorCop.exe"; DestDir: "{app}"
 Source: "..\packaging\ColorCop.chm"; DestDir: "{app}"
 Source: "..\LICENSE.txt"; DestDir: "{app}"
