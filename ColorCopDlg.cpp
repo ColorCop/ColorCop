@@ -341,18 +341,14 @@ BOOL CColorCopDlg::OnInitDialog() {
     // set focus on the eyedropper so there is no cursor
     m_EyeLoc.SetFocus();
 
-
     // user wants to minimize on app start
-    if (m_Appflags & MinimizeonStart) {
+    if (m_Appflags & MinimizeOnStart) {
         m_bvisible = true;
         bMinimized = true;
         ShowWindow(SW_MINIMIZE);
 
         SetupTaskBarButton();
         SetupTrayIcon();
-
-
-
     } else if (m_Appflags & SETCURSORONEYEDROP) {
         m_bvisible = true;
         // don't move the cursor if the app is minimized
@@ -589,7 +585,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam) {
 }
 
 void CColorCopDlg::SetupTaskBarButton() {
-    if ((bMinimized) && (m_Appflags & MimimizetoTray )) {
+    if ((bMinimized) && (m_Appflags & MinimizetoTray )) {
         // hide the tray icon if it belongs in the system tray
         ShowWindow(SW_HIDE);
         m_bvisible = false;
@@ -601,7 +597,7 @@ void CColorCopDlg::SetupTaskBarButton() {
 }
 
 void CColorCopDlg::SetupTrayIcon() {
-    if (bMinimized && (pTrayIcon_ == 0) && (m_Appflags & MimimizetoTray)) {
+    if (bMinimized && (pTrayIcon_ == 0) && (m_Appflags & MinimizetoTray)) {
         CString strAppName;
         strAppName.LoadString(IDS_APPLICATION_NAME);
 
@@ -2390,9 +2386,9 @@ void CColorCopDlg::TestForExpand() {
 }
 
 void CColorCopDlg::OnOptionsMinimizetosystray() {
-    m_Appflags ^= MimimizetoTray;
+    m_Appflags ^= MinimizetoTray;
 
-    if (m_Appflags & MimimizetoTray)
+    if (m_Appflags & MinimizetoTray)
         SetStatusBarText(IDS_MINIMIZETOTRAY, 1);
     else
         SetStatusBarText(IDS_MINIMIZETOTRAY, 2);
@@ -2400,7 +2396,7 @@ void CColorCopDlg::OnOptionsMinimizetosystray() {
 }
 
 void CColorCopDlg::OnUpdateOptionsMinimizetosystray(CCmdUI* pCmdUI) {
-    pCmdUI->SetCheck(m_Appflags & MimimizetoTray);
+    pCmdUI->SetCheck(m_Appflags & MinimizetoTray);
 }
 
 void CColorCopDlg::OnOptionsUppercasehex() {
@@ -2978,9 +2974,9 @@ void CColorCopDlg::OnUpdatePopupApplicationEasymove(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::OnPopupApplicationMinimizetosystemtrayonstart() {
-    m_Appflags ^= MinimizeonStart;
+    m_Appflags ^= MinimizeOnStart;
 
-    if (m_Appflags & MinimizeonStart) {
+    if (m_Appflags & MinimizeOnStart) {
         SetStatusBarText(IDS_MINIMIZEONSTART, 1);
     } else {
         SetStatusBarText(IDS_MINIMIZEONSTART, 2);
@@ -2988,7 +2984,7 @@ void CColorCopDlg::OnPopupApplicationMinimizetosystemtrayonstart() {
 }
 
 void CColorCopDlg::OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* pCmdUI) {
-    pCmdUI->SetCheck(m_Appflags & MinimizeonStart);
+    pCmdUI->SetCheck(m_Appflags & MinimizeOnStart);
 }
 
 
