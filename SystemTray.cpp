@@ -106,7 +106,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
     m_tnd.uCallbackMessage = uCallbackMessage;
 
-    _tcscpy(m_tnd.szTip, szToolTip);
+    _tcscpy_s(m_tnd.szTip, szToolTip);
 
     // Set the tray icon
     VERIFY(m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd));
@@ -196,7 +196,7 @@ BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip) {
     if (!m_bEnabled) return FALSE;
 
     m_tnd.uFlags = NIF_TIP;
-    _tcscpy(m_tnd.szTip, pszTip);
+    _tcscpy_s(m_tnd.szTip, pszTip);
 
     return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
