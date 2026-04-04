@@ -432,7 +432,6 @@ void CColorCopDlg::SetupWindowRects() {
     ::GetWindowRect(temphandle, &buttonrect);
     CWnd::ScreenToClient(&buttonrect);
 
-
     // Setup Q1rect for color history
     CWnd::GetDlgItem(IDC_Q1, &temphandle);
     ::GetWindowRect(temphandle, &Q1rect);
@@ -476,7 +475,7 @@ void CColorCopDlg::SetupWindowRects() {
     HWND maghand;
     CWnd::GetDlgItem(IDC_MagWindow, &maghand);
     ::GetWindowRect(maghand, &magrect);
-    CWnd::ScreenToClient(magrect);
+    CWnd::ScreenToClient(&magrect);
 
     RECT exprect;
     HWND expandbutton;
@@ -737,7 +736,6 @@ void CColorCopDlg::OnconvertRGB() {
     }
 
     // Only apply uppercase formatting when NOT in Visual C++ hex mode.
-    // // VC+ mode requires lowercase hex, so skip TestForUpperHex() in that case.
     if ((m_Appflags & ModeVisualC) == 0) {
         TestForUpperHex();
     }
@@ -772,10 +770,10 @@ void CColorCopDlg::OnconvertHEX() {
 
     // --- Optional prefix removal ---
     if (m_Appflags & OmitPound) {
-        if ((m_Appflags & ModeHTML) && m_Hexcolor.Left(1) == "#") {
+        if ((m_Appflags & ModeHTML) && m_Hexcolor.Left(1) == _T("#")) {
             m_Hexcolor.Delete(0);
         }
-        if ((m_Appflags & ModeDelphi) && m_Hexcolor.Left(1) == "$") {
+        if ((m_Appflags & ModeDelphi) && m_Hexcolor.Left(1) == _T("$")) {
             m_Hexcolor.Delete(0);
         }
     }
@@ -1645,52 +1643,39 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
         // go redraw... but don't erase or it will flicker
         return;
     } else {
-        // not magnifying oreyedropping
+        // not magnifying or eyedropping
 
         CWnd* pWnd = ChildWindowFromPoint(point);
         if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-
         } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
             //  left mouse button down on the magnifier
-
             SetCursor(m_hHandCursor);
-
-
         } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) {
-        // left mouse button down on magnification window
-        // we should get the color, because we can.
-        // it's in the client window.
-
-
-        //    m_EyeLoc.SetIcon(m_hBlank);
+            // left mouse button down on magnification window
             SetCursor(m_hEyeCursor);
-
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
             SetCursor(m_hEyeCursor);
-
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-    } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
+        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
+        }
     }
-    }
-
     CDialog::OnMouseMove(nFlags, point);
 }
 
@@ -1703,7 +1688,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
         ::DeleteObject(hZoomBitmap);
         hZoomBitmap = NULL;
     }
-            hdc = ::GetDC(NULL);        // dEVICEcONEXT to the whole desktop
+    hdc = ::GetDC(NULL);        // device context to the whole desktop
 
     hdcMem = ::CreateCompatibleDC(hdc);
     hdcZoomMem = ::CreateCompatibleDC(hdc);
@@ -1715,20 +1700,15 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
     ::SelectObject(hdcZoomMem, hZoomBitmap);
     ::SetStretchBltMode(hdc, COLORONCOLOR);
 
-
     int magwidth = 19;        // default heights
     int magheight = 15;
-
-
-
-    if (m_MagLevel <= 0)
+    if (m_MagLevel <= 0) {
         m_MagLevel = 1;
-    else if (m_MagLevel >= 17)
+    } else if (m_MagLevel >= 17) {
         m_MagLevel = 16;
+    }
     magwidth = magrect.Width() / m_MagLevel;
     magheight = magrect.Height() / m_MagLevel;
-
-
 
     ::BitBlt(hdcZoomMem,            // destination DC
               0, 0,                // destination upper left (always 0, 0)
@@ -2312,8 +2292,10 @@ void CColorCopDlg::FigurePound() {
         }
     } else {
         if (m_Appflags & ModeHTML) {
-            if (m_Hexcolor.Left(1) != _T("#"))
-                m_Hexcolor = _T("#") + m_Hexcolor;        // add the # if it exsits
+            // if the user is switching to omit the pound, we need to add it if it doesn't exist
+            if (m_Hexcolor.Left(1) != _T("#")) {
+                m_Hexcolor = _T("#") + m_Hexcolor;
+            }
         } else if (m_Appflags & ModeDelphi) {
             if (m_Hexcolor.Left(1) != _T("$"))
                 m_Hexcolor = _T("$") + m_Hexcolor;
@@ -2331,7 +2313,6 @@ BOOL CAboutDlg::OnInitDialog() {
     CDialog::OnInitDialog();
 
     // setup the hyperlinks
-
     m_link.SetLink(TRUE)
         .SetTextColor(RGB(0, 0, 255))
         .SetFontUnderline(TRUE)
@@ -2358,10 +2339,6 @@ void CColorCopDlg::OnExpandDialog() {
 void CColorCopDlg::TestForExpand() {
     RECT currect;
     GetWindowRect(&currect);
-
-    // usr small for both
-    //    smWidth = lgWidth;
-    //    smHeight = lgHeight;
 
     if (m_Appflags & ExpandedDialog) {
         currect.right = currect.left + lgWidth;
@@ -2566,7 +2543,7 @@ void CColorCopDlg::OnPopupApplicationExpandeddialog() {
 }
 
 void CColorCopDlg::OnUpdatePopupApplicationExpandeddialog(CCmdUI* pCmdUI) {
-        pCmdUI->SetCheck(m_Appflags & ExpandedDialog);
+    pCmdUI->SetCheck(m_Appflags & ExpandedDialog);
 }
 
 void CColorCopDlg::OnUpdateViewHtmlhexmode(CCmdUI* pCmdUI) {
@@ -2712,7 +2689,6 @@ void CColorCopDlg::OnPopupModeVisualchex() {
     OnCopytoclip();
 }
 
-
 void CColorCopDlg::OnPopupModeClarionhex() {
     SetStatusBarText(IDS_MODE_CLARION, 1);
     if (m_Appflags ^ ModeClarion) {
@@ -2728,7 +2704,6 @@ void CColorCopDlg::OnPopupModeClarionhex() {
     OnconvertRGB();
     OnCopytoclip();
 }
-
 
 void CColorCopDlg::OnPopupRestore() {
     m_bvisible = true;
