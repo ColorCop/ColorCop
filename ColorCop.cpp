@@ -102,7 +102,7 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     HKEY hkey;
 
     rc = RegOpenKeyEx(HKEY_CURRENT_USER,
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
+        _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"),
         0, KEY_READ, &hkey);
 
     if (rc == ERROR_SUCCESS) {
@@ -121,7 +121,7 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
 CString CColorCopApp::GetTempFolder() {
     CString strTmpPath;
 
-    GetShellFolderPath("AppData", strTmpPath.GetBuffer(MAX_PATH));
+    GetShellFolderPath(_T("AppData"), strTmpPath.GetBuffer(MAX_PATH));
     strTmpPath.ReleaseBuffer();
 
     return strTmpPath;

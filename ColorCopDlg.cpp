@@ -255,7 +255,7 @@ BOOL CColorCopDlg::OnInitDialog() {
     TestForExpand();    // do not call this before SetupWindowRects();
 
     if (!m_ToolTip.Create(this)) {
-        TRACE0(_T("Unable to create a tool tip obj"));
+        TRACE(_T("Unable to create a tool tip obj"));
     } else {
         // Add tool tips to the controls, either by hard coded string
         // or using the string table resource
@@ -1944,15 +1944,17 @@ void CColorCopDlg::ParseDelphi(CString inst) {
     }
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
-    inst.Delete(0);
-    inst.Delete(0);
-    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
-    inst.Delete(0);
-    inst.Delete(0);
-    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
+    m_Bluedec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
 
-    UpdateData(0);
+    inst.Delete(0);
+    inst.Delete(0);
+    m_Greendec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+
+    inst.Delete(0);
+    inst.Delete(0);
+    m_Reddec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+
+    UpdateData(FALSE);
 
     inst.FreeExtra();
     OnconvertHEX();
@@ -1969,18 +1971,21 @@ void CColorCopDlg::ParseClarion(CString inst) {
         return;
     }
 
-    if (inst.Left(1) == '0') {
+    if (inst.Left(1) == _T("0")) {
         inst.Delete(0);
     }
-    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
-    inst.Delete(0);
-    inst.Delete(0);
-    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
-    inst.Delete(0);
-    inst.Delete(0);
-    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
 
-    UpdateData(0);
+    m_Bluedec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+    inst.Delete(0);
+    inst.Delete(0);
+
+    m_Greendec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+    inst.Delete(0);
+    inst.Delete(0);
+
+    m_Reddec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+
+    UpdateData(FALSE);
 
     inst.FreeExtra();
     OnconvertHEX();
@@ -1991,22 +1996,24 @@ void CColorCopDlg::ParseClarion(CString inst) {
 void CColorCopDlg::ParseHTML(CString inst) {
     // the user is typing in HTML hex codes
     // get the RGB values
-
-    if (inst.Left(1) == '#') {
+    if (inst.Left(1) == _T("#")) {
         inst.Delete(0);
     }
 
-    m_Reddec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
+    m_Reddec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
 
     inst.Delete(0);
     inst.Delete(0);
-    m_Greendec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
+    m_Greendec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+
     inst.Delete(0);
     inst.Delete(0);
-    m_Bluedec = static_cast<int>(std::strtoul(inst.Left(2), NULL, 16));
-    UpdateData(0);
+    m_Bluedec = static_cast<int>(_tcstoul(inst.Left(2), nullptr, 16));
+
+    UpdateData(FALSE);
 
     OnconvertHEX();
+
     return;
 }
 
@@ -2021,7 +2028,7 @@ BOOL CColorCopDlg::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     HKEY hkey;
 
     rc = RegOpenKeyEx(HKEY_CURRENT_USER,
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
+        _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"),
         0, KEY_READ, &hkey);
 
     if (rc == ERROR_SUCCESS) {
