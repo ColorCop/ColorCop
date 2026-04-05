@@ -241,122 +241,118 @@ END_MESSAGE_MAP()
 // CColorCopDlg message handlers
 
 BOOL CColorCopDlg::OnInitDialog() {
-    CDialog::OnInitDialog();
+  CDialog::OnInitDialog();
 
-    SetupSystemMenu();            // add about and always on top to the system menu
+  SetupSystemMenu(); // add about and always on top to the system menu
 
-    bool FoundDatFile = LoadPersistentVariables();
+  bool FoundDatFile = LoadPersistentVariables();
+  ToggleOnTop(false); // make always on top, unless save file said not to
 
-    ToggleOnTop(false);  // make always on top, unless save file said not to
+  SetupWindowRects();
+  SetupStatusBar();
+  TestForExpand(); // do not call this before SetupWindowRects();
 
-    SetupWindowRects();
-    SetupStatusBar();
+  if (!m_ToolTip.Create(this)) {
+    TRACE0(_T("Unable to create a tool tip obj"));
+  } else {
+    m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
+    m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
+    m_ToolTip.Activate(TRUE);
+  }
 
-    TestForExpand();    // do not call this before SetupWindowRects();
+  nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
 
-    if (!m_ToolTip.Create(this)) {
-        TRACE(_T("Unable to create a tool tip obj"));
-    } else {
-        // Add tool tips to the controls, either by hard coded string
-        // or using the string table resource
-        m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
-        m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
-        m_ToolTip.Activate(TRUE);
-    }
+  // application variables
+  m_isMagPlusDown = m_isMagMinusDown = bOldClrExist = FALSE;
+  m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
+  m_OldRed = m_OldBlue = m_OldGreen = 0;
+  bMinimized_ = false;
+  pTrayIcon_ = nullptr;
 
-    nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
+  // small icon
+  hIcon_ = (HICON)::LoadImage(
+      AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
+      GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
 
-    // application variables
-    m_isMagPlusDown = m_isMagMinusDown = bOldClrExist = FALSE;
-    m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
-    m_OldRed = m_OldBlue = m_OldGreen = 0;
-    bMinimized_ = false;
-    pTrayIcon_ = 0;
+  // large icon
+  m_hIcon = (HICON)::LoadImage(
+      AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
+      GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), 0);
 
-    // small one
-    hIcon_ = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
-        GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), NULL);
-    // large one
-    m_hIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON,
-        GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), NULL);
+  SetIcon(hIcon_, FALSE); // small icon 16x16
+  SetIcon(m_hIcon, TRUE); // big icon 32x32
 
+  bRelativePosition = false;
+  m_MagDrop = false;
 
-    SetIcon(hIcon_, FALSE);    // small icon 16x16
-    SetIcon(m_hIcon, TRUE);    // big icon 32x32
+  //
+  // -------- Centralized pApp handling --------
+  //
+  CWinApp *pApp = AfxGetApp();
+  if (pApp) {
+    m_hMagCursor = pApp->LoadCursor(IDC_MEDIUM_MAGNIFY);
+    m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
+    m_hMoveCursor = pApp->LoadCursor(IDC_CURMOVE);
+    m_hBlank = pApp->LoadIcon(IDI_BLANK);
+    m_hStandardCursor = pApp->LoadStandardCursor(IDC_ARROW);
 
-
-    bRelativePosition = false;
-    m_MagDrop = false;
-
-    // PreLoad Cursors
-    CWinApp* pApp = AfxGetApp();    // get a pointer to the one and only CWinApp
-
-    if (pApp) {
-        m_hMagCursor = pApp->LoadCursor(IDC_MEDIUM_MAGNIFY);
-
-        m_Magnifier.SetIcon(m_hMagCursor);
-        m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
-        m_hMoveCursor = pApp->LoadCursor(IDC_CURMOVE);
-        m_hBlank = pApp->LoadIcon(IDI_BLANK);
-        m_hStandardCursor = pApp->LoadStandardCursor(IDC_ARROW);
-    }
-
-    // upgrade case -- make sure there is a color space set
-    if ((!(m_Appflags & SpaceCMYK)) && (!(m_Appflags & SpaceRGB))) {
-        m_Appflags |= SpaceRGB;
-    } else if (m_Appflags & SpaceCMYK) {
-        ChangeColorSpace(false);
-    } else {  // rgb
-        ChangeColorSpace(true);
-    }
+    m_Magnifier.SetIcon(m_hMagCursor);
 
     if (m_Appflags & USECROSSHAIR) {
-            CWinApp* pApp = AfxGetApp();
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
-
-
-
-        m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
-        m_EyeLoc.SetIcon(m_hEyeCursor);                        // location cursor
-
+      m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
+      m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
+      m_EyeLoc.SetIcon(m_hEyeCursor);
     } else {
-        m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);    // eyedropper cursor
+      m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);
 
-        if (m_Appflags & Sampling5x5) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
-        } else if (m_Appflags & Sampling3x3) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-        } else {  // 1x1 or multi
-            m_EyeLoc.SetIcon(m_hEyeCursor);                    // location cursor
-        }
+      if (m_Appflags & Sampling5x5) {
+        m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
+      } else if (m_Appflags & Sampling3x3) {
+        m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
+      } else {
+        m_EyeLoc.SetIcon(m_hEyeCursor);
+      }
     }
+  }
+  //
+  // -------------------------------------------
+  //
 
-    m_MagLevel = 5;
-    m_FloatPrecision = 2;
-    OnconvertRGB();
-    CalcColorPal();
-    OnCopytoclip();
+  // upgrade case -- make sure there is a color space set
+  if ((!(m_Appflags & SpaceCMYK)) && (!(m_Appflags & SpaceRGB))) {
+    m_Appflags |= SpaceRGB;
+  } else if (m_Appflags & SpaceCMYK) {
+    ChangeColorSpace(false);
+  } else {
+    ChangeColorSpace(true);
+  }
 
+  m_MagLevel = 5;
+  m_FloatPrecision = 2;
+  OnconvertRGB();
+  CalcColorPal();
+  OnCopytoclip();
 
-    // set focus on the eyedropper so there is no cursor
-    m_EyeLoc.SetFocus();
+  // set focus on the eyedropper so there is no cursor
+  m_EyeLoc.SetFocus();
 
-    // user wants to minimize on app start
-    if (m_Appflags & MinimizeOnStart) {
-        m_bvisible = true;
-        bMinimized = true;
-        ShowWindow(SW_MINIMIZE);
+  // user wants to minimize on app start
+  if (m_Appflags & MinimizeOnStart) {
+    m_bvisible = true;
+    bMinimized = true;
+    ShowWindow(SW_MINIMIZE);
 
-        SetupTaskBarButton();
-        SetupTrayIcon();
-    } else if (m_Appflags & SETCURSORONEYEDROP) {
-        m_bvisible = true;
-        // don't move the cursor if the app is minimized
-        CRect eyerect;
-        m_EyeLoc.GetWindowRect(&eyerect);
-        SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
-    }
-    return FALSE;  // return TRUE  unless you set the focus to a control
+    SetupTaskBarButton();
+    SetupTrayIcon();
+  } else if (m_Appflags & SETCURSORONEYEDROP) {
+    m_bvisible = true;
+
+    CRect eyerect;
+    m_EyeLoc.GetWindowRect(&eyerect);
+    SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
+  }
+
+  return FALSE; // return TRUE unless you set the focus to a control
 }
 
 void CColorCopDlg::SetupSystemMenu() {
