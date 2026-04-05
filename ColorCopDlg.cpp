@@ -2239,13 +2239,18 @@ void CColorCopDlg::OnUpdateColorSnaptowebsafe(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::TestForWebsafe() {
-    // websafe colors are multiples of 51
+    // When Snap‑to‑Websafe is enabled, preserve the user's original RGB values
+    // so they can be restored if the user later disables snapping. Web‑safe
+    // colors are defined as multiples of 51 (0, 51, 102, 153, 204, 255).
     if (m_Appflags & SnaptoWebsafe) {
-        bOldClrExist = true;    // let the other function know we have an old color
-        m_OldRed   = m_Reddec;    // backup the actual values incase they unsnap
-        m_OldGreen = m_Greendec;
-        m_OldBlue  = m_Bluedec;
+        bOldClrExist = true;
 
+        // Backup the actual RGB values before snapping
+        m_OldRed   = static_cast<std::uint8_t>(m_Reddec);
+        m_OldGreen = static_cast<std::uint8_t>(m_Greendec);
+        m_OldBlue  = static_cast<std::uint8_t>(m_Bluedec);
+
+        // Snap each component to the nearest web‑safe value
         m_Reddec   = DecimaltoWebsafe(m_Reddec);
         m_Greendec = DecimaltoWebsafe(m_Greendec);
         m_Bluedec  = DecimaltoWebsafe(m_Bluedec);
@@ -2253,21 +2258,25 @@ void CColorCopDlg::TestForWebsafe() {
 }
 
 int CColorCopDlg::DecimaltoWebsafe(int originalDec) {
-    // this function takes an int and converts
-    // it to the closest web safe int
+    // Convert an RGB component (0–255) to the nearest web‑safe value.
+    // Web‑safe colors use steps of 51: {0, 51, 102, 153, 204, 255}.
+    // We compute how far 'originalDec' is from the nearest step and
+    // round down if the offset is small, otherwise round up.
     //
-    int offset = originalDec % WEBSAFE_STEP;
+    // Example: 128 → offset 128 % 51 = 26 → round up to 153.
+
+    const int offset = originalDec % WEBSAFE_STEP;
 
     if (offset == 0) {
-        // already a web safe int
-        return (originalDec);
-    } else if (offset < 25) {
-        // go down one
-        return (originalDec - offset);
-    } else {
-        // jump up one
-        return (originalDec + (WEBSAFE_STEP - offset));
+        // Already exactly on a web‑safe boundary
+        return originalDec;
     }
+
+    // If we're closer to the lower boundary (offset < 25), round down.
+    // Otherwise, round up to the next 51‑multiple.
+    return (offset < WEBSAFE_STEP / 2)
+        ? (originalDec - offset)
+        : (originalDec + (WEBSAFE_STEP - offset));
 }
 
 void CColorCopDlg::OnOptionsOmitsymbol() {
