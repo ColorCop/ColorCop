@@ -137,17 +137,19 @@ void CLabel::OnTimer(UINT nIDEvent) {
     switch (m_Type) {
         case Text:
             if (m_bState) {
-                SetWindowText("");
+                SetWindowText(_T(""));
             } else {
                 SetWindowText(m_strText);
             }
         break;
+
         case Background:
-            InvalidateRect(NULL, FALSE);
-            UpdateWindow();
+            Invalidate(FALSE);  // invalidate entire client area
+        break;
+
+        default:
         break;
     }
-
     CStatic::OnTimer(nIDEvent);
 }
 
@@ -166,7 +168,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point) {
     CString strLink;
 
     GetWindowText(strLink);
-    ShellExecute(NULL, "open", strLink, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(NULL, _T("open"), strLink, NULL, NULL, SW_SHOWNORMAL);
 
     CStatic::OnLButtonDown(nFlags, point);
 }
