@@ -52,14 +52,14 @@ CLabel& CLabel::SetFontBold(BOOL bBold) {
 }
 
 CLabel& CLabel::SetFontUnderline(BOOL bSet) {
-    m_lf.lfUnderline = bSet;
+    m_lf.lfUnderline = bSet ? 1 : 0;
     ReconstructFont();
     RedrawWindow();
     return *this;
 }
 
 CLabel& CLabel::SetFontItalic(BOOL bSet) {
-    m_lf.lfItalic = bSet;
+    m_lf.lfItalic = bSet ? 1 : 0;
     ReconstructFont();
     RedrawWindow();
     return *this;
