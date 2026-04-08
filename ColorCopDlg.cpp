@@ -253,7 +253,7 @@ BOOL CColorCopDlg::OnInitDialog() {
   TestForExpand();  // do not call this before SetupWindowRects();
 
   if (!m_ToolTip.Create(this)) {
-    TRACE0(_T("Unable to create a tool tip obj"));
+    TRACE(_T("Unable to create a tool tip obj"));
   } else {
     m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
     m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
@@ -1543,7 +1543,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                         m_Greendec = GetGValue(crefxy);
                         m_Bluedec  = GetBValue(crefxy);
 
-
                         UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
                         // Black   = minimum(1-Red, 1-Green, 1-Blue)
                         // Cyan    = (1-Red-Black)/(1-Black)
@@ -1569,7 +1568,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
             ::ReleaseDC(NULL, hdc);    // free up the memory
 
             CString strStatus = "", strWebSafe = "";
-
 
                 if (bRelativePosition)  {
                     // L (Length line = hypotenuse) = SQRT(W² + H²) (show it to 1 decimal)
