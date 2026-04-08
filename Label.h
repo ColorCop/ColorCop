@@ -32,7 +32,6 @@ class CLabel : public CStatic {
     void ReconstructFont();
     COLORREF    m_crText;
     HBRUSH        m_hBrush;
-    HBRUSH        m_hwndBrush;
     LOGFONT        m_lf;
     CFont        m_font;
     CString        m_strText;

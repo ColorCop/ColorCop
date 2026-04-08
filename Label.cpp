@@ -23,10 +23,7 @@ CLabel::CLabel() {
     m_bLink = TRUE;
     m_hCursor = NULL;
     m_Type = None;
-
-    m_hwndBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 }
-
 
 CLabel::~CLabel() {
     m_font.DeleteObject();
@@ -113,12 +110,6 @@ HBRUSH CLabel::CtlColor(CDC* pDC, UINT nCtlColor) {
         pDC->SelectObject(&m_font);
         pDC->SetTextColor(m_crText);
         pDC->SetBkMode(TRANSPARENT);
-    }
-
-
-    if (m_Type == Background) {
-        if (!m_bState)
-            return m_hwndBrush;
     }
 
     return m_hBrush;

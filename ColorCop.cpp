@@ -163,38 +163,31 @@ BOOL CColorCopApp::InitApplication() {
 }
 
 void CColorCopApp::LoadDefaultSettings() {
-    // This function is called when we can't find a .DAT file
-    // with the persistent variables, or it was an old dat file.
-    // Set the default settings and custom colors.
+  // Called when no valid .DAT file exists. Load all default settings.
 
-    dlg.m_Reddec   = GetRValue(kDefaultSeedColor);
-    dlg.m_Greendec = GetGValue(kDefaultSeedColor);
-    dlg.m_Bluedec  = GetBValue(kDefaultSeedColor);
+  // Seed color
+  const COLORREF seed = kDefaultSeedColor;
+  dlg.m_Reddec = GetRValue(seed);
+  dlg.m_Greendec = GetGValue(seed);
+  dlg.m_Bluedec = GetBValue(seed);
 
-    dlg.m_Appflags = 0;
-    dlg.m_Appflags |= AlwaysOnTop;
-    dlg.m_Appflags |= AutoCopytoClip;
-    dlg.m_Appflags |= ModeHTML;
-    dlg.m_Appflags |= EasyMove;
-    dlg.m_Appflags |= Sampling1;
-    dlg.m_Appflags |= ExpandedDialog;
-    dlg.m_Appflags |= MultipleInstances;
-    dlg.m_Appflags |= MAGWHILEEYEDROP;
-    dlg.m_Appflags |= SpaceRGB;
+  // Default app flags
+  dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
+                   Sampling1 | ExpandedDialog | MultipleInstances |
+                   MAGWHILEEYEDROP | SpaceRGB;
 
-    dlg.WinLocX = kDefaultWinLocX;
-    dlg.WinLocY = kDefaultWinLocY;
+  // Window defaults
+  dlg.WinLocX = kDefaultWinLocX;
+  dlg.WinLocY = kDefaultWinLocY;
+  dlg.m_iSamplingOffset = kDefaultSamplingOffset;
 
-    dlg.m_iSamplingOffset = kDefaultSamplingOffset;
+  // Custom colors
+  for (int i = 0; i < kCustomColorCount; ++i)
+    dlg.CustColorBank[i] = kDefaultCustomColor;
 
-    // Set all custom color blocks to the default custom color
-    for (int i = 0; i < kCustomColorCount; ++i) {
-        dlg.CustColorBank[i] = kDefaultCustomColor;
-    }
-
-    for (int i = 0; i < kHistoryCount; ++i) {
-        dlg.ColorHistory[i] = kDefaultColorHistory[i];
-    }
+  // History colors
+  for (int i = 0; i < kHistoryCount; ++i)
+    dlg.ColorHistory[i] = kDefaultColorHistory[i];
 }
 
 void CColorCopApp::CloseApplication() {
@@ -233,6 +226,8 @@ void CColorCopApp::Serialize(CArchive& ar) {
 
             ar << dlg.m_iSamplingOffset;
         } catch (CArchiveException& e) {
+            TRACE("Archive exception caught. Cause = %d, File = %s\n", e.m_cause,
+                  e.m_strFileName ? e.m_strFileName : "(unknown)");
             AfxMessageBox(IDS_ERROR_SAVING);
         }
     } else {
@@ -254,6 +249,8 @@ void CColorCopApp::Serialize(CArchive& ar) {
             }
             ar >> dlg.m_iSamplingOffset;
         } catch (CArchiveException& e) {
+            TRACE("Archive exception caught. Cause = %d, File = %s\n", e.m_cause,
+                  e.m_strFileName ? e.m_strFileName : "(unknown)");
             AfxMessageBox(IDS_ERROR_LOADING);
         }
     }
