@@ -6,15 +6,7 @@
 *.filters       linguist-generated
 *.sln           linguist-generated
 
-# Exclude Windows resource files from language analysis
+# Exclude Windows resource files from language stats
 *.rc            linguist-generated
 *.rc2           linguist-generated
 Res/**          linguist-generated
-
-# Exclude packaging/installer scripts from stats
-installer/**    linguist-documentation
-packaging/**    linguist-documentation
-
-# Ignore build/lint scripts for classification
-*.cmd           linguist-generated
-*.sh            linguist-generated
