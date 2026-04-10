@@ -1003,7 +1003,6 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
 void CColorCopDlg::DisplayColor() {
     CDC *pDC = GetDC();
 
-    int soff = 0;
     CBrush blackbrush;    // create a black brush
     blackbrush.CreateSolidBrush(0x00000000);
 
@@ -1084,7 +1083,6 @@ void CColorCopDlg::DisplayColor() {
         pDC->LineTo(magminus.right - 2, magminus.top +  (magminus.bottom - magminus.top)/2);
 
         if ((m_Appflags & MAGWHILEEYEDROP) && (m_isEyedropping) && (!m_MagDrop)) {
-            int pxwid = m_MagLevel;
             insiderect = magrect;
             insiderect.DeflateRect(magrect.Width() / 2, magrect.Height() / 2);
             insiderect.InflateRect(3, 3);  // mag 4
@@ -2106,9 +2104,11 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext) {
     }
 }
 
-void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu) {
-    // this function is called when the top level
-    // menu items are selected.
+void CColorCopDlg::OnInitMenuPopup(CMenu *pMenu, UINT /*nIndex*/,
+                                   BOOL /*bSysMenu*/) {
+    // MFC calls this right before a menu is shown. We refresh checkmarks and
+    // radio states here so the menu always reflects the current application
+    // state.
     UpdateMenu(pMenu);
 }
 
@@ -3212,16 +3212,19 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() {
     m_Appflags &= ~Sampling5x5;
     m_Appflags |= SamplingMULTI;
 
-    CString strStatus = "";
-    strStatus.LoadString(IDS_MULTIPIX_SET);
+    CString strStatus;
+
+    (void)strStatus.LoadString(IDS_MULTIPIX_SET);
 
     if (m_iSamplingOffset > MULTIPIX_MIN) {
         m_iSamplingOffset--;
-        strStatus.Format(strStatus, m_iSamplingOffset * 2 + 1, m_iSamplingOffset * 2 + 1);
+        strStatus.Format(strStatus, m_iSamplingOffset * 2 + 1,
+                         m_iSamplingOffset * 2 + 1);
     } else {
-        strStatus.LoadString(IDS_MULTIPIX_LIMIT);
+        (void)strStatus.LoadString(IDS_MULTIPIX_LIMIT);
         strStatus.Format(strStatus, MULTIPIX_MIN * 2 + 1, MULTIPIX_MAX * 2 + 1);
     }
+
     SetStatusBarText(strStatus);
 }
 
