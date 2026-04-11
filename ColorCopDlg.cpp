@@ -245,7 +245,7 @@ BOOL CColorCopDlg::OnInitDialog() {
 
   SetupSystemMenu();  // add about and always on top to the system menu
 
-  bool FoundDatFile = LoadPersistentVariables();
+  LoadPersistentVariables();
   ToggleOnTop(false);  // make always on top, unless save file said not to
 
   SetupWindowRects();
@@ -938,19 +938,31 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 }
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
-    double r, g, b;
-    r = static_cast<double>(red) / 255.0;
-    g = static_cast<double>(green) / 255.0;
-    b = static_cast<double>(blue) / 255.0;
-    m_Cyan    = static_cast<int>(std::pow(1.0 - r, 45));
-    m_Magenta = static_cast<int>(std::pow(1.0 - g, 45));
-    m_Yellow  = static_cast<int>(std::pow(1.0 - b, 45));
+    // Normalize RGB to [0,1]
+    const double r = static_cast<double>(red) / 255.0;
+    const double g = static_cast<double>(green) / 255.0;
+    const double b = static_cast<double>(blue) / 255.0;
 
-    m_Black = std::min({ m_Cyan, m_Magenta, m_Yellow });
+    // Compute K (black)
+    const double maxRGB = std::max({r, g, b});
+    const double K = 1.0 - maxRGB;
 
-    m_Cyan = m_Cyan - m_Black;
-    m_Magenta = m_Magenta - m_Black;
-    m_Yellow = m_Yellow - m_Black;
+    double C = 0.0;
+    double M = 0.0;
+    double Y = 0.0;
+
+    if (K < 1.0) {
+        const double denom = 1.0 - K;
+        C = (1.0 - r - K) / denom;
+        M = (1.0 - g - K) / denom;
+        Y = (1.0 - b - K) / denom;
+    }
+
+    // Convert CMYK back to 0–255 integer range
+    m_Cyan = static_cast<int>(std::round(C * 255.0));
+    m_Magenta = static_cast<int>(std::round(M * 255.0));
+    m_Yellow = static_cast<int>(std::round(Y * 255.0));
+    m_Black = static_cast<int>(std::round(K * 255.0));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -1601,7 +1613,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                             strWebSafe.LoadString(IDS_NOT_WEBSAFE);
                         }
                     }
-                    strStatus +=strWebSafe;
+                    strStatus += strWebSafe;
 
                     strStatus.Format(CString(strStatus), point.x, point.y);
                 }
@@ -1931,7 +1943,7 @@ void CColorCopDlg::ParseDelphi(CString inst) {
         return;
     }
 
-    if (inst.Left(1) == '$') {
+    if (inst.Left(1) == _T('$')) {
         inst.Delete(0);
     }
     inst.Delete(0);
@@ -3042,7 +3054,7 @@ void CColorCopDlg::FireOptionMenu() {
 }
 
 
-PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp) {
+PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND /*hwnd*/, HBITMAP hBmp) {
     BITMAP bmp;
     PBITMAPINFO pbmi;
     WORD    cClrBits;
@@ -3108,7 +3120,8 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp) {
      return pbmi;
 }
 
-void CColorCopDlg::CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC) {
+void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
+                                 PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC) {
     HANDLE hf;                 // file handle
     BITMAPFILEHEADER hdr;       // bitmap file-header
     PBITMAPINFOHEADER pbih;     // bitmap info-header
