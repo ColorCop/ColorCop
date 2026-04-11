@@ -1,4 +1,4 @@
----------------------------[ Color Cop v5.5.6 ]--------------------------
+---------------------------[ Color Cop v5.5.7 ]--------------------------
 
 Color Cop is a multi-purpose color picker for web designers and
 programmers. It features an eyedropper, magnifier, variable magnification
@@ -227,6 +227,7 @@ https://colorcop.net/donate
 
 
 *** Color Cop Revision History ***
+v5.5.7 – 04/11/26 – Modernizes codebase (C++20, Unicode safety), fixes CMYK math, and improves UI/system tray behavior
 v5.5.6 - 03/19/26 - Installer now bundles the VC++ 2015–2022 runtime
 v5.5.5 - 03/14/26 - Adds modern app manifest with DPI awareness
 v5.5.3 - 02/05/26 - Added official Chocolatey installer support
