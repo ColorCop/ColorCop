@@ -5,6 +5,7 @@
     <version>0.0.0</version> <!-- Replaced by GitHub Action -->
     <title>Color Cop</title>
     <authors>Jay Prall</authors>
+    <owners>Jay Prall</owners>
 
     <summary>A lightweight Windows color picker utility.</summary>
     <description>
@@ -15,7 +16,10 @@ Color Cop is a multi-purpose color picker for Windows, featuring an eyedropper, 
     <projectSourceUrl>https://github.com/ColorCop/ColorCop</projectSourceUrl>
     <packageSourceUrl>https://github.com/ColorCop/ColorCop/tree/main/choco</packageSourceUrl>
     <bugTrackerUrl>https://github.com/ColorCop/ColorCop/issues</bugTrackerUrl>
-    <licenseUrl>https://raw.githubusercontent.com/ColorCop/ColorCop/main/LICENSE.txt</licenseUrl>
+    <supportUrl>https://github.com/ColorCop/ColorCop/issues</supportUrl>
+    <docsUrl>https://github.com/ColorCop/ColorCop#readme</docsUrl>
+
+    <license type="file">tools/LICENSE.txt</license>
     <iconUrl>https://colorcop.net/images/ccicon.png</iconUrl>
 
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -28,7 +32,7 @@ Color Cop is a multi-purpose color picker for Windows, featuring an eyedropper, 
     <file src="tools\chocolateyinstall.ps1" target="tools" />
     <file src="tools\chocolateyuninstall.ps1" target="tools" />
     <file src="tools\colorcop-setup.exe" target="tools" />
-    <file src="tools\LICENSE.TXT" target="tools" />
+    <file src="tools\LICENSE.txt" target="tools" />
     <file src="tools\VERIFICATION.txt" target="tools" />
   </files>
 </package>
