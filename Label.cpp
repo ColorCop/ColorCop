@@ -4,7 +4,7 @@
 // Label.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "Resource.h"
 #include "Label.h"
 

@@ -9,7 +9,7 @@
 
 
 // Precompiled header
-#include "stdafx.h"
+#include "pch.h"
 
 // Project headers
 #include "ColorCop.h"

@@ -55,7 +55,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "pch.h"
 #include "SystemTray.h"
 
 IMPLEMENT_DYNAMIC(CSystemTray, CWnd)
