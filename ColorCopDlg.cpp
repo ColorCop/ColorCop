@@ -892,7 +892,7 @@ void CColorCopDlg::setSeedColor() {
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
     if (S == 0) {
-        r = g = b = S * 255.0;
+        r = g = b = static_cast<int>(L * 255.0);
     } else {
         double h = (H - static_cast<int>(H)) * 6.0;
         int caseH = static_cast<int>(h);
