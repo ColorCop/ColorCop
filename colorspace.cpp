@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "colorspace.h"
 
 
