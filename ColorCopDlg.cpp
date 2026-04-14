@@ -1000,9 +1000,9 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
 
     if (R == MaxNum) {
         Hue = B_Dist - G_Dist;
-    } else     if (G == MaxNum) {
+    } else if (G == MaxNum) {
         Hue = 2.0 + R_Dist - B_Dist;
-    } else     if (B == MaxNum) {
+    } else if (B == MaxNum) {
         Hue = 4.0 + G_Dist - R_Dist;
     }
     Hue = Hue / 6.0;
@@ -1066,8 +1066,8 @@ void CColorCopDlg::DisplayColor() {
             for (int row = 0; row< 6; row++) {
                 pDC->FillSolidRect(insiderect, ColorPal[row][col]);
 
-                insiderect.right+=m_nwide;
-                insiderect.left+=m_nwide;
+                insiderect.right += m_nwide;
+                insiderect.left += m_nwide;
             }
 
             insiderect.right -= m_nwide * 6;
@@ -1084,15 +1084,15 @@ void CColorCopDlg::DisplayColor() {
         colorpalrect.DeflateRect(1, 1, 1, 1);
 
         pDC->FrameRect(magplus, &greybrush);
-        pDC->MoveTo(magplus.left + 2, magplus.top + (magplus.bottom - magplus.top)/2);
-        pDC->LineTo(magplus.right - 2, magplus.top +  (magplus.bottom - magplus.top)/2);
+        pDC->MoveTo(magplus.left + 2, magplus.top + (magplus.bottom - magplus.top) / 2);
+        pDC->LineTo(magplus.right - 2, magplus.top +  (magplus.bottom - magplus.top) / 2);
 
-        pDC->MoveTo(magplus.left + (magplus.right - magplus.left)/2, magplus.top + 2);
-        pDC->LineTo(magplus.left + (magplus.right - magplus.left)/2, magplus.bottom - 2);
+        pDC->MoveTo(magplus.left + (magplus.right - magplus.left) / 2, magplus.top + 2);
+        pDC->LineTo(magplus.left + (magplus.right - magplus.left) / 2, magplus.bottom - 2);
 
         pDC->FrameRect(magminus, &greybrush);
-        pDC->MoveTo(magminus.left + 2, magminus.top + (magminus.bottom - magminus.top)/2);
-        pDC->LineTo(magminus.right - 2, magminus.top +  (magminus.bottom - magminus.top)/2);
+        pDC->MoveTo(magminus.left + 2, magminus.top + (magminus.bottom - magminus.top) / 2);
+        pDC->LineTo(magminus.right - 2, magminus.top +  (magminus.bottom - magminus.top) / 2);
 
         if ((m_Appflags & MAGWHILEEYEDROP) && (m_isEyedropping) && (!m_MagDrop)) {
             insiderect = magrect;
@@ -1106,7 +1106,7 @@ void CColorCopDlg::DisplayColor() {
 
             if ((m_Appflags & Sampling3x3) ||
                 (m_Appflags & Sampling5x5) ||
-                ((m_Appflags & SamplingMULTI)&&(m_iSamplingOffset <= 10))
+                ((m_Appflags & SamplingMULTI) && (m_iSamplingOffset <= 10))
                 ) {
                 insiderect.InflateRect(4 * m_iSamplingOffset, 4 * m_iSamplingOffset);
             }
@@ -1588,7 +1588,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                     double dWidth = static_cast<double>(iWidth+1);
                     double dHeight = static_cast<double>(iHeight+1);
 
-                    double dLength = std::sqrt(dWidth*dWidth + dHeight * dHeight);
+                    double dLength = std::sqrt(dWidth * dWidth + dHeight * dHeight);
                     double dAngle = std::atan2(dHeight, dWidth) * (180.0 / kPi);
 
                     strStatus.LoadString(IDS_RELATIVE_POS);
@@ -2065,8 +2065,8 @@ void CColorCopDlg::OnDestroy() {
     // save the bitmap
     CString strBMPFile = GetTempFolder();
 
-    strBMPFile +=BMP_FILE_DIR;
-    strBMPFile +=BMP_FILE;
+    strBMPFile += BMP_FILE_DIR;
+    strBMPFile += BMP_FILE;
 
     HWND curwindowhwnd = ::GetForegroundWindow();
 
@@ -2854,15 +2854,15 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     }
 
     if (curfocus == GetDlgItem(IDC_RED)) {            // red has focus
-        m_Reddec+=zDelta/WHEEL_DELTA * offset;
+        m_Reddec += zDelta/WHEEL_DELTA * offset;
         m_Reddec = RangeCheck(m_Reddec);
 
     } else if (curfocus == GetDlgItem(IDC_GREEN)) {    // green has focus
-        m_Greendec+=zDelta/WHEEL_DELTA * offset;
+        m_Greendec += zDelta/WHEEL_DELTA * offset;
         m_Greendec = RangeCheck(m_Greendec);
 
     } else if (curfocus == GetDlgItem(IDC_BLUE)) {    // blue has focus
-        m_Bluedec+=zDelta/WHEEL_DELTA * offset;
+        m_Bluedec += zDelta/WHEEL_DELTA * offset;
         m_Bluedec = RangeCheck(m_Bluedec);
 
     } else {            // there is focus, but it's not on either the Red,
