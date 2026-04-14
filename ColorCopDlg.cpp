@@ -870,8 +870,9 @@ void CColorCopDlg::setupSwatches() {
 }
 
 double CColorCopDlg::shiftHue(double hue) {
-    double rethue = (hue + (60.0 / 360.0));
-
+    double rethue = hue + (60.0 / 360.0);
+    if (rethue >= 1.0)
+        rethue -= 1.0;
     return rethue;
 }
 
@@ -1063,7 +1064,7 @@ void CColorCopDlg::DisplayColor() {
                 insiderect.top += m_ntall;
                 insiderect.bottom += m_ntall;
             }
-            for (int row = 0; row< 6; row++) {
+            for (int row = 0; row < 6; row++) {
                 pDC->FillSolidRect(insiderect, ColorPal[row][col]);
 
                 insiderect.right += m_nwide;
