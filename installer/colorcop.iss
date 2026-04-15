@@ -9,7 +9,7 @@ AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
 AppUpdatesURL=https://colorcop.net
-DefaultDirName={pf}\Color Cop
+DefaultDirName={pf}\ColorCop
 DefaultGroupName=Color Cop
 LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\ReadMe.txt
@@ -21,6 +21,7 @@ SolidCompression=yes
 VersionInfoVersion=5.5.7
 DisableDirPage=yes
 DisableProgramGroupPage=yes
+DisableReadyPage=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
