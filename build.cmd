@@ -6,10 +6,18 @@ REM  GET VERSION FROM GIT TAG
 REM ================================
 for /f %%v in ('git describe --tags --abbrev^=0') do set VERSION=%%v
 
-echo Building version %VERSION%
+echo Raw version from git: %VERSION%
 
-REM Convert x.y.z or x.y.z.w → x,y,z,w
-for /f "tokens=1-4 delims=." %%a in ("%VERSION%") do (
+REM Strip leading "v" if present
+set VERSION_RAW=%VERSION%
+if "%VERSION_RAW:~0,1%"=="v" set VERSION_RAW=%VERSION_RAW:~1%
+
+echo Using version: %VERSION_RAW%
+
+REM ================================
+REM  PARSE VERSION INTO NUMERIC FORM
+REM ================================
+for /f "tokens=1-4 delims=." %%a in ("%VERSION_RAW%") do (
     set MAJOR=%%a
     set MINOR=%%b
     set PATCH=%%c
@@ -17,41 +25,51 @@ for /f "tokens=1-4 delims=." %%a in ("%VERSION%") do (
 )
 
 if "%BUILD%"=="" set BUILD=0
+
 set VERSION_NUMERIC=%MAJOR%,%MINOR%,%PATCH%,%BUILD%
 
 echo Numeric version: %VERSION_NUMERIC%
 
 REM ================================
-REM  LOCATE MSBUILD
+REM  GENERATE version.h
 REM ================================
-for /f "tokens=2,*" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath 2^>nul') do (
-    set MSBUILDPATH=%%b
+echo #pragma once> version.h
+echo #define VER_FILEVERSION     %VERSION_NUMERIC%>> version.h
+echo #define VER_FILEVERSION_STR "%VERSION_RAW%">> version.h
+echo #define VER_PRODUCTVERSION  %VERSION_NUMERIC%>> version.h
+echo #define VER_PRODUCTVERSION_STR "%VERSION_RAW%">> version.h
+
+echo Generated version.h:
+type version.h
+
+REM ================================
+REM  LOCATE MSBUILD.EXE (C++-capable)
+REM ================================
+set MSBUILD_EXE=
+
+for /f "usebackq tokens=*" %%i in (`
+    "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" ^
+        -latest -requires Microsoft.Component.MSBuild ^
+        -find MSBuild\**\Bin\MSBuild.exe
+`) do (
+    set MSBUILD_EXE=%%i
 )
 
-if not exist "%MSBUILDPATH%msbuild.exe" (
-    for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe"`) do (
-        set MSBUILDPATH=%%i
-    )
-)
-
-if not exist "%MSBUILDPATH%" (
-    echo ERROR: MSBuild not found.
+if "%MSBUILD_EXE%"=="" (
+    echo ERROR: C++-capable MSBuild.exe not found.
     exit /b 1
 )
 
-echo Using MSBuild: %MSBUILDPATH%
+echo Using MSBuild: %MSBUILD_EXE%
+
 
 REM ================================
 REM  BUILD
 REM ================================
-"%MSBUILDPATH%" ColorCop.sln ^
+"%MSBUILD_EXE%" ColorCop.sln ^
     /t:Rebuild ^
     /p:Configuration=Release ^
     /p:Platform=Win32 ^
-    /p:ProductVersion=%VERSION% ^
-    /p:FileVersion=%VERSION% ^
-    /p:NumericVersion=%VERSION_NUMERIC% ^
     /m
 
 exit /b %errorlevel%
-
