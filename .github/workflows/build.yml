@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # Fetch full history and all tags so build.cmd can run `git describe`
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v3
@@ -69,17 +73,10 @@ jobs:
             exit 1
           }
 
-      - name: Run MSBuild with Code Analysis
+      - name: Build using build.cmd
+        shell: pwsh
         run: |
-          $msbuildArgs = @(
-            "ColorCop.sln"
-            "/p:Configuration=${{ matrix.configuration }}"
-            "/p:Platform=Win32"
-            "/p:RunCodeAnalysis=true"
-            "/p:CodeAnalysisRuleSet=NativeMinimumRules.ruleset"
-            "/p:CodeAnalysisTreatWarningsAsErrors=false"
-          )
-          MSBuild.exe $msbuildArgs
+          ./build.cmd
 
       - name: Download VC++ Redistributable
         shell: pwsh
