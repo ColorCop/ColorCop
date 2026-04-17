@@ -4,7 +4,13 @@ setlocal enabledelayedexpansion
 REM ================================
 REM  GET VERSION FROM GIT TAG
 REM ================================
-for /f %%v in ('git describe --tags --abbrev^=0') do set VERSION=%%v
+for /f %%v in ('git describe --tags --abbrev^=0 2^>nul') do set VERSION=%%v
+
+REM Fallback for forks or shallow clones with no tags
+if "%VERSION%"=="" (
+    echo WARNING: No git tags found. Using 0.0.0 as fallback version.
+    set VERSION=0.0.0
+)
 
 echo Raw version from git: %VERSION%
 
@@ -61,7 +67,6 @@ if "%MSBUILD_EXE%"=="" (
 )
 
 echo Using MSBuild: %MSBUILD_EXE%
-
 
 REM ================================
 REM  BUILD
