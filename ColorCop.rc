@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "version.h"
 
 // Generated Help ID header file
 #define APSTUDIO_HIDDEN_SYMBOLS
@@ -84,7 +85,7 @@ CAPTION "About Color Cop"
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,12,9,20,20
-    LTEXT           "Color Cop version 5.5.7",IDC_STATIC,40,8,100,8,SS_NOPREFIX
+    LTEXT           VER_FULLNAME_STR, IDC_STATIC,40,8,100,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 1999-2012",IDC_STATIC,40,22,98,8
     LTEXT           "This program is freeware and can be used and distributed freely.",IDC_STATIC,13,66,210,8
     LTEXT           "Color Cop was developed by Jay Prall",IDC_STATIC,13,80,217,9
@@ -137,8 +138,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 5,5,7,0
- PRODUCTVERSION 5,5,7,0
+ FILEVERSION VER_FILEVERSION
+ PRODUCTVERSION VER_PRODUCTVERSION
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -156,11 +157,11 @@ BEGIN
             VALUE "Comments", "please email your suggestions"
             VALUE "CompanyName", "colorcop.net"
             VALUE "FileDescription", "multi-purpose color picker"
-            VALUE "FileVersion", "v5.5.7"
+            VALUE "FileVersion",VER_FILEVERSION_STR
             VALUE "InternalName", "Color Cop"
             VALUE "LegalCopyright", "Copyright � 2012 Jay Prall"
             VALUE "ProductName", "Color Cop"
-            VALUE "ProductVersion", "v5.5.7"
+            VALUE "ProductVersion", VER_PRODUCTVERSION_STR
         END
     END
     BLOCK "VarFileInfo"
