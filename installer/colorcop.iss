@@ -1,10 +1,11 @@
 ; Inno Setup script for Color Cop
+#include "version.iss"
 
 [Setup]
 AppID={{197A931D-2802-405D-B53E-67DF09D5BE2E}}
 AppName=Color Cop
-AppVersion=5.5.7
-AppVerName=Color Cop 5.5.7
+AppVersion={#AppVersionStr}
+AppVerName=Color Cop {#AppVersionStr}
 AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
@@ -18,7 +19,7 @@ OutputBaseFilename=colorcop-setup
 SetupIconFile=..\Res\idr_main.ico
 Compression=lzma
 SolidCompression=yes
-VersionInfoVersion=5.5.7
+VersionInfoVersion={#AppVersionStr}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 DisableReadyPage=yes

@@ -40,10 +40,12 @@ REM ================================
 REM  GENERATE version.h
 REM ================================
 echo #pragma once> version.h
-echo #define VER_FILEVERSION     %VERSION_NUMERIC%>> version.h
-echo #define VER_FILEVERSION_STR "%VERSION_RAW%">> version.h
-echo #define VER_PRODUCTVERSION  %VERSION_NUMERIC%>> version.h
-echo #define VER_PRODUCTVERSION_STR "%VERSION_RAW%">> version.h
+echo #define VER_FILEVERSION     %VERSION_NUMERIC% >> version.h
+echo #define VER_FILEVERSION_STR "%VERSION_RAW%" >> version.h
+echo #define VER_PRODUCTVERSION  %VERSION_NUMERIC% >> version.h
+echo #define VER_PRODUCTVERSION_STR "%VERSION_RAW%" >> version.h
+echo #define VER_FULLNAME_STR "Color Cop version %VERSION_RAW%" >> version.h
+echo #define AppVersionStr "%VERSION_RAW%%" > installer\version.iss
 
 echo Generated version.h:
 type version.h

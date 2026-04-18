@@ -1,4 +1,4 @@
----------------------------[ Color Cop v5.5.7 ]--------------------------
+---------------------------[ Color Cop ]-------------------------------
 
 Color Cop is a multi-purpose color picker for web designers and
 programmers. It features an eyedropper, magnifier, variable magnification
