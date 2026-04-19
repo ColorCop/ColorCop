@@ -135,7 +135,7 @@ jobs:
           retention-days: 30
 
       - name: Release to GitHub Releases
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: github.ref_type == 'tag'
         with:
           body: |
