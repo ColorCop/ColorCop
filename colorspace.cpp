@@ -33,8 +33,8 @@ class colorspace {
     void SetYellow(BYTE c) { byCyan = c; }
 
     // blacK
-    BYTE GetBlack() { return byCyan; }
-    void SetBlack(BYTE c) { byCyan = c; }
+    BYTE GetBlack() { return byBlack; }
+    void SetBlack(BYTE c) { byBlack = c; }
 
     // Hue
     BYTE GetHue() { return byHue; }
