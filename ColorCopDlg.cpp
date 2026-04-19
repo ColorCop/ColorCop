@@ -1234,7 +1234,7 @@ void CColorCopDlg::OnCopytoclip() {
         if (::OpenClipboard(hWndOwner)) {
             ::EmptyClipboard();
 
-            // CString is UTF‑16 in Unicode builds, so copy its raw buffer.
+            // CString is UTF-16 in Unicode builds, so copy its raw buffer.
             const int len = m_Hexcolor.GetLength();
             const SIZE_T bytes = (len + 1) * sizeof(wchar_t);
 
