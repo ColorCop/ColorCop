@@ -41,8 +41,8 @@ class colorspace {
     void SetHue(BYTE c) { byCyan = c; }
 
     // Saturation
-    BYTE GetSaturation() { return byCyan; }
-    void SetSaturation(BYTE c) { byCyan = c; }
+    BYTE GetSaturation() { return bySaturation; }
+    void SetSaturation(BYTE c) { bySaturation = c; }
 
     // Brightness
     BYTE GetBrightness() { return byCyan; }
