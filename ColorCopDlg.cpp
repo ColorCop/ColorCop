@@ -2253,8 +2253,8 @@ void CColorCopDlg::OnUpdateColorSnaptowebsafe(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::TestForWebsafe() {
-    // When Snap‑to‑Websafe is enabled, preserve the user's original RGB values
-    // so they can be restored if the user later disables snapping. Web‑safe
+    // When Snap-to-Websafe is enabled, preserve the user's original RGB values
+    // so they can be restored if the user later disables snapping. Web-safe
     // colors are defined as multiples of 51 (0, 51, 102, 153, 204, 255).
     if (m_Appflags & SnaptoWebsafe) {
         bOldClrExist = true;
@@ -2272,8 +2272,8 @@ void CColorCopDlg::TestForWebsafe() {
 }
 
 int CColorCopDlg::DecimaltoWebsafe(int originalDec) {
-    // Convert an RGB component (0–255) to the nearest web‑safe value.
-    // Web‑safe colors use steps of 51: {0, 51, 102, 153, 204, 255}.
+    // Convert an RGB component (0-255) to the nearest web-safe value.
+    // Web-safe colors use steps of 51: {0, 51, 102, 153, 204, 255}.
     // We compute how far 'originalDec' is from the nearest step and
     // round down if the offset is small, otherwise round up.
     //
