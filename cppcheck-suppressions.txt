@@ -1,0 +1,7 @@
+unknownMacro:BEGIN_MESSAGE_MAP
+unknownMacro:END_MESSAGE_MAP
+unknownMacro:IMPLEMENT_DYNAMIC
+unknownMacro:IMPLEMENT_DYNCREATE
+unknownMacro:DECLARE_DYNAMIC
+unknownMacro:DECLARE_DYNCREATE
+
