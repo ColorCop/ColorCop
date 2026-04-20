@@ -6,4 +6,5 @@ description = "Run linters"
 run = [
   "pip install -r requirements.txt",
   "cpplint --recursive .",
+  "cppcheck --project=ColorCop.vcxproj --library=cppcheck-mfc.cfg --enable=warning,style,performance,portability --inline-suppr --error-exitcode=0 --suppress=missingIncludeSystem --suppressions-list=cppcheck-suppressions.txt",
 ]
