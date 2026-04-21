@@ -3056,69 +3056,61 @@ void CColorCopDlg::FireOptionMenu() {
 
 
 PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND /*hwnd*/, HBITMAP hBmp) {
-    BITMAP bmp;
-    PBITMAPINFO pbmi;
-    WORD    cClrBits;
-
-    // Retrieve the bitmap color format, width, and height.
-    if (!GetObject(hBmp, sizeof(BITMAP), &bmp)) {
+    BITMAP bmp = {};
+    if (!GetObject(hBmp, sizeof(bmp), &bmp)) {
         AfxMessageBox(_T("Unable to receive bitmap information"));
+        return nullptr;
     }
-    // Convert the color format to a count of bits.
-    cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
-    if (cClrBits == 1) {
-        cClrBits = 1;
-    } else if (cClrBits <= 4) {
-        cClrBits = 4;
-    } else if (cClrBits <= 8) {
-        cClrBits = 8;
-    } else if (cClrBits <= 16) {
-        cClrBits = 16;
-    } else if (cClrBits <= 24) {
-        cClrBits = 24;
-    } else {
-        cClrBits = 32;
+
+    // Compute effective color depth (clamped to standard buckets)
+    WORD cClrBits = static_cast<WORD>(bmp.bmPlanes * bmp.bmBitsPixel);
+    if (cClrBits <= 1)       cClrBits = 1;
+    else if (cClrBits <= 4)  cClrBits = 4;
+    else if (cClrBits <= 8)  cClrBits = 8;
+    else if (cClrBits <= 16) cClrBits = 16;
+    else if (cClrBits <= 24) cClrBits = 24;
+    else                     cClrBits = 32;
+
+    // Compute palette size safely (avoid 1 << cClrBits overflow)
+    DWORD clrUsed = 0;
+    if (cClrBits < 24) {
+        // max palette entries for <= 8bpp is 256; for 16/32bpp it's 0
+        clrUsed = (cClrBits <= 8) ? (1u << cClrBits) : 0u;
     }
-    // Allocate memory for the BITMAPINFO structure. (This structure
-    // contains a BITMAPINFOHEADER structure and an array of RGBQUAD
-    // data structures.)
 
-     if (cClrBits != 24)
-         pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
-                    sizeof(BITMAPINFOHEADER) +
-                    sizeof(RGBQUAD) * (1 << cClrBits));
+    // Compute allocation size
+    const SIZE_T headerSize = sizeof(BITMAPINFOHEADER);
+    const SIZE_T paletteSize = clrUsed * sizeof(RGBQUAD);
 
-    // There is no RGBQUAD array for the 24-bit-per-pixel format.
+    // Overflow check (defensive)
+    if (paletteSize / sizeof(RGBQUAD) != clrUsed) {
+        return nullptr;  // overflow detected
+    }
 
-     else
-         pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
-                    sizeof(BITMAPINFOHEADER));
+    const SIZE_T totalSize = headerSize + paletteSize;
 
-    // Initialize the fields in the BITMAPINFO structure.
+    PBITMAPINFO pbmi = static_cast<PBITMAPINFO>(LocalAlloc(LPTR, totalSize));
+    if (!pbmi) {
+        return nullptr;
+    }
 
+    // Initialize BITMAPINFOHEADER
     pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     pbmi->bmiHeader.biWidth = bmp.bmWidth;
     pbmi->bmiHeader.biHeight = bmp.bmHeight;
     pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
     pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
-    if (cClrBits < 24) {
-        pbmi->bmiHeader.biClrUsed = (1 << cClrBits);
-    }
-    // If the bitmap is not compressed, set the BI_RGB flag.
     pbmi->bmiHeader.biCompression = BI_RGB;
+    pbmi->bmiHeader.biClrUsed = clrUsed;
 
-    // Compute the number of bytes in the array of color
-    // indices and store the result in biSizeImage.
-    // For Windows NT, the width must be DWORD aligned unless
-    // the bitmap is RLE compressed. This example shows this.
-    // For Windows 95/98/Me, the width must be WORD aligned unless the
-    // bitmap is RLE compressed.
-    pbmi->bmiHeader.biSizeImage = ((pbmi->bmiHeader.biWidth * cClrBits +31) & ~31) /8
-                                  * pbmi->bmiHeader.biHeight;
-    // Set biClrImportant to 0, indicating that all of the
-    // device colors are important.
-     pbmi->bmiHeader.biClrImportant = 0;
-     return pbmi;
+    // Compute image size (DWORD-aligned scanlines)
+    const DWORD bitsPerLine = bmp.bmWidth * cClrBits;
+    const DWORD alignedBits = (bitsPerLine + 31u) & ~31u;
+    pbmi->bmiHeader.biSizeImage = (alignedBits / 8u) * bmp.bmHeight;
+
+    pbmi->bmiHeader.biClrImportant = 0;
+
+    return pbmi;
 }
 
 void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
