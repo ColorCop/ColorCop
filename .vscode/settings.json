@@ -1,0 +1,6 @@
+{
+    "editor.unicodeHighlight.nonBasicASCII": true,
+    "editor.unicodeHighlight.ambiguousCharacters": true,
+    "editor.unicodeHighlight.invisibleCharacters": true,
+    "editor.unicodeHighlight.allowedCharacters": {}
+}
