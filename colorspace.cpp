@@ -29,20 +29,20 @@ class colorspace {
     void SetMagenta(BYTE c) { byCyan = c; }
 
     // Yellow
-    BYTE GetYellow() { return byCyan; }
-    void SetYellow(BYTE c) { byCyan = c; }
+    BYTE GetYellow() { return byYellow; }
+    void SetYellow(BYTE c) { byYellow = c; }
 
     // blacK
-    BYTE GetBlack() { return byCyan; }
-    void SetBlack(BYTE c) { byCyan = c; }
+    BYTE GetBlack() { return byBlack; }
+    void SetBlack(BYTE c) { byBlack = c; }
 
     // Hue
-    BYTE GetHue() { return byCyan; }
-    void SetHue(BYTE c) { byCyan = c; }
+    BYTE GetHue() { return byHue; }
+    void SetHue(BYTE c) { byHue = c; }
 
     // Saturation
-    BYTE GetSaturation() { return byCyan; }
-    void SetSaturation(BYTE c) { byCyan = c; }
+    BYTE GetSaturation() { return bySaturation; }
+    void SetSaturation(BYTE c) { bySaturation = c; }
 
     // Brightness
     BYTE GetBrightness() { return byCyan; }
