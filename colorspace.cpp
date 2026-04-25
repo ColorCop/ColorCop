@@ -87,9 +87,16 @@ void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k) {
     if (B < K)
         K = B;
 
-    C = (R - K)/(1.0 - K);
-    M = (G - K)/(1.0 - K);
-    Y = (B - K)/(1.0 - K);
+    if (K >= 1.0) {
+        C = 0.0;
+        M = 0.0;
+        Y = 0.0;
+        K = 1.0;
+    } else {
+        C = (R - K) / (1.0 - K);
+        M = (G - K) / (1.0 - K);
+        Y = (B - K) / (1.0 - K);
+    }
 
     C = (C * 100) + 0.5;
     M = (M * 100) + 0.5;
