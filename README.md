@@ -88,7 +88,6 @@ git tag --list
 - `ColorCop.cpp/h` - Main application class
 - `ColorCopDlg.cpp/h` - Main dialog implementation
 - `SystemTray.cpp/h` - System tray functionality
-- `colorspace.cpp/h` - Color conversion utilities
 - `Res/` - Application resources and icons
 
 ## Code Linting
