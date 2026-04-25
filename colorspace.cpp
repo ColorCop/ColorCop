@@ -52,6 +52,18 @@ class colorspace {
     colorspace() {
     }
 
+ private:
+    BYTE byRed;
+    BYTE byGreen;
+    BYTE byBlue;
+    BYTE byCyan;
+    BYTE byMagenta;
+    BYTE byYellow;
+    BYTE byBlack;
+    BYTE byHue;
+    BYTE bySaturation;
+    BYTE byBrightness;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //
