@@ -32,7 +32,7 @@ class colorspace {
     BYTE GetYellow() { return byYellow; }
     void SetYellow(BYTE c) { byYellow = c; }
 
-    // blacK
+    // Black
     BYTE GetBlack() { return byBlack; }
     void SetBlack(BYTE c) { byBlack = c; }
 
