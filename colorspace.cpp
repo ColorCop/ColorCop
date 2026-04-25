@@ -25,8 +25,8 @@ class colorspace {
     void SetCyan(BYTE c) { byCyan = c; }
 
     // Magenta
-    BYTE GetMagenta() { return byCyan; }
-    void SetMagenta(BYTE c) { byCyan = c; }
+    BYTE GetMagenta() { return byMagenta; }
+    void SetMagenta(BYTE c) { byMagenta = c; }
 
     // Yellow
     BYTE GetYellow() { return byYellow; }
