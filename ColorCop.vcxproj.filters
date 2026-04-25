@@ -21,7 +21,6 @@
     <ClCompile Include="ColorCopDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="colorspace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Label.cpp">
@@ -49,7 +48,6 @@
     <ClInclude Include="ColorCopDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="colorspace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
