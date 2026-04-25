@@ -84,21 +84,68 @@ const TCHAR* kpcTrayNotificationMsg_ = _T("color cop tray notification");
 // CColorCopDlg dialog
 
 CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CColorCopDlg::IDD, pParent) {
-    //{{AFX_DATA_INIT(CColorCopDlg) // NOLINT(whitespace/comments)
-    m_Greendec = 0;
-    m_Bluedec = 0;
-    m_Reddec = 0;
-    m_Hexcolor = _T("");
-    r = 0;
-    g = 0;
-    b = 0;
-    m_bvisible = false;
-    m_Black = 0;
-    m_Cyan = 0;
-    m_Magenta = 0;
-    m_Yellow = 0;
-    //}}AFX_DATA_INIT // NOLINT(whitespace/comments)
+    : CDialog(CColorCopDlg::IDD, pParent),
+      m_Greendec(0),
+      m_Bluedec(0),
+      m_Reddec(0),
+      m_Hexcolor(_T("")),
+      r(0),
+      g(0),
+      b(0),
+      m_bvisible(false),
+      m_Black(0),
+      m_Cyan(0),
+      m_Magenta(0),
+      m_Yellow(0),
+      ColorHistory{},          // array
+      CustColorBank{},         // array
+      m_Appflags(0),
+      m_iSamplingOffset(0),
+      WinLocX(0),
+      WinLocY(0),
+      m_MagLevel(0),
+      m_FloatPrecision(0),
+      hBitmap(nullptr),
+      hBitmapClip(nullptr),
+      hZoomBitmap(nullptr),
+      m_hIcon(nullptr),
+      m_hBlank(nullptr),
+      m_hEye(nullptr),
+      m_hAcceleratorTable(nullptr),
+      bOldClrExist(false),
+      m_isEyedropping(false),
+      m_isMagnifying(false),
+      bMinimized(false),
+      m_isMagPlusDown(false),
+      m_isMagMinusDown(false),
+      m_InitialMove(false),
+      m_bCalcColorPal(false),
+      bRelativePosition(false),
+      m_MagDrop(false),
+      smHeight(0),
+      smWidth(0),
+      lgHeight(0),
+      lgWidth(0),
+      m_nwide(0),
+      m_ntall(0),
+      Hue(0.0),
+      Sat(0.0),
+      Light(0.0),
+      Swatch{},                // array of structs
+      OrigSwatch{},            // struct
+      ColorPal{},              // 2D array
+      hdc(nullptr),
+      hdcMem(nullptr),
+      hdcZoomMem(nullptr),
+      m_hEyeCursor(nullptr),
+      m_hMagCursor(nullptr),
+      m_hStandardCursor(nullptr),
+      m_hMoveCursor(nullptr),
+      m_hHandCursor(nullptr),
+      hIcon_(nullptr),
+      bMinimized_(false),
+      pTrayIcon_(nullptr),
+      nTrayNotificationMsg_(0) {
 }
 
 void CColorCopDlg::DoDataExchange(CDataExchange* pDX) {
