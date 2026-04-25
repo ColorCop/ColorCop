@@ -45,8 +45,8 @@ class colorspace {
     void SetSaturation(BYTE c) { bySaturation = c; }
 
     // Brightness
-    BYTE GetBrightness() { return byCyan; }
-    void SetBrightness(BYTE c) { byCyan = c; }
+    BYTE GetBrightness() { return byBrightness; }
+    void SetBrightness(BYTE c) { byBrightness = c; }
 
     // ctor
     colorspace() {
