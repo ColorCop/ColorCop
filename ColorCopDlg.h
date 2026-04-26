@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// ColorCopDlg.h : header file
+// ColorCopDlg.h : header file for the Color Cop dialog
 //
 
 #pragma once

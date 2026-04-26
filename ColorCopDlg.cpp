@@ -1,12 +1,7 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-/************************************************************************************
- *                                                                                  *
- * ColorCopDlg.cpp :: Color Cop
- *
- ************************************************************************************/
-
+// ColorCopDlg.cpp — ColorCop dialog implementation
 
 // Precompiled header
 #include "pch.h"
@@ -31,50 +26,7 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
-class CAboutDlg : public CDialog {
- public:
-    CAboutDlg();
-
-// Dialog Data
-    //{{AFX_DATA(CAboutDlg) // NOLINT(whitespace/comments)
-    enum { IDD = IDD_ABOUTBOX };
-    CLabel    m_maillink;
-    CLabel    m_link;
-    //}}AFX_DATA // NOLINT(whitespace/comments)
-
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CAboutDlg) // NOLINT(whitespace/comments)
- protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
-
-// Implementation
-
- protected:
-    //{{AFX_MSG(CAboutDlg) // NOLINT(whitespace/comments)
-    virtual BOOL OnInitDialog();
-    //}}AFX_MSG // NOLINT(whitespace/comments)
-    DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD) {
-    //{{AFX_DATA_INIT(CAboutDlg) // NOLINT(whitespace/comments)
-    //}}AFX_DATA_INIT // NOLINT(whitespace/comments)
-}
-
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
-    CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CAboutDlg) // NOLINT(whitespace/comments)
-    DDX_Control(pDX, IDC_MAILLINK, m_maillink);
-    DDX_Control(pDX, IDC_LINK, m_link);
-    //}}AFX_DATA_MAP // NOLINT(whitespace/comments)
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-    //{{AFX_MSG_MAP(CAboutDlg) // NOLINT(whitespace/comments)
-    //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
-END_MESSAGE_MAP()
+#include "AboutDlg.h"
 
 // Constants
 
@@ -2377,23 +2329,6 @@ void CColorCopDlg::FigurePound() {
 
 void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI) {
     pCmdUI->SetCheck((m_Appflags & OmitPound) ? 1 : 0);
-}
-
-BOOL CAboutDlg::OnInitDialog() {
-    CDialog::OnInitDialog();
-
-    // setup the hyperlinks
-    m_link.SetLink(TRUE)
-        .SetTextColor(RGB(0, 0, 255))
-        .SetFontUnderline(TRUE)
-        .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
-
-    m_maillink.SetLink(TRUE)
-        .SetTextColor(RGB(0, 0, 255))
-        .SetFontUnderline(TRUE)
-        .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
-
-    return TRUE;
 }
 
 void CColorCopDlg::OnExpandDialog() {
