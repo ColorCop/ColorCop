@@ -2507,40 +2507,61 @@ void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI) {
     pCmdUI->SetRadio(m_Appflags & Sampling3x3);
 }
 
+// Compute the average RGB value of a square region centered on `point`.
 bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoint point) {
-    // this function averages a matrix of pixels.
-    // either a 3 by 3 or a 5 by 5 average of pixels.
-    // we want to modify this so it can be any range.
-    // to do this lets store m_iSampleOffset;
+    // Compute the average RGB value of a square region centered on `point`.
+    // The region size is (2 * m_iSamplingOffset + 1) on each side.
+    int64_t reddec = 0, greendec = 0, bluedec = 0;   // 64-bit to safely accumulate many pixel values
+    int offset = m_iSamplingOffset;
+    int elements = 0;  // count only valid pixels
 
-    int reddec = 0, greendec = 0, bluedec = 0;        // temp variables to add up the values
-    int offset = 0, elements = 0, xrel, yrel;
     COLORREF crefxy;
+    int xrel, yrel;
 
-    offset = m_iSamplingOffset;
-    elements = (m_iSamplingOffset * 2 + 1) * (m_iSamplingOffset * 2 + 1);
+    // Compute unclamped bounds
+    int xmin = point.x - offset;
+    int ymin = point.y - offset;
 
-    for (xrel = point.x - offset; xrel <= point.x + offset; xrel++) {
-        for (yrel = point.y - offset; yrel <= point.y + offset; yrel++) {
+    // Clamp lower bounds manually (avoids std::max(int, uint16_t) ambiguity)
+    if (xmin < 0) xmin = 0;
+    if (ymin < 0) ymin = 0;
+
+    // Walk the sampling region and accumulate RGB components.
+    for (xrel = xmin; xrel <= point.x + offset; xrel++) {
+        for (yrel = ymin; yrel <= point.y + offset; yrel++) {
             crefxy = ::GetPixel(hdc, xrel, yrel);
-            reddec += GetRValue(crefxy);
+
+            // Skip invalid pixels; GetPixel can fail near screen edges or on invalid DCs.
+            if (crefxy == CLR_INVALID)
+                continue;
+
+            reddec   += GetRValue(crefxy);
             greendec += GetGValue(crefxy);
-            bluedec += GetBValue(crefxy);
+            bluedec  += GetBValue(crefxy);
+            ++elements;  // count only valid samples
         }
     }
-    reddec = static_cast<int>(reddec) / elements;  // average
-    greendec = static_cast<int>(greendec) / elements;  // average
-    bluedec = static_cast<int>(bluedec) / elements;  // average
 
-    if (RGB(reddec, greendec, bluedec) != RGB(m_Reddec, m_Greendec, m_Bluedec)) {
-        *m_R = reddec;
-        *m_G = greendec;
-        *m_B = bluedec;
-
-        return false;    // different.  don't skip
-    } else {
-        return true;    // color is the same
+    if (elements == 0) {
+        // No valid pixels sampled; treat as unchanged.
+        return true;
     }
+
+    // Convert accumulated totals into average RGB values.
+    reddec   /= elements;
+    greendec /= elements;
+    bluedec  /= elements;
+
+    // Check whether the averaged color differs from the previously stored sample.
+    // This avoids unnecessary updates when the sampled color hasn't changed.
+    if (reddec != m_Reddec || greendec != m_Greendec || bluedec != m_Bluedec) {
+        *m_R = static_cast<int>(reddec);
+        *m_G = static_cast<int>(greendec);
+        *m_B = static_cast<int>(bluedec);
+        return false;   // color changed
+    }
+
+    return true;        // color unchanged
 }
 
 void CColorCopDlg::OnPopupApplicationExpandeddialog() {
