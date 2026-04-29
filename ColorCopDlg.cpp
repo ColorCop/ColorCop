@@ -2209,7 +2209,9 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
         Max = std::max({ m_Reddec, m_Greendec, m_Bluedec });
         Min = std::min({ m_Reddec, m_Greendec, m_Bluedec });
 
-        L = static_cast<int>((Min) + Max) / 2;
+        // Compute grayscale lightness safely in int, then narrow explicitly.
+        const int tmpL = (static_cast<int>(Min) + static_cast<int>(Max)) / 2;
+        L = static_cast<std::uint16_t>(tmpL);
 
         m_Reddec   = L;
         m_Greendec = L;
