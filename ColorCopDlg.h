@@ -11,6 +11,14 @@
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
 
+constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;   // one-sixth of the color wheel
+constexpr double SAT_LIGHT_SHIFT   = 0.15;           // amount to adjust saturation/lightness
+constexpr int    NUM_SWATCHES      = 6;              // number of hue variants
+constexpr int    NUM_PALETTE_COLUMNS = 7;
+constexpr double HSL_MIN           = 0.0;
+constexpr double HSL_MAX           = 1.0;
+constexpr double RGB_MAX_D         = 255.0;          // double version of 255
+
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
@@ -118,7 +126,7 @@ class CColorCopDlg : public CDialog {
     } Swatch[6];
     swatchStruct OrigSwatch;
 
-    COLORREF ColorPal[6][7];
+    COLORREF ColorPal[NUM_SWATCHES][NUM_PALETTE_COLUMNS];
     int palcol{};
 
     POINT RelativePoint{};
