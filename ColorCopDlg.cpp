@@ -722,9 +722,9 @@ void CColorCopDlg::OnconvertRGB() {
     } else if (m_Appflags & RGBINT) {
         m_Hexcolor.Format(_T("%d,%d,%d"), m_Reddec, m_Greendec, m_Bluedec);
     } else if (m_Appflags & RGBFLOAT) {
-        r = static_cast<float>(m_Reddec) / 255.0f;
-        g = static_cast<float>(m_Greendec) / 255.0f;
-        b = static_cast<float>(m_Bluedec) / 255.0f;
+        r = static_cast<float>(m_Reddec) / RGB_MAX_D;
+        g = static_cast<float>(m_Greendec) / RGB_MAX_D;
+        b = static_cast<float>(m_Bluedec) / RGB_MAX_D;
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
@@ -787,17 +787,18 @@ void CColorCopDlg::CalcColorPal() {
 }
 
 double CColorCopDlg::plusValue(double num) {
-    num = num + 0.15;
-    if (num > 1.0)
-        num = 1.0;
+    num += SAT_LIGHT_SHIFT;
+    if (num > HSL_MAX)
+        num = HSL_MAX;
 
     return num;
 }
 
 double CColorCopDlg::minusValue(double num) {
-    num = num - 0.15;
-    if (num < 0.0)
-        num = num + 1.0;
+    num -= SAT_LIGHT_SHIFT;
+    if (num < HSL_MIN)
+        num += HSL_MAX;
+
     return num;
 }
 
@@ -808,36 +809,36 @@ void CColorCopDlg::handleShifts() {
     printSwatch();
 
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
     }
     printSwatch();
 
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
@@ -845,7 +846,7 @@ void CColorCopDlg::handleShifts() {
 }
 
 void CColorCopDlg::printSwatch() {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < NUM_SWATCHES; i++) {
         HSLtoRGB(Swatch[i].A, Swatch[i].B, Swatch[i].C);
         Swatch[i].A = r;
         Swatch[i].B = g;
@@ -861,7 +862,7 @@ void CColorCopDlg::setupSwatches() {
     Swatch[0].B = OrigSwatch.B;
     Swatch[0].C = OrigSwatch.C;
 
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i < NUM_SWATCHES; i++) {
         Swatch[i].A = shiftHue(Swatch[i-1].A);
         Swatch[i].B = Swatch[i-1].B;
         Swatch[i].C = Swatch[i-1].C;
@@ -869,9 +870,9 @@ void CColorCopDlg::setupSwatches() {
 }
 
 double CColorCopDlg::shiftHue(double hue) {
-    double rethue = hue + (60.0 / 360.0);
-    if (rethue >= 1.0)
-        rethue -= 1.0;
+    double rethue = hue + HUE_ROTATION_STEP;
+    if (rethue >= HSL_MAX)
+        rethue -= HSL_MAX;
     return rethue;
 }
 
@@ -892,7 +893,7 @@ void CColorCopDlg::setSeedColor() {
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
     if (S == 0) {
-        r = g = b = static_cast<int>(L * 255.0);
+        r = g = b = static_cast<int>(L * RGB_MAX_D);
     } else {
         double h = (H - static_cast<int>(H)) * 6.0;
         int caseH = static_cast<int>(h);
@@ -904,34 +905,34 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
         switch (caseH) {
             case 0:
-            r = static_cast<int>((L) * 255.0);
-            g = static_cast<int>((t) * 255.0);
-            b = static_cast<int>((p) * 255.0);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((t) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
             case 1:
-            r = static_cast<int>((q) * 255.0);
-            g = static_cast<int>((L) * 255.0);
-            b = static_cast<int>((p) * 255.0);
+            r = static_cast<int>((q) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
             case 2:
-            r = static_cast<int>((p) * 255.0);
-            g = static_cast<int>((L) * 255.0);
-            b = static_cast<int>((t) * 255.0);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((t) * RGB_MAX_D);
             break;
             case 3:
-            r = static_cast<int>((p) * 255.0);
-            g = static_cast<int>((q) * 255.0);
-            b = static_cast<int>((L) * 255.0);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((q) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
             case 4:
-            r = static_cast<int>((t) * 255.0);
-            g = static_cast<int>((p) * 255.0);
-            b = static_cast<int>((L) * 255.0);
+            r = static_cast<int>((t) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
             case 5:
-            r = static_cast<int>((L) * 255.0);
-            g = static_cast<int>((p) * 255.0);
-            b = static_cast<int>((q) * 255.0);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((q) * RGB_MAX_D);
             break;
           }
     }
@@ -939,9 +940,9 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     // Normalize RGB to [0,1]
-    const double r = static_cast<double>(red) / 255.0;
-    const double g = static_cast<double>(green) / 255.0;
-    const double b = static_cast<double>(blue) / 255.0;
+    const double r = static_cast<double>(red) / RGB_MAX_D;
+    const double g = static_cast<double>(green) / RGB_MAX_D;
+    const double b = static_cast<double>(blue) / RGB_MAX_D;
 
     // Compute K (black)
     const double maxRGB = std::max({r, g, b});
@@ -959,10 +960,10 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     }
 
     // Convert CMYK back to 0–255 integer range
-    m_Cyan = static_cast<int>(std::round(C * 255.0));
-    m_Magenta = static_cast<int>(std::round(M * 255.0));
-    m_Yellow = static_cast<int>(std::round(Y * 255.0));
-    m_Black = static_cast<int>(std::round(K * 255.0));
+    m_Cyan = static_cast<int>(std::round(C * RGB_MAX_D));
+    m_Magenta = static_cast<int>(std::round(M * RGB_MAX_D));
+    m_Yellow = static_cast<int>(std::round(Y * RGB_MAX_D));
+    m_Black = static_cast<int>(std::round(K * RGB_MAX_D));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -982,10 +983,10 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
         Diff = 5.0;    // since greyscale colors don't have compliments,
     }                    // lets give it something
 
-    Light = MaxNum / 255.0;            // find the Light
+    Light = MaxNum / RGB_MAX_D;            // find the Light
 
     // find the Saturation
-    if ((MaxNum == 255) || (MinNum == 0)) {
+    if ((MaxNum == RGB_MAX) || (MinNum == 0)) {
         Sat = 1.0;
     }
 
