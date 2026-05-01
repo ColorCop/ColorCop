@@ -29,14 +29,21 @@ If you want to build and run Color Cop from source:
    git clone https://github.com/ColorCop/ColorCop.git
    cd ColorCop
 
-## Building
+### Building in Visual Studio
 
-  MSBuild.exe ColorCop.sln /p:Configuration=Release /p:Platform=Win32
+1. Open `ColorCop.sln` in **Visual Studio 2022**.
+2. Select the desired configuration from the toolbar:
+   - **Debug | Win32**
+   - **Release | Win32**
+3. Build the solution via **Build → Build Solution**.
+
+A placeholder `version.h` is included in the repository so the project builds cleanly in the IDE.  
+When using the command‑line `build.cmd` script, this file is automatically regenerated with version information from Git tags.
 
 ### Build Configurations
 
-- **Debug**: Development build with debugging symbols
-- **Release**: Optimized production build
+- **Debug** — Development build with debugging symbols and no optimizations  
+- **Release** — Optimized production build suitable for distribution
 
 ## Release Workflow
 
