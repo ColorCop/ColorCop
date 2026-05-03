@@ -25,14 +25,14 @@ class colorspace {
     void SetCyan(BYTE c) { byCyan = c; }
 
     // Magenta
-    BYTE GetMagenta() { return byCyan; }
-    void SetMagenta(BYTE c) { byCyan = c; }
+    BYTE GetMagenta() { return byMagenta; }
+    void SetMagenta(BYTE c) { byMagenta = c; }
 
     // Yellow
     BYTE GetYellow() { return byYellow; }
     void SetYellow(BYTE c) { byYellow = c; }
 
-    // blacK
+    // Black
     BYTE GetBlack() { return byBlack; }
     void SetBlack(BYTE c) { byBlack = c; }
 
@@ -45,12 +45,24 @@ class colorspace {
     void SetSaturation(BYTE c) { bySaturation = c; }
 
     // Brightness
-    BYTE GetBrightness() { return byCyan; }
-    void SetBrightness(BYTE c) { byCyan = c; }
+    BYTE GetBrightness() { return byBrightness; }
+    void SetBrightness(BYTE c) { byBrightness = c; }
 
     // ctor
     colorspace() {
     }
+
+ private:
+    BYTE byRed;
+    BYTE byGreen;
+    BYTE byBlue;
+    BYTE byCyan;
+    BYTE byMagenta;
+    BYTE byYellow;
+    BYTE byBlack;
+    BYTE byHue;
+    BYTE bySaturation;
+    BYTE byBrightness;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -87,9 +99,16 @@ void RGB2CMYK(BYTE r, BYTE g, BYTE b, BYTE& c, BYTE& m, BYTE& y, BYTE& k) {
     if (B < K)
         K = B;
 
-    C = (R - K)/(1.0 - K);
-    M = (G - K)/(1.0 - K);
-    Y = (B - K)/(1.0 - K);
+    if (K >= 1.0) {
+        C = 0.0;
+        M = 0.0;
+        Y = 0.0;
+        K = 1.0;
+    } else {
+        C = (R - K) / (1.0 - K);
+        M = (G - K) / (1.0 - K);
+        Y = (B - K) / (1.0 - K);
+    }
 
     C = (C * 100) + 0.5;
     M = (M * 100) + 0.5;
