@@ -1,4 +1,4 @@
-# ColorCop
+# ![ColorCop Icon](https://raw.githubusercontent.com/ColorCop/ColorCop-website/main/images/ccicon.png) ColorCop
 
 A Windows-based color picker utility built with Microsoft Foundation Classes (MFC).
 
@@ -37,12 +37,12 @@ If you want to build and run Color Cop from source:
    - **Release | Win32**
 3. Build the solution via **Build → Build Solution**.
 
-A placeholder `version.h` is included in the repository so the project builds cleanly in the IDE.  
+A placeholder `version.h` is included in the repository so the project builds cleanly in the IDE.
 When using the command‑line `build.cmd` script, this file is automatically regenerated with version information from Git tags.
 
 ### Build Configurations
 
-- **Debug** — Development build with debugging symbols and no optimizations  
+- **Debug** — Development build with debugging symbols and no optimizations
 - **Release** — Optimized production build suitable for distribution
 
 ## Release Workflow
