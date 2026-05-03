@@ -66,6 +66,7 @@ jobs:
           $version = "${{ steps.get_version.outputs.version }}"
           (Get-Content choco/colorcop.nuspec) `
             -replace '<version>[^<]+</version>', "<version>$version</version>" `
+            -replace 'releases/tag/v0\.0\.0', "releases/tag/v$version" `
             | Set-Content choco/colorcop.nuspec
 
       - name: Generate VERIFICATION.txt
