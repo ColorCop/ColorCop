@@ -8,6 +8,9 @@
 
 #include <cstdint>
 
+#include "Defaults.h"
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
 
@@ -28,8 +31,8 @@ class CColorCopDlg : public CDialog {
 // Construction
  public:
     explicit CColorCopDlg(CWnd* pParent = nullptr);    // standard constructor
-    COLORREF ColorHistory[7];
-    COLORREF CustColorBank[16];
+    COLORREF ColorHistory[kHistoryCount];
+    COLORREF CustColorBank[kCustomColorCount];
     int m_Appflags;
     int m_iSamplingOffset;
 
@@ -123,7 +126,7 @@ class CColorCopDlg : public CDialog {
         double A;
         double B;
         double C;
-    } Swatch[6];
+    } Swatch[NUM_SWATCHES];
     swatchStruct OrigSwatch;
 
     COLORREF ColorPal[NUM_SWATCHES][NUM_PALETTE_COLUMNS];
