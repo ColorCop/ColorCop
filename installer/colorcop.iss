@@ -46,7 +46,7 @@ Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String:
 [Icons]
 Name: "{group}\Color Cop"; Filename: "{app}\ColorCop.exe"
 Name: "{group}\Website"; Filename: "{app}\ColorCop.url"
-Name: "{userdesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
+Name: "{commondesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
 
 [Run]
 ; Install VC++ runtime if needed
