@@ -11,6 +11,7 @@
 #include "ColorCopDlg.h"
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
+#include "GdiHelpers.h"  // RAII wrapper for window device contexts
 
 // Windows SDK headers (explicit APIs used in this file)
 #include <commctrl.h>
@@ -621,7 +622,7 @@ void CColorCopDlg::OnPaint() {
 
         HWND CCopHWNDtemp = AfxGetApp()->GetMainWnd()->m_hWnd;
 
-        hdc = ::GetDC(CCopHWNDtemp);
+        WindowDC hdc(CCopHWNDtemp);   // RAII — auto‑releases
         if (hBitmap) {
             hdcMem = ::CreateCompatibleDC(hdc);
 
@@ -643,7 +644,6 @@ void CColorCopDlg::OnPaint() {
         if (m_Appflags & ExpandedDialog) {
             ::DrawEdge(hdc, &magrect, EDGE_SUNKEN, BF_RECT);
         }
-        ::ReleaseDC(CCopHWNDtemp, hdc);  // let go of the memory
 
         DisplayColor();    // keep the color window showing
     }
