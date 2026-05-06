@@ -5,6 +5,6 @@ python = "3.12"
 description = "Run linters"
 run = [
   "pip install -r requirements.txt",
-  "cpplint --recursive --exclude=.git --exclude=resource.h .",
+  "cpplint --recursive --exclude=.git --exclude=resource.h --exclude version.h .",
   "cppcheck --project=ColorCop.vcxproj --library=mfc.cfg --enable=warning,style,performance,portability --inline-suppr --error-exitcode=0 --check-level=exhaustive",
 ]

@@ -10,7 +10,7 @@ AppPublisher=Jay Prall
 AppPublisherURL=https://colorcop.net
 AppSupportURL=https://colorcop.net
 AppUpdatesURL=https://colorcop.net
-DefaultDirName={pf}\ColorCop
+DefaultDirName={commonpf32}\ColorCop
 DefaultGroupName=Color Cop
 LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\ReadMe.txt
@@ -46,7 +46,7 @@ Filename: "{app}\ColorCop.url"; Section: "InternetShortcut"; Key: "URL"; String:
 [Icons]
 Name: "{group}\Color Cop"; Filename: "{app}\ColorCop.exe"
 Name: "{group}\Website"; Filename: "{app}\ColorCop.url"
-Name: "{userdesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
+Name: "{commondesktop}\Color Cop"; Filename: "{app}\ColorCop.exe"; Tasks: desktopicon
 
 [Run]
 ; Install VC++ runtime if needed

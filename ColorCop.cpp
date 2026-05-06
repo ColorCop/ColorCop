@@ -3,7 +3,6 @@
 
 // ColorCop.cpp : Defines the class behaviors for the application.
 //
-
 #include "pch.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"

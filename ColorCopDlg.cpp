@@ -1,12 +1,7 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-/************************************************************************************
- *                                                                                  *
- * ColorCopDlg.cpp :: Color Cop
- *
- ************************************************************************************/
-
+// ColorCopDlg.cpp — ColorCop dialog implementation
 
 // Precompiled header
 #include "pch.h"
@@ -16,6 +11,7 @@
 #include "ColorCopDlg.h"
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
+#include "GdiHelpers.h"  // RAII wrapper for window device contexts
 
 // Windows SDK headers (explicit APIs used in this file)
 #include <commctrl.h>
@@ -31,50 +27,7 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
-class CAboutDlg : public CDialog {
- public:
-    CAboutDlg();
-
-// Dialog Data
-    //{{AFX_DATA(CAboutDlg) // NOLINT(whitespace/comments)
-    enum { IDD = IDD_ABOUTBOX };
-    CLabel    m_maillink;
-    CLabel    m_link;
-    //}}AFX_DATA // NOLINT(whitespace/comments)
-
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CAboutDlg) // NOLINT(whitespace/comments)
- protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
-
-// Implementation
-
- protected:
-    //{{AFX_MSG(CAboutDlg) // NOLINT(whitespace/comments)
-    virtual BOOL OnInitDialog();
-    //}}AFX_MSG // NOLINT(whitespace/comments)
-    DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD) {
-    //{{AFX_DATA_INIT(CAboutDlg) // NOLINT(whitespace/comments)
-    //}}AFX_DATA_INIT // NOLINT(whitespace/comments)
-}
-
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
-    CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CAboutDlg) // NOLINT(whitespace/comments)
-    DDX_Control(pDX, IDC_MAILLINK, m_maillink);
-    DDX_Control(pDX, IDC_LINK, m_link);
-    //}}AFX_DATA_MAP // NOLINT(whitespace/comments)
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-    //{{AFX_MSG_MAP(CAboutDlg) // NOLINT(whitespace/comments)
-    //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
-END_MESSAGE_MAP()
+#include "AboutDlg.h"
 
 // Constants
 
@@ -134,9 +87,6 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       Swatch{},                // array of structs
       OrigSwatch{},            // struct
       ColorPal{},              // 2D array
-      hdc(nullptr),
-      hdcMem(nullptr),
-      hdcZoomMem(nullptr),
       m_hEyeCursor(nullptr),
       m_hMagCursor(nullptr),
       m_hStandardCursor(nullptr),
@@ -434,38 +384,52 @@ void CColorCopDlg::SetupSystemMenu() {
 }
 
 bool CColorCopDlg::LoadPersistentVariables() {
-  bool retval = false;
+    // Build full bitmap path safely
+    CString strBMPFile = GetTempFolder();
+    strBMPFile += BMP_FILE_DIR;
+    strBMPFile += BMP_FILE;
 
-  // Build full bitmap path safely
-  CString strBMPFile = GetTempFolder();
-  strBMPFile += BMP_FILE_DIR;
-  strBMPFile += BMP_FILE;
+    // Load bitmap from file
+    hBitmap = reinterpret_cast<HBITMAP>(
+        LoadImage(AfxGetApp()->m_hInstance,
+                  strBMPFile,
+                  IMAGE_BITMAP,
+                  0, 0,
+                  LR_LOADFROMFILE));
 
-  // Load bitmap from file
-  hBitmap = (HBITMAP)LoadImage(AfxGetApp()->m_hInstance, strBMPFile,
-                               IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    if (hBitmap) {
+        hZoomBitmap = hBitmap;
+    } else {
+        TRACE(_T("Warning: Could not load bitmap: %s\n"), strBMPFile.GetString());
+    }
 
-  if (hBitmap != nullptr) {
-    hZoomBitmap = hBitmap;
-  } else {
-    // Bitmap missing or unreadable — not fatal
-    TRACE(_T("Warning: Could not load bitmap: %s\n"), strBMPFile.GetString());
-  }
+    //
+    // Off‑screen recovery: If the saved window position is off-screen, reset to defaults.
+    // Use the full virtual desktop (multi‑monitor safe)
+    //
+    RECT virtualBounds;
+    virtualBounds.left   = GetSystemMetrics(SM_XVIRTUALSCREEN);
+    virtualBounds.top    = GetSystemMetrics(SM_YVIRTUALSCREEN);
+    virtualBounds.right  = virtualBounds.left + GetSystemMetrics(SM_CXVIRTUALSCREEN);
+    virtualBounds.bottom = virtualBounds.top  + GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
-  // Fix window position if saved as "minimized"
-  // Win9x stored minimized windows at (3000, 3000)
-  // NT stored them at (-32000, -32000)
-  //
-  if (WinLocX < 0 || WinLocY < 0 || WinLocX == 3000 || WinLocY == 3000) {
-    WinLocX = 200;
-    WinLocY = 200;
-  }
+    constexpr int kVisibilityMargin = 100;  // px
 
-  // Restore window position (no size change)
-  SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
+    bool offscreen =
+        (WinLocX > virtualBounds.right) ||
+        (WinLocY > virtualBounds.bottom) ||
+        (WinLocX + kVisibilityMargin < virtualBounds.left) ||
+        (WinLocY + kVisibilityMargin < virtualBounds.top);
 
-  retval = true;
-  return retval;
+    if (offscreen) {
+        WinLocX = kDefaultWinLocX;
+        WinLocY = kDefaultWinLocY;
+    }
+
+    // Restore window position (no size change)
+    SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
+
+    return true;
 }
 
 void CColorCopDlg::SetupWindowRects() {
@@ -529,7 +493,6 @@ void CColorCopDlg::SetupWindowRects() {
     // Get a rect of the entire window.
     CWnd::GetWindowRect(&CCopRect);
     CWnd::ScreenToClient(&CCopRect);
-    CCopsmRect = CCopRect;            // copy rect
 
     // large sizes
     lgWidth = CCopRect.right - CCopRect.left;
@@ -669,29 +632,27 @@ void CColorCopDlg::OnPaint() {
 
         HWND CCopHWNDtemp = AfxGetApp()->GetMainWnd()->m_hWnd;
 
-        hdc = ::GetDC(CCopHWNDtemp);
+        WindowDC hdc(CCopHWNDtemp);   // RAII — auto‑releases
         if (hBitmap) {
-            hdcMem = ::CreateCompatibleDC(hdc);
+            HDC hdcMem = ::CreateCompatibleDC(hdc);
 
             ::SelectObject(hdcMem, hBitmap);
 
             if (m_Appflags & ExpandedDialog)
 
-            ::BitBlt(hdc,  // destination DC
-                     magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,  // upper left dest
-                     magrect.Width() - 4, magrect.Height() - 4,  // width of dest rect
-                     hdcMem,  // source DC
-                     0, 0,      // upper left source
-                     SRCCOPY);  // mode
+            ::BitBlt(hdc,
+                    magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,
+                    magrect.Width() - 4, magrect.Height() - 4,
+                    hdcMem,
+                    0, 0,
+                    SRCCOPY);
 
-            ::DeleteDC(hdcMem);                        // kill the temporary DC
-            hdcMem = NULL;
-          }
+            ::DeleteDC(hdcMem);
+        }
 
         if (m_Appflags & ExpandedDialog) {
             ::DrawEdge(hdc, &magrect, EDGE_SUNKEN, BF_RECT);
         }
-        ::ReleaseDC(CCopHWNDtemp, hdc);  // let go of the memory
 
         DisplayColor();    // keep the color window showing
     }
@@ -707,12 +668,12 @@ void CColorCopDlg::RecalcZoom() {
     HWND hwnd = AfxGetMainWnd()->GetSafeHwnd();
 
     if (hZoomBitmap) {
-        hdc = ::GetDC(hwnd);
+        HDC hdc = ::GetDC(hwnd);
         if (!hdc)
             return;
 
-        hdcMem     = ::CreateCompatibleDC(hdc);
-        hdcZoomMem = ::CreateCompatibleDC(hdc);
+        HDC hdcMem     = ::CreateCompatibleDC(hdc);
+        HDC hdcZoomMem = ::CreateCompatibleDC(hdc);
 
         if (hdcMem && hdcZoomMem) {
             HGDIOBJ oldMemBmp  = ::SelectObject(hdcMem, hBitmap);
@@ -770,9 +731,9 @@ void CColorCopDlg::OnconvertRGB() {
     } else if (m_Appflags & RGBINT) {
         m_Hexcolor.Format(_T("%d,%d,%d"), m_Reddec, m_Greendec, m_Bluedec);
     } else if (m_Appflags & RGBFLOAT) {
-        r = static_cast<float>(m_Reddec) / 255.0f;
-        g = static_cast<float>(m_Greendec) / 255.0f;
-        b = static_cast<float>(m_Bluedec) / 255.0f;
+        r = static_cast<float>(m_Reddec) / RGB_MAX_D;
+        g = static_cast<float>(m_Greendec) / RGB_MAX_D;
+        b = static_cast<float>(m_Bluedec) / RGB_MAX_D;
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
@@ -835,17 +796,18 @@ void CColorCopDlg::CalcColorPal() {
 }
 
 double CColorCopDlg::plusValue(double num) {
-    num = num + 0.15;
-    if (num > 1.0)
-        num = 1.0;
+    num += SAT_LIGHT_SHIFT;
+    if (num > HSL_MAX)
+        num = HSL_MAX;
 
     return num;
 }
 
 double CColorCopDlg::minusValue(double num) {
-    num = num - 0.15;
-    if (num < 0.0)
-        num = num + 1.0;
+    num -= SAT_LIGHT_SHIFT;
+    if (num < HSL_MIN)
+        num += HSL_MAX;
+
     return num;
 }
 
@@ -856,36 +818,36 @@ void CColorCopDlg::handleShifts() {
     printSwatch();
 
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
     }
     printSwatch();
 
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = plusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = plusValue(Swatch[i].C);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
     }
     printSwatch();
     setupSwatches();
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_SWATCHES; i++) {
         Swatch[i].B = minusValue(Swatch[i].B);
         Swatch[i].C = minusValue(Swatch[i].C);
     }
@@ -893,7 +855,7 @@ void CColorCopDlg::handleShifts() {
 }
 
 void CColorCopDlg::printSwatch() {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < NUM_SWATCHES; i++) {
         HSLtoRGB(Swatch[i].A, Swatch[i].B, Swatch[i].C);
         Swatch[i].A = r;
         Swatch[i].B = g;
@@ -909,7 +871,7 @@ void CColorCopDlg::setupSwatches() {
     Swatch[0].B = OrigSwatch.B;
     Swatch[0].C = OrigSwatch.C;
 
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i < NUM_SWATCHES; i++) {
         Swatch[i].A = shiftHue(Swatch[i-1].A);
         Swatch[i].B = Swatch[i-1].B;
         Swatch[i].C = Swatch[i-1].C;
@@ -917,9 +879,9 @@ void CColorCopDlg::setupSwatches() {
 }
 
 double CColorCopDlg::shiftHue(double hue) {
-    double rethue = hue + (60.0 / 360.0);
-    if (rethue >= 1.0)
-        rethue -= 1.0;
+    double rethue = hue + HUE_ROTATION_STEP;
+    if (rethue >= HSL_MAX)
+        rethue -= HSL_MAX;
     return rethue;
 }
 
@@ -940,7 +902,7 @@ void CColorCopDlg::setSeedColor() {
 
 void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
     if (S == 0) {
-        r = g = b = static_cast<int>(L * 255.0);
+        r = g = b = static_cast<int>(L * RGB_MAX_D);
     } else {
         double h = (H - static_cast<int>(H)) * 6.0;
         int caseH = static_cast<int>(h);
@@ -952,34 +914,34 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
         switch (caseH) {
             case 0:
-            r = static_cast<int>((L) * 255.0);
-            g = static_cast<int>((t) * 255.0);
-            b = static_cast<int>((p) * 255.0);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((t) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
             case 1:
-            r = static_cast<int>((q) * 255.0);
-            g = static_cast<int>((L) * 255.0);
-            b = static_cast<int>((p) * 255.0);
+            r = static_cast<int>((q) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
             case 2:
-            r = static_cast<int>((p) * 255.0);
-            g = static_cast<int>((L) * 255.0);
-            b = static_cast<int>((t) * 255.0);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((t) * RGB_MAX_D);
             break;
             case 3:
-            r = static_cast<int>((p) * 255.0);
-            g = static_cast<int>((q) * 255.0);
-            b = static_cast<int>((L) * 255.0);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((q) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
             case 4:
-            r = static_cast<int>((t) * 255.0);
-            g = static_cast<int>((p) * 255.0);
-            b = static_cast<int>((L) * 255.0);
+            r = static_cast<int>((t) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
             case 5:
-            r = static_cast<int>((L) * 255.0);
-            g = static_cast<int>((p) * 255.0);
-            b = static_cast<int>((q) * 255.0);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((q) * RGB_MAX_D);
             break;
           }
     }
@@ -987,9 +949,9 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     // Normalize RGB to [0,1]
-    const double r = static_cast<double>(red) / 255.0;
-    const double g = static_cast<double>(green) / 255.0;
-    const double b = static_cast<double>(blue) / 255.0;
+    const double r = static_cast<double>(red) / RGB_MAX_D;
+    const double g = static_cast<double>(green) / RGB_MAX_D;
+    const double b = static_cast<double>(blue) / RGB_MAX_D;
 
     // Compute K (black)
     const double maxRGB = std::max({r, g, b});
@@ -1007,10 +969,10 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     }
 
     // Convert CMYK back to 0–255 integer range
-    m_Cyan = static_cast<int>(std::round(C * 255.0));
-    m_Magenta = static_cast<int>(std::round(M * 255.0));
-    m_Yellow = static_cast<int>(std::round(Y * 255.0));
-    m_Black = static_cast<int>(std::round(K * 255.0));
+    m_Cyan = static_cast<int>(std::round(C * RGB_MAX_D));
+    m_Magenta = static_cast<int>(std::round(M * RGB_MAX_D));
+    m_Yellow = static_cast<int>(std::round(Y * RGB_MAX_D));
+    m_Black = static_cast<int>(std::round(K * RGB_MAX_D));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -1030,10 +992,10 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
         Diff = 5.0;    // since greyscale colors don't have compliments,
     }                    // lets give it something
 
-    Light = MaxNum / 255.0;            // find the Light
+    Light = MaxNum / RGB_MAX_D;            // find the Light
 
     // find the Saturation
-    if ((MaxNum == 255) || (MinNum == 0)) {
+    if ((MaxNum == RGB_MAX) || (MinNum == 0)) {
         Sat = 1.0;
     }
 
@@ -1588,7 +1550,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
             }
 
             COLORREF crefxy;
-            hdc = ::GetDC(NULL);
+            WindowDC hdc(NULL);    // RAII: replaces GetDC/ReleaseDC
 
             if (m_Appflags & Sampling1) {
                 crefxy = ::GetPixel(hdc, point.x, point.y);    // api call
@@ -1602,10 +1564,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                         m_Bluedec  = GetBValue(crefxy);
 
                         UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
-                        // Black   = minimum(1-Red, 1-Green, 1-Blue)
-                        // Cyan    = (1-Red-Black)/(1-Black)
-                        // Magenta = (1-Green-Black)/(1-Black)
-                        // Yellow  = (1-Blue-Black)/(1-Black)
 
                     } else {
                         bSkipColor = true;
@@ -1623,7 +1581,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                 RelativePointEnd.y = point.y;
             }
 
-            ::ReleaseDC(NULL, hdc);    // free up the memory
+            // hdc auto‑releases via RAII
 
             CString strStatus = "", strWebSafe = "";
 
@@ -1677,8 +1635,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                 }
                 SetStatusBarText(strStatus);
 
-                //}
-
                 if (!bSkipColor) {
                     OnconvertRGB();
                 }
@@ -1701,10 +1657,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
         if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
-            //  left mouse button down on the magnifier
             SetCursor(m_hHandCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) {
-            // left mouse button down on magnification window
             SetCursor(m_hEyeCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
             SetCursor(m_hEyeCursor);
@@ -1740,10 +1694,11 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
         ::DeleteObject(hZoomBitmap);
         hZoomBitmap = NULL;
     }
-    hdc = ::GetDC(NULL);        // device context to the whole desktop
 
-    hdcMem = ::CreateCompatibleDC(hdc);
-    hdcZoomMem = ::CreateCompatibleDC(hdc);
+    WindowDC hdc(NULL);        // device context to the whole desktop (RAII)
+
+    HDC hdcMem = ::CreateCompatibleDC(hdc);
+    HDC hdcZoomMem = ::CreateCompatibleDC(hdc);
 
     hBitmap = CreateCompatibleBitmap(hdc, magrect.Width(), magrect.Height());
     hZoomBitmap = CreateCompatibleBitmap(hdc, magrect.Width(), magrect.Height());
@@ -1781,7 +1736,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
 
     ::DeleteDC(hdcMem);
     ::DeleteDC(hdcZoomMem);
-    ::ReleaseDC(NULL, hdc);        // free up memory
+    // hdc auto‑releases via RAII
     return;
 }
 
@@ -2257,7 +2212,9 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
         Max = std::max({ m_Reddec, m_Greendec, m_Bluedec });
         Min = std::min({ m_Reddec, m_Greendec, m_Bluedec });
 
-        L = static_cast<int>((Min) + Max) / 2;
+        // Compute grayscale lightness safely in int, then narrow explicitly.
+        const int tmpL = (static_cast<int>(Min) + static_cast<int>(Max)) / 2;
+        L = static_cast<std::uint16_t>(tmpL);
 
         m_Reddec   = L;
         m_Greendec = L;
@@ -2377,23 +2334,6 @@ void CColorCopDlg::FigurePound() {
 
 void CColorCopDlg::OnUpdateOptionsOmitsymbol(CCmdUI* pCmdUI) {
     pCmdUI->SetCheck((m_Appflags & OmitPound) ? 1 : 0);
-}
-
-BOOL CAboutDlg::OnInitDialog() {
-    CDialog::OnInitDialog();
-
-    // setup the hyperlinks
-    m_link.SetLink(TRUE)
-        .SetTextColor(RGB(0, 0, 255))
-        .SetFontUnderline(TRUE)
-        .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
-
-    m_maillink.SetLink(TRUE)
-        .SetTextColor(RGB(0, 0, 255))
-        .SetFontUnderline(TRUE)
-        .SetLinkCursor(AfxGetApp()->LoadCursor(IDC_HANDPOINTER));
-
-    return TRUE;
 }
 
 void CColorCopDlg::OnExpandDialog() {
@@ -2572,40 +2512,61 @@ void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI) {
     pCmdUI->SetRadio(m_Appflags & Sampling3x3);
 }
 
+// Compute the average RGB value of a square region centered on `point`.
 bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoint point) {
-    // this function averages a matrix of pixels.
-    // either a 3 by 3 or a 5 by 5 average of pixels.
-    // we want to modify this so it can be any range.
-    // to do this lets store m_iSampleOffset;
+    // Compute the average RGB value of a square region centered on `point`.
+    // The region size is (2 * m_iSamplingOffset + 1) on each side.
+    int64_t reddec = 0, greendec = 0, bluedec = 0;   // 64-bit to safely accumulate many pixel values
+    int offset = m_iSamplingOffset;
+    int elements = 0;  // count only valid pixels
 
-    int reddec = 0, greendec = 0, bluedec = 0;        // temp variables to add up the values
-    int offset = 0, elements = 0, xrel, yrel;
     COLORREF crefxy;
+    int xrel, yrel;
 
-    offset = m_iSamplingOffset;
-    elements = (m_iSamplingOffset * 2 + 1) * (m_iSamplingOffset * 2 + 1);
+    // Compute unclamped bounds
+    int xmin = point.x - offset;
+    int ymin = point.y - offset;
 
-    for (xrel = point.x - offset; xrel <= point.x + offset; xrel++) {
-        for (yrel = point.y - offset; yrel <= point.y + offset; yrel++) {
+    // Clamp lower bounds manually (avoids std::max(int, uint16_t) ambiguity)
+    if (xmin < 0) xmin = 0;
+    if (ymin < 0) ymin = 0;
+
+    // Walk the sampling region and accumulate RGB components.
+    for (xrel = xmin; xrel <= point.x + offset; xrel++) {
+        for (yrel = ymin; yrel <= point.y + offset; yrel++) {
             crefxy = ::GetPixel(hdc, xrel, yrel);
-            reddec += GetRValue(crefxy);
+
+            // Skip invalid pixels; GetPixel can fail near screen edges or on invalid DCs.
+            if (crefxy == CLR_INVALID)
+                continue;
+
+            reddec   += GetRValue(crefxy);
             greendec += GetGValue(crefxy);
-            bluedec += GetBValue(crefxy);
+            bluedec  += GetBValue(crefxy);
+            ++elements;  // count only valid samples
         }
     }
-    reddec = static_cast<int>(reddec) / elements;  // average
-    greendec = static_cast<int>(greendec) / elements;  // average
-    bluedec = static_cast<int>(bluedec) / elements;  // average
 
-    if (RGB(reddec, greendec, bluedec) != RGB(m_Reddec, m_Greendec, m_Bluedec)) {
-        *m_R = reddec;
-        *m_G = greendec;
-        *m_B = bluedec;
-
-        return false;    // different.  don't skip
-    } else {
-        return true;    // color is the same
+    if (elements == 0) {
+        // No valid pixels sampled; treat as unchanged.
+        return true;
     }
+
+    // Convert accumulated totals into average RGB values.
+    reddec   /= elements;
+    greendec /= elements;
+    bluedec  /= elements;
+
+    // Check whether the averaged color differs from the previously stored sample.
+    // This avoids unnecessary updates when the sampled color hasn't changed.
+    if (reddec != m_Reddec || greendec != m_Greendec || bluedec != m_Bluedec) {
+        *m_R = static_cast<int>(reddec);
+        *m_G = static_cast<int>(greendec);
+        *m_B = static_cast<int>(bluedec);
+        return false;   // color changed
+    }
+
+    return true;        // color unchanged
 }
 
 void CColorCopDlg::OnPopupApplicationExpandeddialog() {

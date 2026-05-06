@@ -1,15 +1,26 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// ColorCopDlg.h : header file
+// ColorCopDlg.h : header file for the Color Cop dialog
 //
 
 #pragma once
 
 #include <cstdint>
 
+#include "Defaults.h"
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg dialog
+
+constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;   // one-sixth of the color wheel
+constexpr double SAT_LIGHT_SHIFT   = 0.15;           // amount to adjust saturation/lightness
+constexpr int    NUM_SWATCHES      = 6;              // number of hue variants
+constexpr int    NUM_PALETTE_COLUMNS = 7;
+constexpr double HSL_MIN           = 0.0;
+constexpr double HSL_MAX           = 1.0;
+constexpr double RGB_MAX_D         = 255.0;          // double version of 255
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
@@ -20,8 +31,8 @@ class CColorCopDlg : public CDialog {
 // Construction
  public:
     explicit CColorCopDlg(CWnd* pParent = nullptr);    // standard constructor
-    COLORREF ColorHistory[7];
-    COLORREF CustColorBank[16];
+    COLORREF ColorHistory[kHistoryCount];
+    COLORREF CustColorBank[kCustomColorCount];
     int m_Appflags;
     int m_iSamplingOffset;
 
@@ -115,25 +126,23 @@ class CColorCopDlg : public CDialog {
         double A;
         double B;
         double C;
-    } Swatch[6];
+    } Swatch[NUM_SWATCHES];
     swatchStruct OrigSwatch;
 
-    COLORREF ColorPal[6][7];
+    COLORREF ColorPal[NUM_SWATCHES][NUM_PALETTE_COLUMNS];
     int palcol{};
 
     POINT RelativePoint{};
     POINT RelativePointEnd{};
 
     CMenu copmenu;
-    HDC hdc, hdcMem, hdcZoomMem;
 
     CRect Q1rect, Q2rect, Q3rect, Q4rect, Q5rect, Q6rect, Q7rect;
     CRect buttonrect;                    // color window rect
 
     CRect magrect, colorpalrect;        // magnifier rect, based off color window rect
-    CRect testrect;
     CRect magplus, magminus;
-    RECT CCopRect, CCopsmRect;
+    RECT CCopRect;
 
     HCURSOR m_hEyeCursor;
     HCURSOR m_hMagCursor;

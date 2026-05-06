@@ -33,6 +33,9 @@
     <ClCompile Include="SystemTray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ColorCop.rc">
@@ -59,6 +62,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemTray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -90,6 +96,7 @@
     <None Include="Res\MOVE4WAY.CUR">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Res\eyeyedropper.ico">

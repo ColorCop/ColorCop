@@ -10,13 +10,10 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1786EBED-8856-4392-AD04-CFC32D438A4A}</ProjectGuid>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
@@ -25,43 +22,30 @@
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-
   <ImportGroup Label="ExtensionSettings" />
-
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-
   <PropertyGroup Label="UserMacros" />
-
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <EnableUAC>true</EnableUAC>
     <UACExecutionLevel>AsInvoker</UACExecutionLevel>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\Release\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -90,7 +74,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -118,8 +101,8 @@
       <AdditionalDependencies>Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-
   <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="ColorCop.cpp" />
     <ClCompile Include="ColorCopDlg.cpp" />
     <ClCompile Include="colorspace.cpp" />
@@ -130,12 +113,11 @@
     </ClCompile>
     <ClCompile Include="SystemTray.cpp" />
   </ItemGroup>
-
   <ItemGroup>
     <ResourceCompile Include="ColorCop.rc" />
   </ItemGroup>
-
   <ItemGroup>
+    <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="ColorCop.h" />
     <ClInclude Include="ColorCopDlg.h" />
     <ClInclude Include="colorspace.h" />
@@ -144,7 +126,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SystemTray.h" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Res\ColorCop.rc2" />
     <None Include="Res\cross.cur" />
@@ -155,10 +136,8 @@
     <None Include="Res\cursor_m.cur" />
     <None Include="Res\hand.cur" />
     <None Include="Res\MOVE4WAY.CUR" />
-
     <None Include="app.manifest" />
   </ItemGroup>
-
   <ItemGroup>
     <Image Include="Res\eyeyedropper.ico" />
     <Image Include="Res\ico00001.ico" />
@@ -167,12 +146,9 @@
     <Image Include="Res\icon1.ico" />
     <Image Include="Res\idr_main.ico" />
   </ItemGroup>
-
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-
   <ImportGroup Label="ExtensionTargets" />
 </Project>
