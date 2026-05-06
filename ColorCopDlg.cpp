@@ -1555,7 +1555,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
             }
 
             COLORREF crefxy;
-            hdc = ::GetDC(NULL);
+            WindowDC hdc(NULL);    // RAII: replaces GetDC/ReleaseDC
 
             if (m_Appflags & Sampling1) {
                 crefxy = ::GetPixel(hdc, point.x, point.y);    // api call
@@ -1569,10 +1569,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                         m_Bluedec  = GetBValue(crefxy);
 
                         UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
-                        // Black   = minimum(1-Red, 1-Green, 1-Blue)
-                        // Cyan    = (1-Red-Black)/(1-Black)
-                        // Magenta = (1-Green-Black)/(1-Black)
-                        // Yellow  = (1-Blue-Black)/(1-Black)
 
                     } else {
                         bSkipColor = true;
@@ -1590,7 +1586,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                 RelativePointEnd.y = point.y;
             }
 
-            ::ReleaseDC(NULL, hdc);    // free up the memory
+            // hdc auto‑releases via RAII
 
             CString strStatus = "", strWebSafe = "";
 
@@ -1644,8 +1640,6 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
                 }
                 SetStatusBarText(strStatus);
 
-                //}
-
                 if (!bSkipColor) {
                     OnconvertRGB();
                 }
@@ -1668,10 +1662,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
         if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
-            //  left mouse button down on the magnifier
             SetCursor(m_hHandCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) {
-            // left mouse button down on magnification window
             SetCursor(m_hEyeCursor);
         } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
             SetCursor(m_hEyeCursor);
@@ -1707,7 +1699,8 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
         ::DeleteObject(hZoomBitmap);
         hZoomBitmap = NULL;
     }
-    hdc = ::GetDC(NULL);        // device context to the whole desktop
+
+    WindowDC hdc(NULL);        // device context to the whole desktop (RAII)
 
     hdcMem = ::CreateCompatibleDC(hdc);
     hdcZoomMem = ::CreateCompatibleDC(hdc);
@@ -1748,7 +1741,7 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
 
     ::DeleteDC(hdcMem);
     ::DeleteDC(hdcZoomMem);
-    ::ReleaseDC(NULL, hdc);        // free up memory
+    // hdc auto‑releases via RAII
     return;
 }
 
