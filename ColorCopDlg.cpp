@@ -387,38 +387,52 @@ void CColorCopDlg::SetupSystemMenu() {
 }
 
 bool CColorCopDlg::LoadPersistentVariables() {
-  bool retval = false;
+    // Build full bitmap path safely
+    CString strBMPFile = GetTempFolder();
+    strBMPFile += BMP_FILE_DIR;
+    strBMPFile += BMP_FILE;
 
-  // Build full bitmap path safely
-  CString strBMPFile = GetTempFolder();
-  strBMPFile += BMP_FILE_DIR;
-  strBMPFile += BMP_FILE;
+    // Load bitmap from file
+    hBitmap = reinterpret_cast<HBITMAP>(
+        LoadImage(AfxGetApp()->m_hInstance,
+                  strBMPFile,
+                  IMAGE_BITMAP,
+                  0, 0,
+                  LR_LOADFROMFILE));
 
-  // Load bitmap from file
-  hBitmap = (HBITMAP)LoadImage(AfxGetApp()->m_hInstance, strBMPFile,
-                               IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    if (hBitmap) {
+        hZoomBitmap = hBitmap;
+    } else {
+        TRACE(_T("Warning: Could not load bitmap: %s\n"), strBMPFile.GetString());
+    }
 
-  if (hBitmap != nullptr) {
-    hZoomBitmap = hBitmap;
-  } else {
-    // Bitmap missing or unreadable — not fatal
-    TRACE(_T("Warning: Could not load bitmap: %s\n"), strBMPFile.GetString());
-  }
+    //
+    // Off‑screen recovery: If the saved window position is off-screen, reset to defaults.
+    // Use the full virtual desktop (multi‑monitor safe)
+    //
+    RECT virtualBounds;
+    virtualBounds.left   = GetSystemMetrics(SM_XVIRTUALSCREEN);
+    virtualBounds.top    = GetSystemMetrics(SM_YVIRTUALSCREEN);
+    virtualBounds.right  = virtualBounds.left + GetSystemMetrics(SM_CXVIRTUALSCREEN);
+    virtualBounds.bottom = virtualBounds.top  + GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
-  // Fix window position if saved as "minimized"
-  // Win9x stored minimized windows at (3000, 3000)
-  // NT stored them at (-32000, -32000)
-  //
-  if (WinLocX < 0 || WinLocY < 0 || WinLocX == 3000 || WinLocY == 3000) {
-    WinLocX = 200;
-    WinLocY = 200;
-  }
+    constexpr int kVisibilityMargin = 100;  // px
 
-  // Restore window position (no size change)
-  SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
+    bool offscreen =
+        (WinLocX > virtualBounds.right) ||
+        (WinLocY > virtualBounds.bottom) ||
+        (WinLocX + kVisibilityMargin < virtualBounds.left) ||
+        (WinLocY + kVisibilityMargin < virtualBounds.top);
 
-  retval = true;
-  return retval;
+    if (offscreen) {
+        WinLocX = kDefaultWinLocX;
+        WinLocY = kDefaultWinLocY;
+    }
+
+    // Restore window position (no size change)
+    SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
+
+    return true;
 }
 
 void CColorCopDlg::SetupWindowRects() {
