@@ -87,9 +87,6 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       Swatch{},                // array of structs
       OrigSwatch{},            // struct
       ColorPal{},              // 2D array
-      hdc(nullptr),
-      hdcMem(nullptr),
-      hdcZoomMem(nullptr),
       m_hEyeCursor(nullptr),
       m_hMagCursor(nullptr),
       m_hStandardCursor(nullptr),
@@ -496,7 +493,6 @@ void CColorCopDlg::SetupWindowRects() {
     // Get a rect of the entire window.
     CWnd::GetWindowRect(&CCopRect);
     CWnd::ScreenToClient(&CCopRect);
-    CCopsmRect = CCopRect;            // copy rect
 
     // large sizes
     lgWidth = CCopRect.right - CCopRect.left;
@@ -638,22 +634,21 @@ void CColorCopDlg::OnPaint() {
 
         WindowDC hdc(CCopHWNDtemp);   // RAII — auto‑releases
         if (hBitmap) {
-            hdcMem = ::CreateCompatibleDC(hdc);
+            HDC hdcMem = ::CreateCompatibleDC(hdc);
 
             ::SelectObject(hdcMem, hBitmap);
 
             if (m_Appflags & ExpandedDialog)
 
-            ::BitBlt(hdc,  // destination DC
-                     magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,  // upper left dest
-                     magrect.Width() - 4, magrect.Height() - 4,  // width of dest rect
-                     hdcMem,  // source DC
-                     0, 0,      // upper left source
-                     SRCCOPY);  // mode
+            ::BitBlt(hdc,
+                    magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,
+                    magrect.Width() - 4, magrect.Height() - 4,
+                    hdcMem,
+                    0, 0,
+                    SRCCOPY);
 
-            ::DeleteDC(hdcMem);                        // kill the temporary DC
-            hdcMem = NULL;
-          }
+            ::DeleteDC(hdcMem);
+        }
 
         if (m_Appflags & ExpandedDialog) {
             ::DrawEdge(hdc, &magrect, EDGE_SUNKEN, BF_RECT);
@@ -673,12 +668,12 @@ void CColorCopDlg::RecalcZoom() {
     HWND hwnd = AfxGetMainWnd()->GetSafeHwnd();
 
     if (hZoomBitmap) {
-        hdc = ::GetDC(hwnd);
+        HDC hdc = ::GetDC(hwnd);
         if (!hdc)
             return;
 
-        hdcMem     = ::CreateCompatibleDC(hdc);
-        hdcZoomMem = ::CreateCompatibleDC(hdc);
+        HDC hdcMem     = ::CreateCompatibleDC(hdc);
+        HDC hdcZoomMem = ::CreateCompatibleDC(hdc);
 
         if (hdcMem && hdcZoomMem) {
             HGDIOBJ oldMemBmp  = ::SelectObject(hdcMem, hBitmap);
@@ -1702,8 +1697,8 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
 
     WindowDC hdc(NULL);        // device context to the whole desktop (RAII)
 
-    hdcMem = ::CreateCompatibleDC(hdc);
-    hdcZoomMem = ::CreateCompatibleDC(hdc);
+    HDC hdcMem = ::CreateCompatibleDC(hdc);
+    HDC hdcZoomMem = ::CreateCompatibleDC(hdc);
 
     hBitmap = CreateCompatibleBitmap(hdc, magrect.Width(), magrect.Height());
     hZoomBitmap = CreateCompatibleBitmap(hdc, magrect.Width(), magrect.Height());

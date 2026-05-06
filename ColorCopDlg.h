@@ -136,15 +136,13 @@ class CColorCopDlg : public CDialog {
     POINT RelativePointEnd{};
 
     CMenu copmenu;
-    HDC hdc, hdcMem, hdcZoomMem;
 
     CRect Q1rect, Q2rect, Q3rect, Q4rect, Q5rect, Q6rect, Q7rect;
     CRect buttonrect;                    // color window rect
 
     CRect magrect, colorpalrect;        // magnifier rect, based off color window rect
-    CRect testrect;
     CRect magplus, magminus;
-    RECT CCopRect, CCopsmRect;
+    RECT CCopRect;
 
     HCURSOR m_hEyeCursor;
     HCURSOR m_hMagCursor;
