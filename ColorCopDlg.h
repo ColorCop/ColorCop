@@ -81,19 +81,23 @@ class CColorCopDlg : public CDialog {
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColorCopDlg) // NOLINT(whitespace/comments)
  public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    // Indicates whether ColorCop is running in portable mode. When enabled,
+    // all settings are loaded from and saved to the executable directory
+    // instead of the user's AppData folder. The flag is set by the app
+    // during command‑line parsing and used by the dialog's persistence logic.
+    bool m_PortableMode = false;
+    virtual BOOL PreTranslateMessage(MSG *pMsg);
 
  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
-// Implementation
  protected:
     bool m_bvisible;
 
     HICON m_hIcon, m_hBlank, m_hEye;
 
-    HACCEL m_hAcceleratorTable;            // Accelerator var
+    HACCEL m_hAcceleratorTable;
 
     // Store for snapback from websafe; 1‑byte values (0–255)
     std::uint8_t m_OldRed{};

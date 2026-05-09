@@ -20,6 +20,8 @@
 //
 class CColorCopApp : public CWinApp {
  public:
+    bool m_PortableMode = false;  // set via command-line switches
+
     CColorCopDlg dlg;
     CColorCopApp();
     ~CColorCopApp();
