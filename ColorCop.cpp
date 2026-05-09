@@ -51,6 +51,17 @@ CColorCopApp theApp;
 // CColorCopApp initialization
 
 BOOL CColorCopApp::InitInstance() {
+    // Detect portable‑mode command‑line switches (restores pre‑5.3 behavior)
+    CString cmd = GetCommandLine();
+    cmd.MakeLower();
+
+    if (cmd.Find(_T("-portable")) != -1 ||
+        cmd.Find(_T("--portable")) != -1 ||
+        cmd.Find(_T("/portable")) != -1 ||
+        cmd.Find(_T("/p")) != -1) {
+        m_PortableMode = true;
+    }
+
     // multiple instances are not allowed?
     if (!(dlg.m_Appflags & MultipleInstances)) {
         // multiple instances are not allowed. check if we have one running
@@ -63,6 +74,7 @@ BOOL CColorCopApp::InitInstance() {
             }
     }
         // set the main window
+        dlg.m_PortableMode = m_PortableMode;
         m_pMainWnd = &dlg;
 
         int nResponse = dlg.DoModal();        // Launch the color cop dialog
@@ -135,11 +147,20 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
 }
 
 BOOL CColorCopApp::InitApplication() {
-    CString strInitFile = GetTempFolder();
+    CString strInitFile;
 
-    strInitFile += INI_FILE_DIR;
+    if (m_PortableMode) {
+        TCHAR exePath[MAX_PATH] = {0};
+        GetModuleFileName(NULL, exePath, MAX_PATH);
+        PathRemoveFileSpec(exePath);
 
-    strInitFile += INI_FILE;
+        strInitFile = exePath;
+        strInitFile += INI_FILE;   // "\Color_Cop.dat"
+    } else {
+        strInitFile = GetTempFolder();
+        strInitFile += INI_FILE_DIR;
+        strInitFile += INI_FILE;
+    }
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeRead)) {
@@ -195,11 +216,21 @@ void CColorCopApp::CloseApplication() {
     // last thing the application will do. It will only write to
     // a file when the dialog has been closed IDOK or IDCANCEL
 
-    CString strInitFile = GetTempFolder();
+    CString strInitFile;
 
-    strInitFile += INI_FILE_DIR;
+    if (m_PortableMode) {
+        TCHAR exePath[MAX_PATH] = {0};
+        GetModuleFileName(NULL, exePath, MAX_PATH);
+        PathRemoveFileSpec(exePath);
 
-    strInitFile += INI_FILE;
+        strInitFile = exePath;
+        strInitFile += INI_FILE;   // "\Color_Cop.dat"
+    } else {
+        strInitFile = GetTempFolder();
+        strInitFile += INI_FILE_DIR;
+        strInitFile += INI_FILE;
+    }
+
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate)) {
