@@ -172,7 +172,6 @@ class CColorCopDlg : public CDialog {
     void OnconvertHEX();
     void OnconvertRGB();
     void OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
-    void UpdateMenu(CMenu* pMenu);
     void ToggleOnTop(bool bSetStatusbartext);
     void TestForWebsafe();
     void SetupTaskBarButton();

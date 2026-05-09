@@ -990,7 +990,7 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
 
     if (Diff == 0) {    // this is a greyscale color
         Diff = 5.0;    // since greyscale colors don't have compliments,
-    }                    // lets give it something
+    }                  // lets give it something
 
     Light = MaxNum / RGB_MAX_D;            // find the Light
 
@@ -2119,31 +2119,11 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext) {
     }
 }
 
-void CColorCopDlg::OnInitMenuPopup(CMenu *pMenu, UINT /*nIndex*/,
-                                   BOOL /*bSysMenu*/) {
-    // MFC calls this right before a menu is shown. We refresh checkmarks and
-    // radio states here so the menu always reflects the current application
-    // state.
-    UpdateMenu(pMenu);
+// This function is called when the system menu is about to open.
+// No custom handling is needed here, but we need to call the base class implementation.
+void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu) {
+    CDialog::OnInitMenuPopup(pMenu, nIndex, bSysMenu);
 }
-
-void CColorCopDlg::UpdateMenu(CMenu* pMenu) {
-    // this function loops through each menu item and updates the checkboxes and radio buttons
-    CCmdUI cmdUI;
-    for (UINT n = 0; n < pMenu->GetMenuItemCount(); ++n) {
-        CMenu* pSubMenu = pMenu->GetSubMenu(n);
-        if (pSubMenu == NULL) {
-            cmdUI.m_nIndexMax = pMenu->GetMenuItemCount();
-            for (UINT i = 0; i < cmdUI.m_nIndexMax; ++i) {
-                cmdUI.m_nIndex = i;
-                cmdUI.m_nID = pMenu->GetMenuItemID(i);
-                cmdUI.m_pMenu = pMenu;
-                cmdUI.DoUpdate(this, FALSE);
-            }
-        }
-    }
-}
-
 
 void CColorCopDlg::OnUpdateOptionsAutocopytoclipboard(CCmdUI* pCmdUI) {
     pCmdUI->SetCheck(m_Appflags & AutoCopytoClip);
