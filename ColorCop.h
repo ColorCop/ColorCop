@@ -25,16 +25,21 @@ class CColorCopApp : public CWinApp {
     CColorCopDlg dlg;
     CColorCopApp();
     ~CColorCopApp();
+    /* Returns the folder used to store the application's persistent state,
+     * including ColorCop.ini and other configuration files. This ensures the
+     * user's settings and preferences are preserved across application
+     * launches. If the application is running in portable mode, this will
+     * return the executable directory. Otherwise, it will return a folder in
+     * the user's AppData directory.
+     */
+    CString GetSettingsFolder();
 
  protected:
     void CloseApplication();
     void LoadDefaultSettings();
-    CString GetTempFolder();
     BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
     void ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
-    // multi mon
     void ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
-
     bool InstanceRunning();
     HANDLE m_hMutex;
 

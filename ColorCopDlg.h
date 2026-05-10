@@ -191,11 +191,8 @@ class CColorCopDlg : public CDialog {
     void GetHistoryColor(int Cindex);
     HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
     bool isWebsafeColor(int R, int G, int B);
-    CString GetTempFolder();
     BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
-
     void SetStatusBarText(UINT strResource, int toggleVal);
-
     void CalcColorPal();
     double shiftHue(double hue);
     void setSeedColor();
