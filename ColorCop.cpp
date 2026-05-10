@@ -51,17 +51,6 @@ CColorCopApp theApp;
 // CColorCopApp initialization
 
 BOOL CColorCopApp::InitInstance() {
-    // Detect portable‑mode command‑line switches (restores pre‑5.3 behavior)
-    CString cmd = GetCommandLine();
-    cmd.MakeLower();
-
-    if (cmd.Find(_T("-portable")) != -1 ||
-        cmd.Find(_T("--portable")) != -1 ||
-        cmd.Find(_T("/portable")) != -1 ||
-        cmd.Find(_T("/p")) != -1) {
-        m_PortableMode = true;
-    }
-
     // multiple instances are not allowed?
     if (!(dlg.m_Appflags & MultipleInstances)) {
         // multiple instances are not allowed. check if we have one running
@@ -158,8 +147,19 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
 }
 
 BOOL CColorCopApp::InitApplication() {
+    // Detect portable‑mode command‑line switches (restores pre‑5.3 behavior)
+    CString cmd = GetCommandLine();
+    cmd.MakeLower();
+
+    if (cmd.Find(_T("-portable")) != -1 || cmd.Find(_T("--portable")) != -1 ||
+        cmd.Find(_T("/portable")) != -1 || cmd.Find(_T("/p")) != -1) {
+        m_PortableMode = true;
+    }
     CString settingsFolder = GetSettingsFolder();
     CString strInitFile = settingsFolder + INI_FILE;  // "\Color_Cop.dat"
+
+    TRACE(_T("Portable mode: %d\n"), m_PortableMode);
+    TRACE(_T("INI path: %s\n"), strInitFile);
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeRead)) {
@@ -210,6 +210,9 @@ void CColorCopApp::LoadDefaultSettings() {
 void CColorCopApp::CloseApplication() {
     CString settingsFolder = GetSettingsFolder();
     CString strInitFile = settingsFolder + INI_FILE;
+
+    TRACE(_T("Portable mode: %d\n"), m_PortableMode);
+    TRACE(_T("INI path: %s\n"), strInitFile);
 
     if (!m_PortableMode) {
         // Ensure folder exists in installed mode

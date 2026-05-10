@@ -389,7 +389,6 @@ bool CColorCopDlg::LoadPersistentVariables() {
     // Build full bitmap path safely
     auto *pApp = static_cast<CColorCopApp *>(AfxGetApp());
     CString strBMPFile = pApp->GetSettingsFolder();
-    strBMPFile += BMP_FILE_DIR;
     strBMPFile += BMP_FILE;
 
     TRACE(_T("BMP path: %s\n"), strBMPFile);
@@ -2066,7 +2065,6 @@ void CColorCopDlg::OnDestroy() {
     // save the bitmap
     auto *pApp = static_cast<CColorCopApp *>(AfxGetApp());
     CString strBMPFile = pApp->GetSettingsFolder();
-    strBMPFile += BMP_FILE_DIR;
     strBMPFile += BMP_FILE;
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
@@ -3137,7 +3135,7 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
                    FILE_ATTRIBUTE_NORMAL,
                    (HANDLE) NULL);
     if (hf == INVALID_HANDLE_VALUE) {
-        AfxMessageBox(_T("Could not create BMP file"));
+        TRACE(_T("Warning: Could not create BMP file: %s (error=%lu)\n"), pszFile, GetLastError());
         return;
     }
 
