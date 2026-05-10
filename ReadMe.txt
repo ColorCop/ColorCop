@@ -79,7 +79,7 @@ https://colorcop.net/donate
 - Color History
 - Complementary Color Palette
 - Relative position measurements
-
+- Portable mode
 
 * Convert RGB Decimal values to HTML Hexadecimal
 
@@ -227,8 +227,9 @@ https://colorcop.net/donate
 
 
 *** Color Cop Revision History ***
-v5.5.7 – 04/11/26 – Modernizes codebase (C++20, Unicode safety), fixes CMYK math, and improves UI/system tray behavior
-v5.5.6 - 03/19/26 - Installer now bundles the VC++ 2015–2022 runtime
+v5.5.11 - 05/09/26 - Implement portable mode (store settings next to the EXE when launched with /portable)
+v5.5.7 - 04/11/26 - Modernizes codebase (C++20, Unicode safety), fixes CMYK math, and improves UI/system tray behavior
+v5.5.6 - 03/19/26 - Installer now bundles the VC++ 2015-2022 runtime
 v5.5.5 - 03/14/26 - Adds modern app manifest with DPI awareness
 v5.5.3 - 02/05/26 - Added official Chocolatey installer support
 v5.5.2 - 01/31/26 - Fix Inno setup configuration
