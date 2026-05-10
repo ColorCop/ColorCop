@@ -129,13 +129,24 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     }
 }
 
-CString CColorCopApp::GetTempFolder() {
-    CString strTmpPath;
+CString CColorCopApp::GetSettingsFolder() {
+    CString path;
+    if (m_PortableMode) {
+        // Portable mode: store settings next to the EXE
+        TCHAR exePath[MAX_PATH] = {0};
+        GetModuleFileName(NULL, exePath, MAX_PATH);
+        PathRemoveFileSpec(exePath);
+        path = exePath;
+        return path;  // e.g. C:\Tools\ColorCop
+    }
 
-    GetShellFolderPath(_T("AppData"), strTmpPath.GetBuffer(MAX_PATH));
-    strTmpPath.ReleaseBuffer();
+    // Installed mode: use LocalAppData\ColorCop
+    TCHAR buffer[MAX_PATH] = {0};
+    GetShellFolderPath(_T("Local AppData"), buffer);
+    path = buffer;
 
-    return strTmpPath;
+    path += INI_FILE_DIR;  // "\ColorCop"
+    return path;           // e.g. C:\Users\...\AppData\Local\ColorCop
 }
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
@@ -147,36 +158,22 @@ void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
 }
 
 BOOL CColorCopApp::InitApplication() {
-    CString strInitFile;
-
-    if (m_PortableMode) {
-        TCHAR exePath[MAX_PATH] = {0};
-        GetModuleFileName(NULL, exePath, MAX_PATH);
-        PathRemoveFileSpec(exePath);
-
-        strInitFile = exePath;
-        strInitFile += INI_FILE;   // "\Color_Cop.dat"
-    } else {
-        strInitFile = GetTempFolder();
-        strInitFile += INI_FILE_DIR;
-        strInitFile += INI_FILE;
-    }
+    CString settingsFolder = GetSettingsFolder();
+    CString strInitFile = settingsFolder + INI_FILE;  // "\Color_Cop.dat"
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeRead)) {
         CArchive ar(&file, CArchive::load);
         Serialize(ar);
     } else {
-        // First time we are running color Cop
-        CString strAppDirectory = GetTempFolder();
-        strAppDirectory += INI_FILE_DIR;
-        CreateDirectory(strAppDirectory.GetBuffer(MAX_PATH), NULL);
-        strAppDirectory.ReleaseBuffer();
-
+        // First time running ColorCop
+        if (!m_PortableMode) {
+            // Ensure the settings folder exists
+            CreateDirectory(settingsFolder, NULL);
+        }
         LoadDefaultSettings();
 
         ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);
-        // set the window to be in the middle
     }
 
     return CWinApp::InitApplication();
@@ -211,26 +208,13 @@ void CColorCopApp::LoadDefaultSettings() {
 }
 
 void CColorCopApp::CloseApplication() {
-    ////////////////////////////////////////////////////////////
-    // This function writes the settings to a file.  It is the
-    // last thing the application will do. It will only write to
-    // a file when the dialog has been closed IDOK or IDCANCEL
+    CString settingsFolder = GetSettingsFolder();
+    CString strInitFile = settingsFolder + INI_FILE;
 
-    CString strInitFile;
-
-    if (m_PortableMode) {
-        TCHAR exePath[MAX_PATH] = {0};
-        GetModuleFileName(NULL, exePath, MAX_PATH);
-        PathRemoveFileSpec(exePath);
-
-        strInitFile = exePath;
-        strInitFile += INI_FILE;   // "\Color_Cop.dat"
-    } else {
-        strInitFile = GetTempFolder();
-        strInitFile += INI_FILE_DIR;
-        strInitFile += INI_FILE;
+    if (!m_PortableMode) {
+        // Ensure folder exists in installed mode
+        CreateDirectory(settingsFolder, NULL);
     }
-
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate)) {

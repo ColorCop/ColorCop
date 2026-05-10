@@ -384,10 +384,15 @@ void CColorCopDlg::SetupSystemMenu() {
 }
 
 bool CColorCopDlg::LoadPersistentVariables() {
+    TRACE(_T("Portable mode: %d\n"), m_PortableMode);
+
     // Build full bitmap path safely
-    CString strBMPFile = GetTempFolder();
+    auto *pApp = static_cast<CColorCopApp *>(AfxGetApp());
+    CString strBMPFile = pApp->GetSettingsFolder();
     strBMPFile += BMP_FILE_DIR;
     strBMPFile += BMP_FILE;
+
+    TRACE(_T("BMP path: %s\n"), strBMPFile);
 
     // Load bitmap from file
     hBitmap = reinterpret_cast<HBITMAP>(
@@ -2050,13 +2055,6 @@ BOOL CColorCopDlg::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
         return FALSE;
 }
 
-CString CColorCopDlg::GetTempFolder() {
-    CString strTmpPath;
-    GetShellFolderPath(_T("AppData"), strTmpPath.GetBuffer(MAX_PATH));
-    strTmpPath.ReleaseBuffer();
-    return strTmpPath;
-}
-
 void CColorCopDlg::OnDestroy() {
     // Capture and store the dialog’s last on-screen position so it can be
     // restored the next time the application starts.
@@ -2066,10 +2064,13 @@ void CColorCopDlg::OnDestroy() {
     WinLocY = winSize.top;
 
     // save the bitmap
-    CString strBMPFile = GetTempFolder();
-
+    auto *pApp = static_cast<CColorCopApp *>(AfxGetApp());
+    CString strBMPFile = pApp->GetSettingsFolder();
     strBMPFile += BMP_FILE_DIR;
     strBMPFile += BMP_FILE;
+
+    TRACE(_T("Portable mode: %d\n"), m_PortableMode);
+    TRACE(_T("BMP path: %s\n"), strBMPFile);
 
     HWND curwindowhwnd = ::GetForegroundWindow();
 
