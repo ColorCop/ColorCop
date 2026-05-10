@@ -2118,10 +2118,32 @@ void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext) {
     }
 }
 
-// This function is called when the system menu is about to open.
-// No custom handling is needed here, but we need to call the base class implementation.
+// Dialog-based MFC applications do NOT automatically update menu UI state
+// (checkmarks, radio items, enable/disable) the way frame windows do.
+// CFrameWnd has a full command routing loop that calls CCmdUI::DoUpdate()
+// for each menu item, but CDialog does not.
+//
+// Because ColorCop is a dialog-based app with a menu, we must manually
+// iterate the menu items and invoke DoUpdate() so that ON_UPDATE_COMMAND_UI
+// handlers (e.g., for checkboxes and toggles) are actually called.
+//
+// Without this loop, menu items will NOT reflect the current application
+// state when the user opens a menu.
 void CColorCopDlg::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu) {
+    // Preserve default MFC behavior (system menu handling, owner-draw, etc.)
     CDialog::OnInitMenuPopup(pMenu, nIndex, bSysMenu);
+
+    // Manually trigger UI updates for each menu item.
+    // This restores the behavior normally provided by CFrameWnd.
+    CCmdUI cmdUI;
+    cmdUI.m_pMenu = pMenu;
+    cmdUI.m_nIndexMax = pMenu->GetMenuItemCount();
+
+    for (UINT i = 0; i < cmdUI.m_nIndexMax; ++i) {
+        cmdUI.m_nIndex = i;
+        cmdUI.m_nID = pMenu->GetMenuItemID(i);
+        cmdUI.DoUpdate(this, FALSE);
+    }
 }
 
 void CColorCopDlg::OnUpdateOptionsAutocopytoclipboard(CCmdUI* pCmdUI) {
