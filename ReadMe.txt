@@ -38,9 +38,9 @@ https://colorcop.net/donate
   If you press the Control key while eyedropping the coordinates will be set
   to zero (0,0). When you drag the mouse to a new location the coordinates
   values will be relative to the point where you pressed control. This is
-  very useful if you want to measure how pixels a certain object is. Note
-  that if you get a reading of 8,8 the area you just measured
-  is really 9,9 because the zero row and column are included.
+  very useful if you want to measure how many pixels a certain object is. Note
+  that if you get a reading of 8, 8 the area you just measured
+  is really 9, 9 because the zero row and column are included.
 
 * Detect WebSafe color
 
@@ -75,7 +75,7 @@ https://colorcop.net/donate
 - Mouse wheel support
 - EasyMove
 - Upper and Lower case Hex
-- Collapseable dialog
+- Collapsible dialog
 - Color History
 - Complementary Color Palette
 - Relative position measurements
@@ -117,12 +117,12 @@ https://colorcop.net/donate
 * Convert Hexadecimal to RGB Decimal values
 
   If Color Cop is in HTML or Delphi mode. Hex codes can be pasted/typed in
-  and the the Color and RGB values will be given.  This is not available for
+  and the Color and RGB values will be given.  This is not available for
   Visual Basic, Visual C++ or PowerBuilder modes.
 
 * Random Color Generator
 
-  Generates a Random color.  Control+Z is the Hotkey.
+  Generates a Random color.  Control + Z is the Hotkey.
 
 * Reverse Color Option
 
@@ -190,7 +190,7 @@ https://colorcop.net/donate
 * Complementary Color Palette
 
   The color palette uses the HSL color model to generate 42 colors that
-  complement the selected color.  Colors in this pallete can be selected
+  complement the selected color.  Colors in this palette can be selected
   by left clicking.
 
 
@@ -220,10 +220,9 @@ https://colorcop.net/donate
   For other problems please use Color Cop Help. (press F1 while in Color Cop)
 
 
-** Requirements ***
+*** Requirements ***
 - 24 Bit color
 - A PC running Windows
-
 
 
 *** Color Cop Revision History ***
@@ -277,7 +276,7 @@ v5.0 - 07/22/01 : Added - Magnifier with 1x-16x zoom
                         - Mouse wheel support
                         - EasyMove
                         - Upper and Lower case Hex
-                        - Collapseable dialog
+                        - Collapsible dialog
                         - Color History
                         - Complementary Color Palette
 
