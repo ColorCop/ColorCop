@@ -1909,7 +1909,7 @@ void CColorCopDlg::OnChangeHexcolor() {
             offset = 0;
         }
         while (hexsize > hexrange) {
-            m_Hexcolor.Delete(6+offset);
+            m_Hexcolor.Delete(6 + offset);
             hexsize--;
         }
         m_Reddec = m_Greendec = m_Bluedec = 0;
@@ -2190,36 +2190,43 @@ void CColorCopDlg::OnColorReverse() {
 }
 
 void CColorCopDlg::OnPopupColorConverttograyscale() {
-    uint16_t L = 0, Min = 0, Max = 0;
-
     CString strStatus;
 
-    // Converts the current color to grayscale
+    // Converts the current color to grayscale.
+    //
+    // If R, G, and B are already equal, the color is already gray.
     if ((m_Reddec == m_Greendec) && (m_Greendec == m_Bluedec)) {
         strStatus.LoadString(IDS_COLOR_GRAY);
         SetStatusBarText(strStatus);
     } else {
         strStatus.LoadString(IDS_COLOR_CONVERT_GRAY);
         SetStatusBarText(strStatus);
+
+        //
         // grayscale values have identical R, G, B values.
         //
-        // Actually, it uses an approximation to this idea;
-        // it chooses the point on the neutral axis determined by computing , which corresponds
-        // to the definition of lightness. After applying Desaturate, the image remains in RGB space
-        // and continues to have three color channels, but now the channels have identical values,
-        // which is why the image appears as a grayscale.
+        // This implementation uses the "lightness" definition from HSL:
+        //     L = (max(R,G,B) + min(R,G,B)) / 2
+        //
+        // This picks the midpoint on the neutral axis between the darkest
+        // and brightest channel. After this desaturation, the RGB channels
+        // all receive the same value, producing a grayscale color.
+        //
 
-        // formula: L = {Max(R, G, B) + Min(R, G, B)}/2;
-        Max = std::max({ m_Reddec, m_Greendec, m_Bluedec });
-        Min = std::min({ m_Reddec, m_Greendec, m_Bluedec });
+        // Compute channel extrema.
+        uint16_t Max = std::max({ m_Reddec, m_Greendec, m_Bluedec });
+        uint16_t Min = std::min({ m_Reddec, m_Greendec, m_Bluedec });
 
         // Compute grayscale lightness safely in int, then narrow explicitly.
         const int tmpL = (static_cast<int>(Min) + static_cast<int>(Max)) / 2;
-        L = static_cast<std::uint16_t>(tmpL);
+        uint16_t L = static_cast<std::uint16_t>(tmpL);
 
+        // Apply grayscale value to all channels.
         m_Reddec   = L;
         m_Greendec = L;
         m_Bluedec  = L;
+
+        // Push updated values to UI and recalc dependent fields.
         UpdateData(false);
         OnconvertRGB();
         OnCopytoclip();
