@@ -9,6 +9,9 @@
 constexpr int kCustomColorCount = 16;
 constexpr int kHistoryCount     = 7;
 
+constexpr int kMinZoom = 1;
+constexpr int kMaxZoom = 16;
+
 constexpr int kDefaultWinLocX = 200;
 constexpr int kDefaultWinLocY = 200;
 constexpr int kDefaultSamplingOffset = 3;
