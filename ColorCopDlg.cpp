@@ -433,6 +433,9 @@ bool CColorCopDlg::LoadPersistentVariables() {
     // Restore window position (no size change)
     SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
 
+    // Ensure zoom level is valid after loading settings
+    m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
+
     return true;
 }
 
@@ -633,10 +636,9 @@ void CColorCopDlg::OnPaint() {
     } else {
         CDialog::OnPaint();
         // only paint here..
+        HWND hWndMain = GetSafeHwnd();
 
-        HWND CCopHWNDtemp = AfxGetApp()->GetMainWnd()->m_hWnd;
-
-        WindowDC hdc(CCopHWNDtemp);   // RAII — auto‑releases
+        WindowDC hdc(hWndMain);   // RAII — auto‑releases
         if (hBitmap) {
             HDC hdcMem = ::CreateCompatibleDC(hdc);
 
@@ -663,13 +665,13 @@ void CColorCopDlg::OnPaint() {
 }
 
 void CColorCopDlg::RecalcZoom() {
-    if (m_MagLevel <= 0)
+    if (m_MagLevel < kMinZoom) {
         return;
-
+    }
     int magwidth  = magrect.Width()  / m_MagLevel;
     int magheight = magrect.Height() / m_MagLevel;
 
-    HWND hwnd = AfxGetMainWnd()->GetSafeHwnd();
+    HWND hwnd = GetSafeHwnd();
 
     if (hZoomBitmap) {
         HDC hdc = ::GetDC(hwnd);
@@ -2839,12 +2841,8 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     if (m_isEyedropping) {
         return TRUE;
     } else if (m_isMagnifying) {
-        m_MagLevel += zDelta/WHEEL_DELTA;
-
-        if (m_MagLevel <= 0)
-            m_MagLevel = 1;
-        else if (m_MagLevel >= 17)
-            m_MagLevel = 16;
+        m_MagLevel += zDelta / WHEEL_DELTA;
+        m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
         return TRUE;
     }
 
