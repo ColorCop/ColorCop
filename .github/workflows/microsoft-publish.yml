@@ -68,6 +68,7 @@ jobs:
             -X POST \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/json" \
+            -d '{}' \
             "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions")
 
           echo "HTTP status: $http_code"
