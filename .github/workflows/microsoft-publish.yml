@@ -58,17 +58,32 @@ jobs:
       - name: Create new submission
         id: submission
         run: |
-          response=$(curl -s -X POST \
+          set -e
+
+          echo "Calling Microsoft Store API to create submission..."
+
+          # Capture full HTTP response (headers + body)
+          http_response=$(mktemp)
+          http_code=$(curl -w "%{http_code}" -o "$http_response" \
+            -X POST \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/json" \
             "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions")
 
-          echo "$response" | jq .
+          echo "HTTP status: $http_code"
+          echo "Raw response:"
+          cat "$http_response"
 
-          id=$(echo "$response" | jq -r '.id')
+          # Fail if not 2xx
+          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
+            echo "❌ Microsoft Store API returned an error"
+            exit 1
+          fi
+
+          id=$(jq -r '.id' < "$http_response")
 
           if [ -z "$id" ] || [ "$id" = "null" ]; then
-            echo "Failed to create submission"
+            echo "❌ Submission ID missing in response"
             exit 1
           fi
 
