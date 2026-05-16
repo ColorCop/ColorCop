@@ -27,6 +27,13 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
+/// Minimum zoom level for the magnifier (1x)
+constexpr int kMinZoom = 1;
+/// Maximum zoom level for the magnifier (16x)
+constexpr int kMaxZoom = 16;
+/// Magnifier button size in pixels (square)
+constexpr int kMagButtonSize = 11;
+
 #include "AboutDlg.h"
 
 // Constants
@@ -323,8 +330,7 @@ BOOL CColorCopDlg::OnInitDialog() {
   } else {
     ChangeColorSpace(true);
   }
-
-  m_MagLevel = 5;
+  m_MagLevel = std::clamp<int>(5, kMinZoom, kMaxZoom);
   m_FloatPrecision = 2;
   OnconvertRGB();
   CalcColorPal();
@@ -506,24 +512,25 @@ void CColorCopDlg::SetupWindowRects() {
     lgHeight = CCopRect.bottom - CCopRect.top;
 
     // small sizes
-    smWidth = (exprect.right - CCopRect.left) + 11;
-    smHeight = (exprect.bottom - CCopRect.top) + 11;
+    smWidth = (exprect.right - CCopRect.left) + kMagButtonSize;
+    smHeight = (exprect.bottom - CCopRect.top) + kMagButtonSize;
 
     // Setup magnify plus level rect
     CWnd::GetDlgItem(IDC_MAG_PLUS, &temphandle);
     ::GetWindowRect(temphandle, &magplus);
     CWnd::ScreenToClient(&magplus);
 
-    magplus.right = magplus.left + 11;
-    magplus.bottom = magplus.top + 11;
+
+    magplus.right = magplus.left + kMagButtonSize;
+    magplus.bottom = magplus.top + kMagButtonSize;
 
     // Setup magnify minus level rect
     CWnd::GetDlgItem(IDC_MAG_MINUS, &temphandle);
     ::GetWindowRect(temphandle, &magminus);
     CWnd::ScreenToClient(&magminus);
 
-    magminus.right = magminus.left + 11;
-    magminus.bottom = magminus.top + 11;
+    magminus.right = magminus.left + kMagButtonSize;
+    magminus.bottom = magminus.top + kMagButtonSize;
 
 
     CRect recttemp;
@@ -644,15 +651,14 @@ void CColorCopDlg::OnPaint() {
 
             ::SelectObject(hdcMem, hBitmap);
 
-            if (m_Appflags & ExpandedDialog)
-
-            ::BitBlt(hdc,
-                    magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,
-                    magrect.Width() - 4, magrect.Height() - 4,
-                    hdcMem,
-                    0, 0,
-                    SRCCOPY);
-
+            if (m_Appflags & ExpandedDialog) {
+                ::BitBlt(hdc,
+                        magrect.TopLeft().x + 2, magrect.TopLeft().y + 2,
+                        magrect.Width() - 4, magrect.Height() - 4,
+                        hdcMem,
+                        0, 0,
+                        SRCCOPY);
+            }
             ::DeleteDC(hdcMem);
         }
 
@@ -1363,7 +1369,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
-        if (m_MagLevel != 16) {
+        if (m_MagLevel != kMaxZoom) {
              m_MagLevel++;
         }
 
@@ -1378,7 +1384,7 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
-        if (m_MagLevel != 1) {
+        if (m_MagLevel != kMinZoom) {
             m_MagLevel--;
         }
 
@@ -1713,15 +1719,11 @@ void CColorCopDlg::GetScreenBitmap(CPoint point) {
     ::SelectObject(hdcZoomMem, hZoomBitmap);
     ::SetStretchBltMode(hdc, COLORONCOLOR);
 
-    int magwidth = 19;        // default heights
-    int magheight = 15;
-    if (m_MagLevel <= 0) {
-        m_MagLevel = 1;
-    } else if (m_MagLevel >= 17) {
-        m_MagLevel = 16;
-    }
-    magwidth = magrect.Width() / m_MagLevel;
-    magheight = magrect.Height() / m_MagLevel;
+    m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
+
+    const int level = m_MagLevel;
+    const int magwidth  = magrect.Width()  / level;
+    const int magheight = magrect.Height() / level;
 
     ::BitBlt(hdcZoomMem,            // destination DC
               0, 0,                // destination upper left (always 0, 0)
@@ -2436,7 +2438,7 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point) {
     CWnd* pWnd = ChildWindowFromPoint(point);
 
     if (m_isMagnifying)    {            // right clicked while magnifying
-        if (m_MagLevel != 16) {
+        if (m_MagLevel != kMaxZoom) {
             m_MagLevel++;
         }
         return;
@@ -2926,7 +2928,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent) {
     case 2:
 
         if (m_isMagMinusDown) {
-            if (m_MagLevel != 1) {
+            if (m_MagLevel != kMinZoom) {
                 m_MagLevel--;
             }
 
@@ -2937,7 +2939,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent) {
             RecalcZoom();
 
         } else if (m_isMagPlusDown) {
-            if (m_MagLevel != 16) {
+            if (m_MagLevel != kMaxZoom) {
                  m_MagLevel++;
             }
 
