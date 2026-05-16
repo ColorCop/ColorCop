@@ -1,7 +1,9 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// ColorCopDlg.cpp — ColorCop dialog implementation
+// ColorCopDlg.cpp — Core UI implementation for the ColorCop application.
+// Provides dialog setup, control wiring, color sampling and conversion logic,
+// magnifier rendering, system‑tray behavior, and loading/saving of user settings.
 
 // Precompiled header
 #include "pch.h"
@@ -39,9 +41,6 @@ constexpr int kMagButtonSize = 11;
 // Constants
 
 const TCHAR* kpcTrayNotificationMsg_ = _T("color cop tray notification");
-
-/////////////////////////////////////////////////////////////////////////////
-// CColorCopDlg dialog
 
 CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CColorCopDlg::IDD, pParent),
@@ -562,10 +561,7 @@ void CColorCopDlg::SetupWindowRects() {
 }
 
 void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam) {
-    // this is function is called when the user selects an item
-    // from the system menu. (right clicking on the minimized program,
-    // or right clicking on the system icon
-
+    // Handle system‑menu commands (About, Options, Always‑on‑Top, minimize/restore)
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
         CAboutDlg dlgAbout;
         dlgAbout.DoModal();
@@ -642,7 +638,7 @@ void CColorCopDlg::OnPaint() {
         dc.DrawIcon(x, y, m_hIcon);
     } else {
         CDialog::OnPaint();
-        // only paint here..
+        // Custom magnifier rendering and color preview drawing
         HWND hWndMain = GetSafeHwnd();
 
         WindowDC hdc(hWndMain);   // RAII — auto‑releases

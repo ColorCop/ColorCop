@@ -10,10 +10,6 @@
 
 #include "Defaults.h"
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CColorCopDlg dialog
-
 constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;   // one-sixth of the color wheel
 constexpr double SAT_LIGHT_SHIFT   = 0.15;           // amount to adjust saturation/lightness
 constexpr int    NUM_SWATCHES      = 6;              // number of hue variants

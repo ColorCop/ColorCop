@@ -1,8 +1,9 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// Defaults.h : Centralized constants for array sizes and other shared defaults.
-//
+// Defaults.h : Centralized application defaults used by multiple subsystems.
+// Stores persistent settings and default color/state values. UI layout details and
+// dialog‑specific constants are intentionally kept out of this header.
 
 #pragma once
 
