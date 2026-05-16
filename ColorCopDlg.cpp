@@ -1506,36 +1506,35 @@ HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc) {
 }
 
 void CColorCopDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-    // left mouse buttom was released
-    // OK - no more eyedropping or magnifying because we don't own the cursor anymore..
-    if ((m_isEyedropping) || (m_isMagnifying)) {
-            OnCopytoclip();
-            if (bRelativePosition) {
-                // invert the old one back
-                 bRelativePosition = FALSE;
-            }
-         Invalidate(TRUE);
+    // Stop eyedropper or magnifier mode
+    if (m_isEyedropping || m_isMagnifying) {
+        OnCopytoclip();
 
+        if (bRelativePosition) {
+            bRelativePosition = FALSE;
+        }
+        Invalidate(TRUE);
         StopCapture();
     }
-    if (m_MagDrop) {
-        m_MagDrop = false;
-    }
 
+    // Reset magnifier drop state
+    m_MagDrop = false;
+
+    // Stop auto-repeat zoom timers
     if (m_isMagMinusDown) {
         m_isMagMinusDown = FALSE;
         KillTimer(2);
     }
-
     if (m_isMagPlusDown) {
         m_isMagPlusDown = FALSE;
         KillTimer(2);
     }
 
+    // Restore cursor if EasyMove was active
     if (m_Appflags & EasyMove) {
-        // easy move is on so the cursor is probably wrong on the way up
         SetCursor(m_hStandardCursor);
     }
+
     CDialog::OnLButtonUp(nFlags, point);
 }
 
