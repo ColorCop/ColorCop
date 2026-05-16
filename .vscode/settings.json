@@ -1,6 +1,31 @@
 {
-    "editor.unicodeHighlight.nonBasicASCII": true,
-    "editor.unicodeHighlight.ambiguousCharacters": true,
-    "editor.unicodeHighlight.invisibleCharacters": true,
-    "editor.unicodeHighlight.allowedCharacters": {}
+  "C_Cpp.vcFormat.enabled": false,
+  "C_Cpp.formatting": "clangFormat",
+  "editor.defaultFormatter": "ms-vscode.cpptools",
+"[cpp]": {
+    "editor.formatOnSave": true,
+    "editor.autoIndent": "none",
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false
+},
+"[c]": {
+    "editor.formatOnSave": true,
+    "editor.autoIndent": "none",
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false
+},
+  "editor.unicodeHighlight.nonBasicASCII": true,
+  "editor.unicodeHighlight.ambiguousCharacters": true,
+  "editor.unicodeHighlight.invisibleCharacters": true,
+  "editor.unicodeHighlight.allowedCharacters": {},
+
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  "[xml]": {
+    "editor.formatOnSave": false
+  },
+  "[plaintext]": {
+    "editor.formatOnSave": false
+  }
 }
