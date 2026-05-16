@@ -1,8 +1,10 @@
 // Copyright (c) 2024 Jay Prall
 // SPDX-License-Identifier: MIT
 
-// ColorCop.cpp : Defines the class behaviors for the application.
-//
+// ColorCop.cpp : Application entry point and core initialization logic.
+// Handles single‑instance enforcement, portable‑mode detection, settings
+// loading/saving, and creation of the main ColorCop dialog.
+
 #include "pch.h"
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
