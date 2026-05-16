@@ -96,7 +96,7 @@ jobs:
           }
 
       - name: Build Installer
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.8
         if: matrix.configuration == 'Release'
         with:
           path: installer\colorcop.iss
