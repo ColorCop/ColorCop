@@ -436,8 +436,11 @@ bool CColorCopDlg::LoadPersistentVariables() {
     }
 
     // Restore window position (no size change)
-    SetWindowPos(&wndTopMost, WinLocX, WinLocY, 0, 0, SWP_NOSIZE);
-
+    ::SetWindowPos(GetSafeHwnd(),
+                (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                WinLocX, WinLocY,
+                0, 0,
+                SWP_NOSIZE);
     // Ensure zoom level is valid after loading settings
     m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
 
@@ -2093,28 +2096,24 @@ void CColorCopDlg::OnOptionsAlwaysontop() {
 }
 
 void CColorCopDlg::ToggleOnTop(bool bSetStatusbartext) {
-    if (m_Appflags & AlwaysOnTop) {  // Make Always on Top
-        if (bSetStatusbartext) {
-            SetStatusBarText(IDS_ALWAYSOTOP, 1);
-        }
-        // mfc call
-        SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    } else {  // Not always on top, NORMAL
-        if (bSetStatusbartext) {
-            SetStatusBarText(IDS_ALWAYSOTOP, 2);
-        }
-        // win32 api call
-        ::SetWindowPos(GetSafeHwnd(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    const bool makeTopMost = (m_Appflags & AlwaysOnTop) != 0;
+
+    if (bSetStatusbartext) {
+        SetStatusBarText(IDS_ALWAYSOTOP, makeTopMost ? 1 : 2);
     }
 
-    // Make sure the checkbox for always on top on the system menu
-    // is the same as the checkbox in the dialog menu
-    CMenu* pSysMenu = GetSystemMenu(FALSE);
-    if (pSysMenu != NULL) {
-        if (m_Appflags & AlwaysOnTop)
-            pSysMenu->CheckMenuItem(IDM_ALWAYSONTOP, MF_CHECKED);  // check the menu item
-        else
-            pSysMenu->CheckMenuItem(IDM_ALWAYSONTOP, MF_UNCHECKED);  // uncheck the item
+    // Unified Win32 call — no MFC wndTopMost wrapper
+    ::SetWindowPos(
+        GetSafeHwnd(),
+        makeTopMost ? HWND_TOPMOST : HWND_NOTOPMOST,
+        0, 0, 0, 0,
+        SWP_NOMOVE | SWP_NOSIZE);
+
+    // Sync system menu checkbox
+    if (CMenu* pSysMenu = GetSystemMenu(FALSE)) {
+        pSysMenu->CheckMenuItem(
+            IDM_ALWAYSONTOP,
+            makeTopMost ? MF_CHECKED : MF_UNCHECKED);
     }
 }
 
