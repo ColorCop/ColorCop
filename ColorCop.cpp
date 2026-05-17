@@ -13,18 +13,18 @@
 #define INI_FILE _T("\\Color_Cop.dat")
 #define INI_FILE_DIR _T("\\ColorCop")
 
-#define MONITOR_CENTER   0x0001        // center rect to monitor
-#define MONITOR_CLIP     0x0000        // clip rect to monitor
-#define MONITOR_WORKAREA 0x0002        // use monitor work area
-#define MONITOR_AREA     0x0000        // use monitor entire area
+#define MONITOR_CENTER 0x0001    // center rect to monitor
+#define MONITOR_CLIP 0x0000      // clip rect to monitor
+#define MONITOR_WORKAREA 0x0002  // use monitor work area
+#define MONITOR_AREA 0x0000      // use monitor entire area
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopApp
 
 BEGIN_MESSAGE_MAP(CColorCopApp, CWinApp)
     //{{AFX_MSG_MAP(CColorCopApp) // NOLINT(whitespace/comments)
-        // NOTE - the ClassWizard will add and remove mapping macros here.
-        //    DO NOT EDIT what you see in these blocks of generated code!
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
     //}}AFX_MSG // NOLINT(whitespace/comments)
     ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
@@ -56,23 +56,23 @@ BOOL CColorCopApp::InitInstance() {
     // multiple instances are not allowed?
     if (!(dlg.m_Appflags & MultipleInstances)) {
         // multiple instances are not allowed. check if we have one running
-            if (InstanceRunning()) {
-                // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
-                AfxMessageBox(IDS_APP_RUNNING);
+        if (InstanceRunning()) {
+            // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
+            AfxMessageBox(IDS_APP_RUNNING);
 
-                // error instead
-                return false;
-            }
-    }
-        // set the main window
-        dlg.m_PortableMode = m_PortableMode;
-        m_pMainWnd = &dlg;
-
-        int nResponse = dlg.DoModal();        // Launch the color cop dialog
-
-        if ((nResponse == IDOK) || (nResponse == IDCANCEL)) {
-            CloseApplication();        // write the data to a file
+            // error instead
+            return false;
         }
+    }
+    // set the main window
+    dlg.m_PortableMode = m_PortableMode;
+    m_pMainWnd = &dlg;
+
+    int nResponse = dlg.DoModal();  // Launch the color cop dialog
+
+    if ((nResponse == IDOK) || (nResponse == IDCANCEL)) {
+        CloseApplication();  // write the data to a file
+    }
 
     return FALSE;
 }
@@ -104,12 +104,12 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     HKEY hkey;
 
     rc = RegOpenKeyEx(HKEY_CURRENT_USER,
-        _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"),
-        0, KEY_READ, &hkey);
+                      _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"),
+                      0, KEY_READ, &hkey);
 
     if (rc == ERROR_SUCCESS) {
         rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
-                reinterpret_cast<BYTE*>(pShellPath), &length);
+                             reinterpret_cast<BYTE*>(pShellPath), &length);
         RegCloseKey(hkey);
     }
 
@@ -182,31 +182,31 @@ BOOL CColorCopApp::InitApplication() {
 }
 
 void CColorCopApp::LoadDefaultSettings() {
-  // Called when no valid .DAT file exists. Load all default settings.
+    // Called when no valid .DAT file exists. Load all default settings.
 
-  // Seed color
-  const COLORREF seed = kDefaultSeedColor;
-  dlg.m_Reddec = GetRValue(seed);
-  dlg.m_Greendec = GetGValue(seed);
-  dlg.m_Bluedec = GetBValue(seed);
+    // Seed color
+    const COLORREF seed = kDefaultSeedColor;
+    dlg.m_Reddec = GetRValue(seed);
+    dlg.m_Greendec = GetGValue(seed);
+    dlg.m_Bluedec = GetBValue(seed);
 
-  // Default app flags
-  dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
-                   Sampling1 | ExpandedDialog | MultipleInstances |
-                   MAGWHILEEYEDROP | SpaceRGB;
+    // Default app flags
+    dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
+                     Sampling1 | ExpandedDialog | MultipleInstances |
+                     MAGWHILEEYEDROP | SpaceRGB;
 
-  // Window defaults
-  dlg.WinLocX = kDefaultWinLocX;
-  dlg.WinLocY = kDefaultWinLocY;
-  dlg.m_iSamplingOffset = kDefaultSamplingOffset;
+    // Window defaults
+    dlg.WinLocX = kDefaultWinLocX;
+    dlg.WinLocY = kDefaultWinLocY;
+    dlg.m_iSamplingOffset = kDefaultSamplingOffset;
 
-  // Custom colors
-  for (int i = 0; i < kCustomColorCount; ++i)
-    dlg.CustColorBank[i] = kDefaultCustomColor;
+    // Custom colors
+    for (int i = 0; i < kCustomColorCount; ++i)
+        dlg.CustColorBank[i] = kDefaultCustomColor;
 
-  // History colors
-  for (int i = 0; i < kHistoryCount; ++i)
-    dlg.ColorHistory[i] = kDefaultColorHistory[i];
+    // History colors
+    for (int i = 0; i < kHistoryCount; ++i)
+        dlg.ColorHistory[i] = kDefaultColorHistory[i];
 }
 
 void CColorCopApp::CloseApplication() {
@@ -222,14 +222,14 @@ void CColorCopApp::CloseApplication() {
     }
 
     CFile file;
-    if (file.Open(strInitFile, CFile::modeWrite|CFile::modeCreate)) {
+    if (file.Open(strInitFile, CFile::modeWrite | CFile::modeCreate)) {
         CArchive ar(&file, CArchive::store);
         Serialize(ar);
     }
 }
 
 void CColorCopApp::Serialize(CArchive& ar) {
-    if (ar.IsStoring())    {
+    if (ar.IsStoring()) {
         // storing code
         try {
             ar << dlg.m_Reddec;
@@ -238,9 +238,9 @@ void CColorCopApp::Serialize(CArchive& ar) {
             ar << dlg.m_Appflags;
             ar << dlg.WinLocX;
             ar << dlg.WinLocY;
-            for (int j = 0; j < kCustomColorCount; j++)    // load custom color values to array
+            for (int j = 0; j < kCustomColorCount; j++)  // load custom color values to array
                 ar << dlg.CustColorBank[j];
-            for (int w = 0; w < kHistoryCount; w++)        // save color history values
+            for (int w = 0; w < kHistoryCount; w++)  // save color history values
                 ar << dlg.ColorHistory[w];
 
             ar << dlg.m_iSamplingOffset;
