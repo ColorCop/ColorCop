@@ -39,8 +39,10 @@ ReflowComments: false
 IndentPPDirectives: None
 PPIndentWidth: 0
 
-# Do NOT align comments or declarations
-AlignTrailingComments: false
+SpacesBeforeTrailingComments: 2
+
+AccessModifierOffset: 1
+
 AlignConsecutiveDeclarations: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveMacros: None
