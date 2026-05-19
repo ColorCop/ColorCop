@@ -21,6 +21,18 @@ constexpr double RGB_MAX_D         = 255.0;          // double version of 255
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
+// Centralized list of all color output modes. Update this mask whenever a new
+// mode is added so mode‑switch handlers remain consistent and future‑proof.
+static constexpr uint32_t kAllColorModes =
+    ModeHTML |
+    ModeDelphi |
+    ModePowerBuilder |
+    ModeVisualBasic |
+    ModeVisualC |
+    ModeClarion |
+    RGBFLOAT |
+    RGBINT;
+
 class CSystemTray;
 
 class CColorCopDlg : public CDialog {

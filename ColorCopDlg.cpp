@@ -2619,128 +2619,96 @@ void CColorCopDlg::OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI) {
 
 void CColorCopDlg::OnPopupModeRgbfloat() {
     SetStatusBarText(IDS_MODE_RGBFLOAT, 1);
-    if (m_Appflags ^ ModeHTML) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags |= RGBFLOAT;  // rgb float
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set RGB float mode
+    m_Appflags |= RGBFLOAT;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnPopupModeRgbint() {
     SetStatusBarText(IDS_MODE_RGBINT, 1);
-    if (m_Appflags ^ ModeHTML) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags |= RGBINT;  // rgb int
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set RGB integer mode
+    m_Appflags |= RGBINT;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnViewHtmlhexmode() {
     SetStatusBarText(IDS_MODE_HTML, 1);
-    if (m_Appflags ^ ModeHTML) {
-        m_Appflags |= ModeHTML;  // HTML ON
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set HTML mode
+    m_Appflags |= ModeHTML;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnOptionsDelphimode() {
     SetStatusBarText(IDS_MODE_DELPHI, 1);
-    if (m_Appflags ^ ModeDelphi) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags |= ModeDelphi;  // Delphi ON
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set Delphi mode
+    m_Appflags |= ModeDelphi;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnPopupHexmodePowerbuilder() {
     SetStatusBarText(IDS_MODE_POWERBUILDER, 1);
-    if (m_Appflags ^ ModePowerBuilder) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags |= ModePowerBuilder;  // PowerBuilder ON
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set Powerbuilder mode
+    m_Appflags |= ModePowerBuilder;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnPopupModeVisualbasichex() {
     SetStatusBarText(IDS_MODE_VISUALB, 1);
-    {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags |= ModeVisualBasic;  // VisualBasic ON
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set Visual Basic mode
+    m_Appflags |= ModeVisualBasic;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnPopupModeVisualchex() {
     SetStatusBarText(IDS_MODE_VISUALC, 1);
-    if (m_Appflags ^ ModeVisualC) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags |= ModeVisualC;  // VisualC ON
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags &= ~ModeClarion;
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set Visual C++ mode
+    m_Appflags |= ModeVisualC;
+
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnPopupModeClarionhex() {
     SetStatusBarText(IDS_MODE_CLARION, 1);
-    if (m_Appflags ^ ModeClarion) {
-        m_Appflags &= ~ModeHTML;
-        m_Appflags &= ~ModeDelphi;
-        m_Appflags &= ~ModePowerBuilder;
-        m_Appflags &= ~ModeVisualBasic;
-        m_Appflags &= ~ModeVisualC;
-        m_Appflags &= ~RGBFLOAT;
-        m_Appflags &= ~RGBINT;
-        m_Appflags |= ModeClarion;  // Clarion ON
-    }
+
+    // Clear all other modes
+    m_Appflags &= ~kAllColorModes;
+    // Set Clarion mode
+    m_Appflags |= ModeClarion;
+
     OnconvertRGB();
     OnCopytoclip();
 }
