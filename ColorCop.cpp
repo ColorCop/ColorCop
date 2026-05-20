@@ -141,6 +141,7 @@ CString CColorCopApp::GetSettingsFolder() {
 }
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
+    (void)flags;  // explicitly mark unused to avoid a warning
     RECT rc;
     GetWindowRect(hwnd, &rc);
     SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
@@ -186,9 +187,10 @@ void CColorCopApp::LoadDefaultSettings() {
 
     // Seed color
     const COLORREF seed = kDefaultSeedColor;
-    dlg.m_Reddec = GetRValue(seed);
-    dlg.m_Greendec = GetGValue(seed);
-    dlg.m_Bluedec = GetBValue(seed);
+
+    dlg.m_Reddec = static_cast<int>(GetRValue(seed));
+    dlg.m_Greendec = static_cast<int>(GetGValue(seed));
+    dlg.m_Bluedec = static_cast<int>(GetBValue(seed));
 
     // Default app flags
     dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
