@@ -28,3 +28,8 @@ constexpr COLORREF kDefaultColorHistory[kHistoryCount] = {
 constexpr COLORREF kDefaultSeedColor = RGB(171, 208, 188);
 
 constexpr COLORREF kDefaultCustomColor = 0x00FFFFFF;
+
+// Default zoom level for the magnifier (5x)
+constexpr int kDefaultMagLevel = 5;
+// Default float precision for RGB float mode (2 decimal places)
+constexpr int kDefaultFloatPrecision = 2;
