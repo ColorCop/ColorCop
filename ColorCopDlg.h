@@ -103,17 +103,17 @@ class CColorCopDlg : public CDialog {
  protected:
     bool m_bvisible;
 
-    HICON m_hIcon, m_hBlank, m_hEye;
+    HICON m_hIcon;
+    HICON m_hBlank;
+    HICON m_hEye;
 
     HACCEL m_hAcceleratorTable;
 
-    // Store for snapback from websafe; 1‑byte values (0–255)
-    std::uint8_t m_OldRed{};
-    std::uint8_t m_OldGreen{};
-    std::uint8_t m_OldBlue{};
+    std::uint8_t m_OldRed{};    // original red value before snapping to websafe
+    std::uint8_t m_OldGreen{};  // original green value before snapping to websafe
+    std::uint8_t m_OldBlue{};   // original blue value before snapping to websafe
 
-    BOOL bOldClrExist;
-
+    BOOL m_oldColorSaved;  // whether we have a saved pre‑snap color to restore from
     BOOL m_isEyedropping;
     BOOL m_isMagnifying;
     BOOL bMinimized;
@@ -127,7 +127,10 @@ class CColorCopDlg : public CDialog {
     CStatusBarCtrl m_StatBar;
     CToolTipCtrl m_ToolTip;
 
-    int smHeight, smWidth, lgHeight, lgWidth;
+    int smHeight;
+    int smWidth;
+    int lgHeight;
+    int lgWidth;
     unsigned int m_nwide, m_ntall;
 
     // color palette stuff
