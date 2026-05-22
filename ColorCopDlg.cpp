@@ -1588,8 +1588,8 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
         }
 
         // hdc auto‑releases via RAII
-
-        CString strStatus = "", strWebSafe = "";
+        strStatus = "";
+        CString strWebSafe = "";
 
         if (bRelativePosition) {
             // L (Length line = hypotenuse) = SQRT(W² + H²) (show it to 1 decimal)
