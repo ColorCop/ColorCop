@@ -15,8 +15,8 @@ CLabel::CLabel() {
     m_crText = GetSysColor(COLOR_WINDOWTEXT);
     m_hBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 
-    ::GetObject((HFONT)GetStockObject(DEFAULT_GUI_FONT), sizeof(m_lf), &m_lf);
-
+    ::GetObject(reinterpret_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)),
+                sizeof(m_lf), &m_lf);
     m_font.CreateFontIndirect(&m_lf);
     m_bTimer = FALSE;
     m_bState = FALSE;
@@ -83,7 +83,9 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd) {
 CLabel& CLabel::SetFontName(const CString& strFont) {
     // Use secure CRT helper to avoid C4996 and buffer overruns.
     // sizeof(m_lf.lfFaceName)/sizeof(TCHAR) yields the element count (LF_FACESIZE).
-    _tcscpy_s(m_lf.lfFaceName, sizeof(m_lf.lfFaceName) / sizeof(TCHAR), (LPCTSTR)strFont);
+    _tcscpy_s(m_lf.lfFaceName,
+          sizeof(m_lf.lfFaceName) / sizeof(TCHAR),
+          static_cast<LPCTSTR>(strFont));
     ReconstructFont();
     RedrawWindow();
     return *this;
