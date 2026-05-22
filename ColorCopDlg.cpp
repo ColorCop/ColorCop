@@ -961,12 +961,12 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
 void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
     // Normalize RGB to [0,1]
-    const double r = static_cast<double>(red) / RGB_MAX_D;
-    const double g = static_cast<double>(green) / RGB_MAX_D;
-    const double b = static_cast<double>(blue) / RGB_MAX_D;
+    const double rNorm = static_cast<double>(red) / RGB_MAX_D;
+    const double gNorm = static_cast<double>(green) / RGB_MAX_D;
+    const double bNorm = static_cast<double>(blue) / RGB_MAX_D;
 
     // Compute K (black)
-    const double maxRGB = std::max({r, g, b});
+    const double maxRGB = std::max({rNorm, gNorm, bNorm});
     const double K = 1.0 - maxRGB;
 
     double C = 0.0;
@@ -975,9 +975,9 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
 
     if (K < 1.0) {
         const double denom = 1.0 - K;
-        C = (1.0 - r - K) / denom;
-        M = (1.0 - g - K) / denom;
-        Y = (1.0 - b - K) / denom;
+        C = (1.0 - rNorm - K) / denom;
+        M = (1.0 - gNorm - K) / denom;
+        Y = (1.0 - bNorm - K) / denom;
     }
 
     // Convert CMYK back to 0–255 integer range
