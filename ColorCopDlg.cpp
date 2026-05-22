@@ -35,8 +35,6 @@ constexpr int kMinZoom = 1;
 constexpr int kMaxZoom = 16;
 // Magnifier button size in pixels (square)
 constexpr int kMagButtonSize = 11;
-// Default zoom level for the magnifier (5x)
-constexpr int kDefaultMagLevel = 5;
 
 #include "AboutDlg.h"
 
@@ -64,8 +62,6 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_iSamplingOffset(0),
       WinLocX(0),
       WinLocY(0),
-      m_MagLevel(kDefaultMagLevel),
-      m_FloatPrecision(0),
       hBitmap(nullptr),
       hBitmapClip(nullptr),
       hZoomBitmap(nullptr),
@@ -330,7 +326,6 @@ BOOL CColorCopDlg::OnInitDialog() {
     } else {
         ChangeColorSpace(true);
     }
-    m_FloatPrecision = 2;
     OnconvertRGB();
     CalcColorPal();
     OnCopytoclip();
@@ -2212,13 +2207,12 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
         // all receive the same value, producing a grayscale color.
         //
 
-        // Compute channel extrema.
-        uint16_t Max = std::max({m_Reddec, m_Greendec, m_Bluedec});
-        uint16_t Min = std::min({m_Reddec, m_Greendec, m_Bluedec});
+        // Compute channel extrema in int.
+        const int Max = std::max({m_Reddec, m_Greendec, m_Bluedec});
+        const int Min = std::min({m_Reddec, m_Greendec, m_Bluedec});
 
-        // Compute grayscale lightness safely in int, then narrow explicitly.
-        const int tmpL = (static_cast<int>(Min) + static_cast<int>(Max)) / 2;
-        uint16_t L = static_cast<std::uint16_t>(tmpL);
+        // Compute grayscale lightness in int.
+        const int L = (Min + Max) / 2;
 
         // Apply grayscale value to all channels.
         m_Reddec = L;
@@ -2271,9 +2265,9 @@ void CColorCopDlg::TestForWebsafe() {
         m_oldColorSaved = true;
 
         // Backup the actual RGB values before snapping
-        m_OldRed = static_cast<std::uint8_t>(m_Reddec);
-        m_OldGreen = static_cast<std::uint8_t>(m_Greendec);
-        m_OldBlue = static_cast<std::uint8_t>(m_Bluedec);
+        m_OldRed = m_Reddec;
+        m_OldGreen = m_Greendec;
+        m_OldBlue = m_Bluedec;
 
         // Snap each component to the nearest web‑safe value
         m_Reddec = DecimaltoWebsafe(m_Reddec);

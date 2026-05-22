@@ -44,9 +44,10 @@ class CColorCopDlg : public CDialog {
     int m_Appflags;
     int m_iSamplingOffset;
 
-    int WinLocX, WinLocY;
-    int16_t m_MagLevel;
-    int16_t m_FloatPrecision;
+    int WinLocX;
+    int WinLocY;
+    int m_MagLevel = kDefaultMagLevel;
+    int m_FloatPrecision = kDefaultFloatPrecision;
 
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 
@@ -109,9 +110,9 @@ class CColorCopDlg : public CDialog {
 
     HACCEL m_hAcceleratorTable;
 
-    std::uint8_t m_OldRed{};    // original red value before snapping to websafe
-    std::uint8_t m_OldGreen{};  // original green value before snapping to websafe
-    std::uint8_t m_OldBlue{};   // original blue value before snapping to websafe
+    int m_OldRed = 0;    // original red value before snapping to websafe
+    int m_OldGreen = 0;  // original green value before snapping to websafe
+    int m_OldBlue = 0;   // original blue value before snapping to websafe
 
     BOOL m_oldColorSaved;  // whether we have a saved pre‑snap color to restore from
     BOOL m_isEyedropping;
@@ -131,7 +132,8 @@ class CColorCopDlg : public CDialog {
     int smWidth;
     int lgHeight;
     int lgWidth;
-    unsigned int m_nwide, m_ntall;
+    int m_nwide;
+    int m_ntall;
 
     // color palette stuff
     double r, g, b;
