@@ -71,7 +71,7 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_hBlank(nullptr),
       m_hEye(nullptr),
       m_hAcceleratorTable(nullptr),
-      bOldClrExist(false),
+      m_oldColorSaved(false),
       m_isEyedropping(false),
       m_isMagnifying(false),
       bMinimized(false),
@@ -266,9 +266,8 @@ BOOL CColorCopDlg::OnInitDialog() {
     nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
 
     // application variables
-    m_isMagPlusDown = m_isMagMinusDown = bOldClrExist = FALSE;
+    m_isMagPlusDown = m_isMagMinusDown = m_oldColorSaved = FALSE;
     m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
-    m_OldRed = m_OldBlue = m_OldGreen = 0;
     bMinimized_ = false;
     pTrayIcon_ = nullptr;
 
@@ -2248,9 +2247,9 @@ void CColorCopDlg::OnColorSnaptowebsafe() {
         SetStatusBarText(IDS_SNAPTOWEBSAFE, 2);
     }
 
-    if ((m_Appflags ^ SnaptoWebsafe) && (bOldClrExist)) {
-        // the user switched snap to websafe off, which means it was previously on
-        // revert back to the saved colors
+    if (!(m_Appflags & SnaptoWebsafe) && m_oldColorSaved) {
+        // Snap-to-Websafe was just turned OFF and we have a saved pre‑snap color.
+        // Restore the original RGB values that were backed up when snapping was enabled.
         m_Reddec = m_OldRed;
         m_Greendec = m_OldGreen;
         m_Bluedec = m_OldBlue;
@@ -2268,7 +2267,7 @@ void CColorCopDlg::TestForWebsafe() {
     // so they can be restored if the user later disables snapping. Web‑safe
     // colors are defined as multiples of 51 (0, 51, 102, 153, 204, 255).
     if (m_Appflags & SnaptoWebsafe) {
-        bOldClrExist = true;
+        m_oldColorSaved = true;
 
         // Backup the actual RGB values before snapping
         m_OldRed = static_cast<std::uint8_t>(m_Reddec);
