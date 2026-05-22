@@ -29,12 +29,14 @@ constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 
-/// Minimum zoom level for the magnifier (1x)
+// Minimum zoom level for the magnifier (1x)
 constexpr int kMinZoom = 1;
-/// Maximum zoom level for the magnifier (16x)
+// Maximum zoom level for the magnifier (16x)
 constexpr int kMaxZoom = 16;
-/// Magnifier button size in pixels (square)
+// Magnifier button size in pixels (square)
 constexpr int kMagButtonSize = 11;
+// Default zoom level for the magnifier (5x)
+constexpr int kDefaultMagLevel = 5;
 
 #include "AboutDlg.h"
 
@@ -62,7 +64,7 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_iSamplingOffset(0),
       WinLocX(0),
       WinLocY(0),
-      m_MagLevel(0),
+      m_MagLevel(kDefaultMagLevel),
       m_FloatPrecision(0),
       hBitmap(nullptr),
       hBitmapClip(nullptr),
@@ -328,7 +330,6 @@ BOOL CColorCopDlg::OnInitDialog() {
     } else {
         ChangeColorSpace(true);
     }
-    m_MagLevel = std::clamp<int>(5, kMinZoom, kMaxZoom);
     m_FloatPrecision = 2;
     OnconvertRGB();
     CalcColorPal();
