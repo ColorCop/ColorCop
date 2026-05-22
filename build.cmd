@@ -18,8 +18,6 @@ REM Strip leading "v" if present
 set VERSION_RAW=%VERSION%
 if "%VERSION_RAW:~0,1%"=="v" set VERSION_RAW=%VERSION_RAW:~1%
 
-echo Using version: %VERSION_RAW%
-
 REM ================================
 REM  PARSE VERSION INTO NUMERIC FORM
 REM ================================
@@ -34,7 +32,9 @@ if "%BUILD%"=="" set BUILD=0
 
 set VERSION_NUMERIC=%MAJOR%, %MINOR%, %PATCH%, %BUILD%
 
-echo Numeric version: %VERSION_NUMERIC%
+echo ColorCop build %VERSION_RAW%
+echo ----------------------------
+
 
 REM ================================
 REM  GENERATE version.h
@@ -46,10 +46,10 @@ echo #define VER_FILEVERSION_STR "%VERSION_RAW%" >> version.h
 echo #define VER_PRODUCTVERSION  %VERSION_NUMERIC% >> version.h
 echo #define VER_PRODUCTVERSION_STR "%VERSION_RAW%" >> version.h
 echo #define VER_FULLNAME_STR "Color Cop version %VERSION_RAW%" >> version.h
+echo Generated version.h
 echo #define AppVersionStr "%VERSION_RAW%" > installer\version.iss
+echo Generated version.iss
 
-echo Generated version.h:
-type version.h
 
 REM ================================
 REM  LOCATE MSBUILD.EXE (C++-capable)
