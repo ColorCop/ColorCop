@@ -53,44 +53,62 @@ CColorCopApp theApp;
 // CColorCopApp initialization
 
 BOOL CColorCopApp::InitInstance() {
-    // multiple instances are not allowed?
+    // Enforce single‑instance mode unless explicitly overridden by the
+    // MultipleInstances flag. If another instance is already running,
+    // activate its window and terminate this one immediately.
     if (!(dlg.m_Appflags & MultipleInstances)) {
-        // multiple instances are not allowed. check if we have one running
         if (InstanceRunning()) {
-            // TODO(j4y): find the current instance and bring forward instead of a msg.  fixes issue #4
-            AfxMessageBox(IDS_APP_RUNNING);
-
-            // error instead
-            return false;
+            BringExistingInstanceToFront();
+            return FALSE;  // stop launching a second instance
         }
     }
-    // set the main window
+
+    // Initialize and display the main dialog for this instance.
     dlg.m_PortableMode = m_PortableMode;
     m_pMainWnd = &dlg;
 
-    int nResponse = dlg.DoModal();  // Launch the color cop dialog
+    int nResponse = dlg.DoModal();  // run the Color Cop dialog modally
 
-    if ((nResponse == IDOK) || (nResponse == IDCANCEL)) {
-        CloseApplication();  // write the data to a file
+    // Persist settings on normal exit paths (OK or Cancel).
+    if (nResponse == IDOK || nResponse == IDCANCEL) {
+        CloseApplication();
     }
 
-    return FALSE;
+    return FALSE;  // terminate the application after the dialog closes
+}
+
+bool CColorCopApp::BringExistingInstanceToFront() {
+    // Locate the existing Color Cop dialog by its default dialog class (#32770)
+    // and its exact window caption ("Color Cop"). This works because the dialog
+    // uses the standard Windows dialog class and the caption is fixed in the
+    // dialog resource. If either changes (e.g., localization or dynamic titles),
+    // this lookup must be updated.
+    HWND hWnd = FindWindow(_T("#32770"), _T("Color Cop"));
+    if (!hWnd) {
+        TRACE(_T("Unable to find Color Cop window to bring to front\n"));
+        return false;
+    }
+
+    AllowSetForegroundWindow(ASFW_ANY);
+
+    if (IsIconic(hWnd)) {
+        ShowWindow(hWnd, SW_RESTORE);
+    } else {
+        ShowWindow(hWnd, SW_SHOWNORMAL);
+    }
+
+    SetForegroundWindow(hWnd);
+    BringWindowToTop(hWnd);
+
+    return true;
 }
 
 // uses a Mutex to figure out if there is an instance of color cop running
 bool CColorCopApp::InstanceRunning() {
-    m_hMutex = CreateMutex(NULL, TRUE, _T("ColorCop_Mutex"));
-
-    if (m_hMutex) {
-        if (GetLastError() == ERROR_ALREADY_EXISTS) {
-            CloseHandle(m_hMutex);  // Close the duplicate handle
-            m_hMutex = nullptr;
-            return true;
-        }
-        return false;
+    if (!m_hMutex) {
+        m_hMutex = CreateMutex(NULL, TRUE, _T("ColorCop_Mutex"));
     }
-
-    return false;
+    return (m_hMutex && GetLastError() == ERROR_ALREADY_EXISTS);
 }
 
 BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
@@ -141,7 +159,7 @@ CString CColorCopApp::GetSettingsFolder() {
 }
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
-    (void)flags;  // explicitly mark unused to avoid a warning
+    (void) flags;  // explicitly mark unused to avoid a warning
     RECT rc;
     GetWindowRect(hwnd, &rc);
     SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
@@ -187,9 +205,9 @@ void CColorCopApp::LoadDefaultSettings() {
     const COLORREF seed = kDefaultSeedColor;
 
     // extract RGB components from the seed color in order to set the initial color values
-    dlg.m_Reddec   = static_cast<int>(seed        & 0xFF);
-    dlg.m_Greendec = static_cast<int>((seed >> 8)  & 0xFF);
-    dlg.m_Bluedec  = static_cast<int>((seed >> 16) & 0xFF);
+    dlg.m_Reddec = static_cast<int>(seed & 0xFF);
+    dlg.m_Greendec = static_cast<int>((seed >> 8) & 0xFF);
+    dlg.m_Bluedec = static_cast<int>((seed >> 16) & 0xFF);
 
     dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
                      Sampling1 | ExpandedDialog | MultipleInstances |
