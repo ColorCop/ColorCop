@@ -182,17 +182,15 @@ BOOL CColorCopApp::InitApplication() {
     return CWinApp::InitApplication();
 }
 
+// Load all default settings. Called when no valid .DAT file exists
 void CColorCopApp::LoadDefaultSettings() {
-    // Called when no valid .DAT file exists. Load all default settings.
-
-    // Seed color
     const COLORREF seed = kDefaultSeedColor;
 
-    dlg.m_Reddec = static_cast<int>(GetRValue(seed));
-    dlg.m_Greendec = static_cast<int>(GetGValue(seed));
-    dlg.m_Bluedec = static_cast<int>(GetBValue(seed));
+    // extract RGB components from the seed color in order to set the initial color values
+    dlg.m_Reddec   = static_cast<int>(seed        & 0xFF);
+    dlg.m_Greendec = static_cast<int>((seed >> 8)  & 0xFF);
+    dlg.m_Bluedec  = static_cast<int>((seed >> 16) & 0xFF);
 
-    // Default app flags
     dlg.m_Appflags = AlwaysOnTop | AutoCopytoClip | ModeHTML | EasyMove |
                      Sampling1 | ExpandedDialog | MultipleInstances |
                      MAGWHILEEYEDROP | SpaceRGB;
