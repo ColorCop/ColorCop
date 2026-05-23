@@ -11,6 +11,32 @@ _No unreleased changes yet._
 
 ---
 
+## [5.5.12] - 2026-05-23
+
+### Fixed
+
+- Bringing a second instance to the foreground now activates the existing window instead of showing an error.
+- Corrected `CString` TRACE logging.
+- Restored consistent Always-on-Top behavior and improved z-order handling.
+- Corrected color-mode switching logic.
+- Clamped zoom level on load and replaced remaining raw `HWND` usage with `GetSafeHwnd`.
+- Added empty JSON body to prevent HTTP 411 errors during Store submissions.
+
+### Changed
+
+- Normalized numeric types, removed narrowing conversions, and centralized default values.
+- Simplified build output and removed noisy version logging.
+- Centralized magnifier defaults and removed redundant clamping.
+- Cleaned up CMYK and WebSafe logic, replaced C-style casts, and clarified grayscale comments.
+- Streamlined dialog state resets and reduced variable scope.
+
+### Added
+
+- Improved Store submission diagnostics with full HTTP status and raw response output.
+- Draft Microsoft Store publishing workflow.
+
+---
+
 ## [5.5.11] - 2026-05-09
 
 ### Added
