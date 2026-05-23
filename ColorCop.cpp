@@ -162,7 +162,7 @@ BOOL CColorCopApp::InitApplication() {
     CString strInitFile = settingsFolder + INI_FILE;  // "\Color_Cop.dat"
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
-    TRACE(_T("INI path: %s\n"), strInitFile);
+    TRACE(_T("INI path: %s\n"), strInitFile.GetString());
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeRead)) {
@@ -214,7 +214,8 @@ void CColorCopApp::CloseApplication() {
     CString strInitFile = settingsFolder + INI_FILE;
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
-    TRACE(_T("INI path: %s\n"), strInitFile);
+    TRACE(_T("INI path: %s\n"), strInitFile.GetString());
+
 
     if (!m_PortableMode) {
         // Ensure folder exists in installed mode
@@ -245,8 +246,9 @@ void CColorCopApp::Serialize(CArchive& ar) {
 
             ar << dlg.m_iSamplingOffset;
         } catch (CArchiveException& e) {
-            TRACE("Archive exception caught. Cause = %d, File = %s\n", e.m_cause,
-                  e.m_strFileName ? e.m_strFileName : "(unknown)");
+            TRACE(_T("Archive exception caught. Cause = %d, File = %s\n"),
+                  e.m_cause,
+                  e.m_strFileName.IsEmpty() ? _T("(unknown)") : e.m_strFileName.GetString());
             AfxMessageBox(IDS_ERROR_SAVING);
         }
     } else {
@@ -268,8 +270,9 @@ void CColorCopApp::Serialize(CArchive& ar) {
             }
             ar >> dlg.m_iSamplingOffset;
         } catch (CArchiveException& e) {
-            TRACE("Archive exception caught. Cause = %d, File = %s\n", e.m_cause,
-                  e.m_strFileName ? e.m_strFileName : "(unknown)");
+            TRACE(_T("Archive exception caught. Cause = %d, File = %s\n"),
+                  e.m_cause,
+                  e.m_strFileName.IsEmpty() ? _T("(unknown)") : e.m_strFileName.GetString());
             AfxMessageBox(IDS_ERROR_LOADING);
         }
     }

@@ -47,9 +47,6 @@ AlignConsecutiveDeclarations: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveMacros: None
 
-# Keep access specifiers exactly where they are
-AccessModifierOffset: 0
-
 # Preserve blank lines
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
