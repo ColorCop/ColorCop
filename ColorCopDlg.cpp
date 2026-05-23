@@ -391,7 +391,7 @@ bool CColorCopDlg::LoadPersistentVariables() {
     CString strBMPFile = pApp->GetSettingsFolder();
     strBMPFile += BMP_FILE;
 
-    TRACE(_T("BMP path: %s\n"), strBMPFile);
+    TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
 
     // Load bitmap from file
     hBitmap = reinterpret_cast<HBITMAP>(
@@ -2066,7 +2066,7 @@ void CColorCopDlg::OnDestroy() {
     strBMPFile += BMP_FILE;
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
-    TRACE(_T("BMP path: %s\n"), strBMPFile);
+    TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
 
     HWND curwindowhwnd = ::GetForegroundWindow();
 
