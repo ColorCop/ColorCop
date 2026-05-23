@@ -48,6 +48,7 @@ class CColorCopApp : public CWinApp {
     //{{AFX_VIRTUAL(CColorCopApp) // NOLINT(whitespace/comments)
  public:
     virtual BOOL InitInstance();
+    bool BringExistingInstanceToFront();
     virtual BOOL InitApplication();
     virtual void Serialize(CArchive& ar);
     //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
