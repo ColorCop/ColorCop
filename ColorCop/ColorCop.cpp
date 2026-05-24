@@ -184,18 +184,24 @@ BOOL CColorCopApp::InitApplication() {
 
     CFile file;
     if (file.Open(strInitFile, CFile::modeRead)) {
-        CArchive ar(&file, CArchive::load);
-        Serialize(ar);
+        try {
+            CArchive ar(&file, CArchive::load);
+            Serialize(ar);
+        } catch (CArchiveException* e) {
+            e->Delete();
+            TRACE(_T("Settings file corrupt or incompatible. Loading defaults.\n"));
+            LoadDefaultSettings();
+            ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);
+        }
     } else {
         // First time running ColorCop
         if (!m_PortableMode) {
-            // Ensure the settings folder exists
             CreateDirectory(settingsFolder, NULL);
         }
         LoadDefaultSettings();
-
         ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);
     }
+
 
     return CWinApp::InitApplication();
 }

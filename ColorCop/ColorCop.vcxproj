@@ -71,13 +71,15 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Htmlhelp.lib;Dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/ColorCop.exe</OutputFile>
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <DynamicBase>true</DynamicBase>      <!-- ASLR -->
-      <NxCompat>true</NxCompat>            <!-- DEP -->
+      <DynamicBase>true</DynamicBase>
+      <!-- ASLR -->
+      <NxCompat>true</NxCompat>
+      <!-- DEP -->
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <ControlFlowGuard>Guard</ControlFlowGuard>
     </Link>
@@ -110,9 +112,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <DynamicBase>true</DynamicBase>      <!-- ASLR -->
-      <NxCompat>true</NxCompat>            <!-- DEP -->
+      <AdditionalDependencies>Htmlhelp.lib;Dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DynamicBase>true</DynamicBase>
+      <!-- ASLR -->
+      <NxCompat>true</NxCompat>
+      <!-- DEP -->
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <ControlFlowGuard>Guard</ControlFlowGuard>
     </Link>
@@ -121,6 +125,7 @@
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="ColorCop.cpp" />
     <ClCompile Include="ColorCopDlg.cpp" />
+    <ClCompile Include="DarkStatusBar.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -135,6 +140,9 @@
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="ColorCop.h" />
     <ClInclude Include="ColorCopDlg.h" />
+    <ClInclude Include="DarkStatusBar.h" />
+    <ClInclude Include="Defaults.h" />
+    <ClInclude Include="GdiHelpers.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="pch.h" />

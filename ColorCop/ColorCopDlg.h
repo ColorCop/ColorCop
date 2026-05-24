@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "Defaults.h"
+#include "DarkStatusBar.h"
 
 constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;  // one-sixth of the color wheel
 constexpr double SAT_LIGHT_SHIFT = 0.15;            // amount to adjust saturation/lightness
@@ -41,7 +42,8 @@ class CColorCopDlg : public CDialog {
     explicit CColorCopDlg(CWnd* pParent = nullptr);  // standard constructor
     COLORREF ColorHistory[kHistoryCount];
     COLORREF CustColorBank[kCustomColorCount];
-    int m_Appflags;
+    // 64 bit application flags bitmask. Each bit represents a different user‑configurable setting or mode.
+    uint64_t m_Appflags;
     int m_iSamplingOffset;
 
     int WinLocX;
@@ -57,6 +59,8 @@ class CColorCopDlg : public CDialog {
         IDD = IDD_HTMLCOP_DIALOG
     };
     CButton m_ColorPick;
+    CButton m_ExpandDialog;
+
     CStatic m_Lbl4;
     CStatic m_Lbl3;
     CStatic m_Lbl2;
@@ -76,13 +80,12 @@ class CColorCopDlg : public CDialog {
     CStatic m_Q2;
     CStatic m_Q1;
     CStatic m_ColorPreview;
-    CButton m_ExpandDialog;
     CStatic m_Magnifier;
     CStatic m_EyeLoc;
+    CString m_Hexcolor;
     int m_Greendec;
     int m_Bluedec;
     int m_Reddec;
-    CString m_Hexcolor;
     int m_Black;
     int m_Cyan;
     int m_Magenta;
@@ -127,8 +130,11 @@ class CColorCopDlg : public CDialog {
     BOOL bRelativePosition;
     BOOL m_MagDrop;
 
-    CStatusBarCtrl m_StatBar;
+    CDarkStatusBar m_StatusBar;
     CToolTipCtrl m_ToolTip;
+
+    CBrush m_brDarkMode;
+    COLORREF m_clrText;
 
     int smHeight;
     int smWidth;
@@ -206,7 +212,6 @@ class CColorCopDlg : public CDialog {
     void SetupWindowRects();
     bool LoadPersistentVariables();
     bool AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
-    void SetupStatusBar();
     void SetStatusBarText(LPCTSTR statusText);
     void AdvanceColorHistory();
     void GetHistoryColor(int Cindex);
@@ -228,6 +233,7 @@ class CColorCopDlg : public CDialog {
     void FireOptionMenu();
     PBITMAPINFO CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
     void CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+    void InitDarkModeAPIs();
     void UpdateCMYKFromRGB(int red, int green, int blue);
     void ChangeColorSpace(bool bRGB);
 
@@ -288,6 +294,13 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnPopupRestore();
     afx_msg void OnPopupExit();
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+    void OnThemeSystem();
+    void OnThemeLight();
+    void OnThemeDark();
+    void ApplyTheme();
+    void OnUpdateThemeSystem(CCmdUI* pCmdUI);
+    void OnUpdateThemeLight(CCmdUI* pCmdUI);
+    void OnUpdateThemeDark(CCmdUI* pCmdUI);
     afx_msg BOOL OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt);
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnPopupApplicationHelp();
@@ -296,6 +309,7 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnPopupApplicationMinimizetosystemtrayonstart();
     afx_msg void OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* pCmdUI);
     afx_msg void OnCaptureChanged(CWnd* pWnd);
+    afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS);
     afx_msg void OnPopupColorConverttograyscale();
     afx_msg void OnPopupApplicationAllowmultipleinstances();
     afx_msg void OnUpdatePopupApplicationAllowmultipleinstances(CCmdUI* pCmdUI);
@@ -325,6 +339,10 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnChangeYellow();
     afx_msg void OnPopupModeClarionhex();
     afx_msg void OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI);
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+
+
     //}}AFX_MSG // NOLINT(whitespace/comments)
     DECLARE_MESSAGE_MAP()
 };

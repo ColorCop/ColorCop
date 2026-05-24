@@ -148,8 +148,11 @@
 #define IDS_APPLICATION_NAME            32827
 #define IDS_RELATIVE_POS                32828
 #define IDS_EYEDROPPING                 32829
+#define ID_THEME_SYSTEM                 32829
 #define IDS_WEBSAFE                     32830
+#define ID_THEME_LIGHT                  32830
 #define IDS_NOT_WEBSAFE                 32831
+#define ID_THEME_DARK                   32831
 #define IDS_MULTIPIX_SET                32832
 #define IDS_MULTIPIX_LIMIT              32833
 #define IDS_MULTIPIX                    32834
@@ -182,7 +185,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32827
+#define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

@@ -105,8 +105,8 @@ BEGIN
     EDITTEXT        IDC_GREEN,18,16,29,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_BLUE,18,27,29,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_HEXCOLOR,51,54,52,12,ES_CENTER | ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "&Custom",IDC_ColorPick,51,70,33,12,BS_CENTER | BS_VCENTER
-    PUSHBUTTON      "&>>",IDC_EXPAND_DIALOG,88,70,15,12
+    DEFPUSHBUTTON   "&Custom",IDC_ColorPick,51,70,33,12,BS_OWNERDRAW
+    PUSHBUTTON      ">>",IDC_EXPAND_DIALOG,88,70,15,12,BS_OWNERDRAW
     LTEXT           "1 :",IDC_LBL1,5,8,9,8
     LTEXT           "2 :",IDC_LBL2,5,18,9,8
     LTEXT           "3 :",IDC_LBL3,6,29,9,8
@@ -129,6 +129,9 @@ BEGIN
     EDITTEXT        IDC_CYAN,73,8,29,12,ES_CENTER | ES_AUTOHSCROLL
     EDITTEXT        IDC_MAGENTA,73,20,29,12,ES_CENTER | ES_AUTOHSCROLL
     EDITTEXT        IDC_YELLOW,73,33,29,12,ES_CENTER | ES_AUTOHSCROLL
+    CONTROL "", IDC_STATUSBAR, "msctls_statusbar32",
+            WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP,
+            0, 146, 132, 20 
 END
 
 
@@ -270,6 +273,13 @@ BEGIN
             MENUITEM "Magnify while Eyedropping",   ID_POPUP_OPTIONS_MAGNIFYWHILEEYEDROPPING, CHECKED
             MENUITEM "Use Cross Hair Cursor",       ID_POPUP_OPTIONS_USECROSSHAIRCURSOR
             MENUITEM "Put cursor over Eyedropper on Startup", ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER
+        
+            POPUP "&Theme"
+    BEGIN
+        MENUITEM "System", ID_THEME_SYSTEM
+        MENUITEM "Light",  ID_THEME_LIGHT
+        MENUITEM "Dark",   ID_THEME_DARK
+    END
         END
         POPUP "Application"
         BEGIN
@@ -467,4 +477,3 @@ LANGUAGE 9, 1
 #endif
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-
