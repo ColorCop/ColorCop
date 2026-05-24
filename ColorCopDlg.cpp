@@ -39,9 +39,13 @@ constexpr int kMagButtonSize = 11;
 #include "AboutDlg.h"
 
 // Dark mode API function pointers (undocumented)
-using ShouldAppsUseDarkMode_t = bool(WINAPI*)();
-using AllowDarkModeForWindow_t = bool(WINAPI*)(HWND, bool);
-using SetPreferredAppMode_t = void(WINAPI*)(int);
+using ShouldAppsUseDarkModeFn = bool(WINAPI)();
+using AllowDarkModeForWindowFn = bool(WINAPI)(HWND, bool);
+using SetPreferredAppModeFn = void(WINAPI)(int);
+
+using ShouldAppsUseDarkMode_t = ShouldAppsUseDarkModeFn*;
+using AllowDarkModeForWindow_t = AllowDarkModeForWindowFn*;
+using SetPreferredAppMode_t = SetPreferredAppModeFn*;
 
 // Function pointers
 static ShouldAppsUseDarkMode_t _ShouldAppsUseDarkMode = nullptr;
