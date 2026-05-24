@@ -38,7 +38,26 @@ constexpr int kMaxZoom = 16;
 // Magnifier button size in pixels (square)
 constexpr int kMagButtonSize = 11;
 
+static const UINT kStatusIndicators[] = {
+    ID_SEPARATOR  // single pane
+};
+
+
 #include "AboutDlg.h"
+
+// Dark mode API function pointers (undocumented)
+using ShouldAppsUseDarkModeFn = bool(WINAPI)();
+using AllowDarkModeForWindowFn = bool(WINAPI)(HWND, bool);
+using SetPreferredAppModeFn = void(WINAPI)(int);
+
+using ShouldAppsUseDarkMode_t = ShouldAppsUseDarkModeFn*;
+using AllowDarkModeForWindow_t = AllowDarkModeForWindowFn*;
+using SetPreferredAppMode_t = SetPreferredAppModeFn*;
+
+// Function pointers
+static ShouldAppsUseDarkMode_t _ShouldAppsUseDarkMode = nullptr;
+static AllowDarkModeForWindow_t _AllowDarkModeForWindow = nullptr;
+static SetPreferredAppMode_t _SetPreferredAppMode = nullptr;
 
 // Constants
 
@@ -105,6 +124,9 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       bMinimized_(false),
       pTrayIcon_(nullptr),
       nTrayNotificationMsg_(0) {
+
+    m_brDarkMode.CreateSolidBrush(RGB(32, 32, 32));
+    m_clrText = RGB(220, 220, 220);
 }
 
 void CColorCopDlg::DoDataExchange(CDataExchange* pDX) {
@@ -240,6 +262,17 @@ BEGIN_MESSAGE_MAP(CColorCopDlg, CDialog)
     ON_WM_INITMENUPOPUP()
     ON_COMMAND(ID_POPUP_MODE_CLARIONHEX, OnPopupModeClarionhex)
     ON_UPDATE_COMMAND_UI(ID_POPUP_MODE_CLARIONHEX, OnUpdatePopupModeClarionhex)
+    ON_WM_CTLCOLOR()
+    ON_WM_ERASEBKGND()
+    ON_WM_DRAWITEM()
+    ON_COMMAND(ID_THEME_SYSTEM, OnThemeSystem)
+    ON_COMMAND(ID_THEME_LIGHT, OnThemeLight)
+    ON_COMMAND(ID_THEME_DARK, OnThemeDark)
+
+    ON_UPDATE_COMMAND_UI(ID_THEME_SYSTEM, OnUpdateThemeSystem)
+    ON_UPDATE_COMMAND_UI(ID_THEME_LIGHT, OnUpdateThemeLight)
+    ON_UPDATE_COMMAND_UI(ID_THEME_DARK, OnUpdateThemeDark)
+
     //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
 END_MESSAGE_MAP()
 
@@ -255,7 +288,6 @@ BOOL CColorCopDlg::OnInitDialog() {
     ToggleOnTop(false);  // make always on top, unless save file said not to
 
     SetupWindowRects();
-    SetupStatusBar();
     TestForExpand();  // do not call this before SetupWindowRects();
 
     if (!m_ToolTip.Create(this)) {
@@ -367,7 +399,53 @@ BOOL CColorCopDlg::OnInitDialog() {
         SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
     }
 
-    return TRUE;
+    InitDarkModeAPIs();
+
+    m_StatusBar.SubclassDlgItem(IDC_STATUSBAR, this);
+    m_StatusBar.SetIndicators(kStatusIndicators, _countof(kStatusIndicators));
+
+    ApplyTheme();
+
+    return FALSE;  // return TRUE unless you set the focus to a control
+}
+
+
+void CColorCopDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS) {
+    if (nIDCtl != IDC_ColorPick && nIDCtl != IDC_EXPAND_DIALOG) {
+        CDialog::OnDrawItem(nIDCtl, lpDIS);
+        return;
+    }
+
+    CDC dc;
+    dc.Attach(lpDIS->hDC);
+
+    CRect rc(lpDIS->rcItem);
+
+    const bool pressed = (lpDIS->itemState & ODS_SELECTED);
+    const bool disabled = (lpDIS->itemState & ODS_DISABLED);
+
+    const bool dark = (m_Appflags & DarkMode);
+
+    COLORREF bg;
+    COLORREF fg;
+
+    if (dark) {
+        bg = pressed ? RGB(55, 55, 55) : RGB(32, 32, 32);
+        fg = disabled ? RGB(120, 120, 120) : RGB(220, 220, 220);
+    } else {
+        bg = pressed ? RGB(200, 200, 200) : RGB(240, 240, 240);
+        fg = disabled ? RGB(160, 160, 160) : RGB(0, 0, 0);
+    }
+
+    dc.FillSolidRect(rc, bg);
+    dc.SetBkMode(TRANSPARENT);
+    dc.SetTextColor(fg);
+
+    CString text;
+    GetDlgItem(nIDCtl)->GetWindowText(text);
+    dc.DrawText(text, rc, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+    dc.Detach();
 }
 
 void CColorCopDlg::SetupSystemMenu() {
@@ -1544,6 +1622,57 @@ void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point) {
         return;
     }
     CDialog::OnLButtonDblClk(nFlags, point);
+}
+
+void CColorCopDlg::OnThemeSystem() {
+    m_Appflags &= ~DarkMode;    // clear dark bit
+    m_Appflags &= ~ForceLight;  // optional future bit
+    ApplyTheme();
+}
+
+void CColorCopDlg::OnThemeLight() {
+    m_Appflags &= ~DarkMode;
+    m_Appflags |= ForceLight;
+    ApplyTheme();
+}
+
+void CColorCopDlg::OnThemeDark() {
+    m_Appflags |= DarkMode;
+    m_Appflags &= ~ForceLight;
+    ApplyTheme();
+}
+
+void CColorCopDlg::ApplyTheme() {
+    BOOL useDark = (m_Appflags & DarkMode);
+
+    if (_SetPreferredAppMode)
+        _SetPreferredAppMode(useDark ? 1 : 0);
+
+    BOOL dark = useDark ? TRUE : FALSE;
+    DwmSetWindowAttribute(GetSafeHwnd(),
+                          DWMWA_USE_IMMERSIVE_DARK_MODE,
+                          &dark,
+                          sizeof(dark));
+    // Tell the status bar to update its colors
+    m_StatusBar.SetTheme(useDark);
+
+    Invalidate(TRUE);
+    UpdateWindow();
+}
+
+void CColorCopDlg::OnUpdateThemeSystem(CCmdUI* pCmdUI) {
+    BOOL isChecked = static_cast<BOOL>(
+        ((m_Appflags & DarkMode) == 0) &&
+        ((m_Appflags & ForceLight) == 0));
+    pCmdUI->SetCheck(isChecked);
+}
+
+void CColorCopDlg::OnUpdateThemeLight(CCmdUI* pCmdUI) {
+    pCmdUI->SetCheck(static_cast<BOOL>((m_Appflags & ForceLight) != 0));
+}
+
+void CColorCopDlg::OnUpdateThemeDark(CCmdUI* pCmdUI) {
+    pCmdUI->SetCheck(static_cast<BOOL>((m_Appflags & DarkMode) != 0));
 }
 
 HBITMAP CColorCopDlg::CopyBitmap(HBITMAP hBitmapSrc) {
@@ -2790,79 +2919,27 @@ void CColorCopDlg::OnPopupExit() {
     EndDialog(IDOK);
 }
 
-void CColorCopDlg::SetupStatusBar() {
-    int nTotWide;  // total width of status bar
-
-    CRect rect;
-    this->GetWindowRect(&rect);
-    rect.top = rect.bottom - 25;
-
-    if (!m_StatBar.Create(CCS_NODIVIDER | WS_CHILD | WS_VISIBLE | CCS_BOTTOM,
-                          rect, this, IDC_STATUSBAR)) {
-        AfxMessageBox(_T("Failed to create status bar."));
-    }
-
-    //
-    // get size of window, use to configure the status bar
-    //
-    CRect rWin;
-    this->GetWindowRect(&rWin);
-    nTotWide = rWin.right - rWin.left;
-
-    //
-    // Make each part 1/4 of the total width of the window.
-    //
-    int m_Widths[1];
-
-    m_Widths[0] = nTotWide;
-
-    m_StatBar.SetMinHeight(25);
-    m_StatBar.SetParts(1, m_Widths);
-
-    SetStatusBarText(IDS_RIGHTCLICK_MENU, 0);
-
-    return;
-}
-
 void CColorCopDlg::SetStatusBarText(LPCTSTR statusText) {
-    m_StatBar.SetText(statusText, 0, 0);
-    return;
+    m_StatusBar.SetPaneText(0, statusText);
 }
 
 void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
-    CString strTemp;
-    strTemp.LoadString(strResource);
-    CString strOn;
+    CString text;
+    text.LoadString(strResource);
 
-    switch (toggleVal) {
-    case 0:
-        // Load String and set it
-        m_StatBar.SetText(strTemp, 0, 0);
-        strTemp.FreeExtra();
-        break;
-
-    case 1:
-        // Load string and ON
-        strOn.LoadString(IDS_ON);
-        strTemp.Insert(strTemp.GetLength(), _T(" "));
-        strTemp.Insert(strTemp.GetLength(), strOn);
-        strTemp.FreeExtra();
-        m_StatBar.SetText(strTemp, 0, 0);
-
-        break;
-
-    case 2:
-        // Load string and OFF
-        strOn.LoadString(IDS_OFF);
-        strTemp.Insert(strTemp.GetLength(), _T(" "));
-        strTemp.Insert(strTemp.GetLength(), strOn);
-        strTemp.FreeExtra();
-        m_StatBar.SetText(strTemp, 0, 0);
-        break;
+    if (toggleVal == 1) {
+        CString on;
+        on.LoadString(IDS_ON);
+        text += _T(" ") + on;
+    } else if (toggleVal == 2) {
+        CString off;
+        off.LoadString(IDS_OFF);
+        text += _T(" ") + off;
     }
 
-    return;
+    m_StatusBar.SetPaneText(0, text);
 }
+
 
 BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     // first check if we are magnifying...
@@ -3223,6 +3300,25 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     GlobalFree((HGLOBAL) lpBits);
 }
 
+void CColorCopDlg::InitDarkModeAPIs() {
+    HMODULE hUxTheme = LoadLibraryExW(L"uxtheme.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!hUxTheme)
+        return;
+
+    _ShouldAppsUseDarkMode =
+        reinterpret_cast<ShouldAppsUseDarkMode_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(132)));  // ordinal 132
+
+    _AllowDarkModeForWindow =
+        reinterpret_cast<AllowDarkModeForWindow_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(133)));  // ordinal 133
+
+    _SetPreferredAppMode =
+        reinterpret_cast<SetPreferredAppMode_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(135)));  // ordinal 135
+}
+
+
 bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
     // WebSafe colors have each channel as a multiple of WEBSAFE_STEP (51)
     return (R % WEBSAFE_STEP == 0) &&
@@ -3387,4 +3483,35 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB) {
     }
     txt.FreeExtra();
     UpdateWindow();
+}
+
+HBRUSH CColorCopDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
+    if (!(m_Appflags & DarkMode))
+        return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+    if (!::IsWindow(pWnd->GetSafeHwnd()))
+        return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+    switch (nCtlColor) {
+    case CTLCOLOR_DLG:
+    case CTLCOLOR_STATIC:
+    case CTLCOLOR_EDIT:
+        pDC->SetBkColor(RGB(32, 32, 32));
+        pDC->SetTextColor(m_clrText);
+        return (HBRUSH) m_brDarkMode.GetSafeHandle();
+    }
+
+    return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+}
+
+
+BOOL CColorCopDlg::OnEraseBkgnd(CDC* pDC) {
+    if (m_Appflags & DarkMode) {
+        CRect rc;
+        GetClientRect(&rc);
+        pDC->FillSolidRect(&rc, RGB(32, 32, 32));
+        return TRUE;
+    }
+
+    return CDialog::OnEraseBkgnd(pDC);
 }
