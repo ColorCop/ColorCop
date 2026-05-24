@@ -128,6 +128,9 @@ class CColorCopDlg : public CDialog {
     CStatusBarCtrl m_StatBar;
     CToolTipCtrl m_ToolTip;
 
+    CBrush m_brDarkMode;
+    COLORREF m_clrText;
+
     int smHeight;
     int smWidth;
     int lgHeight;
@@ -220,6 +223,7 @@ class CColorCopDlg : public CDialog {
     void FireOptionMenu();
     PBITMAPINFO CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
     void CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+    void InitDarkModeAPIs();
     void UpdateCMYKFromRGB(int red, int green, int blue);
     void ChangeColorSpace(bool bRGB);
 
@@ -317,6 +321,9 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnChangeYellow();
     afx_msg void OnPopupModeClarionhex();
     afx_msg void OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI);
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+
     //}}AFX_MSG // NOLINT(whitespace/comments)
     DECLARE_MESSAGE_MAP()
 };

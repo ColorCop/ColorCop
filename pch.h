@@ -55,6 +55,8 @@
 #define SpaceRGB               (1u << 28)
 #define SpaceCMYK              (1u << 29)
 #define ModeClarion            (1u << 30)
+#define DarkMode               (1u << 31)
+
 
 //------------------------------------------------------------------------------
 // Constants

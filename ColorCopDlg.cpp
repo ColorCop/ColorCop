@@ -38,6 +38,16 @@ constexpr int kMagButtonSize = 11;
 
 #include "AboutDlg.h"
 
+// Dark mode API function pointers (undocumented)
+using ShouldAppsUseDarkMode_t = bool(WINAPI*)();
+using AllowDarkModeForWindow_t = bool(WINAPI*)(HWND, bool);
+using SetPreferredAppMode_t = void(WINAPI*)(int);
+
+// Function pointers
+static ShouldAppsUseDarkMode_t _ShouldAppsUseDarkMode = nullptr;
+static AllowDarkModeForWindow_t _AllowDarkModeForWindow = nullptr;
+static SetPreferredAppMode_t _SetPreferredAppMode = nullptr;
+
 // Constants
 
 const TCHAR* kpcTrayNotificationMsg_ = _T("color cop tray notification");
@@ -100,6 +110,9 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       bMinimized_(false),
       pTrayIcon_(nullptr),
       nTrayNotificationMsg_(0) {
+
+    m_brDarkMode.CreateSolidBrush(RGB(32, 32, 32));
+    m_clrText = RGB(220, 220, 220);
 }
 
 void CColorCopDlg::DoDataExchange(CDataExchange* pDX) {
@@ -235,6 +248,8 @@ BEGIN_MESSAGE_MAP(CColorCopDlg, CDialog)
     ON_WM_INITMENUPOPUP()
     ON_COMMAND(ID_POPUP_MODE_CLARIONHEX, OnPopupModeClarionhex)
     ON_UPDATE_COMMAND_UI(ID_POPUP_MODE_CLARIONHEX, OnUpdatePopupModeClarionhex)
+    ON_WM_CTLCOLOR()
+    ON_WM_ERASEBKGND()
     //}}AFX_MSG_MAP // NOLINT(whitespace/comments)
 END_MESSAGE_MAP()
 
@@ -349,6 +364,24 @@ BOOL CColorCopDlg::OnInitDialog() {
         SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
     }
 
+    InitDarkModeAPIs();
+
+    if (_SetPreferredAppMode)
+        _SetPreferredAppMode(1);  // 1 = AllowDark
+
+    // TODO(j4y): remove this -- this is just for debugging
+    // if (_ShouldAppsUseDarkMode && _ShouldAppsUseDarkMode())
+    m_Appflags |= DarkMode;
+
+    // test
+    if (m_Appflags & DarkMode) {
+        BOOL useDark = TRUE;
+        DwmSetWindowAttribute(GetSafeHwnd(),
+                              DWMWA_USE_IMMERSIVE_DARK_MODE,
+                              &useDark,
+                              sizeof(useDark));
+    }
+
     return FALSE;  // return TRUE unless you set the focus to a control
 }
 
@@ -432,10 +465,10 @@ bool CColorCopDlg::LoadPersistentVariables() {
 
     // Restore window position (no size change)
     ::SetWindowPos(GetSafeHwnd(),
-                (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
-                WinLocX, WinLocY,
-                0, 0,
-                SWP_NOSIZE);
+                   (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                   WinLocX, WinLocY,
+                   0, 0,
+                   SWP_NOSIZE);
     // Ensure zoom level is valid after loading settings
     m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
 
@@ -3173,6 +3206,25 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     GlobalFree((HGLOBAL) lpBits);
 }
 
+void CColorCopDlg::InitDarkModeAPIs() {
+    HMODULE hUxTheme = LoadLibraryExW(L"uxtheme.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!hUxTheme)
+        return;
+
+    _ShouldAppsUseDarkMode =
+        reinterpret_cast<ShouldAppsUseDarkMode_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(132)));  // ordinal 132
+
+    _AllowDarkModeForWindow =
+        reinterpret_cast<AllowDarkModeForWindow_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(133)));  // ordinal 133
+
+    _SetPreferredAppMode =
+        reinterpret_cast<SetPreferredAppMode_t>(
+            GetProcAddress(hUxTheme, MAKEINTRESOURCEA(135)));  // ordinal 135
+}
+
+
 bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
     // WebSafe colors have each channel as a multiple of WEBSAFE_STEP (51)
     return (R % WEBSAFE_STEP == 0) &&
@@ -3337,4 +3389,36 @@ void CColorCopDlg::ChangeColorSpace(bool bRGB) {
     }
     txt.FreeExtra();
     UpdateWindow();
+}
+
+HBRUSH CColorCopDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
+    if (!(m_Appflags & DarkMode))
+        return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+    // SAFETY CHECK — prevents dlgclr.cpp line 56 assertion
+    if (!::IsWindow(pWnd->GetSafeHwnd()))
+        return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+    switch (nCtlColor) {
+    case CTLCOLOR_DLG:
+    case CTLCOLOR_STATIC:
+    case CTLCOLOR_BTN:
+    case CTLCOLOR_EDIT:
+        pDC->SetBkColor(RGB(32, 32, 32));
+        pDC->SetTextColor(m_clrText);
+        return (HBRUSH) m_brDarkMode.GetSafeHandle();
+    }
+
+    return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+}
+
+BOOL CColorCopDlg::OnEraseBkgnd(CDC* pDC) {
+    if (m_Appflags & DarkMode) {
+        CRect rc;
+        GetClientRect(&rc);
+        pDC->FillSolidRect(&rc, RGB(32, 32, 32));
+        return TRUE;
+    }
+
+    return CDialog::OnEraseBkgnd(pDC);
 }
