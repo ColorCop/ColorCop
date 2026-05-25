@@ -242,7 +242,17 @@ END_MESSAGE_MAP()
 // CColorCopDlg message handlers
 
 BOOL CColorCopDlg::OnInitDialog() {
+
     CDialog::OnInitDialog();
+
+    // --- Disable maximize + resizing ---
+    LONG_PTR style = GetWindowLongPtr(GetSafeHwnd(), GWL_STYLE);
+    style &= ~WS_MAXIMIZEBOX;  // remove maximize button
+    style &= ~WS_THICKFRAME;   // remove resizable border
+    SetWindowLongPtr(GetSafeHwnd(), GWL_STYLE, style);
+
+    SetWindowPos(nullptr, 0, 0, 0, 0,
+                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 
     SetupSystemMenu();  // add about and always on top to the system menu
 
@@ -432,10 +442,10 @@ bool CColorCopDlg::LoadPersistentVariables() {
 
     // Restore window position (no size change)
     ::SetWindowPos(GetSafeHwnd(),
-                (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
-                WinLocX, WinLocY,
-                0, 0,
-                SWP_NOSIZE);
+                   (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                   WinLocX, WinLocY,
+                   0, 0,
+                   SWP_NOSIZE);
     // Ensure zoom level is valid after loading settings
     m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
 
