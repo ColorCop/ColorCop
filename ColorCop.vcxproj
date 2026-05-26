@@ -73,6 +73,8 @@
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
+      <DynamicBase>true</DynamicBase>      <!-- ASLR -->
+      <NxCompat>true</NxCompat>            <!-- DEP -->
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,6 +103,8 @@
       <ProgramDatabaseFile>.\Debug/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DynamicBase>true</DynamicBase>      <!-- ASLR -->
+      <NxCompat>true</NxCompat>            <!-- DEP -->
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
