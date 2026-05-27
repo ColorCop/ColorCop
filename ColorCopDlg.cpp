@@ -508,15 +508,19 @@ void CColorCopDlg::SetupWindowRects() {
     lgWidth = CCopRect.right - CCopRect.left;
     lgHeight = CCopRect.bottom - CCopRect.top;
 
-    // small sizes
-    smWidth = (exprect.right - CCopRect.left) + kMagButtonSize;
-    smHeight = (exprect.bottom - CCopRect.top) + kMagButtonSize;
+    int collapsedClientWidth = exprect.right;
+    int collapsedClientHeight = exprect.bottom;
+
+    RECT collapsedRect = {0, 0, collapsedClientWidth, collapsedClientHeight};
+    AdjustWindowRectEx(&collapsedRect, GetStyle(), FALSE, GetExStyle());
+
+    smWidth = collapsedRect.right - collapsedRect.left + 14;
+    smHeight = collapsedRect.bottom - collapsedRect.top + 14;
 
     // Setup magnify plus level rect
     CWnd::GetDlgItem(IDC_MAG_PLUS, &temphandle);
     ::GetWindowRect(temphandle, &magplus);
     CWnd::ScreenToClient(&magplus);
-
 
     magplus.right = magplus.left + kMagButtonSize;
     magplus.bottom = magplus.top + kMagButtonSize;
