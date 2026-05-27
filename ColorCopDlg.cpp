@@ -353,35 +353,38 @@ BOOL CColorCopDlg::OnInitDialog() {
 }
 
 void CColorCopDlg::SetupSystemMenu() {
-    // Load accelerator resource..
-    m_hAcceleratorTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
+    // Load accelerator resource
+    m_hAcceleratorTable =
+        ::LoadAccelerators(AfxGetInstanceHandle(),
+                           MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
 
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-    // get the handle to the control menu
+
     CMenu* pSysMenu = GetSystemMenu(FALSE);
-    if (pSysMenu != NULL) {
-        // Load string and add 'About Color Cop' to the system menu
-        CString tempstr;
-        tempstr.LoadString(IDS_ABOUTBOX);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ABOUTBOX, tempstr);
+    if (pSysMenu != nullptr) {
+        CString text;
 
-        // Load string and add 'Option Menu' to the system menu
-        tempstr.LoadString(IDS_OPTIONMENU);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_OPTIONMENU, tempstr);
+        // About
+        text.LoadString(IDS_ABOUTBOX);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ABOUTBOX, text);
 
-        // Load stringon top to system menu
-        tempstr.LoadString(IDS_ALWAYSONTOP);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ALWAYSONTOP, tempstr);
-        pSysMenu->InsertMenu(2, MF_BYPOSITION | MF_SEPARATOR, NULL);
+        // Options
+        text.LoadString(IDS_OPTIONMENU);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_OPTIONMENU, text);
 
-        // disable maxmize in the system menu
+        // Always on top
+        text.LoadString(IDS_ALWAYSONTOP);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ALWAYSONTOP, text);
+
+        // Separator before built‑in items
+        pSysMenu->InsertMenu(2, MF_BYPOSITION | MF_SEPARATOR, 0);
+
+        // Disable maximize and sizing
         pSysMenu->EnableMenuItem(SC_MAXIMIZE, MF_BYCOMMAND | MF_GRAYED);
-
-        // disable sizing in the system menu
         pSysMenu->EnableMenuItem(SC_SIZE, MF_BYCOMMAND | MF_GRAYED);
     }
-    return;
 }
+
 
 bool CColorCopDlg::LoadPersistentVariables() {
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
@@ -432,10 +435,10 @@ bool CColorCopDlg::LoadPersistentVariables() {
 
     // Restore window position (no size change)
     ::SetWindowPos(GetSafeHwnd(),
-                (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
-                WinLocX, WinLocY,
-                0, 0,
-                SWP_NOSIZE);
+                   (m_Appflags & AlwaysOnTop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                   WinLocX, WinLocY,
+                   0, 0,
+                   SWP_NOSIZE);
     // Ensure zoom level is valid after loading settings
     m_MagLevel = std::clamp<int>(m_MagLevel, kMinZoom, kMaxZoom);
 
