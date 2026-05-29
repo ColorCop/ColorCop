@@ -90,7 +90,10 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       Light(0.0),
       Swatch{},      // array of structs
       OrigSwatch{},  // struct
-      ColorPal{},    // 2D array
+      m_HSV_H(0.0),
+      m_HSV_S(0.0),
+      m_HSV_V(0.0),
+      ColorPal{},  // 2D array
       m_hEyeCursor(nullptr),
       m_hMagCursor(nullptr),
       m_hStandardCursor(nullptr),
@@ -258,7 +261,10 @@ BOOL CColorCopDlg::OnInitDialog() {
     } else {
         m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
         m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
+        m_ToolTip.AddTool(this, _T(""), &buttonrect, 1);
+        m_ToolTip.SetDelayTime(TTDT_INITIAL, 200);
         m_ToolTip.Activate(TRUE);
+        m_ToolTip.SendMessage(TTM_SETMAXTIPWIDTH, 0, 300);
     }
 
     nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
@@ -349,7 +355,7 @@ BOOL CColorCopDlg::OnInitDialog() {
         SetCursorPos(eyerect.CenterPoint().x, eyerect.CenterPoint().y);
     }
 
-    return FALSE;  // return TRUE unless you set the focus to a control
+    return TRUE;
 }
 
 void CColorCopDlg::SetupSystemMenu() {
@@ -671,6 +677,37 @@ void CColorCopDlg::OnPaint() {
     }
 }
 
+void CColorCopDlg::ComputeHSV(int red, int green, int blue,
+                              double& outH, double& outS, double& outV) {
+    double rf = red / RGB_MAX_D;
+    double gf = green / RGB_MAX_D;
+    double bf = blue / RGB_MAX_D;
+
+    double maxv = std::max({rf, gf, bf});
+    double minv = std::min({rf, gf, bf});
+    double delta = maxv - minv;
+
+    // Value (0–100)
+    outV = maxv * 100.0;
+
+    // Saturation (0–100)
+    outS = (maxv == 0.0) ? 0.0 : (delta / maxv) * 100.0;
+
+    // Hue (0–360)
+    if (delta == 0.0) {
+        outH = 0.0;
+    } else if (maxv == rf) {
+        outH = 60.0 * fmod(((gf - bf) / delta), 6.0);
+    } else if (maxv == gf) {
+        outH = 60.0 * (((bf - rf) / delta) + 2.0);
+    } else {
+        outH = 60.0 * (((rf - gf) / delta) + 4.0);
+    }
+
+    if (outH < 0.0)
+        outH += 360.0;
+}
+
 void CColorCopDlg::RecalcZoom() {
     if (m_MagLevel < kMinZoom) {
         return;
@@ -752,6 +789,21 @@ void CColorCopDlg::OnconvertRGB() {
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
+    }
+
+    ComputeHSV(m_Reddec,
+               m_Greendec,
+               m_Bluedec,
+               m_HSV_H,
+               m_HSV_S,
+               m_HSV_V);
+    CString hsvTip;
+    hsvTip.Format(_T("H: %.0f\xB0\nS: %.0f%%\nV: %.0f%%"),
+                  m_HSV_H, m_HSV_S, m_HSV_V);
+
+    // defensive: if the color preview control exists, update its tooltip with the new HSV values
+    if (m_ColorPreview.GetSafeHwnd()) {
+        m_ToolTip.UpdateTipText(hsvTip, this, 1);
     }
 
     // Only apply uppercase formatting when NOT in Visual C++ hex mode.
@@ -1808,16 +1860,19 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
     POINT pt;               // cursor location
     static int repeat = 1;  // repeat key counter
 
-    // pass a mouse message to the tool tip control for processing
-    m_ToolTip.RelayEvent(pMsg);
+    // Forward mouse messages to tooltip control
+    if (m_ToolTip.GetSafeHwnd()) {
+        m_ToolTip.RelayEvent(pMsg);
+    }
 
-    if (m_hAcceleratorTable) {  // use the Accelerator resource
+    // Accelerator handling
+    if (m_hAcceleratorTable) {
         if (::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
-            return TRUE;  // escape
+            return TRUE;
         }
     }
 
-    // test to see if F1 is being pressed to bring up help
+    // F1 help (0x4D = WM_HELP)
     if (pMsg->message == 0x4d) {
         if (GetKeyState(VK_SHIFT) >= 0) {
             ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
@@ -1827,29 +1882,23 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
 
     /************************************************
     * ESC key Check
-    * - hitting the escape key, should only stop the
-    *   eyedropper or magnifing glass and should not
-    *   exit the app
+    * - hitting the escape key should only stop the
+    *   eyedropper or magnifier and should not exit
     ************************************************/
-
     if (pMsg->message == WM_KEYDOWN) {
         if (pMsg->wParam == VK_ESCAPE) {
             if (m_isEyedropping || m_isMagnifying) {
-                // dropper or magnifier in use
-                // This stops people from getting smart and executing
-                // keyboard shortcuts while eyedropping or magnifying
                 StopCapture();
                 m_isEyedropping = m_isMagnifying = FALSE;
             }
             if (bRelativePosition) {
-                // invert the old one back
                 bRelativePosition = FALSE;
             }
-            return TRUE;  // return control rather than letting it
-                          // exit the app
+            return TRUE;
         } else if (m_isEyedropping || m_isMagnifying) {
             CString strStatus;
             CWinApp* pApp;
+
             switch (pMsg->wParam) {
             case VK_CONTROL:
                 if (m_isEyedropping && GetCursorPos(&RelativePoint)) {
@@ -1859,38 +1908,34 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
                     SetStatusBarText(strStatus);
 
                     if (!(m_Appflags & USECROSSHAIR)) {
-                        // set the cross hair cursor if they app isn't already using it
                         pApp = AfxGetApp();
                         m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
                         SetCursor(m_hEyeCursor);
                     }
-                    bRelativePosition = TRUE;  // Start Relative
+                    bRelativePosition = TRUE;
                 }
                 break;
 
-            case VK_RIGHT:  // right arrow
-                if (GetCursorPos(&pt)) {
+            case VK_RIGHT:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x + repeat, pt.y);
-                }
                 break;
-            case VK_LEFT:  // left arrow
-                if (GetCursorPos(&pt)) {
+            case VK_LEFT:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x - repeat, pt.y);
-                }
                 break;
-            case VK_UP:  // up arrow
-                if (GetCursorPos(&pt)) {
+            case VK_UP:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x, pt.y - repeat);
-                }
                 break;
-            case VK_DOWN:  // down arrow
-                if (GetCursorPos(&pt)) {
+            case VK_DOWN:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x, pt.y + repeat);
-                }
                 break;
             }
         }
     }
+
     return CDialog::PreTranslateMessage(pMsg);
 }
 
