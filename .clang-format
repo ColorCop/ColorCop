@@ -42,6 +42,7 @@ PPIndentWidth: 0
 SpacesBeforeTrailingComments: 2
 
 AccessModifierOffset: 1
+IndentAccessModifiers: false
 
 AlignConsecutiveDeclarations: None
 AlignConsecutiveAssignments: None

@@ -10,13 +10,13 @@
 
 #include "Defaults.h"
 
-constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;   // one-sixth of the color wheel
-constexpr double SAT_LIGHT_SHIFT   = 0.15;           // amount to adjust saturation/lightness
-constexpr int    NUM_SWATCHES      = 6;              // number of hue variants
-constexpr int    NUM_PALETTE_COLUMNS = 7;
-constexpr double HSL_MIN           = 0.0;
-constexpr double HSL_MAX           = 1.0;
-constexpr double RGB_MAX_D         = 255.0;          // double version of 255
+constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;  // one-sixth of the color wheel
+constexpr double SAT_LIGHT_SHIFT = 0.15;            // amount to adjust saturation/lightness
+constexpr int NUM_SWATCHES = 6;                     // number of hue variants
+constexpr int NUM_PALETTE_COLUMNS = 7;
+constexpr double HSL_MIN = 0.0;
+constexpr double HSL_MAX = 1.0;
+constexpr double RGB_MAX_D = 255.0;  // double version of 255
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
@@ -36,9 +36,9 @@ static constexpr uint32_t kAllColorModes =
 class CSystemTray;
 
 class CColorCopDlg : public CDialog {
-// Construction
- public:
-    explicit CColorCopDlg(CWnd* pParent = nullptr);    // standard constructor
+    // Construction
+     public:
+    explicit CColorCopDlg(CWnd* pParent = nullptr);  // standard constructor
     COLORREF ColorHistory[kHistoryCount];
     COLORREF CustColorBank[kCustomColorCount];
     int m_Appflags;
@@ -51,57 +51,59 @@ class CColorCopDlg : public CDialog {
 
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CColorCopDlg) // NOLINT(whitespace/comments)
-    enum { IDD = IDD_HTMLCOP_DIALOG };
-    CButton    m_ColorPick;
-    CStatic    m_Lbl4;
-    CStatic    m_Lbl3;
-    CStatic    m_Lbl2;
-    CStatic    m_Lbl1;
-    CStatic    m_Slide3;
-    CStatic    m_Slide2;
-    CStatic    m_Slide1;
-    CStatic    m_MagPlus;
-    CStatic    m_MagMinus;
-    CStatic    m_ColorPalette;
-    CStatic    m_MagWindow;
-    CStatic    m_Q7;
-    CStatic    m_Q6;
-    CStatic    m_Q5;
-    CStatic    m_Q4;
-    CStatic    m_Q3;
-    CStatic    m_Q2;
-    CStatic    m_Q1;
-    CStatic    m_ColorPreview;
-    CButton    m_ExpandDialog;
-    CStatic    m_Magnifier;
-    CStatic    m_EyeLoc;
-    int        m_Greendec;
-    int        m_Bluedec;
-    int        m_Reddec;
-    CString    m_Hexcolor;
-    int        m_Black;
-    int        m_Cyan;
-    int        m_Magenta;
-    int        m_Yellow;
+    enum {
+        IDD = IDD_HTMLCOP_DIALOG
+    };
+    CButton m_ColorPick;
+    CStatic m_Lbl4;
+    CStatic m_Lbl3;
+    CStatic m_Lbl2;
+    CStatic m_Lbl1;
+    CStatic m_Slide3;
+    CStatic m_Slide2;
+    CStatic m_Slide1;
+    CStatic m_MagPlus;
+    CStatic m_MagMinus;
+    CStatic m_ColorPalette;
+    CStatic m_MagWindow;
+    CStatic m_Q7;
+    CStatic m_Q6;
+    CStatic m_Q5;
+    CStatic m_Q4;
+    CStatic m_Q3;
+    CStatic m_Q2;
+    CStatic m_Q1;
+    CStatic m_ColorPreview;
+    CButton m_ExpandDialog;
+    CStatic m_Magnifier;
+    CStatic m_EyeLoc;
+    int m_Greendec;
+    int m_Bluedec;
+    int m_Reddec;
+    CString m_Hexcolor;
+    int m_Black;
+    int m_Cyan;
+    int m_Magenta;
+    int m_Yellow;
     //}}AFX_DATA // NOLINT(whitespace/comments)
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColorCopDlg) // NOLINT(whitespace/comments)
- public:
+     public:
     // Indicates whether ColorCop is running in portable mode. When enabled,
     // all settings are loaded from and saved to the executable directory
     // instead of the user's AppData folder. The flag is set by the app
     // during command‑line parsing and used by the dialog's persistence logic.
     bool m_PortableMode = false;
-    virtual BOOL PreTranslateMessage(MSG *pMsg);
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
 
- protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
+     protected:
+    virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+                                                      //}}AFX_VIRTUAL // NOLINT(whitespace/comments)
 
- protected:
+     protected:
     bool m_bvisible;
 
     HICON m_hIcon;
@@ -155,9 +157,9 @@ class CColorCopDlg : public CDialog {
     CMenu copmenu;
 
     CRect Q1rect, Q2rect, Q3rect, Q4rect, Q5rect, Q6rect, Q7rect;
-    CRect buttonrect;                    // color window rect
+    CRect buttonrect;  // color window rect
 
-    CRect magrect, colorpalrect;        // magnifier rect, based off color window rect
+    CRect magrect, colorpalrect;  // magnifier rect, based off color window rect
     CRect magplus, magminus;
     RECT CCopRect;
 
@@ -167,12 +169,19 @@ class CColorCopDlg : public CDialog {
     HCURSOR m_hMoveCursor;
     HCURSOR m_hHandCursor;
 
+    double m_HSV_H;
+    double m_HSV_S;
+    double m_HSV_V;
+
     ////  systray Internal data
     HICON hIcon_;
     bool bMinimized_;
     CSystemTray* pTrayIcon_;
     int nTrayNotificationMsg_;
     // end
+    void ComputeHSV(int r, int g, int b,
+                    double& outH, double& outS, double& outV);
+
     void FloatPrecisionUp();
     void FloatPrecisionDown();
     void GetScreenBitmap(CPoint point);
@@ -287,7 +296,7 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnUpdatePopupApplicationEasymove(CCmdUI* pCmdUI);
     afx_msg void OnPopupApplicationMinimizetosystemtrayonstart();
     afx_msg void OnUpdatePopupApplicationMinimizetosystemtrayonstart(CCmdUI* pCmdUI);
-    afx_msg void OnCaptureChanged(CWnd *pWnd);
+    afx_msg void OnCaptureChanged(CWnd* pWnd);
     afx_msg void OnPopupColorConverttograyscale();
     afx_msg void OnPopupApplicationAllowmultipleinstances();
     afx_msg void OnUpdatePopupApplicationAllowmultipleinstances(CCmdUI* pCmdUI);
