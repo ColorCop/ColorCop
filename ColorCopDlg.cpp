@@ -28,6 +28,8 @@
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
+constexpr int CMYK_MIN = 0;
+constexpr int CMYK_MAX = 100;
 
 // Minimum zoom level for the magnifier (1x)
 constexpr int kMinZoom = 1;
@@ -1203,9 +1205,7 @@ void CColorCopDlg::OnAbout() {
 
 void CColorCopDlg::OnChangeGreen() {
     UpdateData(TRUE);
-    if (m_Greendec > 255) {
-        m_Greendec = 255;
-    }
+    m_Greendec = std::clamp(m_Greendec, RGB_MIN, RGB_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -1213,9 +1213,7 @@ void CColorCopDlg::OnChangeGreen() {
 
 void CColorCopDlg::OnChangeBlue() {
     UpdateData(TRUE);
-    if (m_Bluedec > 255) {
-        m_Bluedec = 255;
-    }
+    m_Bluedec = std::clamp(m_Bluedec, RGB_MIN, RGB_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -1223,18 +1221,15 @@ void CColorCopDlg::OnChangeBlue() {
 
 void CColorCopDlg::OnChangeRed() {
     UpdateData(TRUE);
-    if (m_Reddec > 255) {
-        m_Reddec = 255;
-    }
+    m_Reddec = std::clamp(m_Reddec, RGB_MIN, RGB_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
+
 void CColorCopDlg::OnChangeBlack() {
     UpdateData(TRUE);
-    if (m_Black > 100) {
-        m_Black = 100;
-    }
+    m_Black = std::clamp(m_Black, CMYK_MIN, CMYK_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -1242,9 +1237,7 @@ void CColorCopDlg::OnChangeBlack() {
 
 void CColorCopDlg::OnChangeCyan() {
     UpdateData(TRUE);
-    if (m_Cyan > 100) {
-        m_Cyan = 100;
-    }
+    m_Cyan = std::clamp(m_Cyan, CMYK_MIN, CMYK_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -1252,9 +1245,7 @@ void CColorCopDlg::OnChangeCyan() {
 
 void CColorCopDlg::OnChangeMagenta() {
     UpdateData(TRUE);
-    if (m_Magenta > 100) {
-        m_Magenta = 100;
-    }
+    m_Magenta = std::clamp(m_Magenta, CMYK_MIN, CMYK_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -1262,14 +1253,11 @@ void CColorCopDlg::OnChangeMagenta() {
 
 void CColorCopDlg::OnChangeYellow() {
     UpdateData(TRUE);
-    if (m_Yellow > 100) {
-        m_Yellow = 100;
-    }
+    m_Yellow = std::clamp(m_Yellow, CMYK_MIN, CMYK_MAX);
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
-
 
 void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
