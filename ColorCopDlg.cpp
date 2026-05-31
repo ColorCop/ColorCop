@@ -1037,11 +1037,12 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
         Y = (1.0 - bNorm - K) / denom;
     }
 
-    // Convert CMYK back to 0–255 integer range
-    m_Cyan = static_cast<int>(std::round(C * RGB_MAX_D));
-    m_Magenta = static_cast<int>(std::round(M * RGB_MAX_D));
-    m_Yellow = static_cast<int>(std::round(Y * RGB_MAX_D));
-    m_Black = static_cast<int>(std::round(K * RGB_MAX_D));
+    // Convert CMYK to 0–100 integer percentage range
+
+    m_Cyan = static_cast<int>(std::round(C * CMYK_MAX));
+    m_Magenta = static_cast<int>(std::round(M * CMYK_MAX));
+    m_Yellow = static_cast<int>(std::round(Y * CMYK_MAX));
+    m_Black = static_cast<int>(std::round(K * CMYK_MAX));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -2211,13 +2212,14 @@ void CColorCopDlg::OnColorRandom() {
 }
 
 void CColorCopDlg::OnColorReverse() {
-    // Reverse the current colors.
-    // ABS (current decimal value - 255)  then update
-
+    // Invert the current RGB color (per‑channel): new = 255 - old.
+    // This produces the photographic "negative" of the selected color.
     SetStatusBarText(IDS_REVERSECOLOR, 0);
-    m_Reddec = std::abs(m_Reddec - 255);
-    m_Greendec = std::abs(m_Greendec - 255);
-    m_Bluedec = std::abs(m_Bluedec - 255);
+
+    m_Reddec = RGB_MAX - m_Reddec;
+    m_Greendec = RGB_MAX - m_Greendec;
+    m_Bluedec = RGB_MAX - m_Bluedec;
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
