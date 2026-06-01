@@ -2873,16 +2873,14 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
 
     if (curfocus == GetDlgItem(IDC_RED)) {  // red has focus
         m_Reddec += zDelta / WHEEL_DELTA * offset;
-        m_Reddec = RangeCheck(m_Reddec);
+        m_Reddec = std::clamp(m_Reddec, RGB_MIN, RGB_MAX);
 
     } else if (curfocus == GetDlgItem(IDC_GREEN)) {  // green has focus
         m_Greendec += zDelta / WHEEL_DELTA * offset;
-        m_Greendec = RangeCheck(m_Greendec);
-
+        m_Greendec = std::clamp(m_Greendec, RGB_MIN, RGB_MAX);
     } else if (curfocus == GetDlgItem(IDC_BLUE)) {  // blue has focus
         m_Bluedec += zDelta / WHEEL_DELTA * offset;
-        m_Bluedec = RangeCheck(m_Bluedec);
-
+        m_Bluedec = std::clamp(m_Bluedec, RGB_MIN, RGB_MAX);
     } else {          // there is focus, but it's not on either the Red,
         return TRUE;  // Green, or Blue edit controls -> jump out
     }
@@ -2893,22 +2891,6 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     OnCopytoclip();
 
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
-}
-
-int CColorCopDlg::RangeCheck(int icolorval) {
-    // this function ensures that the user doesn't use the mouse wheel to
-    // make a color decimal < 0 or > 255
-
-    if (icolorval > 255) {
-        // go right around to 0 or 1
-        return (icolorval % 256);
-    } else if (icolorval < 0) {
-        // roll around to 255 or 254
-        return (256 - std::abs(icolorval));
-    } else {
-        // it's valid -- leave it alone
-        return (icolorval);
-    }
 }
 
 void CColorCopDlg::OnTimer(UINT nIDEvent) {
