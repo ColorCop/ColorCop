@@ -208,7 +208,6 @@ class CColorCopDlg : public CDialog {
     bool AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
     void SetupStatusBar();
     void SetStatusBarText(LPCTSTR statusText);
-    int RangeCheck(int icolorval);
     void AdvanceColorHistory();
     void GetHistoryColor(int Cindex);
     HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
