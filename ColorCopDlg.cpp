@@ -296,8 +296,8 @@ BOOL CColorCopDlg::OnInitDialog() {
     //
     //  -------- Centralized pApp handling --------
     //
-    CWinApp* pApp = AfxGetApp();
-    if (pApp) {
+    if (CWinApp* pApp = AfxGetApp()) {
+        // Load common cursors/icons once
         m_hMagCursor = pApp->LoadCursor(IDC_MEDIUM_MAGNIFY);
         m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
         m_hMoveCursor = pApp->LoadCursor(IDC_CURMOVE);
@@ -306,22 +306,32 @@ BOOL CColorCopDlg::OnInitDialog() {
 
         m_Magnifier.SetIcon(m_hMagCursor);
 
+        //
+        // Determine the correct eyedropper cursor/icon once
+        //
+        HCURSOR hEyeIcon = nullptr;
+
         if (m_Appflags & USECROSSHAIR) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
-            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
-            m_EyeLoc.SetIcon(m_hEyeCursor);
+            // Crosshair mode
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));  // visible icon
+            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);        // actual cursor
+            hEyeIcon = m_hEyeCursor;
         } else {
+            // Standard eyedropper mode
             m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);
 
-            if (m_Appflags & Sampling5x5) {
-                m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
-            } else if (m_Appflags & Sampling3x3) {
-                m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-            } else {
-                m_EyeLoc.SetIcon(m_hEyeCursor);
-            }
+            if (m_Appflags & Sampling5x5)
+                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_5X5);
+            else if (m_Appflags & Sampling3x3)
+                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_3X3);
+            else
+                hEyeIcon = m_hEyeCursor;
         }
+
+        // Apply final chosen icon
+        m_EyeLoc.SetIcon(hEyeIcon);
     }
+
     //
     // -------------------------------------------
     //
