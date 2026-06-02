@@ -1205,56 +1205,64 @@ void CColorCopDlg::OnAbout() {
 }
 
 void CColorCopDlg::OnChangeGreen() {
-    UpdateData(TRUE);
+    m_Greendec = GetDlgItemInt(IDC_GREEN);
     m_Greendec = std::clamp(m_Greendec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeBlue() {
-    UpdateData(TRUE);
+    m_Bluedec = GetDlgItemInt(IDC_BLUE);
     m_Bluedec = std::clamp(m_Bluedec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
+
 void CColorCopDlg::OnChangeRed() {
-    UpdateData(TRUE);
+    m_Reddec = GetDlgItemInt(IDC_RED);
     m_Reddec = std::clamp(m_Reddec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeBlack() {
-    UpdateData(TRUE);
+    m_Black = GetDlgItemInt(IDC_BLACK);
     m_Black = std::clamp(m_Black, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeCyan() {
-    UpdateData(TRUE);
+    m_Cyan = GetDlgItemInt(IDC_CYAN);
     m_Cyan = std::clamp(m_Cyan, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeMagenta() {
-    UpdateData(TRUE);
+    m_Magenta = GetDlgItemInt(IDC_MAGENTA);
     m_Magenta = std::clamp(m_Magenta, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeYellow() {
-    UpdateData(TRUE);
+    m_Yellow = GetDlgItemInt(IDC_YELLOW);
     m_Yellow = std::clamp(m_Yellow, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
