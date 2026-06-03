@@ -2518,48 +2518,56 @@ void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point) {
 }
 
 void CColorCopDlg::ChangeTo1pixelSampling() {
-    if (m_Appflags ^ Sampling1) {
+    // Only change if we're not already in 1‑pixel mode
+    if ((m_Appflags & Sampling1) == 0) {
+        // Clear all sampling modes, then enable 1‑pixel
+        m_Appflags &= ~(Sampling3x3 | Sampling5x5 | SamplingMULTI);
         m_Appflags |= Sampling1;
-        m_Appflags &= ~Sampling3x3;
-        m_Appflags &= ~Sampling5x5;
-        m_Appflags &= ~SamplingMULTI;
-    }
-    SetStatusBarText(IDS_1PIXEL, 0);
 
-    CWinApp* pApp = AfxGetApp();
-    m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
-    return;
+        // Update cursor
+        if (CWinApp* pApp = AfxGetApp())
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
+    }
+
+    SetStatusBarText(IDS_1PIXEL, 0);
 }
 
 void CColorCopDlg::ChangeTo3x3Sampling() {
-    if (m_Appflags ^ Sampling3x3) {
-        m_Appflags &= ~Sampling1;
+    // Only change if we're not already in 3x3 mode
+    if ((m_Appflags & Sampling3x3) == 0) {
+        // Clear all sampling modes, then enable 3x3
+        m_Appflags &= ~(Sampling1 | Sampling5x5 | SamplingMULTI);
         m_Appflags |= Sampling3x3;
-        m_Appflags &= ~Sampling5x5;
-        m_Appflags &= ~SamplingMULTI;
-    }
-    m_iSamplingOffset = 1;
-    SetStatusBarText(IDS_3PIXEL, 0);
 
-    CWinApp* pApp = AfxGetApp();
-    m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-    return;
+        // Update cursor
+        if (CWinApp* pApp = AfxGetApp())
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
+    }
+
+    // 3×3 → offset = 1
+    m_iSamplingOffset = 1;
+
+    SetStatusBarText(IDS_3PIXEL, 0);
 }
 
 void CColorCopDlg::ChangeTo5x5Sampling() {
-    if (m_Appflags ^ Sampling5x5) {
-        m_Appflags &= ~Sampling1;
-        m_Appflags &= ~Sampling3x3;
+    // Only change if we're not already in 5x5 mode
+    if ((m_Appflags & Sampling5x5) == 0) {
+        // Clear all sampling modes, then enable 5x5
+        m_Appflags &= ~(Sampling1 | Sampling3x3 | SamplingMULTI);
         m_Appflags |= Sampling5x5;
-        m_Appflags &= ~SamplingMULTI;
-    }
-    m_iSamplingOffset = 2;
-    SetStatusBarText(IDS_5PIXEL, 0);
 
-    CWinApp* pApp = AfxGetApp();
-    m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
-    return;
+        // Update cursor
+        if (CWinApp* pApp = AfxGetApp())
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
+    }
+
+    // 5×5 → offset = 2
+    m_iSamplingOffset = 2;
+
+    SetStatusBarText(IDS_5PIXEL, 0);
 }
+
 
 void CColorCopDlg::OnUpdatePopupSampling1pixel(CCmdUI* pCmdUI) {
     pCmdUI->SetRadio(m_Appflags & Sampling1);
