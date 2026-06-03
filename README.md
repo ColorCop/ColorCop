@@ -2,6 +2,12 @@
 
 A Windows-based color picker utility built with Microsoft Foundation Classes (MFC).
 
+[![Build Status](https://github.com/ColorCop/ColorCop/actions/workflows/build.yml/badge.svg)](https://github.com/ColorCop/ColorCop/actions)
+[![Release](https://img.shields.io/github/v/release/ColorCop/ColorCop)](https://github.com/ColorCop/ColorCop/releases)
+[![Downloads](https://img.shields.io/github/downloads/ColorCop/ColorCop/total.svg)](https://github.com/ColorCop/ColorCop/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Winget](https://img.shields.io/badge/Winget-colorcop-blue?logo=microsoft)](https://github.com/microsoft/winget-pkgs/tree/master/manifests/c/ColorCop/ColorCop)
+
 ## About this repository
 
 This GitHub repository contains the source code for Color Cop.

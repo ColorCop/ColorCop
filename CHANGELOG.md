@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes yet._
 
+## [5.5.13] - 2026-05-28
+
+### Added
+
+- Display HSV values via a dynamic multiline tooltip when hovering the color preview.
+
+### Changed
+
+- Refactored `SetupSystemMenu` for cleaner formatting and modern pointer usage.
+
+### Fixed
+
+- Corrected collapsed-dialog sizing by switching to `AdjustWindowRectEx`.
+
+### Security
+
+- Enabled ASLR and DEP for Win32 builds to harden executable security.
+
 ---
 
 ## [5.5.12] - 2026-05-23
@@ -40,6 +58,7 @@ _No unreleased changes yet._
 ## [5.5.11] - 2026-05-09
 
 ### Added
+
 - Portable mode (`/portable`) to store settings next to the executable.
 
 ---
@@ -47,10 +66,12 @@ _No unreleased changes yet._
 ## [5.5.7] - 2026-04-11
 
 ### Changed
+
 - Modernized codebase (C++20, Unicode safety).
 - Improved UI and system tray behavior.
 
 ### Fixed
+
 - Corrected CMYK color math.
 
 ---
@@ -58,6 +79,7 @@ _No unreleased changes yet._
 ## [5.5.6] - 2026-03-19
 
 ### Changed
+
 - Installer now bundles the VC++ 2015–2022 runtime.
 
 ---
@@ -65,6 +87,7 @@ _No unreleased changes yet._
 ## [5.5.5] - 2026-03-14
 
 ### Added
+
 - Modern application manifest with DPI awareness.
 
 ---
@@ -72,6 +95,7 @@ _No unreleased changes yet._
 ## [5.5.3] - 2026-02-05
 
 ### Added
+
 - Official Chocolatey installer support.
 
 ---
@@ -79,6 +103,7 @@ _No unreleased changes yet._
 ## [5.5.2] - 2026-01-31
 
 ### Fixed
+
 - Inno Setup configuration issues.
 
 ---
@@ -86,6 +111,7 @@ _No unreleased changes yet._
 ## [5.5.1] - 2025-12-01
 
 ### Added
+
 - First release from GitHub repository.
 - Switched to HTML-based help system for improved compatibility and accessibility.
 - Pressing F1 now opens the new HTML help interface.

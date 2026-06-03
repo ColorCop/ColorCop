@@ -28,6 +28,8 @@
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
+constexpr int CMYK_MIN = 0;
+constexpr int CMYK_MAX = 100;
 
 // Minimum zoom level for the magnifier (1x)
 constexpr int kMinZoom = 1;
@@ -104,7 +106,10 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       Light(0.0),
       Swatch{},      // array of structs
       OrigSwatch{},  // struct
-      ColorPal{},    // 2D array
+      m_HSV_H(0.0),
+      m_HSV_S(0.0),
+      m_HSV_V(0.0),
+      ColorPal{},  // 2D array
       m_hEyeCursor(nullptr),
       m_hMagCursor(nullptr),
       m_hStandardCursor(nullptr),
@@ -277,7 +282,10 @@ BOOL CColorCopDlg::OnInitDialog() {
     } else {
         m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
         m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
+        m_ToolTip.AddTool(this, _T(""), &buttonrect, 1);
+        m_ToolTip.SetDelayTime(TTDT_INITIAL, 200);
         m_ToolTip.Activate(TRUE);
+        m_ToolTip.SendMessage(TTM_SETMAXTIPWIDTH, 0, 300);
     }
 
     nTrayNotificationMsg_ = RegisterWindowMessage(kpcTrayNotificationMsg_);
@@ -307,8 +315,8 @@ BOOL CColorCopDlg::OnInitDialog() {
     //
     //  -------- Centralized pApp handling --------
     //
-    CWinApp* pApp = AfxGetApp();
-    if (pApp) {
+    if (CWinApp* pApp = AfxGetApp()) {
+        // Load common cursors/icons once
         m_hMagCursor = pApp->LoadCursor(IDC_MEDIUM_MAGNIFY);
         m_hHandCursor = pApp->LoadCursor(IDC_HANDPOINTER);
         m_hMoveCursor = pApp->LoadCursor(IDC_CURMOVE);
@@ -317,22 +325,32 @@ BOOL CColorCopDlg::OnInitDialog() {
 
         m_Magnifier.SetIcon(m_hMagCursor);
 
+        //
+        // Determine the correct eyedropper cursor/icon once
+        //
+        HCURSOR hEyeIcon = nullptr;
+
         if (m_Appflags & USECROSSHAIR) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
-            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
-            m_EyeLoc.SetIcon(m_hEyeCursor);
+            // Crosshair mode
+            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));  // visible icon
+            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);        // actual cursor
+            hEyeIcon = m_hEyeCursor;
         } else {
+            // Standard eyedropper mode
             m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);
 
-            if (m_Appflags & Sampling5x5) {
-                m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
-            } else if (m_Appflags & Sampling3x3) {
-                m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-            } else {
-                m_EyeLoc.SetIcon(m_hEyeCursor);
-            }
+            if (m_Appflags & Sampling5x5)
+                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_5X5);
+            else if (m_Appflags & Sampling3x3)
+                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_3X3);
+            else
+                hEyeIcon = m_hEyeCursor;
         }
+
+        // Apply final chosen icon
+        m_EyeLoc.SetIcon(hEyeIcon);
     }
+
     //
     // -------------------------------------------
     //
@@ -387,38 +405,42 @@ BOOL CColorCopDlg::OnInitDialog() {
     }
 
     return FALSE;  // return TRUE unless you set the focus to a control
+    return TRUE;
 }
 
 void CColorCopDlg::SetupSystemMenu() {
-    // Load accelerator resource..
-    m_hAcceleratorTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
+    // Load accelerator resource
+    m_hAcceleratorTable =
+        ::LoadAccelerators(AfxGetInstanceHandle(),
+                           MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
 
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-    // get the handle to the control menu
+
     CMenu* pSysMenu = GetSystemMenu(FALSE);
-    if (pSysMenu != NULL) {
-        // Load string and add 'About Color Cop' to the system menu
-        CString tempstr;
-        tempstr.LoadString(IDS_ABOUTBOX);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ABOUTBOX, tempstr);
+    if (pSysMenu != nullptr) {
+        CString text;
 
-        // Load string and add 'Option Menu' to the system menu
-        tempstr.LoadString(IDS_OPTIONMENU);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_OPTIONMENU, tempstr);
+        // About
+        text.LoadString(IDS_ABOUTBOX);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ABOUTBOX, text);
 
-        // Load stringon top to system menu
-        tempstr.LoadString(IDS_ALWAYSONTOP);
-        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ALWAYSONTOP, tempstr);
-        pSysMenu->InsertMenu(2, MF_BYPOSITION | MF_SEPARATOR, NULL);
+        // Options
+        text.LoadString(IDS_OPTIONMENU);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_OPTIONMENU, text);
 
-        // disable maxmize in the system menu
+        // Always on top
+        text.LoadString(IDS_ALWAYSONTOP);
+        pSysMenu->InsertMenu(0, MF_BYPOSITION, IDM_ALWAYSONTOP, text);
+
+        // Separator before built‑in items
+        pSysMenu->InsertMenu(2, MF_BYPOSITION | MF_SEPARATOR, 0);
+
+        // Disable maximize and sizing
         pSysMenu->EnableMenuItem(SC_MAXIMIZE, MF_BYCOMMAND | MF_GRAYED);
-
-        // disable sizing in the system menu
         pSysMenu->EnableMenuItem(SC_SIZE, MF_BYCOMMAND | MF_GRAYED);
     }
-    return;
 }
+
 
 bool CColorCopDlg::LoadPersistentVariables() {
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
@@ -545,15 +567,19 @@ void CColorCopDlg::SetupWindowRects() {
     lgWidth = CCopRect.right - CCopRect.left;
     lgHeight = CCopRect.bottom - CCopRect.top;
 
-    // small sizes
-    smWidth = (exprect.right - CCopRect.left) + kMagButtonSize;
-    smHeight = (exprect.bottom - CCopRect.top) + kMagButtonSize;
+    int collapsedClientWidth = exprect.right;
+    int collapsedClientHeight = exprect.bottom;
+
+    RECT collapsedRect = {0, 0, collapsedClientWidth, collapsedClientHeight};
+    AdjustWindowRectEx(&collapsedRect, GetStyle(), FALSE, GetExStyle());
+
+    smWidth = collapsedRect.right - collapsedRect.left + 14;
+    smHeight = collapsedRect.bottom - collapsedRect.top + 14;
 
     // Setup magnify plus level rect
     CWnd::GetDlgItem(IDC_MAG_PLUS, &temphandle);
     ::GetWindowRect(temphandle, &magplus);
     CWnd::ScreenToClient(&magplus);
-
 
     magplus.right = magplus.left + kMagButtonSize;
     magplus.bottom = magplus.top + kMagButtonSize;
@@ -701,6 +727,37 @@ void CColorCopDlg::OnPaint() {
     }
 }
 
+void CColorCopDlg::ComputeHSV(int red, int green, int blue,
+                              double& outH, double& outS, double& outV) {
+    double rf = red / RGB_MAX_D;
+    double gf = green / RGB_MAX_D;
+    double bf = blue / RGB_MAX_D;
+
+    double maxv = std::max({rf, gf, bf});
+    double minv = std::min({rf, gf, bf});
+    double delta = maxv - minv;
+
+    // Value (0–100)
+    outV = maxv * 100.0;
+
+    // Saturation (0–100)
+    outS = (maxv == 0.0) ? 0.0 : (delta / maxv) * 100.0;
+
+    // Hue (0–360)
+    if (delta == 0.0) {
+        outH = 0.0;
+    } else if (maxv == rf) {
+        outH = 60.0 * fmod(((gf - bf) / delta), 6.0);
+    } else if (maxv == gf) {
+        outH = 60.0 * (((bf - rf) / delta) + 2.0);
+    } else {
+        outH = 60.0 * (((rf - gf) / delta) + 4.0);
+    }
+
+    if (outH < 0.0)
+        outH += 360.0;
+}
+
 void CColorCopDlg::RecalcZoom() {
     if (m_MagLevel < kMinZoom) {
         return;
@@ -782,6 +839,21 @@ void CColorCopDlg::OnconvertRGB() {
         m_Hexcolor.Format(_T("%0.*f,%0.*f,%0.*f"), m_FloatPrecision, r, m_FloatPrecision, g, m_FloatPrecision, b);
     } else if (m_Appflags & ModeVisualC) {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
+    }
+
+    ComputeHSV(m_Reddec,
+               m_Greendec,
+               m_Bluedec,
+               m_HSV_H,
+               m_HSV_S,
+               m_HSV_V);
+    CString hsvTip;
+    hsvTip.Format(_T("H: %.0f\xB0\nS: %.0f%%\nV: %.0f%%"),
+                  m_HSV_H, m_HSV_S, m_HSV_V);
+
+    // defensive: if the color preview control exists, update its tooltip with the new HSV values
+    if (m_ColorPreview.GetSafeHwnd()) {
+        m_ToolTip.UpdateTipText(hsvTip, this, 1);
     }
 
     // Only apply uppercase formatting when NOT in Visual C++ hex mode.
@@ -1013,11 +1085,12 @@ void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
         Y = (1.0 - bNorm - K) / denom;
     }
 
-    // Convert CMYK back to 0–255 integer range
-    m_Cyan = static_cast<int>(std::round(C * RGB_MAX_D));
-    m_Magenta = static_cast<int>(std::round(M * RGB_MAX_D));
-    m_Yellow = static_cast<int>(std::round(Y * RGB_MAX_D));
-    m_Black = static_cast<int>(std::round(K * RGB_MAX_D));
+    // Convert CMYK to 0–100 integer percentage range
+
+    m_Cyan = static_cast<int>(std::round(C * CMYK_MAX));
+    m_Magenta = static_cast<int>(std::round(M * CMYK_MAX));
+    m_Yellow = static_cast<int>(std::round(Y * CMYK_MAX));
+    m_Black = static_cast<int>(std::round(K * CMYK_MAX));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -1180,74 +1253,68 @@ void CColorCopDlg::OnAbout() {
 }
 
 void CColorCopDlg::OnChangeGreen() {
-    UpdateData(TRUE);
-    if (m_Greendec > 255) {
-        m_Greendec = 255;
-    }
+    m_Greendec = GetDlgItemInt(IDC_GREEN);
+    m_Greendec = std::clamp(m_Greendec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeBlue() {
-    UpdateData(TRUE);
-    if (m_Bluedec > 255) {
-        m_Bluedec = 255;
-    }
+    m_Bluedec = GetDlgItemInt(IDC_BLUE);
+    m_Bluedec = std::clamp(m_Bluedec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
+
 void CColorCopDlg::OnChangeRed() {
-    UpdateData(TRUE);
-    if (m_Reddec > 255) {
-        m_Reddec = 255;
-    }
+    m_Reddec = GetDlgItemInt(IDC_RED);
+    m_Reddec = std::clamp(m_Reddec, RGB_MIN, RGB_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
+
 void CColorCopDlg::OnChangeBlack() {
-    UpdateData(TRUE);
-    if (m_Black > 100) {
-        m_Black = 100;
-    }
+    m_Black = GetDlgItemInt(IDC_BLACK);
+    m_Black = std::clamp(m_Black, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeCyan() {
-    UpdateData(TRUE);
-    if (m_Cyan > 100) {
-        m_Cyan = 100;
-    }
+    m_Cyan = GetDlgItemInt(IDC_CYAN);
+    m_Cyan = std::clamp(m_Cyan, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeMagenta() {
-    UpdateData(TRUE);
-    if (m_Magenta > 100) {
-        m_Magenta = 100;
-    }
+    m_Magenta = GetDlgItemInt(IDC_MAGENTA);
+    m_Magenta = std::clamp(m_Magenta, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
 
 void CColorCopDlg::OnChangeYellow() {
-    UpdateData(TRUE);
-    if (m_Yellow > 100) {
-        m_Yellow = 100;
-    }
+    m_Yellow = GetDlgItemInt(IDC_YELLOW);
+    m_Yellow = std::clamp(m_Yellow, CMYK_MIN, CMYK_MAX);
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
 }
-
 
 void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
@@ -1838,16 +1905,19 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
     POINT pt;               // cursor location
     static int repeat = 1;  // repeat key counter
 
-    // pass a mouse message to the tool tip control for processing
-    m_ToolTip.RelayEvent(pMsg);
+    // Forward mouse messages to tooltip control
+    if (m_ToolTip.GetSafeHwnd()) {
+        m_ToolTip.RelayEvent(pMsg);
+    }
 
-    if (m_hAcceleratorTable) {  // use the Accelerator resource
+    // Accelerator handling
+    if (m_hAcceleratorTable) {
         if (::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
-            return TRUE;  // escape
+            return TRUE;
         }
     }
 
-    // test to see if F1 is being pressed to bring up help
+    // F1 help (0x4D = WM_HELP)
     if (pMsg->message == 0x4d) {
         if (GetKeyState(VK_SHIFT) >= 0) {
             ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
@@ -1857,29 +1927,23 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
 
     /************************************************
     * ESC key Check
-    * - hitting the escape key, should only stop the
-    *   eyedropper or magnifing glass and should not
-    *   exit the app
+    * - hitting the escape key should only stop the
+    *   eyedropper or magnifier and should not exit
     ************************************************/
-
     if (pMsg->message == WM_KEYDOWN) {
         if (pMsg->wParam == VK_ESCAPE) {
             if (m_isEyedropping || m_isMagnifying) {
-                // dropper or magnifier in use
-                // This stops people from getting smart and executing
-                // keyboard shortcuts while eyedropping or magnifying
                 StopCapture();
                 m_isEyedropping = m_isMagnifying = FALSE;
             }
             if (bRelativePosition) {
-                // invert the old one back
                 bRelativePosition = FALSE;
             }
-            return TRUE;  // return control rather than letting it
-                          // exit the app
+            return TRUE;
         } else if (m_isEyedropping || m_isMagnifying) {
             CString strStatus;
             CWinApp* pApp;
+
             switch (pMsg->wParam) {
             case VK_CONTROL:
                 if (m_isEyedropping && GetCursorPos(&RelativePoint)) {
@@ -1889,38 +1953,34 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
                     SetStatusBarText(strStatus);
 
                     if (!(m_Appflags & USECROSSHAIR)) {
-                        // set the cross hair cursor if they app isn't already using it
                         pApp = AfxGetApp();
                         m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
                         SetCursor(m_hEyeCursor);
                     }
-                    bRelativePosition = TRUE;  // Start Relative
+                    bRelativePosition = TRUE;
                 }
                 break;
 
-            case VK_RIGHT:  // right arrow
-                if (GetCursorPos(&pt)) {
+            case VK_RIGHT:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x + repeat, pt.y);
-                }
                 break;
-            case VK_LEFT:  // left arrow
-                if (GetCursorPos(&pt)) {
+            case VK_LEFT:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x - repeat, pt.y);
-                }
                 break;
-            case VK_UP:  // up arrow
-                if (GetCursorPos(&pt)) {
+            case VK_UP:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x, pt.y - repeat);
-                }
                 break;
-            case VK_DOWN:  // down arrow
-                if (GetCursorPos(&pt)) {
+            case VK_DOWN:
+                if (GetCursorPos(&pt))
                     SetCursorPos(pt.x, pt.y + repeat);
-                }
                 break;
             }
         }
     }
+
     return CDialog::PreTranslateMessage(pMsg);
 }
 
@@ -2208,13 +2268,14 @@ void CColorCopDlg::OnColorRandom() {
 }
 
 void CColorCopDlg::OnColorReverse() {
-    // Reverse the current colors.
-    // ABS (current decimal value - 255)  then update
-
+    // Invert the current RGB color (per‑channel): new = 255 - old.
+    // This produces the photographic "negative" of the selected color.
     SetStatusBarText(IDS_REVERSECOLOR, 0);
-    m_Reddec = std::abs(m_Reddec - 255);
-    m_Greendec = std::abs(m_Greendec - 255);
-    m_Bluedec = std::abs(m_Bluedec - 255);
+
+    m_Reddec = RGB_MAX - m_Reddec;
+    m_Greendec = RGB_MAX - m_Greendec;
+    m_Bluedec = RGB_MAX - m_Bluedec;
+
     CalcColorPal();
     OnconvertRGB();
     OnCopytoclip();
@@ -2868,16 +2929,14 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
 
     if (curfocus == GetDlgItem(IDC_RED)) {  // red has focus
         m_Reddec += zDelta / WHEEL_DELTA * offset;
-        m_Reddec = RangeCheck(m_Reddec);
+        m_Reddec = std::clamp(m_Reddec, RGB_MIN, RGB_MAX);
 
     } else if (curfocus == GetDlgItem(IDC_GREEN)) {  // green has focus
         m_Greendec += zDelta / WHEEL_DELTA * offset;
-        m_Greendec = RangeCheck(m_Greendec);
-
+        m_Greendec = std::clamp(m_Greendec, RGB_MIN, RGB_MAX);
     } else if (curfocus == GetDlgItem(IDC_BLUE)) {  // blue has focus
         m_Bluedec += zDelta / WHEEL_DELTA * offset;
-        m_Bluedec = RangeCheck(m_Bluedec);
-
+        m_Bluedec = std::clamp(m_Bluedec, RGB_MIN, RGB_MAX);
     } else {          // there is focus, but it's not on either the Red,
         return TRUE;  // Green, or Blue edit controls -> jump out
     }
@@ -2888,22 +2947,6 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     OnCopytoclip();
 
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
-}
-
-int CColorCopDlg::RangeCheck(int icolorval) {
-    // this function ensures that the user doesn't use the mouse wheel to
-    // make a color decimal < 0 or > 255
-
-    if (icolorval > 255) {
-        // go right around to 0 or 1
-        return (icolorval % 256);
-    } else if (icolorval < 0) {
-        // roll around to 255 or 254
-        return (256 - std::abs(icolorval));
-    } else {
-        // it's valid -- leave it alone
-        return (icolorval);
-    }
 }
 
 void CColorCopDlg::OnTimer(UINT nIDEvent) {
