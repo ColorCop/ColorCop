@@ -12,7 +12,7 @@ AppSupportURL=https://colorcop.net
 AppUpdatesURL=https://colorcop.net
 DefaultDirName={commonpf32}\ColorCop
 DefaultGroupName=Color Cop
-LicenseFile=..\LICENSE.txt
+LicenseFile=..\..\LICENSE.txt
 InfoBeforeFile=..\ReadMe.txt
 OutputDir=..\Output
 OutputBaseFilename=colorcop-setup
@@ -34,7 +34,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 Source: "..\ReadMe.txt"; DestDir: "{app}"
 Source: "..\Release\ColorCop.exe"; DestDir: "{app}"
 Source: "..\packaging\ColorCop.chm"; DestDir: "{app}"
-Source: "..\LICENSE.txt"; DestDir: "{app}"
+Source: "..\..\LICENSE.txt"; DestDir: "{app}"
 
 ; --- VC++ Runtime bundling ---
 ; Place vc_redist.x86.exe next to this .iss file (in /installer)
