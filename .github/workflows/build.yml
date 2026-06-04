@@ -82,7 +82,8 @@ jobs:
         shell: pwsh
         run: |
           $url = "https://aka.ms/vs/17/release/vc_redist.x86.exe"
-          $out = "installer/vc_redist.x86.exe"
+          $out = "ColorCop/installer/vc_redist.x86.exe"
+
 
           Invoke-WebRequest -Uri $url -OutFile $out
 
@@ -99,7 +100,7 @@ jobs:
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.8
         if: matrix.configuration == 'Release'
         with:
-          path: installer\colorcop.iss
+          path: ColorCop\installer\colorcop.iss
           options: /O+
 
       - name: Publish Release Artifacts
@@ -107,7 +108,7 @@ jobs:
         if: matrix.configuration == 'Release'
         with:
           name: installers
-          path: .\output
+          path: .\ColorCop\output
           retention-days: 30
 
       - name: Create Flat Zip Archive
@@ -116,10 +117,12 @@ jobs:
 
           New-Item -ItemType Directory -Path "Release-standalone"
 
-          Copy-Item -Path "Release\*.exe" -Destination "Release-standalone"
-          Copy-Item -Path "ReadMe.txt" -Destination "Release-standalone"
+          Copy-Item -Path "ColorCop\Release\*.exe" -Destination "Release-standalone"
+
+
+          Copy-Item -Path "ColorCop\ReadMe.txt" -Destination "Release-standalone"
           Copy-Item -Path "LICENSE.txt" -Destination "Release-standalone"
-          Copy-Item -Path "packaging\*.chm" -Destination "Release-standalone"
+          Copy-Item -Path "ColorCop\packaging\*.chm" -Destination "Release-standalone"
 
           Set-Location "Release-standalone"
 
@@ -147,4 +150,4 @@ jobs:
           generate_release_notes: true
           files: |
             colorcop.zip
-            output/colorcop-setup.exe
+            ColorCop/output/colorcop-setup.exe
