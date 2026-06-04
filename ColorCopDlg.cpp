@@ -823,9 +823,8 @@ void CColorCopDlg::OnconvertRGB() {
         TestForUpperHex();
     }
 
-    // Push updated member variables (including m_Hexcolor) out to their dialog
-    // controls.
-    UpdateData(FALSE);
+    // Only update the hex edit control
+    SetDlgItemText(IDC_HEXCOLOR, m_Hexcolor);
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();  // Re-Calculate color palette
@@ -2463,24 +2462,25 @@ void CColorCopDlg::OnUpdateOptionsUppercasehex(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::TestForUpperHex() {
-    // fixes the current hex value to the correct case
-    if (m_Appflags & UpperCaseHex) {
-        // make currenthex uppercase
-        m_Hexcolor.Replace('a', 'A');
-        m_Hexcolor.Replace('b', 'B');
-        m_Hexcolor.Replace('c', 'C');
-        m_Hexcolor.Replace('d', 'D');
-        m_Hexcolor.Replace('e', 'E');
-        m_Hexcolor.Replace('f', 'F');
-    } else {
-        m_Hexcolor.Replace('A', 'a');
-        m_Hexcolor.Replace('B', 'b');
-        m_Hexcolor.Replace('C', 'c');
-        m_Hexcolor.Replace('D', 'd');
-        m_Hexcolor.Replace('E', 'e');
-        m_Hexcolor.Replace('F', 'f');
-    }
-    UpdateData(false);  // update control
+    // Number of prefix characters to skip before normalizing case.
+    // Prefixes like 0x, #, and $ are not part of the hex digits.
+    int start = 0;
+
+    if (m_Hexcolor.Left(2).CompareNoCase(_T("0x")) == 0)
+        start = 2;
+    else if (m_Hexcolor.Left(1) == _T('#') || m_Hexcolor.Left(1) == _T('$'))
+        start = 1;
+
+    CString payload = m_Hexcolor.Mid(start);
+
+    if (m_Appflags & UpperCaseHex)
+        payload.MakeUpper();
+    else
+        payload.MakeLower();
+
+    m_Hexcolor = m_Hexcolor.Left(start) + payload;
+
+    SetDlgItemText(IDC_HEXCOLOR, m_Hexcolor);
 }
 
 void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point) {
