@@ -14,7 +14,7 @@ Color Cop is a multi-purpose color picker for Windows, featuring an eyedropper, 
 
     <projectUrl>https://colorcop.net</projectUrl>
     <projectSourceUrl>https://github.com/ColorCop/ColorCop</projectSourceUrl>
-    <packageSourceUrl>https://github.com/ColorCop/ColorCop/tree/main/choco</packageSourceUrl>
+    <packageSourceUrl>https://github.com/ColorCop/ColorCop/tree/main/ColorCop/choco</packageSourceUrl>
     <bugTrackerUrl>https://github.com/ColorCop/ColorCop/issues</bugTrackerUrl>
     <docsUrl>https://github.com/ColorCop/ColorCop#readme</docsUrl>
 
