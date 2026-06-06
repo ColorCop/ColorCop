@@ -13,14 +13,11 @@ A Windows-based color picker utility built with Microsoft Foundation Classes (MF
 This GitHub repository contains the source code for Color Cop.
 It is intended for **developers and contributors** who want to build, debug, or improve the application.
 
-If you just want to **download and use Color Cop**, please visit the official website: [colorcop.net](https://colorcop.net)
+If you just want to **download and use Color Cop**, visit the official website: [colorcop.net](https://colorcop.net), which provides the latest stable installer and user-focused information.
 
-The website provides the latest stable installer and user-focused information.
 This repository is focused on development, issue tracking, and contribution workflows.
 
 ## Quick start for developers
-
-If you want to build and run Color Cop from source:
 
 1. **Install prerequisites**
    - Windows 10/11
@@ -51,9 +48,29 @@ When using the command‑line `build.cmd` script, this file is automatically reg
 - **Debug** — Development build with debugging symbols and no optimizations
 - **Release** — Optimized production build suitable for distribution
 
+### Command-line build and versioning
+
+ColorCop includes a `build.cmd` script for reproducible Release builds.
+
+- **Version source:** The script reads the latest Git tag using
+  `git describe --tags --abbrev=0`. Tags are expected to follow semantic
+  versioning, typically `vMAJOR.MINOR.PATCH` (for example, `v5.5.2`).
+
+- **Fallback behavior:** If no tags are found (for example, in forks or
+  shallow clones), the script falls back to `0.0.0`.
+
+- **Generated files:**
+  - `ColorCop\version.h` — contains `VER_FILEVERSION`, `VER_PRODUCTVERSION`,
+    and related string macros derived from the Git tag.
+  - `ColorCop\installer\version.iss` — contains `AppVersionStr` for the
+    installer, also derived from the Git tag.
+
+- **Build invocation:** The script locates a C++‑capable `MSBuild.exe` via
+  `vswhere` and runs a `Rebuild` of the `Release | Win32` configuration.
+
 ## Release Workflow
 
-ColorCop uses **semantic version tags** (e.g., `v5.5.2`) to drive the release pipeline.
+ColorCop uses Git tags (e.g., `v5.5.2`) to drive the release pipeline.
 Pushing a new tag triggers GitHub Actions to:
 
 - Build the application
