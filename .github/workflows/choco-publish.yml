@@ -49,25 +49,25 @@ jobs:
       - name: Prepare tools folder
         shell: pwsh
         run: |
-          mkdir choco/tools -Force
-          Copy-Item colorcop-setup.exe choco/tools/
-          Copy-Item LICENSE.txt choco/tools/
+          mkdir ColorCop/choco/tools -Force
+          Copy-Item colorcop-setup.exe ColorCop/choco/tools/
+          Copy-Item LICENSE.txt ColorCop/choco/tools/
 
       - name: Generate checksum
         id: checksum
         shell: pwsh
         run: |
-          $sha = (Get-FileHash choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
+          $sha = (Get-FileHash ColorCop/choco/tools/colorcop-setup.exe -Algorithm SHA256).Hash
           echo "sha256=$sha" >> $env:GITHUB_OUTPUT
 
       - name: Update nuspec version
         shell: pwsh
         run: |
           $version = "${{ steps.get_version.outputs.version }}"
-          (Get-Content choco/colorcop.nuspec) `
+          (Get-Content ColorCop/choco/colorcop.nuspec) `
             -replace '<version>[^<]+</version>', "<version>$version</version>" `
             -replace 'releases/tag/v0\.0\.0', "releases/tag/v$version" `
-            | Set-Content choco/colorcop.nuspec
+            | Set-Content ColorCop/choco/colorcop.nuspec
 
       - name: Generate VERIFICATION.txt
         shell: pwsh
@@ -76,23 +76,23 @@ jobs:
           $url = "https://github.com/${{ github.repository }}/releases/download/$tag/colorcop-setup.exe"
           $checksum = "${{ steps.checksum.outputs.sha256 }}"
 
-          (Get-Content choco/tools/VERIFICATION.template.txt) `
+          (Get-Content ColorCop/choco/tools/VERIFICATION.template.txt) `
             -replace "{{URL}}", $url `
             -replace "{{CHECKSUM}}", $checksum `
-            | Set-Content choco/tools/VERIFICATION.txt
+            | Set-Content ColorCop/choco/tools/VERIFICATION.txt
 
       - name: Dump generated files
         shell: pwsh
         run: |
           Write-Host "=== VERIFICATION.txt ==="
-          Get-Content choco/tools/VERIFICATION.txt
+          Get-Content ColorCop/choco/tools/VERIFICATION.txt
           Write-Host "`n=== chocolateyinstall.ps1 ==="
-          Get-Content choco/tools/chocolateyinstall.ps1
+          Get-Content ColorCop/choco/tools/chocolateyinstall.ps1
           Write-Host "`n=== colorcop.nuspec ==="
-          Get-Content choco/colorcop.nuspec
+          Get-Content ColorCop/choco/colorcop.nuspec
 
       - name: Build Chocolatey package
-        working-directory: choco
+        working-directory: ColorCop/choco
         run: |
           choco pack --debug
 
@@ -100,10 +100,10 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: chocolatey-package
-          path: choco/*.nupkg
+          path: ColorCop/choco/*.nupkg
 
       - name: Push to Chocolatey.org
-        working-directory: choco
+        working-directory: ColorCop/choco
         env:
           CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
         shell: pwsh
