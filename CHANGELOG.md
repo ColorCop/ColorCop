@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes yet._
 
+## [5.5.14] - 2026-06-10
+
+### Added
+
+- Dark mode support with owner‑drawn controls and a themed status bar for improved low‑light usability.
+
+### Changed
+
+- Modernized hex‑case normalization and limited UI updates to the hex field to reduce unnecessary redraws.
+- Unified sampling‑mode switching logic and corrected flag checks for more predictable eyedropper behavior.
+- Centralized eyedropper cursor selection and removed redundant `SetIcon` calls.
+- Replaced `UpdateData(TRUE)` with `GetDlgItemInt` in RGB/CMYK handlers for clearer, safer input parsing.
+- Replaced legacy `RangeCheck` with `std::clamp` and removed obsolete wrap‑around logic.
+- Moved the entire project into the `ColorCop/` subdirectory to simplify build and packaging workflows.
+
+### Fixed
+
+- Corrected CMYK output to use a proper 0–100% range and clarified RGB inversion logic.
+
+### Security
+
+- Enabled Control Flow Guard (CFG), SafeSEH, SDL checks, and Spectre mitigations for both Debug and Release builds.
+
+### CI / Packaging
+
+- Updated Chocolatey workflow paths to reflect the new `ColorCop/` directory structure.
+
 ## [5.5.13] - 2026-05-28
 
 ### Added
