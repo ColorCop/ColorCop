@@ -1732,156 +1732,153 @@ void CColorCopDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 }
 
 void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
-    bool bSkipColor = false;
-    CString strStatus = "";
-    if ((m_isEyedropping) || (m_isMagnifying)) {
-        if (::GetCapture() == NULL) {
+    CString strStatus;
+
+    //
+    // Handle capture for eyedropper or magnifier
+    //
+    if (m_isEyedropping || m_isMagnifying) {
+        if (::GetCapture() == nullptr) {
             SetCapture();
         } else {
-            // We have capture and we are either eyedropping or magnifying
-            ClientToScreen(&point);  // use screen coordinates
+            ClientToScreen(&point);  // convert to screen coordinates
         }
     }
 
+    //
+    // Eyedropper mode
+    //
     if (m_isEyedropping) {
+        bool skipColor = false;
+
         if (m_InitialMove) {
             AdvanceColorHistory();
             m_InitialMove = FALSE;
         }
 
-        COLORREF crefxy;
-        WindowDC hdc(NULL);  // RAII: replaces GetDC/ReleaseDC
+        WindowDC hdc(nullptr);  // RAII DC
 
         if (m_Appflags & Sampling1) {
-            crefxy = ::GetPixel(hdc, point.x, point.y);  // api call
-            if (crefxy != CLR_INVALID) {
-                if (RGB(m_Reddec, m_Greendec, m_Bluedec) != crefxy) {
-                    // current color is not the selected color
-                    // it's ok to grab it
+            const COLORREF crefxy = ::GetPixel(hdc, point.x, point.y);
 
+            if (crefxy != CLR_INVALID) {
+                const COLORREF current = RGB(m_Reddec, m_Greendec, m_Bluedec);
+
+                if (current != crefxy) {
                     m_Reddec = GetRValue(crefxy);
                     m_Greendec = GetGValue(crefxy);
                     m_Bluedec = GetBValue(crefxy);
 
                     UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
-
                 } else {
-                    bSkipColor = true;
+                    skipColor = true;
                 }
             }
         } else {
-            // the user wants to sample a 3x3 or a 5x5 average of pixels.
-            bSkipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
+            // 3×3, 5×5, or multi‑pixel sampling
+            skipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
             UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
         }
 
+        //
+        // Relative‑position mode
+        //
         if (bRelativePosition) {
-            // store the new relative point.
-            RelativePointEnd.x = point.x;
-            RelativePointEnd.y = point.y;
-        }
+            RelativePointEnd = point;
 
-        // hdc auto‑releases via RAII
-        strStatus = "";
-        CString strWebSafe = "";
+            int dx = point.x - RelativePoint.x;
+            int dy = point.y - RelativePoint.y;
 
-        if (bRelativePosition) {
-            // L (Length line = hypotenuse) = SQRT(W² + H²) (show it to 1 decimal)
-            int iWidth = (point.x - RelativePoint.x);
-            int iHeight = (point.y - RelativePoint.y);
+            const double w = static_cast<double>(dx + 1);
+            const double h = static_cast<double>(dy + 1);
 
-            // we need to add one since they are zero based
-            double dWidth = static_cast<double>(iWidth + 1);
-            double dHeight = static_cast<double>(iHeight + 1);
-
-            double dLength = std::sqrt(dWidth * dWidth + dHeight * dHeight);
-            double dAngle = std::atan2(dHeight, dWidth) * (180.0 / kPi);
+            const double length = std::sqrt(w * w + h * h);
+            const double angle = std::atan2(h, w) * (180.0 / kPi);
 
             strStatus.LoadString(IDS_RELATIVE_POS);
-            strStatus.Format(strStatus, iWidth,
-                             iHeight,
-                             dLength,
-                             dAngle);
-
+            strStatus.Format(strStatus, dx, dy, length, angle);
         } else if ((m_Appflags & Sampling3x3) ||
                    (m_Appflags & Sampling5x5) ||
                    (m_Appflags & SamplingMULTI)) {
             strStatus.LoadString(IDS_EYEDROPPING);
             strStatus += ", %dx%d";
-            strStatus.Format(strStatus, point.x, point.y, m_iSamplingOffset * 2 + 1, m_iSamplingOffset * 2 + 1);
-
-        } else {  // SampleRate == 1
+            strStatus.Format(strStatus,
+                             point.x,
+                             point.y,
+                             m_iSamplingOffset * 2 + 1,
+                             m_iSamplingOffset * 2 + 1);
+        } else {
             strStatus.LoadString(IDS_EYEDROPPING);
+
             if (m_Appflags & DetectWebsafeColors) {
-                if (isWebsafeColor(m_Reddec, m_Greendec, m_Bluedec)) {
-                    strWebSafe.LoadString(IDS_WEBSAFE);
-                } else {
-                    strWebSafe.LoadString(IDS_NOT_WEBSAFE);
-                }
+                CString strWebSafe;
+                strWebSafe.LoadString(
+                    isWebsafeColor(m_Reddec, m_Greendec, m_Bluedec)
+                        ? IDS_WEBSAFE
+                        : IDS_NOT_WEBSAFE);
+                strStatus += strWebSafe;
             }
-            strStatus += strWebSafe;
 
             strStatus.Format(CString(strStatus), point.x, point.y);
         }
 
-
+        //
+        // Magnify‑while‑eyedropping
+        //
         if (m_Appflags & MAGWHILEEYEDROP) {
             if (!m_MagDrop) {
                 m_MagLevel = 4;
-                // default mag level to 4x
                 GetScreenBitmap(point);
                 InvalidateRect(&magrect, FALSE);
             }
         }
+
         SetStatusBarText(strStatus);
 
-        if (!bSkipColor) {
+        if (!skipColor) {
             OnconvertRGB();
         }
-        // no copy to clip on move.  it will copy on mouse up
-        return;
 
-    } else if (m_isMagnifying) {  // or are we magnifiying??
+        return;
+    }
+
+    //
+    // Magnifier mode
+    //
+    if (m_isMagnifying) {
         strStatus.LoadString(IDS_MAGNIFYING);
         strStatus.Format(strStatus, point.x, point.y, m_MagLevel);
-        SetStatusBarText(strStatus);
 
+        SetStatusBarText(strStatus);
         GetScreenBitmap(point);
         InvalidateRect(magrect, FALSE);
-        // go redraw... but don't erase or it will flicker
         return;
-    } else {
-        // not magnifying or eyedropping
+    }
 
-        CWnd* pWnd = ChildWindowFromPoint(point);
-        if (pWnd && pWnd->GetSafeHwnd() == m_EyeLoc.GetSafeHwnd()) {
+    //
+    // Normal mode — cursor changes
+    //
+    if (CWnd* pWnd = ChildWindowFromPoint(point)) {
+        const HWND h = pWnd->GetSafeHwnd();
+
+        if (h == m_EyeLoc.GetSafeHwnd() ||
+            h == m_Magnifier.GetSafeHwnd() ||
+            h == m_MagPlus.GetSafeHwnd() ||
+            h == m_MagMinus.GetSafeHwnd() ||
+            h == m_Q1.GetSafeHwnd() ||
+            h == m_Q2.GetSafeHwnd() ||
+            h == m_Q3.GetSafeHwnd() ||
+            h == m_Q4.GetSafeHwnd() ||
+            h == m_Q5.GetSafeHwnd() ||
+            h == m_Q6.GetSafeHwnd() ||
+            h == m_Q7.GetSafeHwnd()) {
             SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Magnifier.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_MagWindow.GetSafeHwnd()) {
+        } else if (h == m_MagWindow.GetSafeHwnd() ||
+                   h == m_ColorPalette.GetSafeHwnd()) {
             SetCursor(m_hEyeCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
-            SetCursor(m_hEyeCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_MagMinus.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q1.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q2.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q3.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q4.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q5.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q6.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
-        } else if (pWnd && pWnd->GetSafeHwnd() == m_Q7.GetSafeHwnd()) {
-            SetCursor(m_hHandCursor);
         }
     }
+
     CDialog::OnMouseMove(nFlags, point);
 }
 
