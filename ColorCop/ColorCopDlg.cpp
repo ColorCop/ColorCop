@@ -800,9 +800,8 @@ void CColorCopDlg::ComputeHSV(int red, int green, int blue,
 }
 
 void CColorCopDlg::RecalcZoom() {
-    if (m_MagLevel < kMinZoom) {
-        return;
-    }
+    ASSERT(m_MagLevel >= kMinZoom && m_MagLevel <= kMaxZoom);
+
     int magwidth = magrect.Width() / m_MagLevel;
     int magheight = magrect.Height() / m_MagLevel;
 
@@ -1071,34 +1070,34 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
 
         switch (caseH) {
         case 0:
-            r = static_cast<int>((L) *RGB_MAX_D);
-            g = static_cast<int>((t) *RGB_MAX_D);
-            b = static_cast<int>((p) *RGB_MAX_D);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((t) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
         case 1:
-            r = static_cast<int>((q) *RGB_MAX_D);
-            g = static_cast<int>((L) *RGB_MAX_D);
-            b = static_cast<int>((p) *RGB_MAX_D);
+            r = static_cast<int>((q) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((p) * RGB_MAX_D);
             break;
         case 2:
-            r = static_cast<int>((p) *RGB_MAX_D);
-            g = static_cast<int>((L) *RGB_MAX_D);
-            b = static_cast<int>((t) *RGB_MAX_D);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((L) * RGB_MAX_D);
+            b = static_cast<int>((t) * RGB_MAX_D);
             break;
         case 3:
-            r = static_cast<int>((p) *RGB_MAX_D);
-            g = static_cast<int>((q) *RGB_MAX_D);
-            b = static_cast<int>((L) *RGB_MAX_D);
+            r = static_cast<int>((p) * RGB_MAX_D);
+            g = static_cast<int>((q) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
         case 4:
-            r = static_cast<int>((t) *RGB_MAX_D);
-            g = static_cast<int>((p) *RGB_MAX_D);
-            b = static_cast<int>((L) *RGB_MAX_D);
+            r = static_cast<int>((t) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((L) * RGB_MAX_D);
             break;
         case 5:
-            r = static_cast<int>((L) *RGB_MAX_D);
-            g = static_cast<int>((p) *RGB_MAX_D);
-            b = static_cast<int>((q) *RGB_MAX_D);
+            r = static_cast<int>((L) * RGB_MAX_D);
+            g = static_cast<int>((p) * RGB_MAX_D);
+            b = static_cast<int>((q) * RGB_MAX_D);
             break;
         }
     }
@@ -3235,9 +3234,10 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     pbih = (PBITMAPINFOHEADER) pbi;
     lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
 
-    // TODO(j4y): error handling
-    // if (!lpBits)
-    //    ;
+    if (!lpBits) {
+        AfxMessageBox(_T("GlobalAlloc failed"));
+        return;
+    }
 
     // Retrieve the color table (RGBQUAD array) and the bits
     // (array of palette indices) from the DIB.
