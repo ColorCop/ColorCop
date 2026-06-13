@@ -17,7 +17,6 @@
 
 // Windows SDK headers (explicit APIs used in this file)
 #include <commctrl.h>
-#include <htmlhelp.h>
 
 // C++ standard library headers
 #include <algorithm>  // std::min, std::max
@@ -406,6 +405,13 @@ BOOL CColorCopDlg::OnInitDialog() {
 
     ApplyTheme();
 
+    // Load accelerator resource once MFC instance handle and window are valid
+    if (m_hAcceleratorTable == nullptr) {
+        m_hAcceleratorTable =
+            ::LoadAccelerators(AfxGetInstanceHandle(),
+                                MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
+    }
+
     return FALSE;  // return TRUE unless you set the focus to a control
 }
 
@@ -449,11 +455,6 @@ void CColorCopDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS) {
 }
 
 void CColorCopDlg::SetupSystemMenu() {
-    // Load accelerator resource
-    m_hAcceleratorTable =
-        ::LoadAccelerators(AfxGetInstanceHandle(),
-                           MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
-
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 
     CMenu* pSysMenu = GetSystemMenu(FALSE);
@@ -1993,21 +1994,14 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
     static int repeat = 1;  // repeat key counter
 
     // Forward mouse messages to tooltip control
-    if (m_ToolTip.GetSafeHwnd()) {
+    if (m_ToolTip.GetSafeHwnd() &&
+        ::IsWindow(m_ToolTip.GetSafeHwnd())) {
         m_ToolTip.RelayEvent(pMsg);
     }
 
     // Accelerator handling
-    if (m_hAcceleratorTable) {
+    if (m_hAcceleratorTable && m_hWnd != NULL && ::IsWindow(m_hWnd)) {
         if (::TranslateAccelerator(m_hWnd, m_hAcceleratorTable, pMsg)) {
-            return TRUE;
-        }
-    }
-
-    // F1 help (0x4D = WM_HELP)
-    if (pMsg->message == 0x4d) {
-        if (GetKeyState(VK_SHIFT) >= 0) {
-            ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
             return TRUE;
         }
     }
@@ -3040,7 +3034,16 @@ void CColorCopDlg::OnTimer(UINT nIDEvent) {
 }
 
 void CColorCopDlg::OnPopupApplicationHelp() {
-    ::HtmlHelp(NULL, _T("ColorCop.chm"), HH_DISPLAY_TOPIC, 0);
+    CString helpPath;
+    GetModuleFileName(NULL, helpPath.GetBufferSetLength(MAX_PATH), MAX_PATH);
+    helpPath.ReleaseBuffer();
+    PathRemoveFileSpec(helpPath.GetBuffer());
+    helpPath.ReleaseBuffer();
+    helpPath += _T("\\ColorCop.chm");
+    // Use ShellExecute with hh.exe instead of HtmlHelp:
+    // - HtmlHelp is deprecated and unreliable on modern Windows
+    // - Ensures the .chm opens correctly regardless of installation path
+    ShellExecute(NULL, _T("open"), _T("hh.exe"), helpPath, NULL, SW_SHOWNORMAL);
 }
 
 void CColorCopDlg::OnPopupColorDetectwebsafe() {
