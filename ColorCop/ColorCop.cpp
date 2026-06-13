@@ -26,7 +26,6 @@ BEGIN_MESSAGE_MAP(CColorCopApp, CWinApp)
     // NOTE - the ClassWizard will add and remove mapping macros here.
     //    DO NOT EDIT what you see in these blocks of generated code!
     //}}AFX_MSG // NOLINT(whitespace/comments)
-    ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

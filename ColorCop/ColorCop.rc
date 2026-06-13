@@ -131,7 +131,7 @@ BEGIN
     EDITTEXT        IDC_YELLOW,73,33,29,12,ES_CENTER | ES_AUTOHSCROLL
     CONTROL "", IDC_STATUSBAR, "msctls_statusbar32",
             WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP,
-            0, 146, 132, 20 
+            0, 146, 132, 20
 END
 
 
@@ -273,7 +273,7 @@ BEGIN
             MENUITEM "Magnify while Eyedropping",   ID_POPUP_OPTIONS_MAGNIFYWHILEEYEDROPPING, CHECKED
             MENUITEM "Use Cross Hair Cursor",       ID_POPUP_OPTIONS_USECROSSHAIRCURSOR
             MENUITEM "Put cursor over Eyedropper on Startup", ID_POPUP_OPTIONS_STARTCURSORONEYEDROPPER
-        
+
             POPUP "&Theme"
     BEGIN
         MENUITEM "System", ID_THEME_SYSTEM
@@ -338,6 +338,7 @@ BEGIN
     "Z",            ID_COLOR_RANDOM,        VIRTKEY, CONTROL, NOINVERT
     "[",            ID_FLOATDOWN,           ASCII,  ALT, NOINVERT
     "]",            ID_FLOATUP,             ASCII,  ALT, NOINVERT
+    VK_F1,          ID_POPUP_APPLICATION_HELP, VIRTKEY, NOINVERT
 END
 
 
