@@ -785,14 +785,14 @@ void CColorCopDlg::ComputeHSV(int red, int green, int blue,
     outS = (maxv == 0.0) ? 0.0 : (delta / maxv) * 100.0;
 
     // Hue (0–360)
-    if (delta == 0.0) {
+    if (delta <= HSL_EPSILON) {
         outH = 0.0;
     } else if (maxv == rf) {
         outH = 60.0 * fmod(((gf - bf) / delta), 6.0);
     } else if (maxv == gf) {
-        outH = 60.0 * (((bf - rf) / delta) + 2.0);
+        outH = 60.0 * (((bf - rf) / delta) + HUE_SECTOR_GREEN);
     } else {
-        outH = 60.0 * (((rf - gf) / delta) + 4.0);
+        outH = 60.0 * (((rf - gf) / delta) + HUE_SECTOR_BLUE);
     }
 
     if (outH < 0.0)
@@ -1145,11 +1145,25 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     MaxNum = std::max({R, G, B});
     Diff = (MaxNum - MinNum);
 
-    if (Diff == 0) {  // this is a greyscale color
-        Diff = 5.0;   // since greyscale colors don't have compliments,
-    }  // lets give it something
+    // compute Light early (needed for grayscale complement)
+    Light = MaxNum / RGB_MAX_D;
 
-    Light = MaxNum / RGB_MAX_D;  // find the Light
+    // detect grayscale
+    const bool isGray = (Diff <= HSL_EPSILON);
+
+    if (isGray) {
+        // grayscale has no hue; neutral-axis complement computed but not stored
+        // (maps L in [0..1] back into the 0..255 RGB domain)
+        const uint16_t inv = static_cast<uint16_t>(RGB_MAX - (Light * RGB_MAX_D));
+        (void)inv;  // TODO(j4y): expose complement color in UI if a future feature requires it
+
+        // grayscale HSL values
+        Sat = 0.0;
+        Hue = 0.0;
+
+        return;
+    }
+
 
     // find the Saturation
     if ((MaxNum == RGB_MAX) || (MinNum == 0)) {
@@ -1157,25 +1171,25 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     }
 
     if (MaxNum != 0) {
-        Sat = (static_cast<double>(Diff)) / (static_cast<double>(MaxNum));
+        Sat = Diff / MaxNum;
     }
 
     // find the Hue
-    R_Dist = static_cast<double>((MaxNum) -R) / static_cast<double>((Diff));
-    G_Dist = static_cast<double>((MaxNum) -G) / static_cast<double>((Diff));
-    B_Dist = static_cast<double>((MaxNum) -B) / static_cast<double>((Diff));
+    R_Dist = (MaxNum - R) / Diff;
+    G_Dist = (MaxNum - G) / Diff;
+    B_Dist = (MaxNum - B) / Diff;
 
     if (R == MaxNum) {
         Hue = B_Dist - G_Dist;
     } else if (G == MaxNum) {
-        Hue = 2.0 + R_Dist - B_Dist;
-    } else if (B == MaxNum) {
-        Hue = 4.0 + G_Dist - R_Dist;
+        Hue = HUE_SECTOR_GREEN + R_Dist - B_Dist;
+    } else {  // B == MaxNum
+        Hue = HUE_SECTOR_BLUE + G_Dist - R_Dist;
     }
-    Hue = Hue / 6.0;
+    Hue = Hue / HUE_CYCLE;
 
     if (Hue < 0.0) {
-        Hue = (Hue + 1.0);
+        Hue = Hue + HSL_MAX;
     }
 }
 
