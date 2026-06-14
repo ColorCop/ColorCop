@@ -15,9 +15,24 @@ constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;  // one-sixth of the color wh
 constexpr double SAT_LIGHT_SHIFT = 0.15;            // amount to adjust saturation/lightness
 constexpr int NUM_SWATCHES = 6;                     // number of hue variants
 constexpr int NUM_PALETTE_COLUMNS = 7;
-constexpr double HSL_MIN = 0.0;
-constexpr double HSL_MAX = 1.0;
-constexpr double RGB_MAX_D = 255.0;  // double version of 255
+
+constexpr double HSL_MIN = 0.0;   // minimum possible HSL component value
+constexpr double HSL_MAX = 1.0;   // maximum possible HSL component value
+
+// RGB domain (double precision version of 0–255 range)
+// Used when normalizing integer RGB values into floating‑point color space.
+constexpr double RGB_MAX_D = 255.0;
+
+constexpr double HUE_SECTOR_GREEN = 2.0;  // hue offset when green is the max channel
+constexpr double HUE_SECTOR_BLUE  = 4.0;  // hue offset when blue is the max channel
+
+// Number of hue sectors in the HSL/HSV color wheel.
+// Used to normalize hue into the 0–1 range after computing sector offsets.
+constexpr double HUE_CYCLE = 6.0;
+
+// Floating‑point epsilon for detecting grayscale (zero chroma).
+// Prevents false negatives caused by tiny rounding errors when channels are equal.
+constexpr double HSL_EPSILON = DBL_EPSILON;
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
