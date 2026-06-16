@@ -75,6 +75,7 @@
       <OutputFile>.\Release/ColorCop.exe</OutputFile>
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
+      <AdditionalManifestFiles>$(ProjectDir)app.manifest</AdditionalManifestFiles>
       <OptimizeReferences>true</OptimizeReferences>
       <DynamicBase>true</DynamicBase>
       <!-- ASLR -->
