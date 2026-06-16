@@ -85,6 +85,9 @@
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <ControlFlowGuard>Guard</ControlFlowGuard>
     </Link>
+    <Manifest>
+      <GenerateManifest>false</GenerateManifest>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
