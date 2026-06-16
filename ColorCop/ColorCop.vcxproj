@@ -75,8 +75,6 @@
       <OutputFile>.\Release/ColorCop.exe</OutputFile>
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <AdditionalManifestFiles>$(ProjectDir)app.manifest</AdditionalManifestFiles>
-      <GenerateManifest>false</GenerateManifest>
       <OptimizeReferences>true</OptimizeReferences>
       <DynamicBase>true</DynamicBase>
       <!-- ASLR -->
@@ -85,9 +83,6 @@
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <ControlFlowGuard>Guard</ControlFlowGuard>
     </Link>
-    <Manifest>
-      <GenerateManifest>false</GenerateManifest>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
