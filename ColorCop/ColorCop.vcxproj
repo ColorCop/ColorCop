@@ -76,6 +76,7 @@
       <ProgramDatabaseFile>.\Release/ColorCop.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <AdditionalManifestFiles>$(ProjectDir)app.manifest</AdditionalManifestFiles>
+      <GenerateManifest>false</GenerateManifest>
       <OptimizeReferences>true</OptimizeReferences>
       <DynamicBase>true</DynamicBase>
       <!-- ASLR -->
