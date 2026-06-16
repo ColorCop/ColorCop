@@ -476,13 +476,5 @@ LANGUAGE 9, 1
 #include "res\ColorCop.rc2"  // non-Microsoft Visual C++ edited resources
 #include "afxres.rc"         // Standard components
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Manifest
-//
-
-1 24 "app.manifest"
-
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
