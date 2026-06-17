@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes yet._
 
+## [5.5.15] – 2026‑06‑17
+
+### Added
+- **Manifest embedding** — Embedded `app.manifest` directly into the binary and modernized DPI‑awareness and Windows compatibility declarations for consistent theming and correct Per‑Monitor‑V2 scaling.
+- **Color‑math improvements** — Introduced named constants and refined HSL/HSV calculations for more accurate color conversions.
+- **Help system modernization** — Updated the help subsystem, relocated accelerator loading, and cleaned up message‑handling paths for better maintainability.
+
+### Changed
+- **Zoom guard cleanup** — Replaced a redundant zoom‑protection branch with a clear assertion and improved surrounding formatting.
+- **Mouse‑move simplification** — Reduced complexity in `OnMouseMove` to streamline event handling and improve readability.
+
+### Fixed
+_No user‑visible fixes in this release._
+
+### Internal / Maintenance
+- **Refactor: ColorCop core** — Minor structural cleanups and consistency improvements across message handling and UI logic.
+
+
 ## [5.5.14] - 2026-06-10
 
 ### Added
