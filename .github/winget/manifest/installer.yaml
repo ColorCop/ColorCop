@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+
+PackageIdentifier: JayPrall.ColorCop
+PackageVersion: 0.0.0
+
+Installers:
+  - Architecture: x86
+    InstallerType: exe
+    InstallerUrl: https://github.com/ColorCop/ColorCop/releases/download/v0.0.0/colorcop-setup.exe
+    InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000
+
+ManifestType: installer
+ManifestVersion: 1.12.0
+
