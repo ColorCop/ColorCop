@@ -7,8 +7,8 @@
 // Platform / Windows configuration
 //------------------------------------------------------------------------------
 
-#define NOMINMAX              // Prevent Windows macros from breaking std::min/std::max
-#define WIN32_LEAN_AND_MEAN   // Exclude rarely-used Windows headers
+#define NOMINMAX             // Prevent Windows macros from breaking std::min/std::max
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used Windows headers
 
 //------------------------------------------------------------------------------
 // Standard library
@@ -66,17 +66,14 @@
 constexpr int MULTIPIX_MIN = 1;
 constexpr int MULTIPIX_MAX = 15;
 
-// Prefer constexpr over macros for typed constants
-constexpr double kPi = 3.14159265358979323846;
-
 //------------------------------------------------------------------------------
 // MFC headers
 //------------------------------------------------------------------------------
 
-#include <afxwin.h>    // Core MFC components
-#include <afxext.h>    // Extensions (controls, OLE)
+#include <afxwin.h>  // Core MFC components
+#include <afxext.h>  // Extensions (controls, OLE)
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>    // Common controls
+#include <afxcmn.h>  // Common controls
 #endif
 
 //{{AFX_INSERT_LOCATION}} // NOLINT(whitespace/comments)
