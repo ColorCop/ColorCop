@@ -1,4 +1,4 @@
-BasedOnStyle: Microsoft
+BasedOnStyle: LLVM
 
 IndentWidth: 4
 TabWidth: 4
@@ -51,3 +51,10 @@ AlignConsecutiveMacros: None
 # Preserve blank lines
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
+
+SpacesInLineComment: false
+SpacesInParentheses: false
+SpaceBeforeParens: ControlStatements
+SpaceBeforeBinaryOperators: true
+SpaceAroundOperators: true
+

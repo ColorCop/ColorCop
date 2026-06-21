@@ -409,7 +409,7 @@ BOOL CColorCopDlg::OnInitDialog() {
     if (m_hAcceleratorTable == nullptr) {
         m_hAcceleratorTable =
             ::LoadAccelerators(AfxGetInstanceHandle(),
-                                MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
+                               MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
     }
 
     return FALSE;  // return TRUE unless you set the focus to a control
@@ -1068,6 +1068,7 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
         double q = L * (1.0 - S * f);
         double t = L * (1.0 - (S * (1.0 - f)));
 
+        // clang-format off
         switch (caseH) {
         case 0:
             r = static_cast<int>((L) * RGB_MAX_D);
@@ -1100,6 +1101,7 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
             b = static_cast<int>((q) * RGB_MAX_D);
             break;
         }
+        // clang-format on
     }
 }
 
@@ -1155,7 +1157,7 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
         // grayscale has no hue; neutral-axis complement computed but not stored
         // (maps L in [0..1] back into the 0..255 RGB domain)
         const uint16_t inv = static_cast<uint16_t>(RGB_MAX - (Light * RGB_MAX_D));
-        (void)inv;  // TODO(j4y): expose complement color in UI if a future feature requires it
+        (void) inv;  // TODO(j4y): expose complement color in UI if a future feature requires it
 
         // grayscale HSL values
         Sat = 0.0;
@@ -2715,8 +2717,7 @@ void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI) {
 }
 
 // Compute the average RGB value of a square region centered on `point`.
-bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoint point) {
-    // Compute the average RGB value of a square region centered on `point`.
+bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* outBlue, CPoint point) {
     // The region size is (2 * m_iSamplingOffset + 1) on each side.
     int64_t reddec = 0, greendec = 0, bluedec = 0;  // 64-bit to safely accumulate many pixel values
     int offset = m_iSamplingOffset;
@@ -2764,9 +2765,9 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* m_R, int* m_G, int* m_B, CPoin
     // Check whether the averaged color differs from the previously stored sample.
     // This avoids unnecessary updates when the sampled color hasn't changed.
     if (reddec != m_Reddec || greendec != m_Greendec || bluedec != m_Bluedec) {
-        *m_R = static_cast<int>(reddec);
-        *m_G = static_cast<int>(greendec);
-        *m_B = static_cast<int>(bluedec);
+        *outRed = static_cast<int>(reddec);
+        *outGreen = static_cast<int>(greendec);
+        *outBlue = static_cast<int>(bluedec);
         return false;  // color changed
     }
 

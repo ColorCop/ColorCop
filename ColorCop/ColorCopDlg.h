@@ -16,15 +16,15 @@ constexpr double SAT_LIGHT_SHIFT = 0.15;            // amount to adjust saturati
 constexpr int NUM_SWATCHES = 6;                     // number of hue variants
 constexpr int NUM_PALETTE_COLUMNS = 7;
 
-constexpr double HSL_MIN = 0.0;   // minimum possible HSL component value
-constexpr double HSL_MAX = 1.0;   // maximum possible HSL component value
+constexpr double HSL_MIN = 0.0;  // minimum possible HSL component value
+constexpr double HSL_MAX = 1.0;  // maximum possible HSL component value
 
 // RGB domain (double precision version of 0–255 range)
 // Used when normalizing integer RGB values into floating‑point color space.
 constexpr double RGB_MAX_D = 255.0;
 
 constexpr double HUE_SECTOR_GREEN = 2.0;  // hue offset when green is the max channel
-constexpr double HUE_SECTOR_BLUE  = 4.0;  // hue offset when blue is the max channel
+constexpr double HUE_SECTOR_BLUE = 4.0;   // hue offset when blue is the max channel
 
 // Number of hue sectors in the HSL/HSV color wheel.
 // Used to normalize hue into the 0–1 range after computing sector offsets.
@@ -226,7 +226,7 @@ class CColorCopDlg : public CDialog {
     void SetupSystemMenu();
     void SetupWindowRects();
     bool LoadPersistentVariables();
-    bool AveragePixelArea(HDC hdc, int* m_Reddec, int* m_Greendec, int* m_Bluedec, CPoint point);
+    bool AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* outBlue, CPoint point);
     void SetStatusBarText(LPCTSTR statusText);
     void AdvanceColorHistory();
     void GetHistoryColor(int Cindex);
