@@ -23,6 +23,7 @@
 #include <random>     // std::mt19937, std::uniform_int_distribution
 #include <cstdlib>    // strtoul, abs
 #include <cstring>    // memcpy
+#include <numbers>    // std::numbers::pi
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
@@ -1809,7 +1810,7 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
             const double h = static_cast<double>(dy + 1);
 
             const double length = std::sqrt(w * w + h * h);
-            const double angle = std::atan2(h, w) * (180.0 / kPi);
+            const double angle = std::atan2(h, w) * (180.0 / std::numbers::pi);
 
             strStatus.LoadString(IDS_RELATIVE_POS);
             strStatus.Format(strStatus, dx, dy, length, angle);
