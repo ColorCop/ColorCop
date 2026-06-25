@@ -37,9 +37,8 @@ constexpr double HSL_EPSILON = DBL_EPSILON;
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
 
-// Centralized list of all color output modes. Update this mask whenever a new
-// mode is added so mode‑switch handlers remain consistent and future‑proof.
-static constexpr uint32_t kAllColorModes =
+// Centralized list of all color output modes
+static constexpr uint64_t kAllColorModes =
     ModeHTML |
     ModeDelphi |
     ModePowerBuilder |
@@ -48,6 +47,13 @@ static constexpr uint32_t kAllColorModes =
     ModeClarion |
     RGBFLOAT |
     RGBINT;
+
+// Centralized list of all sampling modes
+static constexpr uint64_t kAllSamplingModes =
+    Sampling1 |
+    Sampling3x3 |
+    Sampling5x5 |
+    SamplingMULTI;
 
 class CSystemTray;
 

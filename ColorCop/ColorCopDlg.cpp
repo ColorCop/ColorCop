@@ -2656,8 +2656,7 @@ void CColorCopDlg::OnRButtonUp(UINT nFlags, CPoint point) {
 void CColorCopDlg::ChangeTo1pixelSampling() {
     // Only change if we're not already in 1‑pixel mode
     if ((m_Appflags & Sampling1) == 0) {
-        // Clear all sampling modes, then enable 1‑pixel
-        m_Appflags &= ~(Sampling3x3 | Sampling5x5 | SamplingMULTI);
+        m_Appflags &= ~kAllSamplingModes;
         m_Appflags |= Sampling1;
 
         // Update cursor
@@ -2671,8 +2670,7 @@ void CColorCopDlg::ChangeTo1pixelSampling() {
 void CColorCopDlg::ChangeTo3x3Sampling() {
     // Only change if we're not already in 3x3 mode
     if ((m_Appflags & Sampling3x3) == 0) {
-        // Clear all sampling modes, then enable 3x3
-        m_Appflags &= ~(Sampling1 | Sampling5x5 | SamplingMULTI);
+        m_Appflags &= ~kAllSamplingModes;
         m_Appflags |= Sampling3x3;
 
         // Update cursor
@@ -2689,8 +2687,7 @@ void CColorCopDlg::ChangeTo3x3Sampling() {
 void CColorCopDlg::ChangeTo5x5Sampling() {
     // Only change if we're not already in 5x5 mode
     if ((m_Appflags & Sampling5x5) == 0) {
-        // Clear all sampling modes, then enable 5x5
-        m_Appflags &= ~(Sampling1 | Sampling3x3 | SamplingMULTI);
+        m_Appflags &= ~kAllSamplingModes;
         m_Appflags |= Sampling5x5;
 
         // Update cursor
@@ -3353,9 +3350,7 @@ void CColorCopDlg::OnPopupOptionsStartcursoroneyedropper() {
 }
 
 void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() {
-    m_Appflags &= ~Sampling1;
-    m_Appflags &= ~Sampling3x3;
-    m_Appflags &= ~Sampling5x5;
+    m_Appflags &= ~kAllSamplingModes;
     m_Appflags |= SamplingMULTI;
 
     CString strStatus;
@@ -3375,9 +3370,7 @@ void CColorCopDlg::OnPopupSamplingDecreasemultipixelaverage() {
 }
 
 void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage() {
-    m_Appflags &= ~Sampling1;
-    m_Appflags &= ~Sampling3x3;
-    m_Appflags &= ~Sampling5x5;
+    m_Appflags &= ~kAllSamplingModes;
     m_Appflags |= SamplingMULTI;
 
     CString strStatus = "";
@@ -3394,12 +3387,8 @@ void CColorCopDlg::OnPopupSamplingIncreasemultipixelaverage() {
 }
 
 void CColorCopDlg::OnPopupSamplingMultipixel() {
-    if (m_Appflags ^ SamplingMULTI) {
-        m_Appflags &= ~Sampling1;
-        m_Appflags &= ~Sampling3x3;
-        m_Appflags &= ~Sampling5x5;
-        m_Appflags |= SamplingMULTI;
-    }
+    m_Appflags &= ~kAllSamplingModes;
+    m_Appflags |= SamplingMULTI;
     SetStatusBarText(IDS_MULTIPIX, 0);
 }
 
@@ -3408,10 +3397,8 @@ void CColorCopDlg::OnUpdatePopupSamplingMultipixel(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::OnPopupSpaceRgb() {
-    if (m_Appflags ^ SpaceRGB) {
-        m_Appflags &= ~SpaceCMYK;
-        m_Appflags |= SpaceRGB;
-    }
+    m_Appflags &= ~SpaceCMYK;
+    m_Appflags |= SpaceRGB;
     ChangeColorSpace(true);
     SetStatusBarText(IDS_SPACE_RGB, 1);
 }
@@ -3421,10 +3408,9 @@ void CColorCopDlg::OnUpdatePopupSpaceRgb(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::OnPopupSpaceCmyk() {
-    if (m_Appflags ^ SpaceCMYK) {
-        m_Appflags &= ~SpaceRGB;
-        m_Appflags |= SpaceCMYK;
-    }
+    m_Appflags &= ~SpaceRGB;
+    m_Appflags |= SpaceCMYK;
+
     ChangeColorSpace(false);
     SetStatusBarText(IDS_SPACE_CMYK, 1);
 }
