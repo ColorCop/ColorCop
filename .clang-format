@@ -4,38 +4,28 @@ IndentWidth: 4
 TabWidth: 4
 UseTab: Never
 
-# Preserve existing brace placement (K&R / Attach)
 BreakBeforeBraces: Attach
 
-# Includes: do NOT reorder, align, or regroup
 SortIncludes: false
 IncludeBlocks: Preserve
 AlignEscapedNewlines: DontAlign
 
-# Preserve MFC macro blocks
 MacroBlockBegin: "^BEGIN_"
 MacroBlockEnd: "^END_"
 
-# Avoid aggressive wrapping that causes diff churn
 ColumnLimit: 0
 AllowShortIfStatementsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
 
-# Pointer/reference spacing consistent with MSVC style
 PointerAlignment: Left
 SpaceAfterCStyleCast: true
 
-# Avoid rewriting constructor initializer lists
 BreakConstructorInitializers: BeforeColon
 
-# Avoid messing with case labels
 IndentCaseLabels: false
-
-# Do NOT reflow comments
 ReflowComments: false
 
-# Preprocessor formatting: leave indentation untouched
 IndentPPDirectives: None
 PPIndentWidth: 0
 
@@ -48,13 +38,9 @@ AlignConsecutiveDeclarations: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveMacros: None
 
-# Preserve blank lines
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
 
 SpacesInLineComment: false
 SpacesInParentheses: false
 SpaceBeforeParens: ControlStatements
-SpaceBeforeBinaryOperators: true
-SpaceAroundOperators: true
-
