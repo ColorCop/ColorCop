@@ -296,6 +296,8 @@ BOOL CColorCopDlg::OnInitDialog() {
         m_ToolTip.AddTool(&m_ExpandDialog, IDS_EXPANDEDDIALOG);
         m_ToolTip.AddTool(&m_ColorPick, IDS_CUSTOM_COLOR);
         m_ToolTip.AddTool(this, _T(""), &buttonrect, 1);
+        m_ToolTip.AddTool(this, _T(""), &colorpalrect, 2);
+
         m_ToolTip.SetDelayTime(TTDT_INITIAL, 200);
         m_ToolTip.Activate(TRUE);
         m_ToolTip.SendMessage(TTM_SETMAXTIPWIDTH, 0, 300);
@@ -1297,6 +1299,11 @@ void CColorCopDlg::DisplayColor() {
             pDC->FrameRect(&insiderect, &blackbrush);
             // show the point that the eyedropper is on
         }
+    }
+    if (m_HideComplement) {
+        m_ToolTip.UpdateTipText(_T("Complement unavailable for gray colors"), this, 2);
+    } else {
+        m_ToolTip.UpdateTipText(_T(""), this, 2);
     }
 
     ReleaseDC(pDC);  // free memory
