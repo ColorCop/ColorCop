@@ -1153,20 +1153,17 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
 
     // detect grayscale
     const bool isGray = (Diff <= HSL_EPSILON);
-
     if (isGray) {
-        // grayscale has no hue; neutral-axis complement computed but not stored
-        // (maps L in [0..1] back into the 0..255 RGB domain)
-        const uint16_t inv = static_cast<uint16_t>(RGB_MAX - (Light * RGB_MAX_D));
-        (void) inv;  // TODO(j4y): expose complement color in UI if a future feature requires it
-
-        // grayscale HSL values
+        // Grayscale has no hue; complement is undefined on the neutral axis.
         Sat = 0.0;
         Hue = 0.0;
 
+        m_HideComplement = true;
         return;
     }
 
+    // Chromatic colors have a valid hue → complement exists.
+    m_HideComplement = false;
 
     // find the Saturation
     if ((MaxNum == RGB_MAX) || (MinNum == 0)) {
@@ -1240,6 +1237,7 @@ void CColorCopDlg::DisplayColor() {
         insiderect.right = insiderect.left + m_nwide;
         insiderect.bottom = insiderect.top + m_ntall;
 
+        // Complementary palette (disabled placeholder for grayscale colors)
         for (int col = 0; col < 7; col++) {
             if (col) {
                 // not the top row
@@ -1248,7 +1246,9 @@ void CColorCopDlg::DisplayColor() {
                 insiderect.bottom += m_ntall;
             }
             for (int row = 0; row < 6; row++) {
-                pDC->FillSolidRect(insiderect, ColorPal[row][col]);
+                COLORREF fill =
+                    m_HideComplement ? RGB(192, 192, 192) : ColorPal[row][col];
+                pDC->FillSolidRect(insiderect, fill);
 
                 insiderect.right += m_nwide;
                 insiderect.left += m_nwide;

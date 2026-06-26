@@ -165,8 +165,13 @@ class CColorCopDlg : public CDialog {
     int m_ntall;
 
     // color palette stuff
-    double r, g, b;
-    double Hue, Sat, Light;
+    double r;
+    double g;
+    double b;
+    double Hue;
+    double Sat;
+    double Light;
+    bool m_HideComplement = false;
 
     struct swatchStruct {
         double A;
