@@ -143,7 +143,7 @@ class CColorCopDlg : public CDialog {
     BOOL m_oldColorSaved;  // whether we have a saved pre‑snap color to restore from
     BOOL m_isEyedropping;
     BOOL m_isMagnifying;
-    BOOL bMinimized;
+    BOOL m_isTrayMinimized;
     BOOL m_isMagPlusDown;
     BOOL m_isMagMinusDown;
     BOOL m_InitialMove;
@@ -207,7 +207,6 @@ class CColorCopDlg : public CDialog {
 
     ////  systray Internal data
     HICON hIcon_;
-    bool bMinimized_;
     CSystemTray* pTrayIcon_;
     int nTrayNotificationMsg_;
     // end
