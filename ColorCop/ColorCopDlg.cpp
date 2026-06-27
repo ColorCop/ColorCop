@@ -93,7 +93,7 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_oldColorSaved(false),
       m_isEyedropping(false),
       m_isMagnifying(false),
-      bMinimized(false),
+      m_isTrayMinimized(false),
       m_isMagPlusDown(false),
       m_isMagMinusDown(false),
       m_InitialMove(false),
@@ -121,7 +121,6 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_hMoveCursor(nullptr),
       m_hHandCursor(nullptr),
       hIcon_(nullptr),
-      bMinimized_(false),
       pTrayIcon_(nullptr),
       nTrayNotificationMsg_(0) {
 
@@ -308,7 +307,6 @@ BOOL CColorCopDlg::OnInitDialog() {
     // application variables
     m_isMagPlusDown = m_isMagMinusDown = m_oldColorSaved = FALSE;
     m_bCalcColorPal = m_isEyedropping = m_isMagnifying = FALSE;
-    bMinimized_ = false;
     pTrayIcon_ = nullptr;
 
     // small icon
@@ -388,7 +386,7 @@ BOOL CColorCopDlg::OnInitDialog() {
     // user wants to minimize on app start
     if (m_Appflags & MinimizeOnStart) {
         m_bvisible = true;
-        bMinimized = true;
+        m_isTrayMinimized = true;
         ShowWindow(SW_MINIMIZE);
 
         SetupTaskBarButton();
@@ -687,17 +685,17 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam) {
             }
         }
     } else {
-        BOOL bOldMin = bMinimized;  // remember previous state
+        BOOL bOldMin = m_isTrayMinimized;  // remember previous state
 
         if (nID == SC_MINIMIZE) {
-            bMinimized = true;
+            m_isTrayMinimized = true;
         } else if (nID == SC_RESTORE) {
-            bMinimized = false;
+            m_isTrayMinimized = false;
         }
 
         CDialog::OnSysCommand(nID, lParam);
 
-        if (bOldMin != bMinimized) {
+        if (bOldMin != m_isTrayMinimized) {
             SetupTrayIcon();
             SetupTaskBarButton();
         }
@@ -705,7 +703,7 @@ void CColorCopDlg::OnSysCommand(UINT nID, LPARAM lParam) {
 }
 
 void CColorCopDlg::SetupTaskBarButton() {
-    if ((bMinimized) && (m_Appflags & MinimizetoTray)) {
+    if ((m_isTrayMinimized) && (m_Appflags & MinimizetoTray)) {
         // hide the tray icon if it belongs in the system tray
         ShowWindow(SW_HIDE);
         m_bvisible = false;
@@ -717,7 +715,7 @@ void CColorCopDlg::SetupTaskBarButton() {
 }
 
 void CColorCopDlg::SetupTrayIcon() {
-    if (bMinimized && (pTrayIcon_ == 0) && (m_Appflags & MinimizetoTray)) {
+    if (m_isTrayMinimized && (pTrayIcon_ == 0) && (m_Appflags & MinimizetoTray)) {
         CString strAppName;
         strAppName.LoadString(IDS_APPLICATION_NAME);
 
@@ -2917,15 +2915,15 @@ void CColorCopDlg::OnPopupModeClarionhex() {
 void CColorCopDlg::OnPopupRestore() {
     m_bvisible = true;
 
-    ShowWindow(SW_RESTORE);  // user wants to restore from systray
-    bMinimized = false;      // remove the systray icon
+    ShowWindow(SW_RESTORE);     // user wants to restore from systray
+    m_isTrayMinimized = false;  // remove the systray icon
     SetupTrayIcon();
     SetupTaskBarButton();  // add taskbar button
 }
 
 void CColorCopDlg::OnPopupExit() {
-    bMinimized = false;  // user wants to exit color cop
-    SetupTrayIcon();     // remove the systray icon
+    m_isTrayMinimized = false;  // user wants to exit color cop
+    SetupTrayIcon();            // remove the systray icon
     EndDialog(IDOK);
 }
 
