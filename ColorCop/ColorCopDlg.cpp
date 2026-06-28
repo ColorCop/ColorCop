@@ -2277,17 +2277,26 @@ void CColorCopDlg::OnDestroy() {
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
     TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
 
-    HWND curwindowhwnd = ::GetForegroundWindow();
+    HWND curwindowhwnd = m_hWnd;
 
     if (hBitmap) {
         PBITMAPINFO MagBmpInfo = CreateBitmapInfoStruct(curwindowhwnd, hBitmap);
-        CreateBMPFile(curwindowhwnd, strBMPFile.GetBuffer(MAX_PATH), MagBmpInfo, hBitmap, ::GetDC(NULL));
+        if (!MagBmpInfo) {
+            // Failed to create bitmap info struct; log and exit gracefully
+            TRACE(_T("Failed to create bitmap info struct for saving bitmap.\n"));
+            CDialog::OnDestroy();
+            return;
+        }
+
+        WindowDC screenDC(NULL);
+        CreateBMPFile(curwindowhwnd, strBMPFile.GetBuffer(MAX_PATH), MagBmpInfo, hBitmap, screenDC);
 
         strBMPFile.ReleaseBuffer();
+        // Free BITMAPINFO allocated by CreateBitmapInfoStruct
+        HeapFree(GetProcessHeap(), 0, MagBmpInfo);
     }
 
     CDialog::OnDestroy();
-    return;
 }
 
 void CColorCopDlg::OnFileExit() {
@@ -3224,7 +3233,7 @@ PBITMAPINFO CColorCopDlg::CreateBitmapInfoStruct(HWND /*hwnd*/, HBITMAP hBmp) {
 
     const SIZE_T totalSize = headerSize + paletteSize;
 
-    PBITMAPINFO pbmi = static_cast<PBITMAPINFO>(LocalAlloc(LPTR, totalSize));
+    PBITMAPINFO pbmi = static_cast<PBITMAPINFO>(HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, totalSize));
     if (!pbmi) {
         return nullptr;
     }
