@@ -3331,6 +3331,7 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
 void CColorCopDlg::InitDarkModeAPIs() {
     HMODULE hUxTheme = LoadLibraryExW(L"uxtheme.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
     if (!hUxTheme)
+        // No theme handle, so we can't load the functions. This is expected on older versions of Windows.
         return;
 
     _ShouldAppsUseDarkMode =
@@ -3344,6 +3345,9 @@ void CColorCopDlg::InitDarkModeAPIs() {
     _SetPreferredAppMode =
         reinterpret_cast<SetPreferredAppMode_t>(
             GetProcAddress(hUxTheme, MAKEINTRESOURCEA(135)));  // ordinal 135
+
+    // Close the handle to the uxtheme.dll after loading the function pointers
+    FreeLibrary(hUxTheme);
 }
 
 
