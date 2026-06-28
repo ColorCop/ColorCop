@@ -126,12 +126,12 @@
     <Manifest>
       <AdditionalManifestFiles>$(ProjectDir)app.manifest</AdditionalManifestFiles>
     </Manifest>
-
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="ColorCop.cpp" />
     <ClCompile Include="ColorCopDlg.cpp" />
+    <ClCompile Include="CustomFrameController.cpp" />
     <ClCompile Include="DarkStatusBar.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="pch.cpp">
@@ -147,6 +147,7 @@
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="ColorCop.h" />
     <ClInclude Include="ColorCopDlg.h" />
+    <ClInclude Include="CustomFrameController.h" />
     <ClInclude Include="DarkStatusBar.h" />
     <ClInclude Include="Defaults.h" />
     <ClInclude Include="GdiHelpers.h" />
