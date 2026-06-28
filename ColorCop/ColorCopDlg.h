@@ -10,6 +10,9 @@
 
 #include "Defaults.h"
 #include "DarkStatusBar.h"
+#include "CustomFrameController.h"
+#include <memory>
+#include <memory>
 
 constexpr double HUE_ROTATION_STEP = 60.0 / 360.0;  // one-sixth of the color wheel
 constexpr double SAT_LIGHT_SHIFT = 0.15;            // amount to adjust saturation/lightness
@@ -76,6 +79,8 @@ class CColorCopDlg : public CDialog {
     int WinLocY;
     int m_MagLevel;
     int m_FloatPrecision;
+
+    std::unique_ptr<CustomFrameController> m_frame;
 
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 

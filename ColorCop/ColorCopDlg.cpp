@@ -11,6 +11,7 @@
 // Project headers
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
+#include "CustomFrameController.h"
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
 #include "GdiHelpers.h"  // RAII wrapper for window device contexts
@@ -282,6 +283,17 @@ END_MESSAGE_MAP()
 
 BOOL CColorCopDlg::OnInitDialog() {
     CDialog::OnInitDialog();
+
+    // Create custom title bar controller
+    m_frame = std::make_unique<CustomFrameController>(this);
+
+    // Remove maximize + thick frame
+    ModifyStyle(WS_MAXIMIZEBOX | WS_THICKFRAME, 0);
+    ModifyStyleEx(WS_EX_OVERLAPPEDWINDOW, 0);
+
+    // Force non-client recalculation
+    SetWindowPos(nullptr, 0, 0, 0, 0,
+        SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 
     SetupSystemMenu();  // add about and always on top to the system menu
 
@@ -907,6 +919,9 @@ void CColorCopDlg::OnconvertRGB() {
 
     // Only update the hex edit control
     SetDlgItemText(IDC_HEXCOLOR, m_Hexcolor);
+
+    if (m_frame)
+        m_frame->SetPreviewColor(RGB(r, g, b));
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();  // Re-Calculate color palette
