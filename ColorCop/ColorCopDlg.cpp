@@ -1148,8 +1148,9 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     MaxNum = std::max({R, G, B});
     Diff = (MaxNum - MinNum);
 
-    // compute Light early (needed for grayscale complement)
-    Light = MaxNum / RGB_MAX_D;
+    // HSL Lightness:
+    // L = (Max + Min) / 2 normalized to [0..1]
+    Light = (MaxNum + MinNum) / (HSL_LIGHT_DIVISOR * RGB_MAX_D);
 
     // detect grayscale
     const bool isGray = (Diff <= HSL_EPSILON);
@@ -1165,13 +1166,22 @@ void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
     // Chromatic colors have a valid hue → complement exists.
     m_HideComplement = false;
 
-    // find the Saturation
-    if ((MaxNum == RGB_MAX) || (MinNum == 0)) {
-        Sat = 1.0;
+    // HSL Saturation:
+    // S = (Max - Min) / (1 - |2L - 1|)
+    // denom can reach 0 at L = 0.5 and may go slightly negative due to FP rounding.
+    double denom = HSL_LIGHT_CENTER - std::abs(HSL_LIGHT_SCALE * Light - HSL_LIGHT_CENTER);
+
+    // Clamp negative rounding artifacts
+    if (denom < HSL_MIN_DENOM) {
+        denom = HSL_MIN_DENOM;
     }
 
-    if (MaxNum != 0) {
-        Sat = Diff / MaxNum;
+    // Treat very small denom as zero to avoid saturation blow-up
+    if (denom < HSL_EPSILON) {
+        Sat = 0.0;  // near-neutral colors
+    } else {
+        // Normalize Diff to [0..1] before dividing by denom.
+        Sat = (Diff / RGB_MAX_D) / denom;
     }
 
     // find the Hue

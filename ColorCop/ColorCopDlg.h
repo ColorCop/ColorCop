@@ -32,7 +32,12 @@ constexpr double HUE_CYCLE = 6.0;
 
 // Floating‑point epsilon for detecting grayscale (zero chroma).
 // Prevents false negatives caused by tiny rounding errors when channels are equal.
-constexpr double HSL_EPSILON = DBL_EPSILON;
+constexpr double HSL_EPSILON = 1e-6;
+
+constexpr double HSL_LIGHT_DIVISOR = 2.0;
+constexpr double HSL_LIGHT_SCALE = 2.0;
+constexpr double HSL_LIGHT_CENTER = 1.0;
+constexpr double HSL_MIN_DENOM = 0.0;
 
 #define BMP_FILE "\\Color_Cop.bmp"
 #define BMP_FILE_DIR "\\ColorCop"
