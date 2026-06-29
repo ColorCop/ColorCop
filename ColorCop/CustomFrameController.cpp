@@ -21,6 +21,15 @@ void CustomFrameController::UpdateButtonRects() {
     m_swatchRect = CRect(width - btnSize*3, 0, width - btnSize*2, m_titleBarHeight);
 }
 
+//void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params)
+//{
+//    if (calcValidRects && params)
+//    {
+//        // Shrink client area downward by title bar height
+//        params->rgrc[0].top += m_titleBarHeight;
+//    }
+//}
+
 void CustomFrameController::OnNcCalcSize(BOOL, NCCALCSIZE_PARAMS*) {
     // Full client area
 }
@@ -82,7 +91,9 @@ void CustomFrameController::DrawTitleBar(CDC& dc) {
 
     // Glyphs
     dc.SetTextColor(RGB(220, 220, 220));
-    dc.DrawText(_T("—"), m_minRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    // dc.DrawText(_T("—"), m_minRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    dc.DrawText(_T("_"), m_minRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
     dc.DrawText(_T("X"), m_closeRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     // color preview
