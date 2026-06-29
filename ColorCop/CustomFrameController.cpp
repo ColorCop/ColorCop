@@ -18,20 +18,13 @@ void CustomFrameController::UpdateButtonRects() {
     int btnSize = 32;
     m_closeRect = CRect(width - btnSize, 0, width, m_titleBarHeight);
     m_minRect   = CRect(width - btnSize*2, 0, width - btnSize, m_titleBarHeight);
-    m_swatchRect = CRect(width - btnSize*3, 0, width - btnSize*2, m_titleBarHeight);
+    // m_swatchRect = CRect(width - btnSize*3, 0, width - btnSize*2, m_titleBarHeight);
 }
 
-//void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params)
-//{
-//    if (calcValidRects && params)
-//    {
-//        // Shrink client area downward by title bar height
-//        params->rgrc[0].top += m_titleBarHeight;
-//    }
-//}
-
-void CustomFrameController::OnNcCalcSize(BOOL, NCCALCSIZE_PARAMS*) {
-    // Full client area
+void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params)
+{
+    if (calcValidRects && params)
+        params->rgrc[0].top += m_titleBarHeight;
 }
 
 LRESULT CustomFrameController::OnNcHitTest(CPoint pt) {
@@ -90,15 +83,16 @@ void CustomFrameController::DrawTitleBar(CDC& dc) {
     drawBtn(m_closeRect, m_hoverClose, RGB(48, 48, 48));
 
     // Glyphs
+    // TODO(j4y): handle dark mode for glyphs if needed
     dc.SetTextColor(RGB(220, 220, 220));
-    // dc.DrawText(_T("—"), m_minRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
     dc.DrawText(_T("_"), m_minRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     dc.DrawText(_T("X"), m_closeRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     // color preview
-    dc.FillSolidRect(m_swatchRect, m_previewColor);
-    dc.DrawEdge(m_swatchRect, EDGE_SUNKEN, BF_RECT);
+    // dc.FillSolidRect(m_swatchRect, m_previewColor);
+    // dc.DrawEdge(m_swatchRect, EDGE_SUNKEN, BF_RECT);
 }
 
 void CustomFrameController::OnNcLButtonDown(UINT hitTest, CPoint) {
@@ -131,7 +125,7 @@ void CustomFrameController::OnNcMouseLeave() {
     m_owner->SendMessage(WM_NCPAINT);
 }
 
-void CustomFrameController::SetPreviewColor(COLORREF c) {
+/* void CustomFrameController::SetPreviewColor(COLORREF c) {
     m_previewColor = c;
     m_owner->SendMessage(WM_NCPAINT);
-}
+} */
