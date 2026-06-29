@@ -280,6 +280,7 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg message handlers
+
 LRESULT CColorCopDlg::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
     if (m_frame)
@@ -287,8 +288,17 @@ LRESULT CColorCopDlg::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
         switch (msg)
         {
         case WM_NCCALCSIZE:
-            m_frame->OnNcCalcSize((BOOL)wp, (NCCALCSIZE_PARAMS*)lp);
-            return 0;
+            if (wp)
+            {
+                m_frame->OnNcCalcSize(TRUE, (NCCALCSIZE_PARAMS*)lp);
+                return 0;
+            }
+            return CDialog::WindowProc(msg, wp, lp);
+
+        case WM_NCACTIVATE:
+            // Prevent Windows from drawing the classic frame
+            m_frame->OnNcPaint();
+            return TRUE;
 
         case WM_NCHITTEST:
             return m_frame->OnNcHitTest(CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp)));
@@ -313,6 +323,7 @@ LRESULT CColorCopDlg::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 
     return CDialog::WindowProc(msg, wp, lp);
 }
+
 
 BOOL CColorCopDlg::OnInitDialog() {
     CDialog::OnInitDialog();
