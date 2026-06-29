@@ -952,8 +952,8 @@ void CColorCopDlg::OnconvertRGB() {
     // Only update the hex edit control
     SetDlgItemText(IDC_HEXCOLOR, m_Hexcolor);
 
-    if (m_frame)
-        m_frame->SetPreviewColor(RGB(m_Reddec, m_Greendec, m_Bluedec));
+    // if (m_frame)
+        // m_frame->SetPreviewColor(RGB(m_Reddec, m_Greendec, m_Bluedec));
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();  // Re-Calculate color palette
