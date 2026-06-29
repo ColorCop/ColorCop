@@ -69,6 +69,8 @@ class CColorCopDlg : public CDialog {
     // Construction
      public:
     explicit CColorCopDlg(CWnd* pParent = nullptr);  // standard constructor
+    virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
+
     COLORREF ColorHistory[kHistoryCount];
     COLORREF CustColorBank[kCustomColorCount];
     // 64 bit application flags bitmask. Each bit represents a different user‑configurable setting or mode.
