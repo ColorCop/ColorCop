@@ -280,6 +280,39 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorCopDlg message handlers
+LRESULT CColorCopDlg::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
+{
+    if (m_frame)
+    {
+        switch (msg)
+        {
+        case WM_NCCALCSIZE:
+            m_frame->OnNcCalcSize((BOOL)wp, (NCCALCSIZE_PARAMS*)lp);
+            return 0;
+
+        case WM_NCHITTEST:
+            return m_frame->OnNcHitTest(CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp)));
+
+        case WM_NCPAINT:
+            m_frame->OnNcPaint();
+            return 0;
+
+        case WM_NCLBUTTONDOWN:
+            m_frame->OnNcLButtonDown((UINT)wp, CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp)));
+            return 0;
+
+        case WM_NCMOUSEMOVE:
+            m_frame->OnNcMouseMove((UINT)wp, CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp)));
+            return 0;
+
+        case WM_NCMOUSELEAVE:
+            m_frame->OnNcMouseLeave();
+            return 0;
+        }
+    }
+
+    return CDialog::WindowProc(msg, wp, lp);
+}
 
 BOOL CColorCopDlg::OnInitDialog() {
     CDialog::OnInitDialog();
