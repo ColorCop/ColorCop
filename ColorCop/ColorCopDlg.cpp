@@ -458,6 +458,8 @@ BOOL CColorCopDlg::OnInitDialog() {
                                MAKEINTRESOURCE(IDR_COLORCOP_ACCEL));
     }
 
+    SendMessage(WM_NCPAINT);
+
     return FALSE;  // return TRUE unless you set the focus to a control
 }
 
@@ -951,7 +953,7 @@ void CColorCopDlg::OnconvertRGB() {
     SetDlgItemText(IDC_HEXCOLOR, m_Hexcolor);
 
     if (m_frame)
-        m_frame->SetPreviewColor(RGB(r, g, b));
+        m_frame->SetPreviewColor(RGB(m_Reddec, m_Greendec, m_Bluedec));
 
     if ((m_isEyedropping) && (m_bCalcColorPal)) {
         CalcColorPal();  // Re-Calculate color palette
