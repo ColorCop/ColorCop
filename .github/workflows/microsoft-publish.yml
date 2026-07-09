@@ -1,4 +1,4 @@
-name: Publish Microsoft Store Package
+name: Publish Microsoft Store Package (Debug)
 
 on:
   workflow_dispatch:
@@ -11,7 +11,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
-    # Grant minimal read-only access to repository contents
     permissions:
       contents: read
 
@@ -30,6 +29,7 @@ jobs:
 
       - name: Download release asset
         run: |
+          echo "=== DEBUG: Downloading release asset ==="
           gh release download ${{ steps.get_version.outputs.tag }} \
             --repo ${{ github.repository }} \
             --pattern "colorcop-setup.exe"
@@ -39,17 +39,26 @@ jobs:
       - name: Acquire Microsoft Store access token
         id: token
         run: |
-          token=$(curl -s -X POST \
+          echo "=== DEBUG: Requesting OAuth token ==="
+
+          raw_token_response=$(mktemp)
+
+          curl -v --trace-ascii /dev/stderr -X POST \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -d "grant_type=client_credentials" \
             -d "client_id=${{ secrets.STORE_CLIENT_ID }}" \
             -d "client_secret=${{ secrets.STORE_CLIENT_SECRET }}" \
             -d "resource=https://manage.devcenter.microsoft.com" \
             "https://login.microsoftonline.com/${{ secrets.STORE_TENANT_ID }}/oauth2/token" \
-            | jq -r '.access_token')
+            -o "$raw_token_response"
 
-          if [ -z "$token" ]; then
-            echo "Failed to acquire access token"
+          echo "=== DEBUG: Raw token response ==="
+          cat "$raw_token_response"
+
+          token=$(jq -r '.access_token' < "$raw_token_response")
+
+          if [ -z "$token" ] || [ "$token" = "null" ]; then
+            echo "❌ Failed to acquire access token"
             exit 1
           fi
 
@@ -59,30 +68,31 @@ jobs:
         id: submission
         run: |
           set -e
+          echo "=== DEBUG: Creating submission ==="
 
-          echo "Calling Microsoft Store API to create submission..."
-
-          # Capture full HTTP response (headers + body)
           http_response=$(mktemp)
-          http_code=$(curl -w "%{http_code}" -o "$http_response" \
+          http_trace=$(mktemp)
+
+          http_code=$(curl -v --trace-ascii "$http_trace" -w "%{http_code}" -o "$http_response" \
             -X POST \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/json" \
             -d '{}' \
             "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions")
 
-          echo "HTTP status: $http_code"
-          echo "Raw response:"
+          echo "=== DEBUG: Curl trace ==="
+          cat "$http_trace"
+
+          echo "=== DEBUG: HTTP status: $http_code ==="
+          echo "=== DEBUG: Raw response body ==="
           cat "$http_response"
 
-          # Fail if not 2xx
           if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
             echo "❌ Microsoft Store API returned an error"
             exit 1
           fi
 
           id=$(jq -r '.id' < "$http_response")
-
           if [ -z "$id" ] || [ "$id" = "null" ]; then
             echo "❌ Submission ID missing in response"
             exit 1
@@ -92,18 +102,53 @@ jobs:
 
       - name: Upload installer
         run: |
-          curl -s -X PUT \
+          echo "=== DEBUG: Checking installer existence ==="
+          ls -l colorcop-setup.exe || { echo "❌ Installer missing"; exit 1; }
+
+          echo "=== DEBUG: Uploading installer ==="
+
+          http_trace=$(mktemp)
+          http_code=$(curl -v --trace-ascii "$http_trace" -w "%{http_code}" -o /dev/null \
+            -X PUT \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/octet-stream" \
             --data-binary @colorcop-setup.exe \
-            "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions/${{ steps.submission.outputs.id }}/files/colorcop-setup.exe"
+            "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions/${{ steps.submission.outputs.id }}/files/colorcop-setup.exe")
+
+          echo "=== DEBUG: Curl trace ==="
+          cat "$http_trace"
+
+          echo "=== DEBUG: Upload HTTP status: $http_code ==="
+
+          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
+            echo "❌ Upload failed"
+            exit 1
+          fi
 
       - name: Commit submission
         run: |
-          curl -s -X POST \
+          echo "=== DEBUG: Committing submission ==="
+
+          http_trace=$(mktemp)
+          http_response=$(mktemp)
+
+          http_code=$(curl -v --trace-ascii "$http_trace" -w "%{http_code}" -o "$http_response" \
+            -X POST \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/json" \
             -d '{}' \
-            "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions/${{ steps.submission.outputs.id }}/commit"
+            "https://manage.devcenter.microsoft.com/v1.0/my/applications/${{ secrets.STORE_PRODUCT_ID }}/submissions/${{ steps.submission.outputs.id }}/commit")
+
+          echo "=== DEBUG: Curl trace ==="
+          cat "$http_trace"
+
+          echo "=== DEBUG: Commit HTTP status: $http_code ==="
+          echo "=== DEBUG: Commit response body ==="
+          cat "$http_response"
+
+          if [ "$http_code" -lt 200 ] || [ "$http_code" -ge 300 ]; then
+            echo "❌ Commit failed"
+            exit 1
+          fi
 
           echo "Submission committed for certification"
