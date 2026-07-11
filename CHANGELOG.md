@@ -9,21 +9,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes yet._
 
+## [5.5.16] – 2026‑07‑10
+
+### Added
+
+- **Complementary‑palette tooltip** — Added a tooltip explaining when a complementary color is unavailable.
+- **Grayscale complement handling** — Complementary palette is now automatically disabled for grayscale colors.
+- **WinGet manifest scaffolding** — Introduced initial WinGet packaging metadata for future distribution support.
+
+### Changed
+
+- **HSL/HSV math modernization** — Replaced custom constants with `std::numbers::pi` and removed legacy magic numbers.
+- **clang-format configuration cleanup** — Removed invalid/unsupported options and added guards around HSL RGB math to avoid parser bugs.
+- **State variable clarity** — Renamed `bMinimized` to `m_isTrayMinimized` for clearer intent and consistency.
+- **Microsoft Store workflow** — Expanded Store publishing workflow with full debug logging for improved diagnostics.
+- **Dependency updates** — Updated `actions/checkout` from v6 to v7.
+
+### Fixed
+
+- **BMP save leak** — Eliminated a GDI/DC leak, replaced `LocalAlloc`, and hardened teardown logic in the BMP save path.
+- **Dark mode resource leak** — Ensured `uxtheme.dll` module handle is properly freed to prevent resource retention.
+- **HSL math correctness** — Corrected lightness and saturation calculations for more accurate color conversions.
+
+### Internal / Maintenance
+
+- **clang-format compatibility** — Removed invalid `SpacesInLineComment` key to restore formatter functionality.
+- **Flag handling cleanup** — Centralized sampling and color‑mode bitmask logic and removed incorrect XOR‑based checks.
+
 ## [5.5.15] – 2026‑06‑17
 
 ### Added
+
 - **Manifest embedding** — Embedded `app.manifest` directly into the binary and modernized DPI‑awareness and Windows compatibility declarations for consistent theming and correct Per‑Monitor‑V2 scaling.
 - **Color‑math improvements** — Introduced named constants and refined HSL/HSV calculations for more accurate color conversions.
 - **Help system modernization** — Updated the help subsystem, relocated accelerator loading, and cleaned up message‑handling paths for better maintainability.
 
 ### Changed
+
 - **Zoom guard cleanup** — Replaced a redundant zoom‑protection branch with a clear assertion and improved surrounding formatting.
 - **Mouse‑move simplification** — Reduced complexity in `OnMouseMove` to streamline event handling and improve readability.
 
 ### Fixed
+
 _No user‑visible fixes in this release._
 
 ### Internal / Maintenance
+
 - **Refactor: ColorCop core** — Minor structural cleanups and consistency improvements across message handling and UI logic.
 
 
