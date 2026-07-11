@@ -41,6 +41,5 @@ AlignConsecutiveMacros: None
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
 
-SpacesInLineComment: false
 SpacesInParentheses: false
 SpaceBeforeParens: ControlStatements
