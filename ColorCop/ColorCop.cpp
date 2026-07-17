@@ -9,6 +9,7 @@
 #include "ColorCop.h"
 #include "ColorCopDlg.h"
 #include "Defaults.h"
+#include <shlobj.h>  // SHGetKnownFolderPath, FOLDERID_LocalAppData
 
 #define INI_FILE _T("\\Color_Cop.dat")
 #define INI_FILE_DIR _T("\\ColorCop")
@@ -137,24 +138,25 @@ BOOL CColorCopApp::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
     }
 }
 
-CString CColorCopApp::GetSettingsFolder() {
-    CString path;
+std::filesystem::path CColorCopApp::GetSettingsFolder() {
     if (m_PortableMode) {
-        // Portable mode: store settings next to the EXE
-        TCHAR exePath[MAX_PATH] = {0};
-        GetModuleFileName(NULL, exePath, MAX_PATH);
-        PathRemoveFileSpec(exePath);
-        path = exePath;
-        return path;  // e.g. C:\Tools\ColorCop
+        // Portable mode → directory containing the EXE
+        wchar_t exePath[MAX_PATH];
+        GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+        std::filesystem::path exe(exePath);
+        return exe.parent_path();
     }
 
-    // Installed mode: use LocalAppData\ColorCop
-    TCHAR buffer[MAX_PATH] = {0};
-    GetShellFolderPath(_T("Local AppData"), buffer);
-    path = buffer;
+    // Installed mode → LocalAppData\ColorCop
+    PWSTR raw = nullptr;
+    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &raw))) {
+        std::filesystem::path localAppData(raw);
+        CoTaskMemFree(raw);
+        return localAppData / "ColorCop";
+    }
 
-    path += INI_FILE_DIR;  // "\ColorCop"
-    return path;           // e.g. C:\Users\...\AppData\Local\ColorCop
+    // Fallback if LocalAppData cannot be resolved
+    return std::filesystem::current_path() / "ColorCop";
 }
 
 void CColorCopApp::ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags) {
@@ -175,8 +177,9 @@ BOOL CColorCopApp::InitApplication() {
         cmd.Find(_T("/portable")) != -1 || cmd.Find(_T("/p")) != -1) {
         m_PortableMode = true;
     }
-    CString settingsFolder = GetSettingsFolder();
-    CString strInitFile = settingsFolder + INI_FILE;  // "\Color_Cop.dat"
+    std::filesystem::path settingsFolder = GetSettingsFolder();
+    std::filesystem::path iniPath = settingsFolder / "Color_Cop.dat";
+    CString strInitFile(iniPath.wstring().c_str());
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
     TRACE(_T("INI path: %s\n"), strInitFile.GetString());
@@ -195,7 +198,7 @@ BOOL CColorCopApp::InitApplication() {
     } else {
         // First time running ColorCop
         if (!m_PortableMode) {
-            CreateDirectory(settingsFolder, NULL);
+            CreateDirectory(settingsFolder.wstring().c_str(), NULL);
         }
         LoadDefaultSettings();
         ClipOrCenterWindowToMonitor(::GetForegroundWindow(), MONITOR_CENTER);
@@ -233,8 +236,9 @@ void CColorCopApp::LoadDefaultSettings() {
 }
 
 void CColorCopApp::CloseApplication() {
-    CString settingsFolder = GetSettingsFolder();
-    CString strInitFile = settingsFolder + INI_FILE;
+    std::filesystem::path settingsFolder = GetSettingsFolder();
+    std::filesystem::path iniPath = settingsFolder / "Color_Cop.dat";
+    CString strInitFile(iniPath.wstring().c_str());
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
     TRACE(_T("INI path: %s\n"), strInitFile.GetString());
@@ -242,7 +246,7 @@ void CColorCopApp::CloseApplication() {
 
     if (!m_PortableMode) {
         // Ensure folder exists in installed mode
-        CreateDirectory(settingsFolder, NULL);
+        CreateDirectory(settingsFolder.wstring().c_str(), NULL);
     }
 
     CFile file;

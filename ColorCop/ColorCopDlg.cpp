@@ -489,8 +489,9 @@ bool CColorCopDlg::LoadPersistentVariables() {
 
     // Build full bitmap path safely
     auto* pApp = static_cast<CColorCopApp*>(AfxGetApp());
-    CString strBMPFile = pApp->GetSettingsFolder();
-    strBMPFile += BMP_FILE;
+
+    std::filesystem::path bmpPath = pApp->GetSettingsFolder() / BMP_FILE;
+    CString strBMPFile(bmpPath.wstring().c_str());
 
     TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
 
@@ -2271,8 +2272,9 @@ void CColorCopDlg::OnDestroy() {
 
     // save the bitmap
     auto* pApp = static_cast<CColorCopApp*>(AfxGetApp());
-    CString strBMPFile = pApp->GetSettingsFolder();
-    strBMPFile += BMP_FILE;
+
+    std::filesystem::path bmpPath = pApp->GetSettingsFolder() / BMP_FILE;
+    CString strBMPFile(bmpPath.wstring().c_str());
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
     TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
