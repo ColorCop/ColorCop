@@ -74,8 +74,8 @@ class CColorCopDlg : public CDialog {
 
     int WinLocX;
     int WinLocY;
-    int m_MagLevel = kDefaultMagLevel;
-    int m_FloatPrecision = kDefaultFloatPrecision;
+    int m_MagLevel;
+    int m_FloatPrecision;
 
     HBITMAP hBitmap, hBitmapClip, hZoomBitmap;
 

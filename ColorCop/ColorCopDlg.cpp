@@ -122,7 +122,9 @@ CColorCopDlg::CColorCopDlg(CWnd* pParent /*=NULL*/)
       m_hHandCursor(nullptr),
       hIcon_(nullptr),
       pTrayIcon_(nullptr),
-      nTrayNotificationMsg_(0) {
+      nTrayNotificationMsg_(0),
+      m_MagLevel(kDefaultMagLevel),
+      m_FloatPrecision(kDefaultFloatPrecision) {
 
     m_brDarkMode.CreateSolidBrush(RGB(32, 32, 32));
     m_clrText = RGB(220, 220, 220);
