@@ -17,14 +17,20 @@ void CustomFrameController::UpdateButtonRects() {
 
     int btnSize = 32;
     m_closeRect = CRect(width - btnSize, 0, width, m_titleBarHeight);
-    m_minRect   = CRect(width - btnSize*2, 0, width - btnSize, m_titleBarHeight);
+    m_minRect = CRect(width - btnSize * 2, 0, width - btnSize, m_titleBarHeight);
     // m_swatchRect = CRect(width - btnSize*3, 0, width - btnSize*2, m_titleBarHeight);
 }
 
-void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params)
-{
-    if (calcValidRects && params)
+void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params) {
+    if (calcValidRects && params) {
         params->rgrc[0].top += m_titleBarHeight;
+
+        TRACE("SM_CYFRAME=%d  SM_CYBORDER=%d  SM_CYEDGE=%d  SM_CXPADDEDBORDER=%d\n",
+              GetSystemMetrics(SM_CYFRAME),
+              GetSystemMetrics(SM_CYBORDER),
+              GetSystemMetrics(SM_CYEDGE),
+              GetSystemMetrics(SM_CXPADDEDBORDER));
+    }
 }
 
 LRESULT CustomFrameController::OnNcHitTest(CPoint pt) {
@@ -105,15 +111,15 @@ void CustomFrameController::OnNcLButtonDown(UINT hitTest, CPoint) {
 
 void CustomFrameController::OnNcMouseMove(UINT hitTest, CPoint) {
     bool newHoverClose = (hitTest == HTCLOSE);
-    bool newHoverMin   = (hitTest == HTMINBUTTON);
+    bool newHoverMin = (hitTest == HTMINBUTTON);
 
     if (newHoverClose != m_hoverClose || newHoverMin != m_hoverMin) {
         m_hoverClose = newHoverClose;
-        m_hoverMin   = newHoverMin;
+        m_hoverMin = newHoverMin;
         m_owner->SendMessage(WM_NCPAINT);
     }
 
-    TRACKMOUSEEVENT tme = { sizeof(TRACKMOUSEEVENT) };
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT)};
     tme.dwFlags = TME_LEAVE | TME_NONCLIENT;
     tme.hwndTrack = m_owner->GetSafeHwnd();
     TrackMouseEvent(&tme);
