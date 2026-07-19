@@ -1453,16 +1453,14 @@ void CColorCopDlg::OnChangeYellow() {
 
 void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
-    COLORREF temp;
-    CColorDialog dlgcolor;
-    dlgcolor.m_cc.rgbResult = RGB(m_Reddec, m_Greendec, m_Bluedec);
-    dlgcolor.m_cc.Flags = CC_RGBINIT | CC_FULLOPEN;
-    dlgcolor.m_cc.lpCustColors = CustColorBank;  // pointer to custom colors aray
+    COLORREF current = RGB(m_Reddec, m_Greendec, m_Bluedec);
+    CColorDialog dlgcolor(current, CC_RGBINIT | CC_FULLOPEN, this);
+    dlgcolor.m_cc.lpCustColors = CustColorBank;
+
 
     // show the dialog
     if (dlgcolor.DoModal() == IDOK) {
-        // if they pressed OK
-        temp = dlgcolor.GetColor();
+        const COLORREF temp = dlgcolor.GetColor();
 
         m_Reddec = GetRValue(temp);
         m_Greendec = GetGValue(temp);
@@ -1473,7 +1471,6 @@ void CColorCopDlg::OnColorPick() {
         OnconvertRGB();
         OnCopytoclip();
     }
-    // else if they didn't hit OK, do nothing
 
     // just to be safe..
     if (m_isEyedropping || m_isMagnifying) {
