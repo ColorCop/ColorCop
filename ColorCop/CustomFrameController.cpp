@@ -21,6 +21,11 @@ void CustomFrameController::UpdateButtonRects() {
     // m_swatchRect = CRect(width - btnSize*3, 0, width - btnSize*2, m_titleBarHeight);
 }
 
+// Adjusts the non-client layout so the client area begins below our custom
+// title bar. Windows normally reserves space for the standard caption; by
+// shifting rgrc[0].top we replace that region with our own drawing. The TRACE
+// logs system frame metrics to help diagnose any unexpected padding Windows
+// may still apply.
 void CustomFrameController::OnNcCalcSize(BOOL calcValidRects, NCCALCSIZE_PARAMS* params) {
     if (calcValidRects && params) {
         params->rgrc[0].top += m_titleBarHeight;
