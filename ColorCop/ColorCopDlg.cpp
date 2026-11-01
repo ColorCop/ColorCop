@@ -1451,6 +1451,15 @@ void CColorCopDlg::OnChangeYellow() {
     OnCopytoclip();
 }
 
+LRESULT CColorCopDlg::OnNcCalcSize(BOOL /*bCalcValidRects*/, LPARAM /*lParam*/) {
+    // NCCALCSIZE_PARAMS* p = (NCCALCSIZE_PARAMS*) lParam;
+    // Remove padded border
+   // p->rgrc[0].right += GetSystemMetrics(SM_CXPADDEDBORDER);
+   // p->rgrc[0].bottom += GetSystemMetrics(SM_CXPADDEDBORDER);
+
+    return 0;
+}
+
 void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
     COLORREF current = RGB(m_Reddec, m_Greendec, m_Bluedec);

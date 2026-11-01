@@ -374,6 +374,7 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnChangeCyan();
     afx_msg void OnChangeMagenta();
     afx_msg void OnChangeYellow();
+    LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
     afx_msg void OnPopupModeClarionhex();
     afx_msg void OnUpdatePopupModeClarionhex(CCmdUI* pCmdUI);
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
