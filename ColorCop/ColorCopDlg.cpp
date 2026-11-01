@@ -3334,8 +3334,12 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
                     pbih->biSize + pbih->biClrUsed * sizeof(RGBQUAD);
 
     // Copy the BITMAPFILEHEADER into the .BMP file.
-    if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
-                   (LPDWORD) &dwTmp, NULL)) {
+    if (!WriteFile(hf,
+                   &hdr,
+                   sizeof(hdr),
+                   &dwTmp,
+                   nullptr)) {
+        CloseHandle(hf);
         AfxMessageBox(_T("WriteFile failed"));
         return;
     }
@@ -3347,6 +3351,7 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
                        pbih->biClrUsed * sizeof(RGBQUAD),
                    &dwTmp,
                    nullptr)) {
+        CloseHandle(hf);
         AfxMessageBox(_T("WriteFile failed"));
         return;
     }
