@@ -492,10 +492,18 @@ bool CColorCopDlg::LoadPersistentVariables() {
     // Build full bitmap path safely
     auto* pApp = static_cast<CColorCopApp*>(AfxGetApp());
 
-    std::filesystem::path bmpPath = pApp->GetSettingsFolder() / BMP_FILE;
+    std::filesystem::path settingsFolder = pApp->GetSettingsFolder();
+
+    TRACE(_T("Settings folder: %s\n"),
+          CString(settingsFolder.wstring().c_str()));
+    TRACE(_T("BMP_FILE constant: %s\n"), _T(BMP_FILE));
+
+    std::filesystem::path bmpPath = settingsFolder / BMP_FILE;
+
     CString strBMPFile(bmpPath.wstring().c_str());
 
-    TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
+    TRACE(_T("Final BMP path: %s\n"),
+          strBMPFile.GetString());
 
     // Load bitmap from file
     hBitmap = reinterpret_cast<HBITMAP>(
@@ -2275,11 +2283,22 @@ void CColorCopDlg::OnDestroy() {
     // save the bitmap
     auto* pApp = static_cast<CColorCopApp*>(AfxGetApp());
 
-    std::filesystem::path bmpPath = pApp->GetSettingsFolder() / BMP_FILE;
-    CString strBMPFile(bmpPath.wstring().c_str());
+    std::filesystem::path settingsFolder = pApp->GetSettingsFolder();
 
     TRACE(_T("Portable mode: %d\n"), m_PortableMode);
-    TRACE(_T("BMP path: %s\n"), strBMPFile.GetString());
+
+    TRACE(_T("Settings folder: %s\n"),
+          CString(settingsFolder.wstring().c_str()));
+
+    TRACE(_T("BMP_FILE constant: %s\n"),
+          _T(BMP_FILE));
+
+    std::filesystem::path bmpPath = settingsFolder / BMP_FILE;
+
+    CString strBMPFile(bmpPath.wstring().c_str());
+
+    TRACE(_T("Final BMP path: %s\n"),
+          strBMPFile.GetString());
 
     HWND curwindowhwnd = m_hWnd;
 
@@ -3289,6 +3308,8 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     }
 
     // Create the .BMP file.
+    TRACE(_T("Attempting BMP save: %s\n"), pszFile);
+
     hf = CreateFile(pszFile,
                     GENERIC_READ | GENERIC_WRITE,
                     static_cast<DWORD>(0),
@@ -3297,7 +3318,9 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
                     FILE_ATTRIBUTE_NORMAL,
                     (HANDLE) NULL);
     if (hf == INVALID_HANDLE_VALUE) {
-        TRACE(_T("Warning: Could not create BMP file: %s (error=%lu)\n"), pszFile, GetLastError());
+        TRACE(_T("CreateFile failed. File=%s Error=%lu\n"),
+              pszFile,
+              GetLastError());
         return;
     }
 
