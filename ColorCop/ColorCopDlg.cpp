@@ -24,6 +24,7 @@
 #include <cstdlib>    // strtoul, abs
 #include <cstring>    // memcpy
 #include <numbers>    // std::numbers::pi
+#include <vector>
 
 constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
@@ -1400,7 +1401,6 @@ void CColorCopDlg::OnChangeYellow() {
 
 void CColorCopDlg::OnColorPick() {
     // set up the common windows color dialog
-    COLORREF temp;
     CColorDialog dlgcolor;
     dlgcolor.m_cc.rgbResult = RGB(m_Reddec, m_Greendec, m_Bluedec);
     dlgcolor.m_cc.Flags = CC_RGBINIT | CC_FULLOPEN;
@@ -1409,7 +1409,7 @@ void CColorCopDlg::OnColorPick() {
     // show the dialog
     if (dlgcolor.DoModal() == IDOK) {
         // if they pressed OK
-        temp = dlgcolor.GetColor();
+        const COLORREF temp = dlgcolor.GetColor();
 
         m_Reddec = GetRValue(temp);
         m_Greendec = GetGValue(temp);
@@ -3285,23 +3285,20 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     HANDLE hf;               // file handle
     BITMAPFILEHEADER hdr;    // bitmap file-header
     PBITMAPINFOHEADER pbih;  // bitmap info-header
-    LPBYTE lpBits;           // memory pointer
-    DWORD dwTotal;           // total count of bytes
-    DWORD cb;                // incremental count of bytes
-    BYTE* hp;                // byte pointer
     DWORD dwTmp;
 
-    pbih = (PBITMAPINFOHEADER) pbi;
-    lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
+    pbih = &pbi->bmiHeader;
 
-    if (!lpBits) {
-        AfxMessageBox(_T("GlobalAlloc failed"));
-        return;
-    }
+    std::vector<BYTE> bits(pbih->biSizeImage);
 
     // Retrieve the color table (RGBQUAD array) and the bits
     // (array of palette indices) from the DIB.
-    if (!GetDIBits(hDC, hBMP, 0, (WORD) pbih->biHeight, lpBits, pbi,
+    if (!GetDIBits(hDC,
+                   hBMP,
+                   0,
+                   static_cast<WORD>(pbih->biHeight),
+                   bits.data(),
+                   pbi,
                    DIB_RGB_COLORS)) {
         AfxMessageBox(_T("GetDIBits failed"));
         return;
@@ -3344,24 +3341,29 @@ void CColorCopDlg::CreateBMPFile(HWND /*hwnd*/, LPTSTR pszFile,
     }
 
     // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
-    if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) + pbih->biClrUsed * sizeof(RGBQUAD),
-                   (LPDWORD) &dwTmp, (NULL))) {
+    if (!WriteFile(hf,
+                   pbih,
+                   sizeof(BITMAPINFOHEADER) +
+                       pbih->biClrUsed * sizeof(RGBQUAD),
+                   &dwTmp,
+                   nullptr)) {
         AfxMessageBox(_T("WriteFile failed"));
         return;
     }
 
-    // Copy the array of color indices into the .BMP file.
-    dwTotal = cb = pbih->biSizeImage;
-    hp = lpBits;
-    if (!WriteFile(hf, (LPSTR) hp, static_cast<int>(cb), (LPDWORD) &dwTmp, NULL)) {
+    // Write the bitmap image data to the .BMP file.
+    if (!WriteFile(hf,
+                   bits.data(),
+                   pbih->biSizeImage,
+                   &dwTmp,
+                   nullptr)) {
         AfxMessageBox(_T("WriteFile failed"));
     }
+
     // Close the .BMP file.
     if (!CloseHandle(hf)) {
         AfxMessageBox(_T("Could not close BMP file"));
     }
-    // Free memory.
-    GlobalFree((HGLOBAL) lpBits);
 }
 
 void CColorCopDlg::InitDarkModeAPIs() {
