@@ -31,6 +31,13 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v3
 
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+
+      - name: Install dependencies
+        run: |
+          vcpkg install --triplet x86-windows
+
       - name: Install MFC libraries via Visual Studio bootstrapper
         shell: pwsh
         run: |
@@ -78,12 +85,27 @@ jobs:
         run: |
           ./build.cmd
 
+      - name: Run Unit Tests
+        shell: pwsh
+        run: |
+          $testExe = Get-ChildItem -Recurse -Filter ColorCopTests.exe | Select-Object -First 1
+
+          if (-not $testExe) {
+              throw "ColorCopTests.exe not found."
+          }
+
+          Write-Host "Running $($testExe.FullName)"
+          & $testExe.FullName
+
+          if ($LASTEXITCODE -ne 0) {
+              exit $LASTEXITCODE
+          }
+
       - name: Download VC++ Redistributable
         shell: pwsh
         run: |
           $url = "https://aka.ms/vs/17/release/vc_redist.x86.exe"
           $out = "ColorCop/installer/vc_redist.x86.exe"
-
 
           Invoke-WebRequest -Uri $url -OutFile $out
 
