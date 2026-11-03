@@ -31,6 +31,13 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v3
 
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+
+      - name: Install dependencies
+        run: |
+          vcpkg install
+
       - name: Install MFC libraries via Visual Studio bootstrapper
         shell: pwsh
         run: |
