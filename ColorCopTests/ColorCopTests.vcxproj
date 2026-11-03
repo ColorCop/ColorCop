@@ -123,7 +123,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
-        $(SolutionDir)vcpkg_installed\x86-windows\include;
+        $(SolutionDir)vcpkg_installed\x64-windows\include;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
 
