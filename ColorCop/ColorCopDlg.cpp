@@ -14,6 +14,7 @@
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
 #include "GdiHelpers.h"  // RAII wrapper for window device contexts
+#include "WebSafe.h"
 
 // Windows SDK headers (explicit APIs used in this file)
 #include <commctrl.h>
@@ -26,7 +27,6 @@
 #include <numbers>    // std::numbers::pi
 #include <vector>
 
-constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 constexpr int CMYK_MIN = 0;
@@ -3395,10 +3395,7 @@ void CColorCopDlg::InitDarkModeAPIs() {
 
 
 bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
-    // WebSafe colors have each channel as a multiple of WEBSAFE_STEP (51)
-    return (R % WEBSAFE_STEP == 0) &&
-           (G % WEBSAFE_STEP == 0) &&
-           (B % WEBSAFE_STEP == 0);
+    return IsWebsafeColor(R, G, B);
 }
 
 void CColorCopDlg::OnUpdatePopupOptionsStartcursoroneyedropper(CCmdUI* pCmdUI) {

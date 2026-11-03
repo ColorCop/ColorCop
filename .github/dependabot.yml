@@ -2,13 +2,18 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     # maintain workflows in the default location (/.github/workflows/)
-    directory: /
+    directory: "/"
     schedule:
       interval: monthly
 
   - package-ecosystem: pip
-    directory: /
+    directory: "/"
     schedule:
       interval: monthly
     allow:
       - dependency-type: direct
+
+  - package-ecosystem: vcpkg
+    directory: "/"
+    schedule:
+      interval: monthly

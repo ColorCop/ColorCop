@@ -1,6 +1,7 @@
 {
   "name": "colorcop",
   "version": "1.0.0",
+  "builtin-baseline": "c653b77e80d1b61e5f5bd2eabf15bc6ec3bfe7ad",
   "dependencies": [
     "catch2"
   ]
