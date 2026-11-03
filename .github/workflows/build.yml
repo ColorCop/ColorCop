@@ -85,6 +85,13 @@ jobs:
         run: |
           ./build.cmd
 
+      - name: Run Unit Tests
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter ColorCopTests.exe
+
+          .\Release\ColorCopTests.exe
+
       - name: Download VC++ Redistributable
         shell: pwsh
         run: |
