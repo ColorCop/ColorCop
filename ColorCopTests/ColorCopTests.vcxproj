@@ -127,6 +127,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+
       <AdditionalIncludeDirectories>
         $(SolutionDir)vcpkg_installed\x64-windows\include;
         %(AdditionalIncludeDirectories)
@@ -138,6 +139,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>
+        $(SolutionDir)vcpkg_installed\x86-windows\lib;
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>
         Catch2.lib;
         %(AdditionalDependencies)
