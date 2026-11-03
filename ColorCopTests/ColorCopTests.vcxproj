@@ -113,6 +113,11 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>
+        Catch2.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -133,6 +138,11 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>
+        Catch2.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
