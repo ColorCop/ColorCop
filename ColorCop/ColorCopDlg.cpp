@@ -27,7 +27,6 @@
 #include <numbers>    // std::numbers::pi
 #include <vector>
 
-constexpr int WEBSAFE_STEP = 51;
 constexpr int RGB_MIN = 0;
 constexpr int RGB_MAX = 255;
 constexpr int CMYK_MIN = 0;
