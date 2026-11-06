@@ -38,46 +38,17 @@ jobs:
         run: |
           vcpkg install --triplet x86-windows
 
-      - name: Install MFC libraries via Visual Studio bootstrapper
+      - name: Verify MFC installation
         shell: pwsh
         run: |
-          Write-Host "Locating existing Visual Studio installation..."
-
-          # GitHub runners always have VS 2022 Enterprise here
           $vsInstall = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-
-          if (-Not (Test-Path $vsInstall)) {
-            Write-Host "❌ Could not find Visual Studio installation at $vsInstall"
-            exit 1
-          }
-
-          Write-Host "Found Visual Studio at: $vsInstall"
-
-          Write-Host "Downloading Visual Studio Build Tools bootstrapper..."
-          $vsUrl = "https://aka.ms/vs/17/release/vs_buildtools.exe"
-          $vsExe = "$env:TEMP\vs_buildtools.exe"
-          Invoke-WebRequest $vsUrl -OutFile $vsExe
-
-          Write-Host "Installing required Visual Studio components into existing installation..."
-
-          & $vsExe `
-            --quiet --wait --norestart --nocache `
-            --installPath "$vsInstall" `
-            --add Microsoft.VisualStudio.Workload.VCTools `
-            --add Microsoft.VisualStudio.Component.VC.ATLMFC `
-            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-
-          Write-Host "Verifying MFC installation..."
 
           $mfcPath = Get-ChildItem "$vsInstall\VC\Tools\MSVC\*\atlmfc" -ErrorAction SilentlyContinue
 
           if ($mfcPath) {
             Write-Host "✅ MFC libraries found at: $($mfcPath.FullName)"
           } else {
-            Write-Host "❌ MFC installation failed"
-            Write-Host "Contents of MSVC folder:"
-            Get-ChildItem "$vsInstall\VC\Tools\MSVC\" -ErrorAction SilentlyContinue
-            exit 1
+            throw "MFC libraries not found"
           }
 
       - name: Build using build.cmd
