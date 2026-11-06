@@ -95,11 +95,20 @@ jobs:
           }
 
           Write-Host "Running $($testExe.FullName)"
-          & $testExe.FullName
+          & $testExe.FullName `
+          --reporter junit `
+          --out test-results.xml
 
           if ($LASTEXITCODE -ne 0) {
               exit $LASTEXITCODE
           }
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: test-results.xml
 
       - name: Download VC++ Redistributable
         shell: pwsh
