@@ -1330,6 +1330,7 @@ void CColorCopDlg::DisplayColor() {
     return;
 }
 
+// cppcheck-suppress functionStatic
 void CColorCopDlg::OnAbout() {
     CAboutDlg dlg;
     dlg.DoModal();
@@ -2469,6 +2470,7 @@ void CColorCopDlg::OnPopupColorConverttograyscale() {
     return;
 }
 
+// cppcheck-suppress functionStatic
 void CColorCopDlg::OnFileAbout() {
     CAboutDlg dlg;
     dlg.DoModal();
@@ -3393,7 +3395,7 @@ void CColorCopDlg::InitDarkModeAPIs() {
     FreeLibrary(hUxTheme);
 }
 
-
+// cppcheck-suppress functionStatic
 bool CColorCopDlg::isWebsafeColor(int R, int G, int B) {
     return IsWebsafeColor(R, G, B);
 }
