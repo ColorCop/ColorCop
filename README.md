@@ -22,9 +22,9 @@ This repository is focused on development, issue tracking, and contribution work
 1. **Install prerequisites**
    - Windows 10/11
    - Visual Studio 2022 with:
-     - MSVC v143 compiler toolset
+     - MSVC v145 compiler toolset
      - Windows 10/11 SDK
-     - MFC for latest v143 build tools (x86 & x64)
+     - MFC for latest v145 build tools (x86 & x64)
 
 2. **Clone the repository**
 
@@ -149,7 +149,7 @@ See [LICENSE.txt](LICENSE.txt) for the full license text.
 
 - Ensure MFC components are installed in Visual Studio 2022
 - Verify Windows SDK is installed
-- Check that platform toolset is set to v143
+- Check that platform toolset is set to v145
 
 **Runtime Issues:**
 
