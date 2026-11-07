@@ -15,7 +15,7 @@ jobs:
       matrix:
         configuration: [Release]
 
-    runs-on: windows-2022
+    runs-on: windows-2025
 
     permissions:
       contents: write
@@ -35,21 +35,7 @@ jobs:
         uses: lukka/run-vcpkg@v11
 
       - name: Install dependencies
-        run: |
-          vcpkg install --triplet x86-windows
-
-      - name: Verify MFC installation
-        shell: pwsh
-        run: |
-          $vsInstall = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-
-          $mfcPath = Get-ChildItem "$vsInstall\VC\Tools\MSVC\*\atlmfc" -ErrorAction SilentlyContinue
-
-          if ($mfcPath) {
-            Write-Host "✅ MFC libraries found at: $($mfcPath.FullName)"
-          } else {
-            throw "MFC libraries not found"
-          }
+        run: vcpkg install --triplet x86-windows
 
       - name: Build using build.cmd
         shell: pwsh
