@@ -70,9 +70,9 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\idr_main.ico"
-
 IDI_BLANK               ICON                    "res\\icon1.ico"
-
+IDI_EYEDROPPER          ICON                    "res\\eyeyedropper.ico"
+IDI_MAGNIFIER           ICON                    "res\\ico00003.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -110,8 +110,8 @@ BEGIN
     LTEXT           "1 :",IDC_LBL1,5,8,9,8
     LTEXT           "2 :",IDC_LBL2,5,18,9,8
     LTEXT           "3 :",IDC_LBL3,6,29,9,8
-    ICON            IDI_BLANK,IDC_EYELOC,13,56,20,20
-    ICON            IDI_BLANK,IDC_MAGE,13,86,20,20,0,0,HIDC_MAGE
+    ICON            IDI_BLANK,IDC_EYELOC,13,56,32,32
+    ICON            IDI_BLANK,IDC_MAGE,13,86,32,32,0,0,HIDC_MAGE
     CONTROL         "",IDC_CPreview,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,51,5,52,46
     CONTROL         "",IDC_MagWindow,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,52,87,76,64
     CONTROL         "",IDC_Q3,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,108,27,19,9

@@ -339,32 +339,23 @@ BOOL CColorCopDlg::OnInitDialog() {
         m_hBlank = pApp->LoadIcon(IDI_BLANK);
         m_hStandardCursor = pApp->LoadStandardCursor(IDC_ARROW);
 
-        m_Magnifier.SetIcon(m_hMagCursor);
-
         //
-        // Determine the correct eyedropper cursor/icon once
+        // Load actual mouse cursors
         //
-        HCURSOR hEyeIcon = nullptr;
-
         if (m_Appflags & USECROSSHAIR) {
-            // Crosshair mode
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));  // visible icon
-            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);        // actual cursor
-            hEyeIcon = m_hEyeCursor;
+            m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
         } else {
-            // Standard eyedropper mode
             m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);
-
-            if (m_Appflags & Sampling5x5)
-                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_5X5);
-            else if (m_Appflags & Sampling3x3)
-                hEyeIcon = pApp->LoadCursor(IDC_EYEDROPPER_3X3);
-            else
-                hEyeIcon = m_hEyeCursor;
         }
 
-        // Apply final chosen icon
-        m_EyeLoc.SetIcon(hEyeIcon);
+        //
+        // Load UI icons separately from cursors
+        //
+        m_EyeLoc.SetIcon(
+            pApp->LoadIcon(IDI_EYEDROPPER));
+
+        m_Magnifier.SetIcon(
+            pApp->LoadIcon(IDI_MAGNIFIER));
     }
 
     //
@@ -418,7 +409,6 @@ BOOL CColorCopDlg::OnInitDialog() {
 
     return FALSE;  // return TRUE unless you set the focus to a control
 }
-
 
 void CColorCopDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS) {
     if (nIDCtl != IDC_ColorPick && nIDCtl != IDC_EXPAND_DIALOG) {
@@ -1463,31 +1453,24 @@ void CColorCopDlg::OnCopytoclip() {
 void CColorCopDlg::StopCapture() {
     // we don't want to capture anymore, they let up the left mouse button, or hit ESC
     m_isMagnifying = m_isEyedropping = FALSE;
-    SetCursor(m_hStandardCursor);  // put standard cursor back on
 
-    ReleaseCapture();  // let go of the mouse
+    // Restore the standard mouse cursor.
+    SetCursor(m_hStandardCursor);
+
+    // Release mouse capture so normal input processing resumes.
+    ReleaseCapture();
 
     CWinApp* pApp = AfxGetApp();
 
-    // put the icons back in their holders
-    if (m_Appflags & USECROSSHAIR) {
-        m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_MYCROSS));  // location cursor
-    } else {
-        if (m_Appflags & Sampling5x5) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
-        } else if (m_Appflags & Sampling3x3) {
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
-        } else {                                                 // 1x1 or multi
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));  // location cursor
-        }
-    }
-    m_Magnifier.SetIcon(m_hMagCursor);
+    // Restore the UI tool icons after eyedropper/magnifier capture ends
+    m_EyeLoc.SetIcon(
+        pApp->LoadIcon(IDI_EYEDROPPER));
+    m_Magnifier.SetIcon(
+        pApp->LoadIcon(IDI_MAGNIFIER));
 
     bRelativePosition = false;
-    // stop the timer
+    // Stop the magnifier/eyedropper update timer.
     KillTimer(1);
-
-    return;
 }
 
 void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
@@ -2709,8 +2692,10 @@ void CColorCopDlg::ChangeTo1pixelSampling() {
         m_Appflags |= Sampling1;
 
         // Update cursor
-        if (CWinApp* pApp = AfxGetApp())
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER));
+        if (CWinApp* pApp = AfxGetApp()) {
+            m_EyeLoc.SetIcon(
+                pApp->LoadIcon(IDI_EYEDROPPER));
+        }
     }
 
     SetStatusBarText(IDS_1PIXEL, 0);
@@ -2723,8 +2708,10 @@ void CColorCopDlg::ChangeTo3x3Sampling() {
         m_Appflags |= Sampling3x3;
 
         // Update cursor
-        if (CWinApp* pApp = AfxGetApp())
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_3X3));
+        if (CWinApp* pApp = AfxGetApp()) {
+            m_EyeLoc.SetIcon(
+                pApp->LoadIcon(IDI_EYEDROPPER));
+        }
     }
 
     // 3×3 → offset = 1
@@ -2740,8 +2727,10 @@ void CColorCopDlg::ChangeTo5x5Sampling() {
         m_Appflags |= Sampling5x5;
 
         // Update cursor
-        if (CWinApp* pApp = AfxGetApp())
-            m_EyeLoc.SetIcon(pApp->LoadCursor(IDC_EYEDROPPER_5X5));
+        if (CWinApp* pApp = AfxGetApp()) {
+            m_EyeLoc.SetIcon(
+                pApp->LoadIcon(IDI_EYEDROPPER));
+        }
     }
 
     // 5×5 → offset = 2
@@ -3168,17 +3157,17 @@ void CColorCopDlg::OnUpdatePopupOptionsMagnifywhileeyedropping(CCmdUI* pCmdUI) {
 }
 
 void CColorCopDlg::OnPopupOptionsUsecrosshaircursor() {
-    CWinApp* pApp = AfxGetApp();  // get a pointer to the one and only CWinApp
+    CWinApp* pApp = AfxGetApp();
+
     m_Appflags ^= USECROSSHAIR;
 
-    if (m_Appflags & USECROSSHAIR) {
+    if (m_Appflags & USECROSSHAIR)
         m_hEyeCursor = pApp->LoadCursor(IDC_MYCROSS);
-        m_EyeLoc.SetIcon(m_hEyeCursor);
-    } else {
+    else
         m_hEyeCursor = pApp->LoadCursor(IDC_EYEDROPPER);
-        m_EyeLoc.SetIcon(m_hEyeCursor);
-    }
-    return;
+
+    m_EyeLoc.SetIcon(
+        pApp->LoadIcon(IDI_EYEDROPPER));
 }
 
 void CColorCopDlg::OnUpdatePopupOptionsUsecrosshaircursor(CCmdUI* pCmdUI) {
