@@ -6,5 +6,5 @@ description = "Run linters"
 run = [
   "pip install -r requirements.txt",
   "cpplint --recursive --exclude=.git --exclude=ColorCop/resource.h --exclude ColorCop/version.h .",
-  "cppcheck --project=ColorCop/ColorCop.vcxproj --library=mfc.cfg --enable=warning,style,performance,portability --inline-suppr --error-exitcode=0 --check-level=exhaustive",
+  "cppcheck --project=ColorCop/ColorCop.vcxproj --library=mfc.cfg --enable=warning,style,performance,portability --inline-suppr --error-exitcode=1 --check-level=exhaustive",
 ]

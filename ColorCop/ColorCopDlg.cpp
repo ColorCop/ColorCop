@@ -2016,8 +2016,7 @@ void CColorCopDlg::FloatPrecisionDown() {
 }
 
 BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
-    POINT pt;               // cursor location
-    static int repeat = 1;  // repeat key counter
+    POINT pt;  // cursor location
 
     // Forward mouse messages to tooltip control
     if (m_ToolTip.GetSafeHwnd() &&
@@ -2048,6 +2047,8 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
             }
             return TRUE;
         } else if (m_isEyedropping || m_isMagnifying) {
+            constexpr int kCursorRepeat = 1;
+
             CString strStatus;
             CWinApp* pApp;
 
@@ -2070,19 +2071,19 @@ BOOL CColorCopDlg::PreTranslateMessage(MSG* pMsg) {
 
             case VK_RIGHT:
                 if (GetCursorPos(&pt))
-                    SetCursorPos(pt.x + repeat, pt.y);
+                    SetCursorPos(pt.x + kCursorRepeat, pt.y);
                 break;
             case VK_LEFT:
                 if (GetCursorPos(&pt))
-                    SetCursorPos(pt.x - repeat, pt.y);
+                    SetCursorPos(pt.x - kCursorRepeat, pt.y);
                 break;
             case VK_UP:
                 if (GetCursorPos(&pt))
-                    SetCursorPos(pt.x, pt.y - repeat);
+                    SetCursorPos(pt.x, pt.y - kCursorRepeat);
                 break;
             case VK_DOWN:
                 if (GetCursorPos(&pt))
-                    SetCursorPos(pt.x, pt.y + repeat);
+                    SetCursorPos(pt.x, pt.y + kCursorRepeat);
                 break;
             }
         }
@@ -2120,8 +2121,6 @@ void CColorCopDlg::OnChangeHexcolor() {
     } else if (m_Appflags & ModeClarion) {
         // Clarion Starts with 0s
         if (m_Hexcolor.Left(1) == _T("0")) {
-            hexrange = 7;
-            offset = 1;
             ParseClarion(m_Hexcolor);
         }
     } else {  // Delphi hex change
@@ -2969,9 +2968,8 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
         return TRUE;
     }
 
-    // determine which edit control has the focus??
-
-    CWnd* curfocus = GetFocus();  // handle to the window with focus
+    // Identify the currently focused control.
+    const CWnd* curfocus = GetFocus();
 
     if (curfocus == NULL)  // There is nothing with the focus
         return TRUE;       // jump out
