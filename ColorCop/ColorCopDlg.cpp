@@ -2738,9 +2738,6 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* ou
     int offset = m_iSamplingOffset;
     int elements = 0;  // count only valid pixels
 
-    COLORREF crefxy;
-    int xrel, yrel;
-
     // Compute unclamped bounds
     int xmin = point.x - offset;
     int ymin = point.y - offset;
@@ -2752,9 +2749,9 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* ou
         ymin = 0;
 
     // Walk the sampling region and accumulate RGB components.
-    for (xrel = xmin; xrel <= point.x + offset; xrel++) {
-        for (yrel = ymin; yrel <= point.y + offset; yrel++) {
-            crefxy = ::GetPixel(hdc, xrel, yrel);
+    for (int xrel = xmin; xrel <= point.x + offset; ++xrel) {
+        for (int yrel = ymin; yrel <= point.y + offset; ++yrel) {
+            const COLORREF crefxy = ::GetPixel(hdc, xrel, yrel);
 
             // Skip invalid pixels; GetPixel can fail near screen edges or on invalid DCs.
             if (crefxy == CLR_INVALID)
