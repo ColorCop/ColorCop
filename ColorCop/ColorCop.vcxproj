@@ -153,6 +153,8 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SystemTray.h" />
+    <ClInclude Include="version.h" />
+    <ClInclude Include="WebSafe.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\ColorCop.rc2" />
