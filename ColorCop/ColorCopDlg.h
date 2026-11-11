@@ -229,7 +229,6 @@ class CColorCopDlg : public CDialog {
     void ParseClarion(CString inst);
     void FigurePound();
     void TestForExpand();
-    int DecimaltoWebsafe(int originalDec);
     void TestForUpperHex();
     void OnconvertHEX();
     void OnconvertRGB();

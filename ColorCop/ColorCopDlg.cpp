@@ -2497,33 +2497,12 @@ void CColorCopDlg::TestForWebsafe() {
         m_OldBlue = m_Bluedec;
 
         // Snap each component to the nearest web‑safe value
-        m_Reddec = DecimaltoWebsafe(m_Reddec);
-        m_Greendec = DecimaltoWebsafe(m_Greendec);
-        m_Bluedec = DecimaltoWebsafe(m_Bluedec);
+        m_Reddec = DecimalToWebsafe(m_Reddec);
+        m_Greendec = DecimalToWebsafe(m_Greendec);
+        m_Bluedec = DecimalToWebsafe(m_Bluedec);
     }
 }
 
-int CColorCopDlg::DecimaltoWebsafe(int originalDec) {
-    // Convert an RGB component (0–255) to the nearest web‑safe value.
-    // Web‑safe colors use steps of 51: {0, 51, 102, 153, 204, 255}.
-    // We compute how far 'originalDec' is from the nearest step and
-    // round down if the offset is small, otherwise round up.
-    //
-    // Example: 128 → offset 128 % 51 = 26 → round up to 153.
-
-    const int offset = originalDec % WEBSAFE_STEP;
-
-    if (offset == 0) {
-        // Already exactly on a web‑safe boundary
-        return originalDec;
-    }
-
-    // If we're closer to the lower boundary (offset < 25), round down.
-    // Otherwise, round up to the next 51‑multiple.
-    return (offset < WEBSAFE_STEP / 2)
-               ? (originalDec - offset)
-               : (originalDec + (WEBSAFE_STEP - offset));
-}
 
 void CColorCopDlg::OnOptionsOmitsymbol() {
     m_Appflags ^= OmitPound;
