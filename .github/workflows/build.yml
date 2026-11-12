@@ -49,20 +49,8 @@ jobs:
       - name: Run Unit Tests
         shell: pwsh
         run: |
-          $testExe = Get-ChildItem -Recurse -Filter ColorCopTests.exe | Select-Object -First 1
-
-          if (-not $testExe) {
-              throw "ColorCopTests.exe not found."
-          }
-
-          Write-Host "Running $($testExe.FullName)"
-          & $testExe.FullName `
-          --reporter junit `
-          --out test-results.xml
-
-          if ($LASTEXITCODE -ne 0) {
-              exit $LASTEXITCODE
-          }
+          .\ColorCopTests\Release\ColorCopTests.exe --reporter console
+          .\ColorCopTests\Release\ColorCopTests.exe --reporter junit --out test-results.xml
 
       - name: Upload Test Results
         if: always()
