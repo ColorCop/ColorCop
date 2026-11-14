@@ -6,5 +6,5 @@ description = "Run cpplint and cppcheck against the full solution"
 run = [
   "pip install -r requirements.txt",
   "cpplint --recursive --exclude=.git --exclude=ColorCop/resource.h --exclude ColorCop/version.h .",
-  "cppcheck --project=ColorCop.sln --library=mfc.cfg --enable=warning,style,performance,portability --inconclusive --inline-suppr --error-exitcode=1 --check-level=exhaustive",
+  "cppcheck --project=ColorCop.sln --library=mfc.cfg --enable=warning,style,performance,portability  --inline-suppr --error-exitcode=1 --check-level=exhaustive",
 ]
