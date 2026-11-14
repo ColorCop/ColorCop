@@ -1768,117 +1768,10 @@ void CColorCopDlg::OnMouseMove(UINT nFlags, CPoint point) {
         if (::GetCapture() == nullptr) {
             SetCapture();
         } else {
-            ClientToScreen(&point);  // convert to screen coordinates
-        }
-    }
-
-    //
-    // Eyedropper mode
-    //
-    if (m_isEyedropping) {
-        bool skipColor = false;
-
-        if (m_InitialMove) {
-            AdvanceColorHistory();
-            m_InitialMove = FALSE;
+            ClientToScreen(&point);
         }
 
-        WindowDC hdc(nullptr);  // RAII DC
-
-        if (m_Appflags & Sampling1) {
-            const COLORREF crefxy = ::GetPixel(hdc, point.x, point.y);
-
-            if (crefxy != CLR_INVALID) {
-                const COLORREF current = RGB(m_Reddec, m_Greendec, m_Bluedec);
-
-                if (current != crefxy) {
-                    m_Reddec = GetRValue(crefxy);
-                    m_Greendec = GetGValue(crefxy);
-                    m_Bluedec = GetBValue(crefxy);
-
-                    UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
-                } else {
-                    skipColor = true;
-                }
-            }
-        } else {
-            // 3×3, 5×5, or multi‑pixel sampling
-            skipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
-            UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
-        }
-
-        //
-        // Relative‑position mode
-        //
-        if (bRelativePosition) {
-            RelativePointEnd = point;
-
-            int dx = point.x - RelativePoint.x;
-            int dy = point.y - RelativePoint.y;
-
-            const double w = static_cast<double>(dx + 1);
-            const double h = static_cast<double>(dy + 1);
-
-            const double length = std::sqrt(w * w + h * h);
-            const double angle = std::atan2(h, w) * (180.0 / std::numbers::pi);
-
-            strStatus.LoadString(IDS_RELATIVE_POS);
-            strStatus.Format(strStatus, dx, dy, length, angle);
-        } else if ((m_Appflags & Sampling3x3) ||
-                   (m_Appflags & Sampling5x5) ||
-                   (m_Appflags & SamplingMULTI)) {
-            strStatus.LoadString(IDS_EYEDROPPING);
-            strStatus += ", %dx%d";
-            strStatus.Format(strStatus,
-                             point.x,
-                             point.y,
-                             m_iSamplingOffset * 2 + 1,
-                             m_iSamplingOffset * 2 + 1);
-        } else {
-            strStatus.LoadString(IDS_EYEDROPPING);
-
-            if (m_Appflags & DetectWebsafeColors) {
-                CString strWebSafe;
-                strWebSafe.LoadString(
-                    isWebsafeColor(m_Reddec, m_Greendec, m_Bluedec)
-                        ? IDS_WEBSAFE
-                        : IDS_NOT_WEBSAFE);
-                strStatus += strWebSafe;
-            }
-
-            strStatus.Format(CString(strStatus), point.x, point.y);
-        }
-
-        //
-        // Magnify‑while‑eyedropping
-        //
-        if (m_Appflags & MAGWHILEEYEDROP) {
-            if (!m_MagDrop) {
-                m_MagLevel = 4;
-                GetScreenBitmap(point);
-                InvalidateRect(&magrect, FALSE);
-            }
-        }
-
-        SetStatusBarText(strStatus);
-
-        if (!skipColor) {
-            OnconvertRGB();
-        }
-
-        return;
-    }
-
-    //
-    // Magnifier mode
-    //
-    if (m_isMagnifying) {
-        strStatus.LoadString(IDS_MAGNIFYING);
-        strStatus.Format(strStatus, point.x, point.y, m_MagLevel);
-
-        SetStatusBarText(strStatus);
-        GetScreenBitmap(point);
-        InvalidateRect(magrect, FALSE);
+        UpdateCapturePoint(point);
         return;
     }
 
@@ -2956,7 +2849,6 @@ void CColorCopDlg::SetStatusBarText(UINT strResource, int toggleVal) {
     m_StatusBar.SetPaneText(0, text);
 }
 
-
 BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     // first check if we are magnifying...
 
@@ -3011,20 +2903,138 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+// Update the active eyedropper or magnifier using a screen-coordinate cursor
+// position.
+//
+// Both real mouse movement (OnMouseMove) and timer-driven updates call this
+// helper so capture logic lives in one place. This allows animated content
+// to continue updating while the cursor is stationary and avoids duplicating
+// eyedropper/magnifier handling across multiple message handlers.
+//
+// The supplied point must be in screen coordinates.
+void CColorCopDlg::UpdateCapturePoint(CPoint point) {
+    CString strStatus;
+
+    //
+    // Eyedropper mode
+    //
+    if (m_isEyedropping) {
+        bool skipColor = false;
+
+        if (m_InitialMove) {
+            AdvanceColorHistory();
+            m_InitialMove = FALSE;
+        }
+
+        WindowDC hdc(nullptr);  // RAII DC
+
+        if (m_Appflags & Sampling1) {
+            const COLORREF crefxy = ::GetPixel(hdc, point.x, point.y);
+
+            if (crefxy != CLR_INVALID) {
+                const COLORREF current = RGB(m_Reddec, m_Greendec, m_Bluedec);
+
+                if (current != crefxy) {
+                    m_Reddec = GetRValue(crefxy);
+                    m_Greendec = GetGValue(crefxy);
+                    m_Bluedec = GetBValue(crefxy);
+
+                    UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
+                } else {
+                    skipColor = true;
+                }
+            }
+        } else {
+            // 3×3, 5×5, or multi‑pixel sampling
+            skipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
+            UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
+        }
+
+        //
+        // Relative‑position mode
+        //
+        if (bRelativePosition) {
+            RelativePointEnd = point;
+
+            int dx = point.x - RelativePoint.x;
+            int dy = point.y - RelativePoint.y;
+
+            const double w = static_cast<double>(dx + 1);
+            const double h = static_cast<double>(dy + 1);
+
+            const double length = std::sqrt(w * w + h * h);
+            const double angle = std::atan2(h, w) * (180.0 / std::numbers::pi);
+
+            strStatus.LoadString(IDS_RELATIVE_POS);
+            strStatus.Format(strStatus, dx, dy, length, angle);
+        } else if ((m_Appflags & Sampling3x3) ||
+                   (m_Appflags & Sampling5x5) ||
+                   (m_Appflags & SamplingMULTI)) {
+            strStatus.LoadString(IDS_EYEDROPPING);
+            strStatus += ", %dx%d";
+            strStatus.Format(strStatus,
+                             point.x,
+                             point.y,
+                             m_iSamplingOffset * 2 + 1,
+                             m_iSamplingOffset * 2 + 1);
+        } else {
+            strStatus.LoadString(IDS_EYEDROPPING);
+
+            if (m_Appflags & DetectWebsafeColors) {
+                CString strWebSafe;
+                strWebSafe.LoadString(
+                    isWebsafeColor(m_Reddec, m_Greendec, m_Bluedec)
+                        ? IDS_WEBSAFE
+                        : IDS_NOT_WEBSAFE);
+                strStatus += strWebSafe;
+            }
+
+            strStatus.Format(CString(strStatus), point.x, point.y);
+        }
+
+        //
+        // Magnify‑while‑eyedropping
+        //
+        if (m_Appflags & MAGWHILEEYEDROP) {
+            if (!m_MagDrop) {
+                m_MagLevel = 4;
+                GetScreenBitmap(point);
+                InvalidateRect(&magrect, FALSE);
+            }
+        }
+
+        SetStatusBarText(strStatus);
+
+        if (!skipColor) {
+            OnconvertRGB();
+        }
+
+        return;
+    }
+
+    //
+    // Magnifier mode
+    //
+    if (m_isMagnifying) {
+        strStatus.LoadString(IDS_MAGNIFYING);
+        strStatus.Format(strStatus, point.x, point.y, m_MagLevel);
+
+        SetStatusBarText(strStatus);
+        GetScreenBitmap(point);
+        InvalidateRect(magrect, FALSE);
+        return;
+    }
+}
+
 void CColorCopDlg::UpdateCapture() {
-    // The eyedropper and magnifier currently rely on WM_MOUSEMOVE updates.
-    // While capture is active, synthesize a mouse move from the current
-    // cursor position to drive the existing update path.
+    // Update the active eyedropper or magnifier using the current cursor
+    // position. Called from the timer so capture updates continue even when
+    // animated content changes beneath a stationary cursor.
     POINT point;
 
-    if (!GetCursorPos(&point))
-        return;
-
-    ScreenToClient(&point);
-
-    PostMessage(WM_MOUSEMOVE,
-                HTCAPTION,
-                MAKELPARAM(point.x, point.y));
+    if (GetCursorPos(&point)) {
+        UpdateCapturePoint(point);
+    }
 }
 
 void CColorCopDlg::OnTimer(UINT nIDEvent) {
