@@ -331,6 +331,7 @@ class CColorCopDlg : public CDialog {
     void OnUpdateThemeLight(CCmdUI* pCmdUI);
     void OnUpdateThemeDark(CCmdUI* pCmdUI);
     afx_msg BOOL OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt);
+    void UpdateCapture();
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnPopupApplicationHelp();
     afx_msg void OnPopupApplicationEasymove();

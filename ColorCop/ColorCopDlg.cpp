@@ -3011,6 +3011,22 @@ BOOL CColorCopDlg::OnMouseWheel(UINT nFlags, int16_t zDelta, CPoint pt) {
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }
 
+void CColorCopDlg::UpdateCapture() {
+    // The eyedropper and magnifier currently rely on WM_MOUSEMOVE updates.
+    // While capture is active, synthesize a mouse move from the current
+    // cursor position to drive the existing update path.
+    POINT point;
+
+    if (!GetCursorPos(&point))
+        return;
+
+    ScreenToClient(&point);
+
+    PostMessage(WM_MOUSEMOVE,
+                HTCAPTION,
+                MAKELPARAM(point.x, point.y));
+}
+
 void CColorCopDlg::OnTimer(UINT nIDEvent) {
     // this allows animations to be magnified and eyedropped
     CString strStatus;
@@ -3018,12 +3034,7 @@ void CColorCopDlg::OnTimer(UINT nIDEvent) {
     case 1:
 
         if ((m_isMagnifying) || (m_isEyedropping)) {
-            POINT point;
-
-            if (GetCursorPos(&point)) {
-                ScreenToClient(&point);
-                PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
-            }
+            UpdateCapture();
         }
         break;
     case 2:
