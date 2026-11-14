@@ -15,9 +15,6 @@ concurrency:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration: [Release]
 
     runs-on: windows-2025
 
@@ -42,12 +39,9 @@ jobs:
         run: vcpkg install --triplet x86-windows
 
       - name: Build using build.cmd
-        shell: pwsh
-        run: |
-          ./build.cmd
+        run: ./build.cmd
 
       - name: Run Unit Tests
-        shell: pwsh
         run: |
           .\ColorCopTests\Release\ColorCopTests.exe --reporter console
           .\ColorCopTests\Release\ColorCopTests.exe --reporter junit --out test-results.xml
@@ -60,7 +54,6 @@ jobs:
           path: test-results.xml
 
       - name: Download VC++ Redistributable
-        shell: pwsh
         run: |
           $url = "https://aka.ms/vs/17/release/vc_redist.x86.exe"
           $out = "ColorCop/installer/vc_redist.x86.exe"
@@ -78,14 +71,12 @@ jobs:
 
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.9
-        if: matrix.configuration == 'Release'
         with:
           path: ColorCop\installer\colorcop.iss
           options: /O+
 
-      - name: Publish Release Artifacts
+      - name: Upload Installer Artifact
         uses: actions/upload-artifact@v7
-        if: matrix.configuration == 'Release'
         with:
           name: installers
           path: .\ColorCop\output
@@ -98,8 +89,6 @@ jobs:
           New-Item -ItemType Directory -Path "Release-standalone"
 
           Copy-Item -Path "ColorCop\Release\*.exe" -Destination "Release-standalone"
-
-
           Copy-Item -Path "ColorCop\ReadMe.txt" -Destination "Release-standalone"
           Copy-Item -Path "LICENSE.txt" -Destination "Release-standalone"
           Copy-Item -Path "ColorCop\packaging\*.chm" -Destination "Release-standalone"
@@ -107,11 +96,9 @@ jobs:
           Set-Location "Release-standalone"
 
           Compress-Archive -Path "*" -DestinationPath "../colorcop.zip" -Force
-        shell: pwsh
 
-      - name: Publish Release Artifacts
+      - name: Upload Zip Artifact
         uses: actions/upload-artifact@v7
-        if: matrix.configuration == 'Release'
         with:
           name: colorcop-zip
           path: colorcop.zip
