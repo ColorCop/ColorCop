@@ -2626,32 +2626,52 @@ void CColorCopDlg::OnUpdatePopupSampling3by3average(CCmdUI* pCmdUI) {
 // Compute the average RGB value of a square region centered on `point`.
 bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* outBlue, CPoint point) {
     // The region size is (2 * m_iSamplingOffset + 1) on each side.
-    int64_t reddec = 0, greendec = 0, bluedec = 0;  // 64-bit to safely accumulate many pixel values
-    int offset = m_iSamplingOffset;
+    int64_t redTotal = 0;
+    int64_t greenTotal = 0;
+    int64_t blueTotal = 0;
+
+    const int offset = m_iSamplingOffset;
     int elements = 0;  // count only valid pixels
 
-    // Compute unclamped bounds
-    int xmin = point.x - offset;
-    int ymin = point.y - offset;
+    // Clamp sampling to the virtual desktop so multi-monitor
+    // configurations with negative coordinates work correctly.
+    const int virtualLeft =
+        GetSystemMetrics(SM_XVIRTUALSCREEN);
+    const int virtualTop =
+        GetSystemMetrics(SM_YVIRTUALSCREEN);
 
-    // Clamp lower bounds manually (avoids std::max(int, uint16_t) ambiguity)
-    if (xmin < 0)
-        xmin = 0;
-    if (ymin < 0)
-        ymin = 0;
+    const int virtualRight =
+        virtualLeft +
+        GetSystemMetrics(SM_CXVIRTUALSCREEN) - 1;
+
+    const int virtualBottom =
+        virtualTop +
+        GetSystemMetrics(SM_CYVIRTUALSCREEN) - 1;
+
+    const int xmin =
+        std::max<int>(point.x - offset, virtualLeft);
+
+    const int ymin =
+        std::max<int>(point.y - offset, virtualTop);
+
+    const int xmax =
+        std::min<int>(point.x + offset, virtualRight);
+
+    const int ymax =
+        std::min<int>(point.y + offset, virtualBottom);
 
     // Walk the sampling region and accumulate RGB components.
-    for (int xrel = xmin; xrel <= point.x + offset; ++xrel) {
-        for (int yrel = ymin; yrel <= point.y + offset; ++yrel) {
+    for (int xrel = xmin; xrel <= xmax; ++xrel) {
+        for (int yrel = ymin; yrel <= ymax; ++yrel) {
             const COLORREF crefxy = ::GetPixel(hdc, xrel, yrel);
 
             // Skip invalid pixels; GetPixel can fail near screen edges or on invalid DCs.
             if (crefxy == CLR_INVALID)
                 continue;
 
-            reddec += GetRValue(crefxy);
-            greendec += GetGValue(crefxy);
-            bluedec += GetBValue(crefxy);
+            redTotal += GetRValue(crefxy);
+            greenTotal += GetGValue(crefxy);
+            blueTotal += GetBValue(crefxy);
             ++elements;  // count only valid samples
         }
     }
@@ -2662,16 +2682,18 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* ou
     }
 
     // Convert accumulated totals into average RGB values.
-    reddec /= elements;
-    greendec /= elements;
-    bluedec /= elements;
+    redTotal /= elements;
+    greenTotal /= elements;
+    blueTotal /= elements;
 
     // Check whether the averaged color differs from the previously stored sample.
     // This avoids unnecessary updates when the sampled color hasn't changed.
-    if (reddec != m_Reddec || greendec != m_Greendec || bluedec != m_Bluedec) {
-        *outRed = static_cast<int>(reddec);
-        *outGreen = static_cast<int>(greendec);
-        *outBlue = static_cast<int>(bluedec);
+    if (redTotal != m_Reddec ||
+        greenTotal != m_Greendec ||
+        blueTotal != m_Bluedec) {
+        *outRed = static_cast<int>(redTotal);
+        *outGreen = static_cast<int>(greenTotal);
+        *outBlue = static_cast<int>(blueTotal);
         return false;  // color changed
     }
 
