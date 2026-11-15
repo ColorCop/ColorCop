@@ -231,6 +231,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SamplingBoundsTests.cpp" />
     <ClCompile Include="WebSafeTests.cpp" />
     <ClCompile Include="TestMain.cpp" />
   </ItemGroup>

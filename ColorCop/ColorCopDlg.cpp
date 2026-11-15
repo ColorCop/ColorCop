@@ -14,6 +14,7 @@
 #include "Label.h"       // used for the links in the AboutDlg
 #include "SystemTray.h"  // used to minimize to the systray
 #include "GdiHelpers.h"  // RAII wrapper for window device contexts
+#include "SamplingBounds.h"
 #include "WebSafe.h"
 
 // Windows SDK headers (explicit APIs used in this file)
@@ -2648,21 +2649,18 @@ bool CColorCopDlg::AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* ou
         virtualTop +
         GetSystemMetrics(SM_CYVIRTUALSCREEN) - 1;
 
-    const int xmin =
-        std::max<int>(point.x - offset, virtualLeft);
-
-    const int ymin =
-        std::max<int>(point.y - offset, virtualTop);
-
-    const int xmax =
-        std::min<int>(point.x + offset, virtualRight);
-
-    const int ymax =
-        std::min<int>(point.y + offset, virtualBottom);
+    const SampleBounds bounds = ComputeSampleBounds(
+        point.x,
+        point.y,
+        offset,
+        virtualLeft,
+        virtualTop,
+        virtualRight,
+        virtualBottom);
 
     // Walk the sampling region and accumulate RGB components.
-    for (int xrel = xmin; xrel <= xmax; ++xrel) {
-        for (int yrel = ymin; yrel <= ymax; ++yrel) {
+    for (int xrel = bounds.xmin; xrel <= bounds.xmax; ++xrel) {
+        for (int yrel = bounds.ymin; yrel <= bounds.ymax; ++yrel) {
             const COLORREF crefxy = ::GetPixel(hdc, xrel, yrel);
 
             // Skip invalid pixels; GetPixel can fail near screen edges or on invalid DCs.
