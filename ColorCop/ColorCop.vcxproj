@@ -148,6 +148,7 @@
     <ClInclude Include="ColorCopDlg.h" />
     <ClInclude Include="DarkStatusBar.h" />
     <ClInclude Include="Defaults.h" />
+    <ClInclude Include="SamplingBounds.h" />
     <ClInclude Include="GdiHelpers.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Resource.h" />
