@@ -41,10 +41,11 @@ jobs:
       - name: Build using build.cmd
         run: ./build.cmd
 
-      - name: Run Unit Tests
-        run: |
-          .\ColorCopTests\Release\ColorCopTests.exe --reporter console
-          .\ColorCopTests\Release\ColorCopTests.exe --reporter junit --out test-results.xml
+      - name: Run Catch2 Tests
+        run: >
+          .\ColorCopTests\Release\ColorCopTests.exe
+          --reporter console
+          --reporter junit::out=test-results.xml
 
       - name: Upload Test Results
         if: always()
