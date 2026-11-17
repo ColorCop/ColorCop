@@ -1521,7 +1521,8 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
         SetCapture();
         m_EyeLoc.SetIcon(m_hBlank);
         SetCursor(m_hEyeCursor);
-        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
+        // Sample immediately using the current cursor position
+        UpdateCapture();
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
@@ -1531,7 +1532,8 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
         SetCapture();
         m_EyeLoc.SetIcon(m_hBlank);
         SetCursor(m_hEyeCursor);
-        PostMessage(WM_MOUSEMOVE, HTCAPTION, MAKELPARAM(point.x, point.y));
+        // Sample immediately using the current cursor position
+        UpdateCapture();
         return;
 
     } else if (pWnd && pWnd->GetSafeHwnd() == m_MagPlus.GetSafeHwnd()) {
