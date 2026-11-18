@@ -233,6 +233,7 @@
   <ItemGroup>
     <ClCompile Include="SamplingBoundsTests.cpp" />
     <ClCompile Include="WebSafeTests.cpp" />
+    <ClCompile Include="ColorHistoryTests.cpp" />
     <ClCompile Include="TestMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

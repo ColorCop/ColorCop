@@ -242,8 +242,8 @@ class CColorCopDlg : public CDialog {
     bool LoadPersistentVariables();
     bool AveragePixelArea(HDC hdc, int* outRed, int* outGreen, int* outBlue, CPoint point);
     void SetStatusBarText(LPCTSTR statusText);
-    void AdvanceColorHistory();
     void GetHistoryColor(int Cindex);
+    void AdvanceColorHistory();
     HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
     bool isWebsafeColor(int R, int G, int B);
     BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
