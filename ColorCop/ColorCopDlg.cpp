@@ -15,6 +15,7 @@
 #include "SystemTray.h"  // used to minimize to the systray
 #include "GdiHelpers.h"  // RAII wrapper for window device contexts
 #include "SamplingBounds.h"
+#include "ColorHistory.h"
 #include "WebSafe.h"
 
 // Windows SDK headers (explicit APIs used in this file)
@@ -1875,19 +1876,9 @@ void CColorCopDlg::GetHistoryColor(int Cindex) {
 }
 
 void CColorCopDlg::AdvanceColorHistory() {
-    // this function will advance the colors in the color history..
-    // the 7th color is lost, the first color is the current color
-    // which is soon to be the older color.
-
-    // if the new color is the same as the last color, don't switch.
-    if (ColorHistory[0] == (COLORREF) RGB(m_Reddec, m_Greendec, m_Bluedec))
-        return;
-
-    for (int sk = 6; sk > 0; sk--) {
-        ColorHistory[sk] = ColorHistory[sk - 1];
-    }
-
-    ColorHistory[0] = RGB(m_Reddec, m_Greendec, m_Bluedec);
+    PushColorHistory(
+        ColorHistory,
+        RGB(m_Reddec, m_Greendec, m_Bluedec));
 }
 
 void CColorCopDlg::FloatPrecisionUp() {
@@ -2534,10 +2525,10 @@ void CColorCopDlg::OnRButtonDown(UINT nFlags, CPoint point) {
         }
         return;
     } else if (m_isEyedropping) {  // right clicked while eydropping
-        AdvanceColorHistory();     // push color to color history
+        AdvanceColorHistory();
         return;
     } else if (pWnd && pWnd->GetSafeHwnd() == m_ColorPalette.GetSafeHwnd()) {
-        AdvanceColorHistory();  // push color to color history
+        AdvanceColorHistory();
         return;
     }
 
