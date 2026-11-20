@@ -556,8 +556,8 @@ void CColorCopDlg::SetupWindowRects() {
 
     const int magButtonSize =
         MulDiv(kDefaultMagButtonSize,
-            dpi,
-            kDefaultDpi);
+               dpi,
+               kDefaultDpi);
 
     // setup color window rect based on the Static box
     HWND temphandle;
@@ -1607,21 +1607,17 @@ void CColorCopDlg::OnLButtonDown(UINT nFlags, CPoint point) {
         return;
 
     } else {  //  left mouse button down somewhere else in the app
-        // To allow the user to drag the window by left clicking anywhere
-        // in the app, we need to fake windows into thinking the user
-        // has left clicked on the  the caption, Note: does not maximize on double click
-        // from MSDN:
-        //
-        //        The WM_NCLBUTTONDOWN message is posted when the user presses
-        //        the left mouse button while the cursor is within the nonclient
-        //        area of a window.
-
+        // EasyMove: treat a client-area click as a title-bar click so
+        // Windows enters its standard window-drag move loop.
         if (m_Appflags & EasyMove) {  // one click move is enabled
-            PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
             SetCursor(m_hMoveCursor);
+
+            SendMessage(
+                WM_NCLBUTTONDOWN,
+                HTCAPTION,
+                0);
         }
     }
-    return;
 }
 
 void CColorCopDlg::OnLButtonDblClk(UINT nFlags, CPoint point) {
