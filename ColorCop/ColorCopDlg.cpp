@@ -38,8 +38,12 @@ constexpr int CMYK_MAX = 100;
 constexpr int kMinZoom = 1;
 // Maximum zoom level for the magnifier (16x)
 constexpr int kMaxZoom = 16;
-// Magnifier button size in pixels (square)
-constexpr int kMagButtonSize = 11;
+
+// Windows baseline DPI (100% scaling).
+constexpr UINT kDefaultDpi = 96;
+
+// Magnifier button size at the baseline DPI.
+constexpr int kDefaultMagButtonSize = 11;
 
 static const UINT kStatusIndicators[] = {
     ID_SEPARATOR  // single pane
@@ -548,6 +552,13 @@ bool CColorCopDlg::LoadPersistentVariables() {
 }
 
 void CColorCopDlg::SetupWindowRects() {
+    const UINT dpi = GetDpiForWindow(GetSafeHwnd());
+
+    const int magButtonSize =
+        MulDiv(kDefaultMagButtonSize,
+            dpi,
+            kDefaultDpi);
+
     // setup color window rect based on the Static box
     HWND temphandle;
     CWnd::GetDlgItem(IDC_CPreview, &temphandle);
@@ -627,16 +638,16 @@ void CColorCopDlg::SetupWindowRects() {
     ::GetWindowRect(temphandle, &magplus);
     CWnd::ScreenToClient(&magplus);
 
-    magplus.right = magplus.left + kMagButtonSize;
-    magplus.bottom = magplus.top + kMagButtonSize;
+    magplus.right = magplus.left + magButtonSize;
+    magplus.bottom = magplus.top + magButtonSize;
 
     // Setup magnify minus level rect
     CWnd::GetDlgItem(IDC_MAG_MINUS, &temphandle);
     ::GetWindowRect(temphandle, &magminus);
     CWnd::ScreenToClient(&magminus);
 
-    magminus.right = magminus.left + kMagButtonSize;
-    magminus.bottom = magminus.top + kMagButtonSize;
+    magminus.right = magminus.left + magButtonSize;
+    magminus.bottom = magminus.top + magButtonSize;
 
 
     CRect recttemp;
