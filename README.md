@@ -106,8 +106,13 @@ git tag --list
 ### Project Structure
 
 - `ColorCop.cpp/h` - Main application class
-- `ColorCopDlg.cpp/h` - Main dialog implementation
+- `ColorCopDlg.cpp/h` - Main dialog implementation, color sampling, magnifier, and UI logic
 - `SystemTray.cpp/h` - System tray functionality
+- `ColorHistory.h` - Color history management helpers
+- `SamplingBounds.h` - Multi-monitor sampling boundary calculations
+- `WebSafe.h` - Web-safe color detection and conversion helpers
+- `ColorCopTests/` - Unit tests for standalone logic
+- `.github/workflows/` - CI/CD, build, linting, and publishing workflows
 - `Res/` - Application resources and icons
 
 ## Code Linting
