@@ -283,6 +283,7 @@ class CColorCopDlg : public CDialog {
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnChangeHexcolor();
     afx_msg void OnDestroy();
+    afx_msg LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
     afx_msg void OnFileExit();
     afx_msg void OnColorReverse();
     afx_msg void OnOptionsAlwaysontop();
