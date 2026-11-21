@@ -47,6 +47,18 @@ jobs:
           --reporter console
           --reporter junit::out=test-results.xml
 
+      - name: Install OpenCppCoverage
+        run: choco install opencppcoverage -y
+
+      - name: Run Coverage
+        shell: cmd
+        run: |
+          OpenCppCoverage ^
+            --export_type=cobertura:coverage.xml ^
+            --sources=ColorCop ^
+            -- ^
+            ColorCopTests\Release\ColorCopTests.exe
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v7
