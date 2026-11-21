@@ -240,6 +240,10 @@ BEGIN_MESSAGE_MAP(CColorCopDlg, CDialog)
     ON_COMMAND(ID_POPUP_APPLICATION_MINIMIZETOSYSTEMTRAYONSTART, OnPopupApplicationMinimizetosystemtrayonstart)
     ON_UPDATE_COMMAND_UI(ID_POPUP_APPLICATION_MINIMIZETOSYSTEMTRAYONSTART, OnUpdatePopupApplicationMinimizetosystemtrayonstart)
     ON_WM_CAPTURECHANGED()
+
+    // Use ON_MESSAGE for compatibility with older MFC versions.
+    // Some CI environments do not provide ON_WM_DPICHANGED().
+    ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
     ON_COMMAND(ID_POPUP_COLOR_CONVERTTOGRAYSCALE, OnPopupColorConverttograyscale)
     ON_COMMAND(ID_POPUP_APPLICATION_ALLOWMULTIPLEINSTANCES, OnPopupApplicationAllowmultipleinstances)
     ON_UPDATE_COMMAND_UI(ID_POPUP_APPLICATION_ALLOWMULTIPLEINSTANCES, OnUpdatePopupApplicationAllowmultipleinstances)
@@ -414,6 +418,41 @@ BOOL CColorCopDlg::OnInitDialog() {
     }
 
     return FALSE;  // return TRUE unless you set the focus to a control
+}
+
+// Handle monitor DPI changes.
+//
+// When ColorCop is dragged between monitors with different scaling factors,
+// Windows sends WM_DPICHANGED and provides a recommended window rectangle.
+// Apply the suggested bounds, rebuild cached layout rectangles, and
+// invalidate the dialog so DPI-scaled UI elements are redrawn.
+LRESULT CColorCopDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam) {
+    const UINT dpiX = LOWORD(wParam);
+    const UINT dpiY = HIWORD(wParam);
+
+    const RECT* suggestedRect =
+        reinterpret_cast<const RECT*>(lParam);
+
+    if (suggestedRect != nullptr) {
+        SetWindowPos(
+            nullptr,
+            suggestedRect->left,
+            suggestedRect->top,
+            suggestedRect->right - suggestedRect->left,
+            suggestedRect->bottom - suggestedRect->top,
+            SWP_NOZORDER | SWP_NOACTIVATE);
+    }
+
+    TRACE(
+        _T("WM_DPICHANGED: dpiX=%u dpiY=%u\n"),
+        dpiX,
+        dpiY);
+
+    SetupWindowRects();
+
+    Invalidate(TRUE);
+
+    return 0;
 }
 
 void CColorCopDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS) {
