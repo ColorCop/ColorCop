@@ -42,6 +42,12 @@ void CDarkStatusBar::OnPaint() {
 
         dc.SetTextColor(m_clrText);
         dc.SetBkColor(m_clrBack);
-        dc.DrawText(text, part, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+
+        CFont* pOldFont = dc.SelectObject(GetFont());
+
+        dc.DrawText(text,
+                    part,
+                    DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS);
+        dc.SelectObject(pOldFont);
     }
 }
