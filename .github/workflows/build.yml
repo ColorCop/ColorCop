@@ -53,7 +53,7 @@ jobs:
       - name: Run Coverage
         shell: cmd
         run: |
-          OpenCppCoverage ^
+          "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" ^
             --export_type=cobertura:coverage.xml ^
             --sources=ColorCop ^
             -- ^
