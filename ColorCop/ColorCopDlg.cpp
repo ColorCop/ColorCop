@@ -2162,32 +2162,6 @@ void CColorCopDlg::ParseHTML(CString inst) {
     return;
 }
 
-BOOL CColorCopDlg::GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath) {
-    // pShellFolder can be one of the following
-    // AppData, Cache, Cookies, Desktop, Favorites, Fonts, History, NetHood,
-    // Personal, Printhood, Programs, Recent, SendTo, Start Menu, Startup,
-    // Templates, ShellNew
-    DWORD rc;
-    DWORD length = MAX_PATH;
-    DWORD type = REG_SZ;
-    HKEY hkey;
-
-    rc = RegOpenKeyEx(HKEY_CURRENT_USER,
-                      _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"),
-                      0, KEY_READ, &hkey);
-
-    if (rc == ERROR_SUCCESS) {
-        rc = RegQueryValueEx(hkey, pShellFolder, NULL, &type,
-                             reinterpret_cast<BYTE*>(pShellPath), &length);
-        RegCloseKey(hkey);
-    }
-
-    if (rc == ERROR_SUCCESS)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 void CColorCopDlg::OnDestroy() {
     // Capture and store the dialog’s last on-screen position so it can be
     // restored the next time the application starts.

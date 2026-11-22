@@ -246,7 +246,6 @@ class CColorCopDlg : public CDialog {
     void AdvanceColorHistory();
     HBITMAP CopyBitmap(HBITMAP hBitmapSrc);
     bool isWebsafeColor(int R, int G, int B);
-    BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
     void SetStatusBarText(UINT strResource, int toggleVal);
     void CalcColorPal();
     double shiftHue(double hue);
