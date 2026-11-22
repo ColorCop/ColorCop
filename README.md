@@ -115,21 +115,25 @@ git tag --list
 - `.github/workflows/` - CI/CD, build, linting, and publishing workflows
 - `Res/` - Application resources and icons
 
+## Testing
+
+Run the portable unit test suite:
+
+```sh
+just test
+```
+
+This command configures the CMake build, compiles the test executable, and runs the Catch2 test suite.
+
 ## Code Linting
 
-This project uses [cpplint](https://github.com/cpplint/cpplint) to enforce C++ style guidelines.
-
-**Install:**
+Run the project's linting checks:
 
 ```sh
-pip install cpplint
+just lint
 ```
 
-**Run linting:**
-
-```sh
-mise lint
-```
+This command installs the required Python dependencies, runs cpplint style checks, and executes cppcheck static analysis across the codebase.
 
 ### Contributing
 
