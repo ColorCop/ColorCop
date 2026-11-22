@@ -16,6 +16,7 @@
 #include "GdiHelpers.h"  // RAII wrapper for window device contexts
 #include "SamplingBounds.h"
 #include "ColorHistory.h"
+#include "ColorConversions.h"
 #include "WebSafe.h"
 
 // Windows SDK headers (explicit APIs used in this file)
@@ -823,37 +824,6 @@ void CColorCopDlg::OnPaint() {
     }
 }
 
-void CColorCopDlg::ComputeHSV(int red, int green, int blue,
-                              double& outH, double& outS, double& outV) {
-    double rf = red / RGB_MAX_D;
-    double gf = green / RGB_MAX_D;
-    double bf = blue / RGB_MAX_D;
-
-    double maxv = std::max({rf, gf, bf});
-    double minv = std::min({rf, gf, bf});
-    double delta = maxv - minv;
-
-    // Value (0–100)
-    outV = maxv * 100.0;
-
-    // Saturation (0–100)
-    outS = (maxv == 0.0) ? 0.0 : (delta / maxv) * 100.0;
-
-    // Hue (0–360)
-    if (delta <= HSL_EPSILON) {
-        outH = 0.0;
-    } else if (maxv == rf) {
-        outH = 60.0 * fmod(((gf - bf) / delta), 6.0);
-    } else if (maxv == gf) {
-        outH = 60.0 * (((bf - rf) / delta) + HUE_SECTOR_GREEN);
-    } else {
-        outH = 60.0 * (((rf - gf) / delta) + HUE_SECTOR_BLUE);
-    }
-
-    if (outH < 0.0)
-        outH += 360.0;
-}
-
 void CColorCopDlg::RecalcZoom() {
     ASSERT(m_MagLevel >= kMinZoom && m_MagLevel <= kMaxZoom);
 
@@ -936,12 +906,15 @@ void CColorCopDlg::OnconvertRGB() {
         m_Hexcolor.Format(_T("0x00%.2x%.2x%.2x"), m_Bluedec, m_Greendec, m_Reddec);
     }
 
-    ComputeHSV(m_Reddec,
-               m_Greendec,
-               m_Bluedec,
-               m_HSV_H,
-               m_HSV_S,
-               m_HSV_V);
+    const auto hsv =
+        RGBToHSV(
+            m_Reddec,
+            m_Greendec,
+            m_Bluedec);
+
+    m_HSV_H = hsv.h;
+    m_HSV_S = hsv.s;
+    m_HSV_V = hsv.v;
     CString hsvTip;
     hsvTip.Format(_T("H: %.0f\xB0\nS: %.0f%%\nV: %.0f%%"),
                   m_HSV_H, m_HSV_S, m_HSV_V);
@@ -1158,35 +1131,6 @@ void CColorCopDlg::HSLtoRGB(double H, double S, double L) {
         }
         // clang-format on
     }
-}
-
-void CColorCopDlg::UpdateCMYKFromRGB(int red, int green, int blue) {
-    // Normalize RGB to [0,1]
-    const double rNorm = static_cast<double>(red) / RGB_MAX_D;
-    const double gNorm = static_cast<double>(green) / RGB_MAX_D;
-    const double bNorm = static_cast<double>(blue) / RGB_MAX_D;
-
-    // Compute K (black)
-    const double maxRGB = std::max({rNorm, gNorm, bNorm});
-    const double K = 1.0 - maxRGB;
-
-    double C = 0.0;
-    double M = 0.0;
-    double Y = 0.0;
-
-    if (K < 1.0) {
-        const double denom = 1.0 - K;
-        C = (1.0 - rNorm - K) / denom;
-        M = (1.0 - gNorm - K) / denom;
-        Y = (1.0 - bNorm - K) / denom;
-    }
-
-    // Convert CMYK to 0–100 integer percentage range
-
-    m_Cyan = static_cast<int>(std::round(C * CMYK_MAX));
-    m_Magenta = static_cast<int>(std::round(M * CMYK_MAX));
-    m_Yellow = static_cast<int>(std::round(Y * CMYK_MAX));
-    m_Black = static_cast<int>(std::round(K * CMYK_MAX));
 }
 
 void CColorCopDlg::RGBtoHSL(double R, double G, double B) {
@@ -2972,15 +2916,40 @@ void CColorCopDlg::UpdateCapturePoint(CPoint point) {
                     m_Greendec = GetGValue(crefxy);
                     m_Bluedec = GetBValue(crefxy);
 
-                    UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
+                    const auto cmyk =
+                        RGBToCMYK(
+                            m_Reddec,
+                            m_Greendec,
+                            m_Bluedec);
+
+                    m_Cyan = cmyk.c;
+                    m_Magenta = cmyk.m;
+                    m_Yellow = cmyk.y;
+                    m_Black = cmyk.k;
                 } else {
                     skipColor = true;
                 }
             }
         } else {
             // 3×3, 5×5, or multi‑pixel sampling
-            skipColor = AveragePixelArea(hdc, &m_Reddec, &m_Greendec, &m_Bluedec, point);
-            UpdateCMYKFromRGB(m_Reddec, m_Greendec, m_Bluedec);
+            skipColor =
+                AveragePixelArea(
+                    hdc,
+                    &m_Reddec,
+                    &m_Greendec,
+                    &m_Bluedec,
+                    point);
+
+            const auto cmyk =
+                RGBToCMYK(
+                    m_Reddec,
+                    m_Greendec,
+                    m_Bluedec);
+
+            m_Cyan = cmyk.c;
+            m_Magenta = cmyk.m;
+            m_Yellow = cmyk.y;
+            m_Black = cmyk.k;
         }
 
         //
