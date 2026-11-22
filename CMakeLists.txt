@@ -11,7 +11,9 @@ add_executable(ColorCopTests
     ColorCopTests/TestMain.cpp
     ColorCopTests/WebSafeTests.cpp
     ColorCopTests/SamplingBoundsTests.cpp
+    ColorCopTests/ColorConversionTests.cpp
     ColorCopTests/ColorHistoryTests.cpp
+
 )
 
 target_include_directories(ColorCopTests PRIVATE

@@ -215,8 +215,6 @@ class CColorCopDlg : public CDialog {
     CSystemTray* pTrayIcon_;
     int nTrayNotificationMsg_;
     // end
-    void ComputeHSV(int r, int g, int b,
-                    double& outH, double& outS, double& outV);
 
     void FloatPrecisionUp();
     void FloatPrecisionDown();
@@ -262,7 +260,6 @@ class CColorCopDlg : public CDialog {
     PBITMAPINFO CreateBitmapInfoStruct(HWND hwnd, HBITMAP hBmp);
     void CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
     void InitDarkModeAPIs();
-    void UpdateCMYKFromRGB(int red, int green, int blue);
     void ChangeColorSpace(bool bRGB);
 
     // Generated message map functions
