@@ -37,7 +37,6 @@ class CColorCopApp : public CWinApp {
      protected:
     void CloseApplication();
     void LoadDefaultSettings();
-    BOOL GetShellFolderPath(LPCTSTR pShellFolder, LPTSTR pShellPath);
     void ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags);
     void ClipOrCenterRectToMonitor(LPRECT prc, UINT flags);
     bool InstanceRunning();
