@@ -119,16 +119,10 @@ git tag --list
 
 This project uses [cpplint](https://github.com/cpplint/cpplint) to enforce C++ style guidelines.
 
-**Install:**
-
-```sh
-pip install cpplint
-```
-
 **Run linting:**
 
 ```sh
-mise lint
+just lint
 ```
 
 ### Contributing

@@ -16,5 +16,8 @@ jobs:
     - name: Install mise
       uses: jdx/mise-action@v5
 
+    - name: Install just
+      uses: taiki-e/install-action@just
+
     - name: Run linters
-      run: mise run lint
+      run: just lint

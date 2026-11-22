@@ -57,6 +57,9 @@ Release/
 Debug/
 ColorCop___Win32_Release_without_ALIGN/
 
+# CMake
+build/
+
 # Compiled Static libraries
 *.lai
 *.la
