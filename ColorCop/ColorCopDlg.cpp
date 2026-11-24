@@ -40,12 +40,6 @@ constexpr int kMinZoom = 1;
 // Maximum zoom level for the magnifier (16x)
 constexpr int kMaxZoom = 16;
 
-// Windows baseline DPI (100% scaling).
-constexpr UINT kDefaultDpi = 96;
-
-// Magnifier button size at the baseline DPI.
-constexpr int kDefaultMagButtonSize = 11;
-
 static const UINT kStatusIndicators[] = {
     ID_SEPARATOR  // single pane
 };
@@ -592,12 +586,7 @@ bool CColorCopDlg::LoadPersistentVariables() {
 }
 
 void CColorCopDlg::SetupWindowRects() {
-    const UINT dpi = GetDpiForWindow(GetSafeHwnd());
-
-    const int magButtonSize =
-        MulDiv(kDefaultMagButtonSize,
-               dpi,
-               kDefaultDpi);
+    const int magButtonSize = 11;
 
     // setup color window rect based on the Static box
     HWND temphandle;
