@@ -65,20 +65,21 @@ jobs:
           path: coverage.xml
 
       - name: Download VC++ Redistributable
+        shell: pwsh
         run: |
-          $url = "https://aka.ms/vs/17/release/vc_redist.x86.exe"
+          $url = "https://aka.ms/vc14/vc_redist.x86.exe"
           $out = "ColorCop/installer/vc_redist.x86.exe"
 
           Invoke-WebRequest -Uri $url -OutFile $out
 
-          # Verify file integrity to avoid accidentally bundling a corrupted installer
-          $expected = "0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64"
-          $actual = (Get-FileHash $out -Algorithm SHA256).Hash
+          $sig = Get-AuthenticodeSignature $out
 
-          if ($actual -ne $expected) {
-            Write-Error "Checksum mismatch for vc_redist.x86.exe"
-            exit 1
+          if ($sig.Status -ne 'Valid') {
+            throw "Invalid code signature on vc_redist.x86.exe"
           }
+
+          Write-Host "Signature verified:"
+          Write-Host $sig.SignerCertificate.Subject
 
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.9
