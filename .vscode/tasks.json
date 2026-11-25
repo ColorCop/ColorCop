@@ -4,8 +4,8 @@
     {
       "label": "lint",
       "type": "shell",
-      "command": "mise",
-      "args": ["run", "lint"],
+      "command": "just",
+      "args": ["lint"],
       "group": {
         "kind": "build",
         "isDefault": true
