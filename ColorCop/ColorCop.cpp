@@ -67,7 +67,28 @@ BOOL CColorCopApp::InitInstance() {
     dlg.m_PortableMode = m_PortableMode;
     m_pMainWnd = &dlg;
 
-    int nResponse = dlg.DoModal();  // run the Color Cop dialog modally
+    int nResponse = IDCANCEL;
+
+    __try {
+        nResponse = dlg.DoModal();            // run the Color Cop dialog modally
+    } __except (EXCEPTION_EXECUTE_HANDLER) {  // NOLINT(whitespace/parens)
+        const DWORD exceptionCode = GetExceptionCode();
+
+        CString msg;
+        msg.Format(
+            _T("ColorCop encountered an unexpected error.\n\n")
+            _T("Exception Code: 0x%08lX\n\n")
+            _T("Please include this code when reporting the problem."),
+            exceptionCode);
+
+        ::MessageBox(
+            nullptr,
+            msg,
+            _T("ColorCop Error"),
+            MB_OK | MB_ICONERROR);
+
+        return FALSE;
+    }
 
     // Persist settings on normal exit paths (OK or Cancel).
     if (nResponse == IDOK || nResponse == IDCANCEL) {
