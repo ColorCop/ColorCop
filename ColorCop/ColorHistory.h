@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <windows.h>
+#include "ColorTypes.h"
+
 
 //
 // ColorHistory.h
