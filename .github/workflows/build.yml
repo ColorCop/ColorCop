@@ -13,6 +13,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  VCPKG_BINARY_SOURCES: default,readwrite
+  VCPKG_DEFAULT_TRIPLET: x86-windows
+  VCPKG_DEFAULT_HOST_TRIPLET: x86-windows
+
 jobs:
   build:
 
@@ -36,9 +41,8 @@ jobs:
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
-
-      - name: Install dependencies
-        run: vcpkg install --triplet x86-windows
+        with:
+          runVcpkgInstall: true
 
       - name: Build using build.cmd
         run: ./build.cmd
