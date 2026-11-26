@@ -14,7 +14,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VCPKG_BINARY_SOURCES: default,readwrite
   VCPKG_DEFAULT_TRIPLET: x86-windows
   VCPKG_DEFAULT_HOST_TRIPLET: x86-windows
 
