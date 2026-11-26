@@ -7,6 +7,10 @@ build:
 test: build
     ./build/ColorCopTests
 
+# Run discovered tests via CTest
+ctest: build
+    ctest --test-dir build --output-on-failure
+
 lint:
     pip install -r requirements.txt
     cpplint --recursive --exclude=.git --exclude=build --exclude=ColorCop/resource.h --exclude=ColorCop/version.h .

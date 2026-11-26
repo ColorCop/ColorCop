@@ -38,7 +38,21 @@ jobs:
         uses: lukka/run-vcpkg@v11
 
       - name: Install dependencies
-        run: vcpkg install --triplet x86-windows
+        run: vcpkg install --triplet x86-windows --x-install-root=vcpkg_installed
+
+      - name: Search for manual-link and Catch2 libraries on disk
+        shell: pwsh
+        run: |
+          if (Test-Path "vcpkg_installed") {
+            Get-ChildItem -Path "vcpkg_installed" -Recurse -Filter "*Catch2*" -ErrorAction SilentlyContinue |
+              Select-Object FullName, Length |
+              Format-Table -AutoSize
+            Get-ChildItem -Path "vcpkg_installed" -Recurse -Directory -Filter "manual-link" -ErrorAction SilentlyContinue |
+              Select-Object FullName |
+              Format-Table -AutoSize
+          } else {
+            Write-Output "vcpkg_installed directory not found."
+          }
 
       - name: Build using build.cmd
         run: ./build.cmd
