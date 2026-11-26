@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Catch2 3 CONFIG REQUIRED)
 
 add_executable(ColorCopTests
-    ColorCopTests/TestMain.cpp
     ColorCopTests/WebSafeTests.cpp
     ColorCopTests/SamplingBoundsTests.cpp
     ColorCopTests/ColorConversionTests.cpp
@@ -21,5 +20,10 @@ target_include_directories(ColorCopTests PRIVATE
 )
 
 target_link_libraries(ColorCopTests PRIVATE
-    Catch2::Catch2
+    Catch2::Catch2WithMain
 )
+
+include(CTest)
+include(Catch)
+catch_discover_tests(ColorCopTests)
+

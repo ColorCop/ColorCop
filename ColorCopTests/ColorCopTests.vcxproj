@@ -136,11 +136,12 @@
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>
         $(SolutionDir)vcpkg_installed\x86-windows\debug\lib;
-        $(SolutionDir)vcpkg_installed\x86-windows\lib;
+        $(SolutionDir)vcpkg_installed\x86-windows\debug\lib\manual-link;
         %(AdditionalLibraryDirectories)
       </AdditionalLibraryDirectories>
       <AdditionalDependencies>
-        Catch2.lib;
+        Catch2Maind.lib;
+        Catch2d.lib;
         %(AdditionalDependencies)
       </AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -165,9 +166,11 @@
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>
         $(SolutionDir)vcpkg_installed\x86-windows\lib;
+        $(SolutionDir)vcpkg_installed\x86-windows\lib\manual-link;
         %(AdditionalLibraryDirectories)
       </AdditionalLibraryDirectories>
       <AdditionalDependencies>
+        Catch2Main.lib;
         Catch2.lib;
         %(AdditionalDependencies)
       </AdditionalDependencies>
@@ -178,12 +181,27 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+        $(SolutionDir)ColorCop;
+        $(SolutionDir)vcpkg_installed\x64-windows\include;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>
+        $(SolutionDir)vcpkg_installed\x64-windows\debug\lib;
+        $(SolutionDir)vcpkg_installed\x64-windows\debug\lib\manual-link;
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+        Catch2Maind.lib;
+        Catch2d.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -193,12 +211,27 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+        $(SolutionDir)ColorCop;
+        $(SolutionDir)vcpkg_installed\x64-windows\include;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>
+        $(SolutionDir)vcpkg_installed\x64-windows\lib;
+        $(SolutionDir)vcpkg_installed\x64-windows\lib\manual-link;
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+        Catch2Main.lib;
+        Catch2.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -234,7 +267,6 @@
     <ClCompile Include="SamplingBoundsTests.cpp" />
     <ClCompile Include="WebSafeTests.cpp" />
     <ClCompile Include="ColorHistoryTests.cpp" />
-    <ClCompile Include="TestMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
