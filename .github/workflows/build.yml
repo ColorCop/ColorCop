@@ -116,7 +116,7 @@ jobs:
         uses: signpath/github-action-submit-signing-request@v3
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: ColorCop
           signing-policy-slug: test-signing
           github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
