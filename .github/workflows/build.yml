@@ -103,6 +103,35 @@ jobs:
           path: ColorCop\installer\colorcop.iss
           options: /O+
 
+      - name: Upload unsigned installer
+        if: github.ref_type == 'tag'
+        id: upload-unsigned-installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: colorcop-installer-unsigned
+          path: ColorCop/output/colorcop-setup.exe
+
+      - name: Submit SignPath test signing request
+        if: github.ref_type == 'tag'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ColorCop
+          signing-policy-slug: test-signing
+          github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Replace unsigned installer with signed installer
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          Copy-Item `
+            -Path "signed\colorcop-setup.exe" `
+            -Destination "ColorCop\output\colorcop-setup.exe" `
+            -Force
+
       - name: Upload Installer Artifact
         uses: actions/upload-artifact@v7
         with:
